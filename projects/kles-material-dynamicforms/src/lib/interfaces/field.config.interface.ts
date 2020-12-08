@@ -11,6 +11,9 @@ export interface IFieldConfig {
     placeholder?: string;// Placeholder field
     tooltip?: string;// Tooltip field
     inputType?: string;// Type 
+    min?: number;
+    max?: number;
+    maxLength?: number;
     options?: string[];// List options for list component
     ngClass?: any;// ngclass for field
     ngStyle?: any;// ngStyle for field
