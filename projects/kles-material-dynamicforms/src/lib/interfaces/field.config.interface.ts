@@ -1,4 +1,4 @@
-import { IValidator } from '.';
+import { IValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { PipeTransform, Type } from '@angular/core';
 

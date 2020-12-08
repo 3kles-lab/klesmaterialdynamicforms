@@ -1,4 +1,5 @@
-import { IField, IFieldConfig } from '../interfaces';
+import { IField } from '../interfaces/field.interface';
+import { IFieldConfig } from '../interfaces/field.config.interface';
 import { FormGroup } from '@angular/forms';
 import { AfterViewInit, OnInit } from '@angular/core';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';

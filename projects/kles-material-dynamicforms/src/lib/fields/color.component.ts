@@ -1,6 +1,5 @@
 import { FieldAbstract } from './field.abstract';
 import { OnInit, Component } from '@angular/core';
-
 @Component({
     selector: 'app-color',
     template: `

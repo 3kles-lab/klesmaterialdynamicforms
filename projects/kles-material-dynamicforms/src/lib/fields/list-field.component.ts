@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldAbstract } from './field.abstract';
 import { FormGroup, FormArray, FormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
-import { IValidator } from '..';
+import { IValidator } from '../interfaces/validator.interface';
 
 @Component({
     selector: 'app-list-field',

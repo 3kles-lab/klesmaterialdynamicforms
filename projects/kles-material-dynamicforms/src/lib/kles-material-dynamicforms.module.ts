@@ -3,19 +3,22 @@ import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormComponent } from './dynamic-form.component';
-import { DynamicFieldDirective } from './directive';
-import {
-  LabelComponent,
-  InputComponent, ButtonComponent, SelectComponent, DateComponent, RadioComponent,
-  CheckboxComponent, ListFieldComponent, ColorComponent
-} from './fields';
-import { FormErrorStateMatcher } from './matcher';
+import { DynamicFieldDirective } from './directive/dynamic-field.directive';
+import { FormErrorStateMatcher } from './matcher/form-error.matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
-//import { TranslateModule } from '@ngx-translate/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TranslateModule } from '@ngx-translate/core';
+import { LabelComponent } from './fields/label.component';
+import { InputComponent } from './fields/input.component';
+import { ButtonComponent } from './fields/button.component';
+import { SelectComponent } from './fields/select.component';
+import { DateComponent } from './fields/date.component';
+import { RadioComponent } from './fields/radio.component';
+import { CheckboxComponent } from './fields/checkbox.component';
+import { ListFieldComponent } from './fields/list-field.component';
+import { ColorComponent } from './fields/color.component';
 
 const components = [
   DynamicFormComponent,

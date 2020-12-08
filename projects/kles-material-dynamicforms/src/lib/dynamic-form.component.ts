@@ -1,6 +1,7 @@
 import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator } from '@angular/forms';
-import { IFieldConfig, IValidator } from './interfaces';
+import { IFieldConfig } from './interfaces/field.config.interface';
+import { IValidator } from './interfaces/validator.interface';
 
 @Component({
     exportAs: 'dynamicForm',

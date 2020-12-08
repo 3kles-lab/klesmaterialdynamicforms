@@ -1,12 +1,16 @@
 import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
-import { IFieldConfig } from '../interfaces';
-import {
-    InputComponent, ButtonComponent, SelectComponent,
-    DateComponent, RadioComponent, CheckboxComponent, ListFieldComponent,
-    ColorComponent
-} from '../fields';
+import { IFieldConfig } from '../interfaces/field.config.interface';
+import { LabelComponent } from '../fields/label.component';
+import { InputComponent } from '../fields/input.component';
+import { ButtonComponent } from '../fields/button.component';
+import { SelectComponent } from '../fields/select.component';
+import { DateComponent } from '../fields/date.component';
+import { RadioComponent } from '../fields/radio.component';
+import { CheckboxComponent } from '../fields/checkbox.component';
+import { ListFieldComponent } from '../fields/list-field.component';
+import { ColorComponent } from '../fields/color.component';
 
 const componentMapper = {
     input: InputComponent,

@@ -1,6 +1,5 @@
 import { FieldAbstract } from './field.abstract';
 import { OnInit, Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 
