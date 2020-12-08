@@ -1,5 +1,5 @@
 
-[![pipeline status](http://gitlab.3kles.local/angular/klesngpipe/badges/master/pipeline.svg)](http://gitlab.3kles.local/angular/klesngpipe/-/commits/master)
+[![pipeline status](http://gitlab.3kles.local/angular/klesmaterialdynamicforms/badges/master/pipeline.svg)](http://gitlab.3kles.local/angular/klesmaterialdynamicforms/-/commits/master)
 
 # kles-material-dynamicforms
 
@@ -25,12 +25,12 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 ### npm
 
 ```
-npm install kles-ng-pipe --save
+npm install kles-material-dynamicforms--save
 ```
 
 ## How to use
 
-Check the [`documentation`](./docs) for how to import your pipes in your `NgModule` and how to use individual pipes.
+Check the [`documentation`](./docs) for how to import mdolule in your `NgModule` and how to use component and directive.
 
 ## Tests
 
