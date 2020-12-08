@@ -1,8 +1,8 @@
-import { IValidator } from './validator.interface';
+import { IKlesValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 import { PipeTransform, Type } from '@angular/core';
 
-export interface IFieldConfig {
+export interface IKlesFieldConfig {
     type?: string;// Mapper type if(type && !component)=>type
     name: string;// Name Field (key for FormControlName)
     component?: Type<any>;
@@ -25,8 +25,8 @@ export interface IFieldConfig {
     autocomplete?: boolean;// Autocomplete input field
     indeterminate?: boolean;// Indeterminate checkable component
     excludeForm?: boolean; // Property to exclude form control
-    validations?: IValidator<ValidatorFn>[];
-    asyncValidations?: IValidator<AsyncValidatorFn>[];
+    validations?: IKlesValidator<ValidatorFn>[];
+    asyncValidations?: IKlesValidator<AsyncValidatorFn>[];
     pipeTransform?: {
         pipe: PipeTransform,
         options?: any[]

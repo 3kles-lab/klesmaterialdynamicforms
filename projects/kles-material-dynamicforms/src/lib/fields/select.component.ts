@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
     selector: 'app-select',
@@ -18,6 +18,6 @@ import { FieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class SelectComponent extends FieldAbstract implements OnInit {
+export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit {
     ngOnInit() { super.ngOnInit(); }
 }

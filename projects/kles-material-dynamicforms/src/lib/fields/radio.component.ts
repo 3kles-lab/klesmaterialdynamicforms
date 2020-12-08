@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
-    selector: "app-radiobutton",
+    selector: "kles-form-radiobutton",
     template: `
     <div [formGroup]="group">
         <label class="radio-label-padding">{{field.label}}</label>
@@ -19,7 +19,7 @@ import { FieldAbstract } from './field.abstract';
 `,
     styles: []
 })
-export class RadioComponent extends FieldAbstract implements OnInit {
+export class KlesFormRadioComponent extends KlesFieldAbstract implements OnInit {
 
     ngOnInit() { super.ngOnInit(); }
 }

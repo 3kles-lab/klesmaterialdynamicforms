@@ -1,33 +1,33 @@
 import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
-import { IFieldConfig } from '../interfaces/field.config.interface';
-import { LabelComponent } from '../fields/label.component';
-import { InputComponent } from '../fields/input.component';
-import { ButtonComponent } from '../fields/button.component';
-import { SelectComponent } from '../fields/select.component';
-import { DateComponent } from '../fields/date.component';
-import { RadioComponent } from '../fields/radio.component';
-import { CheckboxComponent } from '../fields/checkbox.component';
-import { ListFieldComponent } from '../fields/list-field.component';
-import { ColorComponent } from '../fields/color.component';
+import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+import { KlesFormLabelComponent } from '../fields/label.component';
+import { KlesFormInputComponent } from '../fields/input.component';
+import { KlesFormButtonComponent } from '../fields/button.component';
+import { KlesFormSelectComponent } from '../fields/select.component';
+import { KlesFormDateComponent } from '../fields/date.component';
+import { KlesFormRadioComponent } from '../fields/radio.component';
+import { KlesFormCheckboxComponent } from '../fields/checkbox.component';
+import { KlesFormListFieldComponent } from '../fields/list-field.component';
+import { KlesFormColorComponent } from '../fields/color.component';
 
 const componentMapper = {
-    input: InputComponent,
-    button: ButtonComponent,
-    select: SelectComponent,
-    date: DateComponent,
-    radio: RadioComponent,
-    checkbox: CheckboxComponent,
-    listField: ListFieldComponent,
-    color: ColorComponent
+    input: KlesFormInputComponent,
+    button: KlesFormButtonComponent,
+    select: KlesFormSelectComponent,
+    date: KlesFormDateComponent,
+    radio: KlesFormRadioComponent,
+    checkbox: KlesFormCheckboxComponent,
+    listField: KlesFormListFieldComponent,
+    color: KlesFormColorComponent
 };
 
 @Directive({
-    selector: '[dynamicField]'
+    selector: '[klesDynamicField]'
 })
-export class DynamicFieldDirective implements OnInit, OnChanges {
-    @Input() field: IFieldConfig;
+export class KlesDynamicFieldDirective implements OnInit, OnChanges {
+    @Input() field: IKlesFieldConfig;
     @Input() group: FormGroup;
 
     componentRef: ComponentRef<any>;

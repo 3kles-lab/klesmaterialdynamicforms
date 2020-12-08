@@ -1,9 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { IFieldConfig } from '../interfaces/field.config.interface';
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
-    selector: "app-date",
+    selector: "kles-form-datepicker",
     template: `
     <mat-form-field class="demo-full-width margin-top" [formGroup]="group">
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder | translate">
@@ -21,6 +20,6 @@ import { FieldAbstract } from './field.abstract';
     `,
     styles: []
 })
-export class DateComponent extends FieldAbstract implements OnInit {
-    ngOnInit() {super.ngOnInit(); }
+export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit {
+    ngOnInit() { super.ngOnInit(); }
 }

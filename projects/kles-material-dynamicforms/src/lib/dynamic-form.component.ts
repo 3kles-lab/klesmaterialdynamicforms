@@ -1,14 +1,14 @@
 import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator } from '@angular/forms';
-import { IFieldConfig } from './interfaces/field.config.interface';
-import { IValidator } from './interfaces/validator.interface';
+import { IKlesFieldConfig } from './interfaces/field.config.interface';
+import { IKlesValidator } from './interfaces/validator.interface';
 
 @Component({
-    exportAs: 'dynamicForm',
+    exportAs: 'klesDynamicForm',
     selector: 'app-kles-dynamic-form',
     template: `
     <form class="{{orientationClass}}" [formGroup]="form" (submit)="onSubmit($event)">
-        <ng-container *ngFor="let field of fields;" class="{{orientationItemClass}}" dynamicField [field]="field" [group]="form">
+        <ng-container *ngFor="let field of fields;" class="{{orientationItemClass}}" klesDynamicField [field]="field" [group]="form">
         </ng-container>
         <!--<button (click)="reset()" mat-raised-button color="primary">RESET</button>-->
     </form>
@@ -26,10 +26,10 @@ import { IValidator } from './interfaces/validator.interface';
     ]
 
 })
-export class DynamicFormComponent implements OnInit {
-    @Input() fields: IFieldConfig[] = [];
-    @Input() validators: IValidator<ValidatorFn>[] = [];
-    @Input() asyncValidators: IValidator<AsyncValidatorFn>[] = [];
+export class KlesDynamicFormComponent implements OnInit {
+    @Input() fields: IKlesFieldConfig[] = [];
+    @Input() validators: IKlesValidator<ValidatorFn>[] = [];
+    @Input() asyncValidators: IKlesValidator<AsyncValidatorFn>[] = [];
     // tslint:disable-next-line: no-output-native
     @Output() submit: EventEmitter<any> = new EventEmitter<any>();
     @Input() direction: 'column' | 'row' = 'column';
@@ -112,7 +112,7 @@ export class DynamicFormComponent implements OnInit {
     }
 
 
-    private bindValidations(validations: IValidator<ValidatorFn>[]): ValidatorFn {
+    private bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
         if (validations.length > 0) {
             const validList = [];
             validations.forEach(valid => {
@@ -125,7 +125,7 @@ export class DynamicFormComponent implements OnInit {
     }
 
 
-    private bindAsyncValidations(validations: IValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
+    private bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
         if (validations.length > 0) {
             const validList = [];
             validations.forEach(valid => {

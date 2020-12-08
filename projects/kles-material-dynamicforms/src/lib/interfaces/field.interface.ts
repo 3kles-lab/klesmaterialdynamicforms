@@ -1,7 +1,7 @@
-import { IFieldConfig } from './field.config.interface';
+import { IKlesFieldConfig } from './field.config.interface';
 import { FormGroup } from '@angular/forms';
 
-export interface IField {
-    field: IFieldConfig;
+export interface IKlesField {
+    field: IKlesFieldConfig;
     group: FormGroup;
 }

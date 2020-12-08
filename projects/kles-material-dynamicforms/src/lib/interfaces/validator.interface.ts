@@ -1,7 +1,7 @@
 import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
 
 
-export interface IValidator<T> {
+export interface IKlesValidator<T> {
     name: string;
     validator: T;
     message: string;

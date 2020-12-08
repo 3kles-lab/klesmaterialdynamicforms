@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 import { FormGroup, FormArray, FormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
-import { IValidator } from '../interfaces/validator.interface';
+import { IKlesValidator } from '../interfaces/validator.interface';
 
 @Component({
-    selector: 'app-list-field',
+    selector: 'kles-form-field',
     template: `
     <div [formGroup]="group" class="form-element">
         {{field.label | translate}}
@@ -32,7 +32,7 @@ import { IValidator } from '../interfaces/validator.interface';
     `,
     styles: []
 })
-export class ListFieldComponent extends FieldAbstract implements OnInit {
+export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit {
 
     formArray: FormArray;
 
@@ -70,7 +70,7 @@ export class ListFieldComponent extends FieldAbstract implements OnInit {
     }
 
 
-    private bindValidations(validations: IValidator<ValidatorFn>[]): ValidatorFn {
+    private bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
         if (validations.length > 0) {
             const validList = [];
             validations.forEach(valid => {
@@ -83,7 +83,7 @@ export class ListFieldComponent extends FieldAbstract implements OnInit {
     }
 
 
-    private bindAsyncValidations(validations: IValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
+    private bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
         if (validations.length > 0) {
             const validList = [];
             validations.forEach(valid => {

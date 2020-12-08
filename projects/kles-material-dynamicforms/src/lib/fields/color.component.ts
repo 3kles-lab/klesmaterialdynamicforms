@@ -1,7 +1,7 @@
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component } from '@angular/core';
 @Component({
-    selector: 'app-color',
+    selector: 'kles-form-color',
     template: `
     <mat-form-field [formGroup]="group" class="form-element">
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate"
@@ -21,7 +21,7 @@ import { OnInit, Component } from '@angular/core';
     `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class ColorComponent extends FieldAbstract implements OnInit {
+export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit {
 
 
     ngOnInit() {super.ngOnInit(); }

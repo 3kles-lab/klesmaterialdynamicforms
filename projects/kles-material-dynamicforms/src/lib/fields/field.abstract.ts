@@ -1,11 +1,10 @@
-import { IField } from '../interfaces/field.interface';
-import { IFieldConfig } from '../interfaces/field.config.interface';
+import { IKlesField } from '../interfaces/field.interface';
+import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { FormGroup } from '@angular/forms';
 import { AfterViewInit, OnInit } from '@angular/core';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-export abstract class FieldAbstract implements IField, OnInit, AfterViewInit {
-    field: IFieldConfig;
+export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit {
+    field: IKlesFieldConfig;
     group: FormGroup;
 
     ngOnInit(): void {

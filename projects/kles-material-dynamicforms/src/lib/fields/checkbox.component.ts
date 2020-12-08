@@ -1,12 +1,12 @@
 
 import { Component, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { IFieldConfig } from '../interfaces/field.config.interface';
-import { FieldAbstract } from './field.abstract';
+import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+import { KlesFieldAbstract } from './field.abstract';
 
 
 @Component({
-    selector: "app-checkbox",
+    selector: "kles-form-checkbox",
     template: `
     <div [formGroup]="group" >  
         <mat-checkbox matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [indeterminate]="field.indeterminate" [formControlName]="field.name">{{field.label | translate}}</mat-checkbox>
@@ -20,8 +20,6 @@ import { FieldAbstract } from './field.abstract';
 `,
     styles: []
 })
-export class CheckboxComponent extends FieldAbstract implements OnInit {
-    field: IFieldConfig;
-    group: FormGroup;
+export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnInit {
     ngOnInit() { super.ngOnInit(); }
 }

@@ -1,10 +1,10 @@
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-input',
+    selector: 'kles-form-input',
     template: `
     <mat-form-field [formGroup]="group" class="form-element">
 
@@ -33,7 +33,7 @@ import { startWith, map } from 'rxjs/operators';
     `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class InputComponent extends FieldAbstract implements OnInit {
+export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit {
 
     filteredOption: Observable<any[]>;
 

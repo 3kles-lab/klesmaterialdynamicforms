@@ -1,10 +1,10 @@
 
 import { Component, OnInit } from "@angular/core";
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 
 
 @Component({
-    selector: "app-label",
+    selector: "kles-form-label",
     template: `
     <div [formGroup]="group" >
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" 
@@ -13,7 +13,7 @@ import { FieldAbstract } from './field.abstract';
     </div>
 `
 })
-export class LabelComponent extends FieldAbstract implements OnInit {
+export class KlesFormLabelComponent extends KlesFieldAbstract implements OnInit {
 
     ngOnInit() {
         this.group.controls[this.field.name].disable();

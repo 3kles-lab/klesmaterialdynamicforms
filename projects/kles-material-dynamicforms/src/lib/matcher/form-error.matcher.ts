@@ -1,7 +1,7 @@
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
-export class FormErrorStateMatcher implements ErrorStateMatcher {
+export class KlesFormErrorStateMatcher implements ErrorStateMatcher {
 
     constructor() {
     }

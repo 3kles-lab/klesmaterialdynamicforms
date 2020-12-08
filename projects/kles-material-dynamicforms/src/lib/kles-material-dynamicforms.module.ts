@@ -2,38 +2,38 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/cor
 import { CommonModule } from '@angular/common';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DynamicFormComponent } from './dynamic-form.component';
-import { DynamicFieldDirective } from './directive/dynamic-field.directive';
-import { FormErrorStateMatcher } from './matcher/form-error.matcher';
+import { KlesDynamicFormComponent } from './dynamic-form.component';
+import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
+import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TranslateModule } from '@ngx-translate/core';
-import { LabelComponent } from './fields/label.component';
-import { InputComponent } from './fields/input.component';
-import { ButtonComponent } from './fields/button.component';
-import { SelectComponent } from './fields/select.component';
-import { DateComponent } from './fields/date.component';
-import { RadioComponent } from './fields/radio.component';
-import { CheckboxComponent } from './fields/checkbox.component';
-import { ListFieldComponent } from './fields/list-field.component';
-import { ColorComponent } from './fields/color.component';
+import { KlesFormLabelComponent } from './fields/label.component';
+import { KlesFormInputComponent } from './fields/input.component';
+import { KlesFormButtonComponent } from './fields/button.component';
+import { KlesFormSelectComponent } from './fields/select.component';
+import { KlesFormDateComponent } from './fields/date.component';
+import { KlesFormRadioComponent } from './fields/radio.component';
+import { KlesFormCheckboxComponent } from './fields/checkbox.component';
+import { KlesFormListFieldComponent } from './fields/list-field.component';
+import { KlesFormColorComponent } from './fields/color.component';
 
 const components = [
-  DynamicFormComponent,
-  LabelComponent,
-  InputComponent,
-  ButtonComponent,
-  SelectComponent,
-  DateComponent,
-  RadioComponent,
-  CheckboxComponent,
-  ListFieldComponent,
-  ColorComponent
+  KlesDynamicFormComponent,
+  KlesFormLabelComponent,
+  KlesFormInputComponent,
+  KlesFormButtonComponent,
+  KlesFormSelectComponent,
+  KlesFormDateComponent,
+  KlesFormRadioComponent,
+  KlesFormCheckboxComponent,
+  KlesFormListFieldComponent,
+  KlesFormColorComponent
 ];
 
-const directives = [DynamicFieldDirective];
+const directives = [KlesDynamicFieldDirective];
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ const directives = [DynamicFieldDirective];
     ColorPickerModule
   ],
   providers: [
-    { provide: ErrorStateMatcher, useClass: FormErrorStateMatcher }
+    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }
   ],
   entryComponents: [
     components

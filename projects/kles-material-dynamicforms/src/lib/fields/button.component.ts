@@ -1,9 +1,9 @@
-import { FieldAbstract } from './field.abstract';
+import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component } from '@angular/core';
 
 
 @Component({
-    selector: 'app-button',
+    selector: 'kles-form-button',
     template: `
     <div [formGroup]="group">
         <button matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" type="submit" [disabled]="field.disabled" mat-raised-button color="primary">{{field.label}}</button>
@@ -11,7 +11,7 @@ import { OnInit, Component } from '@angular/core';
     `,
     styles: []
 })
-export class ButtonComponent extends FieldAbstract implements OnInit {
+export class KlesFormButtonComponent extends KlesFieldAbstract implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
