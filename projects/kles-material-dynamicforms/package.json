@@ -1,5 +1,5 @@
 {
-  "name": "kles-material-dynamicforms",
+  "name": "@3kles/kles-material-dynamicforms",
   "version": "1.0.0",
   "peerDependencies": {
     "@angular/animations": "~9.1.9",
