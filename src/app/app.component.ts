@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { IField, IFieldConfig, IValidator } from 'kles-material-dynamicforms';
+import { IKlesValidator, IKlesField,KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent } from 'kles-material-dynamicforms';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  @ViewChild(KlesDynamicFormComponent, { static: false }) form: KlesDynamicFormComponent;
   title = 'KlesMaterialDynamicForms';
 
   item = { error: [] };
-  fields: IFieldConfig[]=[];
-  formValidators: IValidator<ValidatorFn>[] = [];
+  fields: IKlesFieldConfig[] = [];
+  formValidators: IKlesValidator<ValidatorFn>[] = [];
 
   constructor() {
     this.item['input'] = 'input';
@@ -21,7 +22,8 @@ export class AppComponent {
     this.item['date'] = new Date();
     this.item['radio'] = true;
     this.item['select'] = ['val1', 'val2'];
-    this.item['button'] = 'button';
+    this.item['button'] = {};
+    this.item['buttonChecker'] = {error:[{},{}]};
 
     this.fields.push(this.buildByType('input'));
     this.fields.push(this.buildByType('color'));
@@ -29,7 +31,21 @@ export class AppComponent {
     this.fields.push(this.buildByType('date'));
     this.fields.push(this.buildByType('radio'));
     this.fields.push(this.buildByType('select'));
-    this.fields.push(this.buildByType('button'));
+ //   this.fields.push(this.buildByType('button'));
+
+    this.fields.push({
+      component: KlesFormButtonComponent,
+      label: 'button',
+      name: 'button',
+      value: this.item['button']
+    });
+
+    this.fields.push({
+      component: KlesFormButtonCheckerComponent,
+      label: 'buttonChecker',
+      name: 'buttonChecker',
+      value: this.item['buttonChecker']
+    });
 
     this.formValidators = [
       // {
@@ -46,8 +62,11 @@ export class AppComponent {
     ];
 
   }
+  ngAfterViewInit(): void {
+    console.log('Form=',this.form.form);
+  }
 
-  buildByType(key: string): IFieldConfig {
+  buildByType(key: string): IKlesFieldConfig {
     return {
       type: key,
       label: key,
