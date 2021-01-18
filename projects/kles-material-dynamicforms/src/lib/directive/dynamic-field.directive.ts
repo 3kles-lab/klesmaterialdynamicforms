@@ -46,7 +46,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges {
         }
         if (changes.field) {
             if (changes.field.previousValue && changes.field.currentValue.component !== changes.field.previousValue.component) {
-                console.log('####Component Change!!!');
                 this.field = changes.field.currentValue;
                 this.buildComponent();
             } else {

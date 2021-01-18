@@ -2,7 +2,7 @@ import { Component, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonComponent } from './button-control.component';
 
-export interface IButtonChecker extends IButton{
+export interface IButtonChecker extends IButton {
     busy: boolean;
     error?: any[];
     message?: string;
@@ -42,30 +42,6 @@ export class KlesButtonCheckerComponent extends KlesButtonComponent implements C
         error: [],
         event: false
     };
-
-    onChange: any = () => { };
-    onTouched: any = () => { };
-
-    // click(event) {
-    //     this.value.event = true;
-    //     this.onChange(this.value);
-    // }
-
-    // writeValue(value: IButtonChecker): void {
-    //     this.value = value;
-    // }
-
-    // registerOnChange(fn: any): void {
-    //     this.onChange = fn;
-    // }
-
-    // registerOnTouched(fn: any): void {
-    //     this.onTouched = fn;
-    // }
-
-    // setDisabledState?(isDisabled: boolean): void {
-    //     this.disabled = isDisabled;
-    // }
 
     countError(): number {
         return (this.value.error) ? this.value.error.length : 0;

@@ -54,7 +54,6 @@ export class KlesDynamicFormComponent implements OnInit {
     onSubmit(event: Event) {
         event.preventDefault();
         event.stopPropagation();
-        console.log('FormValue=', this.form.value);
         if (this.form.valid) {
             this.submit.emit(this.form.value);
         } else {

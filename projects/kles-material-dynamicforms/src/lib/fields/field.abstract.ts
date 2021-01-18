@@ -9,11 +9,9 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
 
     ngOnInit(): void {
         this.applyPipeTransform();
-        console.log('FieldAbstract ngOninit', this.group.controls[this.field.name]);
         this.group.controls[this.field.name].valueChanges
             .pipe()
             .subscribe(val => {
-                console.log(' FieldAbstract Value before transform:', val);
                 this.applyPipeTransform();
             });
     }
