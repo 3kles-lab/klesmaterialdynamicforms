@@ -24,7 +24,9 @@ export interface IKlesFieldConfig {
     disabled?: boolean;// Disabled field
     autocomplete?: boolean;// Autocomplete input field
     indeterminate?: boolean;// Indeterminate checkable component
-    excludeForm?: boolean; // Property to exclude form control
+    color?: string; //Material color
+    icon?: string;//Material icon
+    iconSvg?: string;//Svg Icon
     validations?: IKlesValidator<ValidatorFn>[];
     asyncValidations?: IKlesValidator<AsyncValidatorFn>[];
     pipeTransform?: {
