@@ -12,19 +12,27 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { TranslateModule } from '@ngx-translate/core';
 import { KlesFormLabelComponent } from './fields/label.component';
 import { KlesFormInputComponent } from './fields/input.component';
-import { KlesFormButtonComponent } from './fields/button.component';
+import { KlesFormSubmitButtonComponent } from './fields/button-submit.component';
 import { KlesFormSelectComponent } from './fields/select.component';
 import { KlesFormDateComponent } from './fields/date.component';
 import { KlesFormRadioComponent } from './fields/radio.component';
 import { KlesFormCheckboxComponent } from './fields/checkbox.component';
 import { KlesFormListFieldComponent } from './fields/list-field.component';
 import { KlesFormColorComponent } from './fields/color.component';
+import { KlesButtonComponent } from './forms/button-control.component';
+import { KlesButtonCheckerComponent } from './forms/buttonchecker-control.component';
+import { KlesFormButtonComponent } from './fields/button-form.component';
+import { KlesFormButtonCheckerComponent } from './fields/buttonchecker-form.component';
 
 const components = [
   KlesDynamicFormComponent,
   KlesFormLabelComponent,
   KlesFormInputComponent,
+  KlesFormSubmitButtonComponent,
+  KlesButtonComponent,
   KlesFormButtonComponent,
+  KlesButtonCheckerComponent,
+  KlesFormButtonCheckerComponent,
   KlesFormSelectComponent,
   KlesFormDateComponent,
   KlesFormRadioComponent,

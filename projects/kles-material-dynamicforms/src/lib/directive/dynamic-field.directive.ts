@@ -4,7 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { KlesFormLabelComponent } from '../fields/label.component';
 import { KlesFormInputComponent } from '../fields/input.component';
-import { KlesFormButtonComponent } from '../fields/button.component';
+import { KlesFormSubmitButtonComponent } from '../fields/button-submit.component';
 import { KlesFormSelectComponent } from '../fields/select.component';
 import { KlesFormDateComponent } from '../fields/date.component';
 import { KlesFormRadioComponent } from '../fields/radio.component';
@@ -13,8 +13,9 @@ import { KlesFormListFieldComponent } from '../fields/list-field.component';
 import { KlesFormColorComponent } from '../fields/color.component';
 
 const componentMapper = {
+    label: KlesFormLabelComponent,
     input: KlesFormInputComponent,
-    button: KlesFormButtonComponent,
+    button: KlesFormSubmitButtonComponent,
     select: KlesFormSelectComponent,
     date: KlesFormDateComponent,
     radio: KlesFormRadioComponent,

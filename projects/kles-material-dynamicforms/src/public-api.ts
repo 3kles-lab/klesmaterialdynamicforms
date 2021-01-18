@@ -7,8 +7,14 @@ export * from './lib/kles-material-dynamicforms.module';
 /**DIRECTIVE */
 export * from './lib/directive/dynamic-field.directive';
 
+/*FORMS*/
+export * from './lib/forms/button-control.component';
+export * from './lib/forms/buttonchecker-control.component';
+
 /**FIELDS */
-export * from './lib/fields/button.component';
+export * from './lib/fields/button-form.component';
+export * from './lib/fields/buttonchecker-form.component';
+export * from './lib/fields/button-submit.component';
 export * from './lib/fields/checkbox.component';
 export * from './lib/fields/color.component';
 export * from './lib/fields/date.component';
