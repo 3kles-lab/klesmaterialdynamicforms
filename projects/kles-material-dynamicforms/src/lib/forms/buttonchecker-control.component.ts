@@ -1,32 +1,30 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { KlesButtonComponent } from './button-control.component';
+import { IButton, KlesButtonComponent } from './button-control.component';
 
-interface IButtonChecker {
+export interface IButtonChecker extends IButton{
     busy: boolean;
-    counter: number;
-    error?: any;
-    event?: any;
+    error?: any[];
+    message?: string;
 }
 
 @Component({
     selector: 'kles-button-checker',
     template: `
-        <span *ngIf="value.error && !value.busy" style="margin-right: 10px">
-            <kles-button [classButton]="classButton" 
-            [name]="name" [label]="label" [color]="color" 
-            [icon]="icon"
-            [iconSvg]="iconSvg"
-            [value]="value" matBadge="{{value.counter}}">
-        </kles-button>
-
+        <span *ngIf="value.error && !value.busy">
+            <kles-button 
+                [classButton]="classButton" 
+                [name]="name" [label]="label" [color]="color" 
+                [icon]="icon" [iconSvg]="iconSvg"
+                [value]="value" matBadge="{{countError()}}">
+            </kles-button>
         </span>
         <span style="text-align: center;" *ngIf="value.busy||false">
             <span style="text-align: center;margin-right: 10px">
                 <mat-spinner [diameter]="25"></mat-spinner>
             </span>
             <span style="margin-right: 10px">
-                {{'line.check'|translate}}...
+                {{'value.message'|translate}}...
             </span>
         </span>
     `,
@@ -38,39 +36,38 @@ interface IButtonChecker {
         }
     ]
 })
-export class KlesButtonCheckerComponent extends KlesButtonComponent implements OnInit, ControlValueAccessor {
+export class KlesButtonCheckerComponent extends KlesButtonComponent implements ControlValueAccessor {
     value: IButtonChecker = {
-        busy: true,
-        counter: 0,
+        busy: false,
+        error: [],
         event: false
     };
 
     onChange: any = () => { };
     onTouched: any = () => { };
 
-    ngOnInit(): void {
-        this.name = 'Test';
-    }
+    // click(event) {
+    //     this.value.event = true;
+    //     this.onChange(this.value);
+    // }
 
-    click(event) {
-        this.value.event = true;
-        console.log('Click Button Checker=', this.value);
-        this.onChange(this.value);
-    }
+    // writeValue(value: IButtonChecker): void {
+    //     this.value = value;
+    // }
 
-    writeValue(value: IButtonChecker): void {
-        this.value = value;
-    }
+    // registerOnChange(fn: any): void {
+    //     this.onChange = fn;
+    // }
 
-    registerOnChange(fn: any): void {
-        this.onChange = fn;
-    }
+    // registerOnTouched(fn: any): void {
+    //     this.onTouched = fn;
+    // }
 
-    registerOnTouched(fn: any): void {
-        this.onTouched = fn;
-    }
+    // setDisabledState?(isDisabled: boolean): void {
+    //     this.disabled = isDisabled;
+    // }
 
-    setDisabledState?(isDisabled: boolean): void {
-        this.disabled = isDisabled;
+    countError(): number {
+        return (this.value.error) ? this.value.error.length : 0;
     }
 }
