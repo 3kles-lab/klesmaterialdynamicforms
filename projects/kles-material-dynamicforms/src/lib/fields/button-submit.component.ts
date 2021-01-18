@@ -11,7 +11,7 @@ import { OnInit, Component } from '@angular/core';
     `,
     styles: []
 })
-export class KlesFormButtonComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormSubmitButtonComponent extends KlesFieldAbstract implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
