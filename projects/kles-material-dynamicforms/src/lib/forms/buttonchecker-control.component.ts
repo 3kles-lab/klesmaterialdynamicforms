@@ -16,7 +16,7 @@ export interface IButtonChecker extends IButton {
                 [classButton]="classButton" 
                 [name]="name" [label]="label" [color]="color" 
                 [icon]="icon" [iconSvg]="iconSvg"
-                [value]="value" matBadge="{{countError()}}">
+                [value]="value" matBadge="{{countError()}}" (click)="click($event)">
             </kles-button>
         </span>
         <span style="text-align: center;" *ngIf="value.busy||false">
