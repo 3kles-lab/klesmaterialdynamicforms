@@ -68,10 +68,6 @@ export class KlesDynamicFormComponent implements OnInit {
     private createControl() {
         const group = this.fb.group({});
         this.fields.forEach(field => {
-            if (field.type === 'button') {
-                return;
-            }
-
             if (field.type === 'listField') {
                 const array = this.fb.array([]);
 

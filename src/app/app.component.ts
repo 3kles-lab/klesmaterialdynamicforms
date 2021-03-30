@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { IKlesValidator, IKlesField,KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent } from 'kles-material-dynamicforms';
+import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent } from 'kles-material-dynamicforms';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent implements AfterViewInit {
     this.item['radio'] = true;
     this.item['select'] = ['val1', 'val2'];
     this.item['button'] = {};
-    this.item['buttonChecker'] = {error:[{},{}]};
+    this.item['#checker'] = { error: [{}, {}] };
 
     this.fields.push(this.buildByType('input'));
     this.fields.push(this.buildByType('color'));
@@ -31,7 +31,7 @@ export class AppComponent implements AfterViewInit {
     this.fields.push(this.buildByType('date'));
     this.fields.push(this.buildByType('radio'));
     this.fields.push(this.buildByType('select'));
- //   this.fields.push(this.buildByType('button'));
+    //   this.fields.push(this.buildByType('button'));
 
     this.fields.push({
       component: KlesFormButtonComponent,
@@ -42,9 +42,9 @@ export class AppComponent implements AfterViewInit {
 
     this.fields.push({
       component: KlesFormButtonCheckerComponent,
-      label: 'buttonChecker',
-      name: 'buttonChecker',
-      value: this.item['buttonChecker']
+      label: '#checker',
+      name: '#checker',
+      value: this.item['#checker']
     });
 
     this.formValidators = [
@@ -63,7 +63,10 @@ export class AppComponent implements AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-    console.log('Form=',this.form.form);
+    console.log('Form=', this.form.form);
+    this.form.form.valueChanges.subscribe(s => {
+      console.log('Change form=', this.form.form);
+    })
   }
 
   buildByType(key: string): IKlesFieldConfig {
