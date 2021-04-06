@@ -78,7 +78,7 @@ group.addControl(field.name, control);
 ```
 
 ```html
-<ng-container dynamicField [field]="field" [group="group"></ng-container>
+<ng-container dynamicField [field]="field" [group]="group"></ng-container>
 ```
 
 #### IValidator
