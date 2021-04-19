@@ -24,7 +24,7 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 ### npm
 
 ```
-npm install kles-material-dynamicforms --save
+npm install @3kles/kles-material-dynamicforms --save
 ```
 
 ## How to use
