@@ -1,4 +1,3 @@
-
 [![pipeline status](http://gitlab.3kles.local/angular/klesmaterialdynamicforms/badges/master/pipeline.svg)](http://gitlab.3kles.local/angular/klesmaterialdynamicforms/-/commits/master)
 
 # kles-material-dynamicforms
@@ -25,7 +24,7 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 ### npm
 
 ```
-npm install kles-material-dynamicforms--save
+npm install kles-material-dynamicforms --save
 ```
 
 ## How to use
