@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent } from 'kles-material-dynamicforms';
+import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent, KlesFormLabelComponent } from 'kles-material-dynamicforms';
+import { IButton, IButtonChecker } from 'projects/kles-material-dynamicforms/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -37,16 +38,22 @@ export class AppComponent implements AfterViewInit {
       component: KlesFormButtonComponent,
       label: 'button',
       name: 'button',
-      value: this.item['button']
+      //value: this.item['button']
     });
 
     this.fields.push({
       component: KlesFormButtonCheckerComponent,
       label: '#checker',
       name: '#checker',
-      value: this.item['#checker']
+      //value: this.item['#checker']
     });
 
+    this.fields.push({
+      component: KlesFormLabelComponent,
+      label: 'Label',
+      name: 'Label',
+      value: 'Value'
+    });
     this.formValidators = [
       // {
       //   name: 'overlap',
@@ -64,9 +71,37 @@ export class AppComponent implements AfterViewInit {
   }
   ngAfterViewInit(): void {
     console.log('Form=', this.form.form);
-    this.form.form.valueChanges.subscribe(s => {
-      console.log('Change form=', this.form.form);
-    })
+    // this.form.form.valueChanges.subscribe(s => {
+    //   console.log('Value change=', s);
+    //   console.log('Change form=', this.form.form);
+    // });
+
+
+    this.form.form.controls['input'].valueChanges.subscribe(s => {
+      console.log('Input change=', s);
+
+      const currentButtonValue: IButton = {
+        uiButton: {
+          label: 'LOL'
+        }
+      }
+      console.log('Current Button Value=', currentButtonValue);
+      this.form.form.controls['button'].patchValue(currentButtonValue);
+
+
+      const currentCheckerButtonValue: IButtonChecker = {
+        busy: false,
+        error: [{}, {}, {}],
+        uiButton: {
+          label: 'LOL'
+        }
+      }
+      this.form.form.controls['#checker'].patchValue(currentCheckerButtonValue);
+    });
+
+    this.form.form.controls['button'].valueChanges.subscribe(s => {
+      console.log('Button change=', s);
+    });
   }
 
   buildByType(key: string): IKlesFieldConfig {
