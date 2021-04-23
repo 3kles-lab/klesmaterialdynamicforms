@@ -3,6 +3,16 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface IButton {
     event?: any;
+    uiButton?: IUIButton
+}
+
+export interface IUIButton {
+    label?: string;
+    color?: string;
+    icon?: string;
+    iconSvg?: string;
+    disabled?: boolean;
+    class?: string
 }
 
 @Component({
@@ -47,6 +57,21 @@ export class KlesButtonComponent implements OnInit, ControlValueAccessor {
     }
 
     writeValue(value: IButton): void {
+        if (!value) {
+            value = { event: this.name };
+        }
+        if (!value.event) {
+            value.event = this.name;
+        }
+        if (value.uiButton) {
+            const uiButton = value.uiButton;
+            this.label = (uiButton.label) ? uiButton.label : this.label;
+            this.color = (uiButton.color) ? uiButton.color : this.color;
+            this.icon = (uiButton.icon) ? uiButton.icon : this.icon;
+            this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
+            this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
+            this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
+        }
         this.value = value;
     }
 
