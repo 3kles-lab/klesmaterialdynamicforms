@@ -24,6 +24,7 @@ export interface IKlesFieldConfig {
     disabled?: boolean;// Disabled field
     autocomplete?: boolean;// Autocomplete input field
     displayWith?: ((value: any) => string) | null; // Autocomplete display format
+    panelWidth?: string | number;
     indeterminate?: boolean;// Indeterminate checkable component
     color?: string; //Material color
     icon?: string;//Material icon
