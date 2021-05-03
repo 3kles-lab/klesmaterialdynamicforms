@@ -13,7 +13,7 @@ import { startWith, map } from 'rxjs/operators';
             [matAutocomplete]="auto">
 
             <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of filteredOption | async" [value]="option">{{option}}</mat-option>
+                <mat-option *ngFor="let option of filteredOption | async" [value]="option">{{field.property ? option[field.property] : option}}</mat-option>
             </mat-autocomplete>
         </ng-container>
         
