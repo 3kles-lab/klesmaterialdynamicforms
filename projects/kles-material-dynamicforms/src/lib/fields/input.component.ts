@@ -12,7 +12,7 @@ import { startWith, map } from 'rxjs/operators';
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
             [matAutocomplete]="auto">
 
-            <mat-autocomplete #auto="matAutocomplete">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                 <mat-option *ngFor="let option of filteredOption | async" [value]="option">{{field.property ? option[field.property] : option}}</mat-option>
             </mat-autocomplete>
         </ng-container>
@@ -53,5 +53,13 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit 
     private filterData(value: any): any[] {
         const filterValue = value.toLowerCase();
         return this.field.options.filter(data => data.toLowerCase().indexOf(filterValue) === 0);
+    }
+
+    displayFn(value: any) {
+        if (this.field.property) {
+            return value[this.field.property];
+        } else {
+            return value;
+        }
     }
 }
