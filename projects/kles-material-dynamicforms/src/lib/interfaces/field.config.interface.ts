@@ -14,7 +14,7 @@ export interface IKlesFieldConfig {
     min?: number;
     max?: number;
     maxLength?: number;
-    options?: string[];// List options for list component
+    options?: any[];// List options for list component
     ngClass?: any;// ngclass for field
     ngStyle?: any;// ngStyle for field
     property?: string;// Property for field
@@ -23,6 +23,7 @@ export interface IKlesFieldConfig {
     multiple?: boolean;// Multiple selection field
     disabled?: boolean;// Disabled field
     autocomplete?: boolean;// Autocomplete input field
+    displayWith?: ((value: any) => string) | null; // Autocomplete display format
     indeterminate?: boolean;// Indeterminate checkable component
     color?: string; //Material color
     icon?: string;//Material icon

@@ -67,10 +67,13 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit 
     }
 
     displayFn(value: any) {
-        if (value && this.field && this.field.property) {
-            return value[this.field.property] ? value[this.field.property] : '';
+        if (this.field.displayWith) {
+            return this.field.displayWith(value);
+        } else {
+            if (value && this.field && this.field.property) {
+                return value[this.field.property] ? value[this.field.property] : '';
+            }
+            return value ? value : '';
         }
-        return value ? value : '';
-
     }
 }
