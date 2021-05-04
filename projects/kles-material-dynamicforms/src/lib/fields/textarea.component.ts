@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from "./field.abstract";
 
 @Component({
-    selector: 'kles-form-input',
+    selector: 'kles-form-textarea',
     template: `
     <mat-form-field [formGroup]="group" class="form-element">
         <textarea matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" 
