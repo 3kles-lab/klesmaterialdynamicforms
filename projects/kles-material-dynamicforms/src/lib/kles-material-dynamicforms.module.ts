@@ -23,6 +23,7 @@ import { KlesButtonComponent } from './forms/button-control.component';
 import { KlesButtonCheckerComponent } from './forms/buttonchecker-control.component';
 import { KlesFormButtonComponent } from './fields/button-form.component';
 import { KlesFormButtonCheckerComponent } from './fields/buttonchecker-form.component';
+import { KlesFormTextareaComponent } from './fields/textarea.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -38,7 +39,8 @@ const components = [
   KlesFormRadioComponent,
   KlesFormCheckboxComponent,
   KlesFormListFieldComponent,
-  KlesFormColorComponent
+  KlesFormColorComponent,
+  KlesFormTextareaComponent
 ];
 
 const directives = [KlesDynamicFieldDirective];

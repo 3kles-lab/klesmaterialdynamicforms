@@ -29,6 +29,7 @@ export interface IKlesFieldConfig {
     color?: string; //Material color
     icon?: string;//Material icon
     iconSvg?: string;//Svg Icon
+    textareaAutoSize?: { minRows?: number; maxRows?: number }
     validations?: IKlesValidator<ValidatorFn>[];
     asyncValidations?: IKlesValidator<AsyncValidatorFn>[];
     pipeTransform?: {
