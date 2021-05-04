@@ -24,6 +24,7 @@ export * from './lib/fields/label.component';
 export * from './lib/fields/list-field.component';
 export * from './lib/fields/radio.component';
 export * from './lib/fields/select.component';
+export * from './lib/fields/textarea.component';
 
 /**INTERFACES */
 export * from './lib/interfaces/field.interface';
