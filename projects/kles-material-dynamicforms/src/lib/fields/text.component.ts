@@ -9,7 +9,7 @@ import { KlesFieldAbstract } from "./field.abstract";
     </span> 
 `
 })
-export class TextComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormTextComponent extends KlesFieldAbstract implements OnInit {
 
     ngOnInit() {
         super.ngOnInit();
