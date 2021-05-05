@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent, KlesFormLabelComponent } from 'kles-material-dynamicforms';
-import { IButton, IButtonChecker } from 'projects/kles-material-dynamicforms/src/public-api';
+import { IButton, IButtonChecker, KlesFormInputComponent, KlesFormTextareaComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -54,6 +54,42 @@ export class AppComponent implements AfterViewInit {
       name: 'Label',
       value: 'Value'
     });
+
+    this.fields.push({
+      component: KlesFormTextareaComponent,
+      placeholder: 'textarea',
+      textareaAutoSize: {
+        minRows: 10
+      },
+      name: 'textarea'
+    });
+
+
+    this.fields.push({
+      component: KlesFormInputComponent,
+      placeholder:'autocomplete with object array',
+      name: 'autocompleteWithobject',
+      autocomplete: true,
+      property: 'test',
+      options: [
+        { test: 'aaa', val: 'rrr' },
+        { test: 'bbb', val: 'bbb' }
+      ] as any
+    });
+
+    this.fields.push({
+      component: KlesFormInputComponent,
+      label: 'autoComplete',
+      placeholder:'autocomplete with string array',
+      name: 'autocomplete',
+      autocomplete: true,
+      options: [
+        'aaa',
+        'bbb'
+      ] as any
+    });
+
+
     this.formValidators = [
       // {
       //   name: 'overlap',
