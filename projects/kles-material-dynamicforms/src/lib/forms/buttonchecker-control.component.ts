@@ -23,8 +23,8 @@ export interface IButtonChecker extends IButton {
             <span style="text-align: center;margin-right: 10px">
                 <mat-spinner [diameter]="25"></mat-spinner>
             </span>
-            <span style="margin-right: 10px">
-                {{'value.message'|translate}}...
+            <span *ngIf="value.message" style="margin-right: 10px">
+                {{value.message|translate}}...
             </span>
         </span>
     `,
