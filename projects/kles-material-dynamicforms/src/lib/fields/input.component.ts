@@ -16,7 +16,7 @@ import { startWith, map } from 'rxjs/operators';
                 <mat-option *ngFor="let option of filteredOption | async" [value]="option">{{field.property ? option[field.property] : option}}</mat-option>
             </mat-autocomplete>
         </ng-container>
-        
+
         <ng-template #notAutoComplete>
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType">
         </ng-template>

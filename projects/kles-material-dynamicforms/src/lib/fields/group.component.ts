@@ -1,9 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { KlesFieldAbstract } from "./field.abstract";
-
-
+import { Component, OnInit } from '@angular/core';
+import { KlesFieldAbstract } from './field.abstract';
 @Component({
-    selector: 'app-group',
+    selector: 'kles-group',
     template: `
     <ng-container [formGroup]="group">
         <ng-container [formGroupName]="field.name">
@@ -12,8 +10,8 @@ import { KlesFieldAbstract } from "./field.abstract";
         </ng-container>
     </ng-container>
 `,
-    styles: ['mat-form-field {width: calc(100%)}', 
-    ':host { display:inherit; flex-direction: inherit}'
+    styles: ['mat-form-field {width: calc(100%)}',
+        ':host { display:inherit; flex-direction: inherit}'
     ]
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit {
