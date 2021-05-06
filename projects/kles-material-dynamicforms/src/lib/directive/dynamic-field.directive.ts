@@ -12,6 +12,7 @@ import { KlesFormCheckboxComponent } from '../fields/checkbox.component';
 import { KlesFormListFieldComponent } from '../fields/list-field.component';
 import { KlesFormColorComponent } from '../fields/color.component';
 import { KlesFormChipComponent } from '../fields/chip.component';
+import { KlesFormGroupComponent } from '../fields/group.component';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -23,7 +24,8 @@ const componentMapper = {
     checkbox: KlesFormCheckboxComponent,
     listField: KlesFormListFieldComponent,
     color: KlesFormColorComponent,
-    chip: KlesFormChipComponent
+    chip: KlesFormChipComponent,
+    group: KlesFormGroupComponent
 };
 
 @Directive({

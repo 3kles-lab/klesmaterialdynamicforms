@@ -1,5 +1,7 @@
 import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator } from '@angular/forms';
+import { KlesFormGroupComponent } from './fields/group.component';
+import { KlesFormListFieldComponent } from './fields/list-field.component';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
 
@@ -21,7 +23,7 @@ import { IKlesValidator } from './interfaces/validator.interface';
         '.dynamic-form-column > * { width: 100%; }',
         '.dynamic-form-row { display: inline-flex;flex-wrap:wrap;justify-content:space-between;gap:10px }',
         '.dynamic-form-row > * { width: 100%; }',
-        '.dynamic-form-row-item { margin-rigth: 10px; }',
+        '.dynamic-form-row-item { margin-right: 10px; }',
         '.dynamic-form-column-item { margin-bottom: 10px; }',
     ]
 
@@ -65,8 +67,12 @@ export class KlesDynamicFormComponent implements OnInit {
         this.form.reset();
     }
 
+
+
+
     private createControl() {
         const group = this.fb.group({});
+
         this.fields.forEach(field => {
             if (field.type === 'listField') {
                 const array = this.fb.array([]);
@@ -76,7 +82,6 @@ export class KlesDynamicFormComponent implements OnInit {
                     field.collections.forEach(subfield => {
                         const control = this.fb.control(
                             data[subfield.name] ? data[subfield.name] : null,
-                            // null,
                             this.bindValidations(subfield.validations || []),
                             this.bindAsyncValidations(subfield.asyncValidations || [])
                         );
@@ -86,6 +91,22 @@ export class KlesDynamicFormComponent implements OnInit {
                 });
 
                 group.addControl(field.name, array);
+
+            } else if (field.type === 'group' || (field.component && field.component.name === KlesFormGroupComponent.name)) {
+                const subGroup = this.fb.group({});
+                field.collections.forEach(subfield => {
+                    const control = this.fb.control(
+                        subfield.value,
+                        this.bindValidations(subfield.validations || []),
+                        this.bindAsyncValidations(subfield.asyncValidations || [])
+                    );
+                    if (subfield.disabled) {
+                        control.disable();
+                    }
+                    subGroup.addControl(subfield.name, control);
+                });
+                group.addControl(field.name, subGroup);
+
             } else {
                 const control = this.fb.control(
                     field.value,

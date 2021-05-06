@@ -1,6 +1,5 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KlesDynamicFormComponent } from './dynamic-form.component';
 import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
@@ -26,6 +25,7 @@ import { KlesFormButtonCheckerComponent } from './fields/buttonchecker-form.comp
 import { KlesFormTextareaComponent } from './fields/textarea.component';
 import { KlesFormTextComponent } from './fields/text.component';
 import { KlesFormChipComponent } from './fields/chip.component';
+import { KlesFormGroupComponent } from './fields/group.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -44,7 +44,8 @@ const components = [
   KlesFormColorComponent,
   KlesFormTextareaComponent,
   KlesFormTextComponent,
-  KlesFormChipComponent
+  KlesFormChipComponent,
+  KlesFormGroupComponent,
 ];
 
 const directives = [KlesDynamicFieldDirective];

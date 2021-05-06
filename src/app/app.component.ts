@@ -1,8 +1,12 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent, 
-  KlesFormLabelComponent, KlesFormChipComponent } from 'kles-material-dynamicforms';
-import { IButton, IButtonChecker, KlesFormInputComponent, KlesFormTextareaComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+
+import {
+  IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, IButton, IButtonChecker,
+  KlesFormGroupComponent, KlesFormInputComponent, KlesFormTextareaComponent, KlesFormButtonCheckerComponent,
+  KlesDynamicFormComponent, KlesFormLabelComponent, KlesFormChipComponent
+} from 'kles-material-dynamicforms';
+
 
 @Component({
   selector: 'app-root',
@@ -56,19 +60,19 @@ export class AppComponent implements AfterViewInit {
       value: 'Value'
     });
 
-    this.fields.push({
-      component: KlesFormTextareaComponent,
-      placeholder: 'textarea',
-      textareaAutoSize: {
-        minRows: 10
-      },
-      name: 'textarea'
-    });
+    // this.fields.push({
+    //   component: KlesFormTextareaComponent,
+    //   placeholder: 'textarea',
+    //   textareaAutoSize: {
+    //     minRows: 10
+    //   },
+    //   name: 'textarea'
+    // });
 
 
     this.fields.push({
       component: KlesFormInputComponent,
-      placeholder:'autocomplete with object array',
+      placeholder: 'autocomplete with object array',
       name: 'autocompleteWithobject',
       autocomplete: true,
       property: 'test',
@@ -81,7 +85,7 @@ export class AppComponent implements AfterViewInit {
     this.fields.push({
       component: KlesFormInputComponent,
       label: 'autoComplete',
-      placeholder:'autocomplete with string array',
+      placeholder: 'autocomplete with string array',
       name: 'autocomplete',
       autocomplete: true,
       options: [
@@ -94,7 +98,32 @@ export class AppComponent implements AfterViewInit {
       component: KlesFormChipComponent,
       name: 'chip',
       value: 'chip'
-    })
+    });
+
+    this.fields.push({
+      component: KlesFormGroupComponent,
+      placeholder: 'sub form group',
+      name: 'mysubgroup',
+      collections: [
+        {
+          component: KlesFormInputComponent,
+          placeholder: 'autocomplete inside sub formgroup',
+          name: 'autocompleteWithobject',
+          autocomplete: true,
+          property: 'test',
+          options: [
+            { test: 'aaa', val: 'rrr' },
+            { test: 'bbb', val: 'bbb' }
+          ] as any
+        },
+        {
+          component: KlesFormButtonComponent,
+          label: 'button inside sub formgroup',
+          name: 'button',
+          //value: this.item['button']
+        }
+      ]
+    });
 
 
     this.formValidators = [
@@ -145,6 +174,8 @@ export class AppComponent implements AfterViewInit {
     this.form.form.controls['button'].valueChanges.subscribe(s => {
       console.log('Button change=', s);
     });
+
+    this.form.form.valueChanges.subscribe(console.log)
   }
 
   buildByType(key: string): IKlesFieldConfig {
