@@ -25,6 +25,7 @@ import { KlesFormButtonComponent } from './fields/button-form.component';
 import { KlesFormButtonCheckerComponent } from './fields/buttonchecker-form.component';
 import { KlesFormTextareaComponent } from './fields/textarea.component';
 import { KlesFormTextComponent } from './fields/text.component';
+import { KlesFormGroupComponent } from './fields/group.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -42,7 +43,8 @@ const components = [
   KlesFormListFieldComponent,
   KlesFormColorComponent,
   KlesFormTextareaComponent,
-  KlesFormTextComponent
+  KlesFormTextComponent,
+  KlesFormGroupComponent
 ];
 
 const directives = [KlesDynamicFieldDirective];
