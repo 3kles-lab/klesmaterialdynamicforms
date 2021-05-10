@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent, KlesFormLabelComponent } from 'kles-material-dynamicforms';
+import { IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, KlesFormButtonCheckerComponent, KlesDynamicFormComponent, 
+  KlesFormLabelComponent, KlesFormChipComponent } from 'kles-material-dynamicforms';
 import { IButton, IButtonChecker, KlesFormInputComponent, KlesFormTextareaComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 
 @Component({
@@ -88,6 +89,12 @@ export class AppComponent implements AfterViewInit {
         'bbb'
       ] as any
     });
+
+    this.fields.push({
+      component: KlesFormChipComponent,
+      name: 'chip',
+      value: 'chip'
+    })
 
 
     this.formValidators = [
