@@ -94,17 +94,19 @@ export class KlesDynamicFormComponent implements OnInit {
 
             } else if (field.type === 'group' || (field.component && field.component.name === KlesFormGroupComponent.name)) {
                 const subGroup = this.fb.group({});
-                field.collections.forEach(subfield => {
-                    const control = this.fb.control(
-                        subfield.value,
-                        this.bindValidations(subfield.validations || []),
-                        this.bindAsyncValidations(subfield.asyncValidations || [])
-                    );
-                    if (subfield.disabled) {
-                        control.disable();
-                    }
-                    subGroup.addControl(subfield.name, control);
-                });
+                if (field.collections && Array.isArray(field.collections)) {
+                    field.collections.forEach(subfield => {
+                        const control = this.fb.control(
+                            subfield.value,
+                            this.bindValidations(subfield.validations || []),
+                            this.bindAsyncValidations(subfield.asyncValidations || [])
+                        );
+                        if (subfield.disabled) {
+                            control.disable();
+                        }
+                        subGroup.addControl(subfield.name, control);
+                    });
+                }
                 group.addControl(field.name, subGroup);
 
             } else {
