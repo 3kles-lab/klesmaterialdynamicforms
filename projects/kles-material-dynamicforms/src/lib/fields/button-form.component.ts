@@ -12,7 +12,8 @@ import { KlesFieldAbstract } from './field.abstract';
             [icon]="field.icon"
             [iconSvg]="field.iconSvg"
             [value]="field.value"
-            [formControlName]="field.name">
+            [formControlName]="field.name"
+            [tooltip]="field.tooltip">
         </kles-button>
     </div>
     `,

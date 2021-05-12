@@ -20,7 +20,7 @@ export interface IUIButton {
     template: `
         <span>
             <button mat-button [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
-            (click)="click($event)">
+            (click)="click($event)" [matTooltip]="tooltip">
                 {{label | translate}}
                 <mat-icon *ngIf="icon">{{icon}}</mat-icon>
                 <mat-icon svgIcon="{{iconSvg}}" *ngIf="iconSvg"></mat-icon>
@@ -44,6 +44,7 @@ export class KlesButtonComponent implements OnInit, ControlValueAccessor {
     @Input() disabled = false;
     @Input() classButton = '';
     @Input() value: IButton = {};
+    @Input() tooltip?: string;
 
     onChange: any = () => { };
     onTouched: any = () => { };
