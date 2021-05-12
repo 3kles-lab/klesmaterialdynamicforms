@@ -101,6 +101,7 @@ export class AppComponent implements AfterViewInit {
     });
 
     this.fields.push({
+      type: 'group',
       component: KlesFormGroupComponent,
       placeholder: 'sub form group',
       name: 'mysubgroup',
@@ -108,7 +109,7 @@ export class AppComponent implements AfterViewInit {
         {
           component: KlesFormInputComponent,
           placeholder: 'autocomplete inside sub formgroup',
-          name: 'autocompleteWithobject',
+          name: 'subautocomplete',
           autocomplete: true,
           property: 'test',
           options: [
@@ -119,7 +120,7 @@ export class AppComponent implements AfterViewInit {
         {
           component: KlesFormButtonComponent,
           label: 'button inside sub formgroup',
-          name: 'button',
+          name: 'subbutton',
           //value: this.item['button']
         }
       ]
