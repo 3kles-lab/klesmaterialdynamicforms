@@ -104,9 +104,12 @@ export class KlesDynamicFormComponent implements OnInit {
                         if (subfield.disabled) {
                             control.disable();
                         }
+                        console.log('add sub Form control', subfield.name, subGroup);
                         subGroup.addControl(subfield.name, control);
                     });
                 }
+
+                console.log('add Form group', field.name, subGroup);
                 group.addControl(field.name, subGroup);
 
             } else {
@@ -119,6 +122,7 @@ export class KlesDynamicFormComponent implements OnInit {
                     control.disable();
                 }
 
+                console.log('add Form Control', field.name, control);
                 group.addControl(field.name, control);
             }
 
@@ -126,6 +130,9 @@ export class KlesDynamicFormComponent implements OnInit {
 
         group.setValidators(this.validators.map(v => v.validator));
         group.setAsyncValidators(this.asyncValidators.map(v => v.validator));
+
+        console.log('group', group);
+
         return group;
     }
 

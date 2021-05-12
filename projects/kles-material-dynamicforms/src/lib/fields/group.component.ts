@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-group',
     template: `
     <div [formGroup]="group">
         <div [formGroupName]="field.name">
-            <ng-container *ngFor="let subfield of field.collections;" class="dynamic-form-row-item" klesDynamicField [field]="subfield" [group]="group.controls[field.name]">
+            <ng-container *ngFor="let subfield of field.collections;" class="dynamic-form-row-item" klesDynamicField [field]="subfield" [group]="subGroup">
             </ng-container>
         </div>
     </div>
@@ -15,7 +16,11 @@ import { KlesFieldAbstract } from './field.abstract';
     ]
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit {
+
+    subGroup: FormGroup
+
     ngOnInit() {
+        this.subGroup = this.group.controls[this.field.name] as FormGroup;
         super.ngOnInit();
     }
 }
