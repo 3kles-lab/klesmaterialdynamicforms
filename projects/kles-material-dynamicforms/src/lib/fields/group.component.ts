@@ -12,8 +12,8 @@ import { KlesFieldAbstract } from './field.abstract';
     </div>
 `,
     styles: ['mat-form-field {width: calc(100%)}',
-        ':host { display:inherit; flex-direction: inherit}',
-        '.group-container {display:inherit; flex-direction: inherit}'
+        ':host { display:flex; flex-direction: inherit}',
+        '.group-container {display:flex; flex-direction: inherit}'
     ]
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit {
