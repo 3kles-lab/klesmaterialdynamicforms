@@ -1,17 +1,29 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
-
-import {
-  IKlesValidator, IKlesField, KlesFormButtonComponent, IKlesFieldConfig, IButton, IButtonChecker,
-  KlesFormGroupComponent, KlesFormInputComponent, KlesFormTextareaComponent, KlesFormButtonCheckerComponent,
-  KlesDynamicFormComponent, KlesFormLabelComponent, KlesFormChipComponent
-} from 'kles-material-dynamicforms';
-
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent, KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormChipComponent, KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent } from 'kles-material-dynamicforms';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    { provide: MAT_DATE_LOCALE, useValue: 'ja-JP' },
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+  ],
 })
 export class AppComponent implements AfterViewInit {
   @ViewChild(KlesDynamicFormComponent, { static: false }) form: KlesDynamicFormComponent;
@@ -21,7 +33,7 @@ export class AppComponent implements AfterViewInit {
   fields: IKlesFieldConfig[] = [];
   formValidators: IKlesValidator<ValidatorFn>[] = [];
 
-  constructor() {
+  constructor(private _adapter: DateAdapter<any>) {
     this.item['input'] = 'input';
     this.item['color'] = '#abcd';
     this.item['checkbox'] = true;
@@ -60,14 +72,14 @@ export class AppComponent implements AfterViewInit {
       value: 'Value'
     });
 
-    // this.fields.push({
-    //   component: KlesFormTextareaComponent,
-    //   placeholder: 'textarea',
-    //   textareaAutoSize: {
-    //     minRows: 10
-    //   },
-    //   name: 'textarea'
-    // });
+    this.fields.push({
+      component: KlesFormTextareaComponent,
+      placeholder: 'textarea',
+      textareaAutoSize: {
+        minRows: 10
+      },
+      name: 'textarea'
+    });
 
 
     this.fields.push({
@@ -75,6 +87,7 @@ export class AppComponent implements AfterViewInit {
       placeholder: 'autocomplete with object array',
       name: 'autocompleteWithobject',
       autocomplete: true,
+      autocompleteComponent: AutocompleteComponent,
       property: 'test',
       options: [
         { test: 'aaa', val: 'rrr' },
@@ -98,33 +111,7 @@ export class AppComponent implements AfterViewInit {
       component: KlesFormChipComponent,
       name: 'chip',
       value: 'chip'
-    });
-
-    this.fields.push({
-      type: 'group',
-      component: KlesFormGroupComponent,
-      placeholder: 'sub form group',
-      name: 'mysubgroup',
-      collections: [
-        {
-          component: KlesFormInputComponent,
-          placeholder: 'autocomplete inside sub formgroup',
-          name: 'subautocomplete',
-          autocomplete: true,
-          property: 'test',
-          options: [
-            { test: 'aaa', val: 'rrr' },
-            { test: 'bbb', val: 'bbb' }
-          ] as any
-        },
-        {
-          component: KlesFormButtonComponent,
-          label: 'button inside sub formgroup',
-          name: 'subbutton',
-          //value: this.item['button']
-        }
-      ]
-    });
+    })
 
 
     this.formValidators = [
@@ -175,8 +162,6 @@ export class AppComponent implements AfterViewInit {
     this.form.form.controls['button'].valueChanges.subscribe(s => {
       console.log('Button change=', s);
     });
-
-    this.form.form.valueChanges.subscribe(console.log)
   }
 
   buildByType(key: string): IKlesFieldConfig {
@@ -227,5 +212,9 @@ export class AppComponent implements AfterViewInit {
 
       return value;
     };
+  }
+
+  french() {
+    this._adapter.setLocale('fr');
   }
 }
