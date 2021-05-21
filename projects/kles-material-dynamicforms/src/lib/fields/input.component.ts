@@ -13,7 +13,18 @@ import { startWith, map } from 'rxjs/operators';
             [matAutocomplete]="auto">
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
-                <mat-option *ngFor="let option of filteredOption | async" [value]="option">{{field.property ? option[field.property] : option}}</mat-option>
+                <ng-container *ngIf="!field.autocompleteComponent">
+                    <mat-option *ngFor="let option of filteredOption | async" [value]="option">
+                        {{field.property ? option[field.property] : option}}
+                    </mat-option>
+                </ng-container>
+
+                <ng-container *ngIf="field.autocompleteComponent">
+                    <mat-option *ngFor="let option of filteredOption | async" [value]="option">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option">
+                        </ng-container>
+                    </mat-option>
+                </ng-container>
             </mat-autocomplete>
         </ng-container>
 

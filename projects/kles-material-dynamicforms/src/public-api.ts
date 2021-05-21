@@ -6,6 +6,7 @@ export * from './lib/kles-material-dynamicforms.module';
 
 /**DIRECTIVE */
 export * from './lib/directive/dynamic-field.directive';
+export * from './lib/directive/dynamic-component.directive';
 
 /*FORMS*/
 export * from './lib/forms/button-control.component';
@@ -30,6 +31,7 @@ export * from './lib/fields/chip.component';
 export * from './lib/fields/group.component';
 
 /**INTERFACES */
+export * from './lib/interfaces/component.interface';
 export * from './lib/interfaces/field.interface';
 export * from './lib/interfaces/field.config.interface';
 export * from './lib/interfaces/validator.interface';

@@ -2,6 +2,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { KlesDynamicFormComponent } from './dynamic-form.component';
+import { KlesComponentDirective } from './directive/dynamic-component.directive';
 import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -48,7 +49,7 @@ const components = [
   KlesFormGroupComponent,
 ];
 
-const directives = [KlesDynamicFieldDirective];
+const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
 
 @NgModule({
   declarations: [
