@@ -39,5 +39,8 @@ export * from './lib/interfaces/validator.interface';
 /**MATCHER */
 export * from './lib/matcher/form-error.matcher';
 
+/**VALIDATORS */
+export * from './lib/validators/autocomplete.validator';
+
 /**FORM */
 export * from './lib/dynamic-form.component';

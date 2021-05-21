@@ -2,7 +2,12 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent, KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormChipComponent, KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent } from 'kles-material-dynamicforms';
+import {
+  IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
+  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormChipComponent,
+  KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent,
+} from 'kles-material-dynamicforms';
+import { autocompleteObjectValidator, autocompleteStringValidator } from 'projects/kles-material-dynamicforms/src/public-api';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 @Component({
@@ -92,7 +97,14 @@ export class AppComponent implements AfterViewInit {
       options: [
         { test: 'aaa', val: 'rrr' },
         { test: 'bbb', val: 'bbb' }
-      ] as any
+      ] as any,
+      validations: [
+        {
+          name: 'list',
+          validator: autocompleteObjectValidator(),
+          message: 'Not in list'
+        }
+      ]
     });
 
     this.fields.push({
@@ -104,7 +116,17 @@ export class AppComponent implements AfterViewInit {
       options: [
         'aaa',
         'bbb'
-      ] as any
+      ] as any,
+      validations: [
+        {
+          name: 'list',
+          validator: autocompleteStringValidator([
+            'aaa',
+            'bbb'
+          ]),
+          message: 'Not in list'
+        }
+      ]
     });
 
     this.fields.push({
