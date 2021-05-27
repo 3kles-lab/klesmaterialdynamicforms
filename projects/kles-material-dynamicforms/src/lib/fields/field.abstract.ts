@@ -27,8 +27,15 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
                 const val = this.group.controls[this.field.name].value;
                 if (this.field.pipeTransform) {
                     this.field.pipeTransform.forEach(p => {
-                        const pipeVal = (p.options) ? p.pipe.transform(val, p.options) : p.pipe.transform(val);
-                        control.patchValue(pipeVal);
+                        let pipeVal = control.value;
+                        if (p.options) {
+                            p.options.forEach(opt => {
+                                pipeVal = p.pipe.transform(val, opt);
+                            });
+                        } else {
+                            pipeVal = p.pipe.transform(val);
+                        }
+                        control.patchValue(pipeVal, { onlySelf: true, emitEvent: false });
                     })
                 }
             }
