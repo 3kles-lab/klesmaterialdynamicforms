@@ -3,7 +3,7 @@ import { OnInit, Component } from '@angular/core';
 
 
 @Component({
-    selector: 'kles-form-button',
+    selector: 'kles-submit-button',
     template: `
     <div [formGroup]="group">
         <button matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" type="submit" [disabled]="field.disabled" mat-raised-button color="primary">{{field.label}}</button>
