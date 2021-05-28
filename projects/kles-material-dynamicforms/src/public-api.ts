@@ -21,6 +21,7 @@ export * from './lib/fields/color.component';
 export * from './lib/fields/date.component';
 export * from './lib/fields/field.abstract';
 export * from './lib/fields/input.component';
+export * from './lib/fields/input.clearable.component';
 export * from './lib/fields/label.component';
 export * from './lib/fields/list-field.component';
 export * from './lib/fields/radio.component';
