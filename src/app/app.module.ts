@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -9,8 +9,11 @@ import { MaterialModule } from './modules/material.module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-
-
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { KlesNgPipeModule} from '@3kles/kles-ng-pipe';
+import localeFr from '@angular/common/locales/fr';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeFr);
 @NgModule({
   declarations: [
     AppComponent
@@ -19,8 +22,10 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
+    KlesNgPipeModule,
     KlesMaterialDynamicformsModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     HttpClientModule,
     TranslateModule.forRoot(
       {
@@ -33,10 +38,12 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
     )
   ],
   exports: [KlesMaterialDynamicformsModule],
-  providers: [TranslateService],
+  providers: [TranslateService, { provide: LOCALE_ID, useValue: 'fr-FR' },],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
