@@ -27,11 +27,13 @@ import { KlesFormTextareaComponent } from './fields/textarea.component';
 import { KlesFormTextComponent } from './fields/text.component';
 import { KlesFormChipComponent } from './fields/chip.component';
 import { KlesFormGroupComponent } from './fields/group.component';
+import { KlesFormInputClearableComponent } from './fields/input.clearable.component';
 
 const components = [
   KlesDynamicFormComponent,
   KlesFormLabelComponent,
   KlesFormInputComponent,
+  KlesFormInputClearableComponent,
   KlesFormSubmitButtonComponent,
   KlesButtonComponent,
   KlesFormButtonComponent,
