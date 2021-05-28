@@ -4,7 +4,7 @@ import { FormGroup, FormArray, FormBuilder, ValidatorFn, Validators, AsyncValida
 import { IKlesValidator } from '../interfaces/validator.interface';
 
 @Component({
-    selector: 'kles-form-field',
+    selector: 'kles-form-listfield',
     template: `
     <div [formGroup]="group" class="form-element">
         {{field.label | translate}}
