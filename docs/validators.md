@@ -1,6 +1,6 @@
 # Validators
-- [`autocompleteObjectValidator`](#autocompleteObjectValidator): Autocomplete object validator
-- [`autocompleteStringValidator`](#autocompleteStringValidator): Autocomplete string validator
+- [`autocompleteObjectValidator`](#autocompleteobjectvalidator): Autocomplete object validator
+- [`autocompleteStringValidator`](#autocompletestringvalidator): Autocomplete string validator
 
 #### autocompleteObjectValidator
 

@@ -6,7 +6,7 @@
 
 # Documentation
 
-- [KlesDynamicFormComponent](docs/readme.md#KlesDynamicFormComponent): Component to create form with list of IFieldConfig
+- [KlesDynamicFormComponent](docs/readme.md#klesdynamicformcomponent): Component to create form with list of IFieldConfig
 - [Directives](docs/directives.md): List of directives
 - [Interfaces](docs/interfaces.md): List of interfaces
 - [Fields](docs/fields.md): List of fields to build Form

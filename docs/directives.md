@@ -1,6 +1,6 @@
 # Directives
-- [`KlesComponentDirective`](#KlesComponentDirective): Directive to inject component with value
-- [`KlesDynamicFieldDirective`](#KlesDynamicFieldDirective): Directive to inject component with IFieldConfig in FormGroup
+- [`KlesComponentDirective`](#klescomponentdirective): Directive to inject component with value
+- [`KlesDynamicFieldDirective`](#klesdynamicfielddirective): Directive to inject component with IFieldConfig in FormGroup
   
 #### KlesComponentDirective
 
