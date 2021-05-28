@@ -4,14 +4,14 @@
 
 - [Introduction](README.md)
 
-## Documentation
-
 # Documentation
 
-- [Interfaces](docs/interfaces.md)
-- [Fields](docs/fields.md)
-- [Directives](docs/directives.md)
-- [Matchers](docs/matchers.md)
+- [KlesDynamicFormComponent](docs/readme.md#KlesDynamicFormComponent): Component to create form with list of IFieldConfig
+- [Directives](docs/directives.md): List of directives
+- [Interfaces](docs/interfaces.md): List of interfaces
+- [Fields](docs/fields.md): List of fields to build Form
+- [Matchers](docs/matchers.md): List of matcher for Form
+- [Validators](docs/validators.md): List of validators to check Form
 
 ## Other
 
