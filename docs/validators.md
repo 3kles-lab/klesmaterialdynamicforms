@@ -2,7 +2,7 @@
 - [`autocompleteObjectValidator`](#autocompleteObjectValidator): Autocomplete object validator
 - [`autocompleteStringValidator`](#autocompleteStringValidator): Autocomplete string validator
 
-### autocompleteObjectValidator
+#### autocompleteObjectValidator
 
 Validator to check object list
 
@@ -56,7 +56,7 @@ const fieldOptional={
 }
 ```
 
-### autocompleteStringValidator
+#### autocompleteStringValidator
 
 Validator to check string list
 

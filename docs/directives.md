@@ -2,7 +2,7 @@
 - [`KlesComponentDirective`](#KlesComponentDirective): Directive to inject component with value
 - [`KlesDynamicFieldDirective`](#KlesDynamicFieldDirective): Directive to inject component with IFieldConfig in FormGroup
   
-### KlesComponentDirective
+#### KlesComponentDirective
 
 Directive to create component with value
 
@@ -23,7 +23,7 @@ const option=[{test:'a',label:'aaa'},{test:'b',label:'bbb'}] //Any value
 <ng-container klesComponent [component]="autocompleteComponent" [value]="option"></ng-container>
 ```
 
-### KlesDynamicFieldDirective
+#### KlesDynamicFieldDirective
 
 Directive to create field with IFieldConfig and FormGroup
 
