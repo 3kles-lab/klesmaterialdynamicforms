@@ -7,6 +7,7 @@
 - [`KlesFormColorComponent`](#klesformcolorcomponent): ColorPicker in form
 - [`KlesFormDateComponent`](#klesformdatecomponent): DatePicker in form
 - [`KlesFormGroupComponent`](#klesformgroupcomponent): FormGroup in form
+- [`KlesFormIconComponent`](#klesformiconcomponent): FormGroup in form
 - [`KlesFormInputComponent`](#klesforminputcomponent): Input in form
 - [`KlesFormInputClearableComponent`](#klesforminputclearablecomponent): Input clearable in form
 - [`KlesFormListFieldComponent`](#klesformlistfieldcomponent): List of field in form
@@ -280,6 +281,35 @@ const form:FormGroup=new FormGroup({
 <ng-container klesDynamicField [field]="field" [group]="form"></ng-container>
 ```
 
+#### KlesFormIconComponent
+
+Icon in form
+
+##### File
+
+```typescript
+import { KlesFormIconComponent } from 'kles-material-dynamicforms';
+```
+
+##### Usage
+
+```javascript
+const field={
+  name: 'icon',
+  value:'add',
+  color:'primary',
+  tooltip:'tooltipicon'
+  component: KlesFormIconComponent,
+} as IFieldConfig
+
+const form:FormGroup=new FormGroup({
+  button:new FormControl()
+});
+```
+
+```html
+<ng-container klesDynamicField [field]="field" [group]="form"></ng-container>
+```
 
 #### KlesFormInputComponent
 
