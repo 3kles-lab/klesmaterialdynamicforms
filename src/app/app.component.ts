@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormChipComponent,
+  KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent } from 'projects/kles-material-dynamicforms/src/public-api';
@@ -80,7 +81,13 @@ export class AppComponent implements AfterViewInit {
       component: KlesFormChipComponent,
       name: 'chip',
       value: 'chip'
-    })
+    });
+
+    this.fields.push({
+      component: KlesFormIconComponent,
+      name: 'icon',
+      value:'home'
+    });
 
     //Input Form
     this.buildInputForm();
@@ -140,6 +147,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   buildInputForm() {
+    
     this.fieldsInput.push({
       name: 'inputtext',
       placeholder: 'Input Text',
