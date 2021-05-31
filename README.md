@@ -59,7 +59,22 @@ npm install @3kles/kles-material-dynamicforms --save
 
 ## How to use
 
-Check the [`documentation`](./docs) for how to import mdolule in your `NgModule` and how to use component and directive.
+In the module
+```javascript
+import { KlesMaterialDynamicFormsModule } from '@3kles/kles-material-dynamicforms';
+...
+@NgModule({
+    
+ imports: [
+    KlesMaterialDynamicFormsModule,
+...
+ ]
+
+ ...
+})
+```
+
+Check the [`documentation`](./docs) to use component and directive.
 
 ## Tests
 
