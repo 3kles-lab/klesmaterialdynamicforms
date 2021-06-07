@@ -29,6 +29,7 @@ import { KlesFormChipComponent } from './fields/chip.component';
 import { KlesFormGroupComponent } from './fields/group.component';
 import { KlesFormInputClearableComponent } from './fields/input.clearable.component';
 import { KlesFormIconComponent } from './fields/icon.component';
+import { KlesTransformPipe } from './pipe/transform.pipe';
 
 const components = [
   KlesDynamicFormComponent,
@@ -54,11 +55,13 @@ const components = [
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
+const pipes = [KlesTransformPipe];
 
 @NgModule({
   declarations: [
     components,
     directives,
+    pipes
 
   ],
   imports: [

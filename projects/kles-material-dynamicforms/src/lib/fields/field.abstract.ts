@@ -8,11 +8,11 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     group: FormGroup;
 
     ngOnInit(): void {
-        this.applyPipeTransform();
+        // this.applyPipeTransform();
         this.group.controls[this.field.name].valueChanges
             .pipe()
             .subscribe(val => {
-                this.applyPipeTransform();
+                // this.applyPipeTransform();
             });
     }
 
