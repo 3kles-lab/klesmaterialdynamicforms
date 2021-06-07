@@ -1,5 +1,5 @@
 import { IKlesValidator } from './validator.interface';
-import { ValidatorFn, AsyncValidatorFn } from '@angular/forms';
+import { ValidatorFn, AsyncValidatorFn, FormGroup } from '@angular/forms';
 import { PipeTransform, Type } from '@angular/core';
 
 export interface IKlesFieldConfig {
@@ -38,4 +38,5 @@ export interface IKlesFieldConfig {
         options?: any[]
     }[];
     direction?: 'row' | 'column';
+    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField: IKlesFieldConfig[]) => void);
 }

@@ -4,4 +4,5 @@ import { FormGroup } from '@angular/forms';
 export interface IKlesField {
     field: IKlesFieldConfig;
     group: FormGroup;
+    siblingFields: IKlesFieldConfig[];
 }

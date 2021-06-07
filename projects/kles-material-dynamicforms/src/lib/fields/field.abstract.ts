@@ -2,16 +2,26 @@ import { IKlesField } from '../interfaces/field.interface';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { FormGroup } from '@angular/forms';
 import { AfterViewInit, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
 
 export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit {
     field: IKlesFieldConfig;
     group: FormGroup;
+    siblingFields: IKlesFieldConfig[];
 
     ngOnInit(): void {
         // this.applyPipeTransform();
+        if (this.field.valueChanges) {
+            this.field.valueChanges(this.field, this.group, this.siblingFields);
+        }
+
         this.group.controls[this.field.name].valueChanges
             .pipe()
             .subscribe(val => {
+                if (this.field.valueChanges) {
+                    this.field.valueChanges(this.field, this.group, this.siblingFields);
+                }
+
                 // this.applyPipeTransform();
             });
     }

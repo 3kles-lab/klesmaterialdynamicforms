@@ -36,6 +36,7 @@ const componentMapper = {
 export class KlesDynamicFieldDirective implements OnInit, OnChanges {
     @Input() field: IKlesFieldConfig;
     @Input() group: FormGroup;
+    @Input() siblingFields: IKlesFieldConfig[];
 
     componentRef: ComponentRef<any>;
 
