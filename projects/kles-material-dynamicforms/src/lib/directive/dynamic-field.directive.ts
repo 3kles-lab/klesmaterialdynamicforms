@@ -14,6 +14,7 @@ import { KlesFormColorComponent } from '../fields/color.component';
 import { KlesFormChipComponent } from '../fields/chip.component';
 import { KlesFormGroupComponent } from '../fields/group.component';
 import { KlesFormIconComponent } from '../fields/icon.component';
+import { KlesFormSelectSearchComponent } from '../fields/select.search.component';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -27,7 +28,8 @@ const componentMapper = {
     color: KlesFormColorComponent,
     chip: KlesFormChipComponent,
     group: KlesFormGroupComponent,
-    icon: KlesFormIconComponent
+    icon: KlesFormIconComponent,
+    selectSearch: KlesFormSelectSearchComponent
 };
 
 @Directive({

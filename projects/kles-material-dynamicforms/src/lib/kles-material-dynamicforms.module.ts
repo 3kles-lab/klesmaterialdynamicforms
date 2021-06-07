@@ -30,6 +30,8 @@ import { KlesFormGroupComponent } from './fields/group.component';
 import { KlesFormInputClearableComponent } from './fields/input.clearable.component';
 import { KlesFormIconComponent } from './fields/icon.component';
 import { KlesTransformPipe } from './pipe/transform.pipe';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { KlesFormSelectSearchComponent } from './fields/select.search.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -51,7 +53,8 @@ const components = [
   KlesFormTextComponent,
   KlesFormChipComponent,
   KlesFormGroupComponent,
-  KlesFormIconComponent
+  KlesFormIconComponent,
+  KlesFormSelectSearchComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
@@ -71,7 +74,8 @@ const pipes = [KlesTransformPipe];
     FlexLayoutModule,
     FormsModule,
     MaterialModule,
-    ColorPickerModule
+    ColorPickerModule,
+    NgxMatSelectSearchModule
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }
