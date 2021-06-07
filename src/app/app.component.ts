@@ -12,7 +12,8 @@ import {
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
-import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { of } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 @Component({
@@ -169,13 +170,10 @@ export class AppComponent implements AfterViewInit {
           pipe: new DecimalPipe('fr-FR'),
           options: ['1.2-2']
         },
-        // {
-        //   pipe: new RoundPipe(),
-        //   options: [2]
-        // }
       ]
     });
 
+    
     this.fieldsInput.push({
       name: 'inputclear',
       placeholder: 'Input clearable',
@@ -183,6 +181,13 @@ export class AppComponent implements AfterViewInit {
       tooltip: 'tooltip input clear',
       value: 'input clearable',
       component: KlesFormInputClearableComponent,
+    });
+
+    this.fieldsInput.push({
+      name: 'selectTest',
+      placeholder: 'select',
+      component: KlesFormSelectComponent,
+      options: of(['aaa','bbb'])
     });
 
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
@@ -6,7 +7,7 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
-            <mat-option *ngFor="let item of field.options" [value]="item">{{field.property ? item[field.property] : item}}</mat-option>
+            <mat-option *ngFor="let item of options$ | async" [value]="item">{{field.property ? item[field.property] : item}}</mat-option>
         </mat-select>
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
                 <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
@@ -19,5 +20,17 @@ import { KlesFieldAbstract } from './field.abstract';
     styles: ['mat-form-field {width: calc(100%)}']
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit {
-    ngOnInit() { super.ngOnInit(); }
+
+    options$: Observable<any[]>;
+
+    ngOnInit() {
+        super.ngOnInit();
+
+        if (!(this.field.options instanceof Observable)) {
+            this.options$ = of(this.field.options);
+        } else {
+            this.options$ = this.field.options;
+        }
+
+    }
 }
