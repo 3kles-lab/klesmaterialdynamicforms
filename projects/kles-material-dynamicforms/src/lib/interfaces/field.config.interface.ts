@@ -37,4 +37,5 @@ export interface IKlesFieldConfig {
         pipe: PipeTransform,
         options?: any[]
     }[];
+    direction?: 'row' | 'column';
 }
