@@ -3,7 +3,7 @@ stages:
   - build
   - deploy
 
-image: node:lts-alpine
+image: 192.168.111.61:5005/docker/node-internal
 
 variables:
   DOCKER_DRIVER: overlay2
