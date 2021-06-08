@@ -2,7 +2,7 @@ stages:
   - build
   - deploy
 
-image: node:alpine-lts
+image: node:lts-alpine
 
 variables:
   DOCKER_DRIVER: overlay2
