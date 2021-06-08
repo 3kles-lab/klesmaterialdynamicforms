@@ -1,14 +1,11 @@
 stages:
-  - install
   - build
   - deploy
 
-image: 192.168.111.61:5005/docker/node-internal
+image: node:alpine-lts
 
 variables:
   DOCKER_DRIVER: overlay2
-  REGISTRY: 192.168.111.61:5005
-  CONTAINER_IMAGE: $REGISTRY/$CI_PROJECT_PATH
   LIBRARY_NG: $(ls projects | head -n 1)
   
 before_script:
@@ -28,7 +25,23 @@ build:
     paths:
         - dist
     
-deploy:
+deploy-internal:
   stage: deploy
+  except:
+    - /^.*-dev$/
   script:
     - npm run publish:lib
+
+deploy-public:
+  stage: deploy
+  only:
+    - tags
+  before_script:
+    - npm config set strict-ssl false
+    - npm config set registry $NPM_INTERNAL_REGISTRY
+    - npm config set ca null
+    - npm config set always-auth true
+    - npm config set _auth $NPM_INTERNAL_TOKEN
+  script:
+    - npm run publish:lib
+
