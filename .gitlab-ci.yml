@@ -14,25 +14,25 @@ before_script:
   - node -v
 
 # For internal build & publish
-.internal:
-  before_script:
-    # Ensure that node works correctly
-    - npm -v
-    - node -v
-    # Configure internal repo
-    - npm config set strict-ssl false
-    - npm config set registry $NPM_INTERNAL_REGISTRY
-    - npm config set ca null
-    - npm config set always-auth true
-    - npm config set _auth $NPM_INTERNAL_TOKEN
+.repo-configuration: &configure-npm-repo
+  # Ensure that node works correctly
+  - npm -v
+  - node -v
+  # Configure internal repo
+  - npm config set strict-ssl false
+  - npm config set registry $NPM_REGISTRY
+  - npm config set ca null
+  - npm config set always-auth true
+  - npm config set _auth $NPM_INTERNAL_TOKEN
 
   
 build:
   stage: build
-  extends:
-    - .internal
+  variables:
+    NPM_REGISTRY: $NPM_PRIVATE_REGISTRY
+  before_script:
+    - *configure-npm-repo
   script:
-    # Install @angular/cli globally
     - npm i
     - npm i @angular/cli
     - npm run build:lib
@@ -43,8 +43,10 @@ build:
     
 deploy-internal:
   stage: deploy
-  extends:
-    - .internal
+  variables:
+    NPM_REGISTRY: $NPM_PRIVATE_REGISTRY_3KLES
+  before_script:
+    - *configure-npm-repo
   except:
     - /^.*-dev$/
   script:
