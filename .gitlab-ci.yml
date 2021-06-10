@@ -23,13 +23,14 @@ before_script:
   - npm config set registry $NPM_REGISTRY
   - npm config set ca null
   - npm config set always-auth true
-  - npm config set _auth $NPM_INTERNAL_TOKEN
+  - npm config set _auth $NPM_TOKEN
 
   
 build:
   stage: build
   variables:
     NPM_REGISTRY: $NPM_PRIVATE_REGISTRY
+    NPM_TOKEN: $NPM_PRIVATE_TOKEN
   before_script:
     - *configure-npm-repo
   script:
@@ -45,6 +46,7 @@ deploy-internal:
   stage: deploy
   variables:
     NPM_REGISTRY: $NPM_PRIVATE_REGISTRY_3KLES
+    NPM_TOKEN: $NPM_PRIVATE_TOKEN
   before_script:
     - *configure-npm-repo
   except:
@@ -54,6 +56,11 @@ deploy-internal:
 
 deploy-public:
   stage: deploy
+  variables:
+    NPM_TOKEN: $NPM_PUBLIC_TOKEN
+  before_script:
+    - npm config set always-auth true
+    - npm config set _auth $NPM_TOKEN
   only:
     - tags
   script:
