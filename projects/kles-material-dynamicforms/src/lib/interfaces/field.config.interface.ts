@@ -39,5 +39,5 @@ export interface IKlesFieldConfig {
         options?: any[]
     }[];
     direction?: 'row' | 'column';
-    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField: IKlesFieldConfig[]) => void);
+    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField?: IKlesFieldConfig[]) => void);
 }
