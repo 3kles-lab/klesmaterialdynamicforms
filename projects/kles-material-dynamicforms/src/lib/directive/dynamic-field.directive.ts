@@ -71,5 +71,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges {
         this.componentRef = this.container.createComponent(factory);
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
+        this.componentRef.instance.siblingFields = this.siblingFields;
     }
 }
