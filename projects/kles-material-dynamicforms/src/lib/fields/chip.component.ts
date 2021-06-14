@@ -8,7 +8,7 @@ import { KlesFieldAbstract } from "./field.abstract";
         <mat-chip-list>
             <mat-chip [color]="field.color" matTooltip="{{field.tooltip}}" [attr.id]="field.id" selected [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
                 <mat-icon *ngIf="field.icon">{{field.icon}}</mat-icon>
-                {{group.controls[field.name].value}}
+                {{group.controls[field.name].value | klesTransform:field.pipeTransform}}
             </mat-chip>
         </mat-chip-list>
     </div>
