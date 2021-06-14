@@ -1,6 +1,6 @@
 import { RoundPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -8,7 +8,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
-  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormChipComponent,
+  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
@@ -30,35 +30,24 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild(KlesDynamicFormComponent, { static: false }) form: KlesDynamicFormComponent;
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formInput: KlesDynamicFormComponent;
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formButton: KlesDynamicFormComponent;
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'KlesMaterialDynamicForms';
 
-  item = { error: [] };
+  @ViewChild(KlesDynamicFormComponent, { static: false }) form: KlesDynamicFormComponent;
   fields: IKlesFieldConfig[] = [];
   formValidators: IKlesValidator<ValidatorFn>[] = [];
 
+  @ViewChild(KlesDynamicFormComponent, { static: false }) formText: KlesDynamicFormComponent;
+  fieldsText: IKlesFieldConfig[] = [];
+  formValidatorsText: IKlesValidator<ValidatorFn>[] = [];
+
+  @ViewChild(KlesDynamicFormComponent, { static: false }) formInput: KlesDynamicFormComponent;
   fieldsInput: IKlesFieldConfig[] = [];
   formValidatorsInput: IKlesValidator<ValidatorFn>[] = [];
 
+  @ViewChild(KlesDynamicFormComponent, { static: false }) formButton: KlesDynamicFormComponent;
   fieldsButton: IKlesFieldConfig[] = [];
   formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
-
-  fieldTest = {
-    name: 'matbutton',
-    label: 'mat button',
-    color: 'accent',
-    icon: 'clear',
-    ngClass: 'mat-button',
-    tooltip: 'tooltip button'
-  };
-
-  formTest: FormGroup=new FormGroup({
-    matbutton: new FormControl()
- });
-
 
   constructor(private _adapter: DateAdapter<any>, private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
@@ -70,54 +59,31 @@ export class AppComponent implements AfterViewInit {
     const decPipe = new DecimalPipe('fr-FR');
     const val = decPipe.transform(10.467, '1.2-2');
     console.log('Val=', val);
+  }
 
-    //Label
-    this.fields.push({
-      component: KlesFormTextComponent,
-      name: 'label',
-      value: 'Label Value'
-    });
+  ngOnInit() {
+    //Button Form
+    this.buildButtonForm();
+  
+    //Form
+    this.buildForm();
 
-    this.fields.push({
-      component: KlesFormChipComponent,
-      name: 'chip',
-      value: 'chip'
-    });
-
-    this.fields.push({
-      component: KlesFormIconComponent,
-      name: 'icon',
-      value:'home'
-    });
+    //Text Form
+    this.buildTextForm();
 
     //Input Form
     this.buildInputForm();
-
-
-    //Button Form
-    this.buildButtonForm();
-
-    this.formValidators = [
-      // {
-      //   name: 'overlap',
-      //   validator: this.checkOverlaping('beginvalue', 'endvalue'),
-      //   message: 'statusSettings.validator.overlap'
-      // },
-      // {
-      //   name: 'beginend',
-      //   validator: this.checkBeginEndValue('beginvalue', 'endvalue'),
-      //   message: 'statusSettings.validator.beginend'
-      // },
-
-    ];
-
   }
+
   ngAfterViewInit(): void {
-    console.log('Form=', this.form.form);
-    // this.form.form.valueChanges.subscribe(s => {
-    //   console.log('Value change=', s);
-    //   console.log('Change form=', this.form.form);
-    // });
+
+    Object.keys(this.formButton.form.controls).forEach(e => {
+      console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
+    })
+
+    this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
+      console.log('Button file changed=', s);
+    })
 
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
@@ -147,8 +113,41 @@ export class AppComponent implements AfterViewInit {
     // });
   }
 
+  buildForm() {
+    this.fields.push({
+      component: KlesFormChipComponent,
+      name: 'chip',
+      value: 'chip'
+    });
+
+    this.fields.push({
+      component: KlesFormIconComponent,
+      name: 'icon',
+      value: 'home'
+    });
+  }
+
+  buildTextForm() {
+    this.fieldsText.push({
+      name: 'text',
+      placeholder: 'Text',
+      inputType: 'text',
+      tooltip: 'tooltip text',
+      value: 'text value',
+      component: KlesFormTextComponent,
+    });
+    this.fieldsText.push({
+      name: 'text',
+      placeholder: 'Text',
+      inputType: 'text',
+      tooltip: 'tooltip text',
+      value: 'text value',
+      component: KlesFormTextareaComponent,
+    });
+  }
+
   buildInputForm() {
-    
+
     this.fieldsInput.push({
       name: 'inputtext',
       placeholder: 'Input Text',
@@ -173,7 +172,7 @@ export class AppComponent implements AfterViewInit {
       ]
     });
 
-    
+
     this.fieldsInput.push({
       name: 'inputclear',
       placeholder: 'Input clearable',
@@ -187,7 +186,7 @@ export class AppComponent implements AfterViewInit {
       name: 'selectTest',
       placeholder: 'select',
       component: KlesFormSelectComponent,
-      options: of(['aaa','bbb'])
+      //options: of(['aaa', 'bbb'])
     });
 
 
@@ -361,47 +360,15 @@ export class AppComponent implements AfterViewInit {
       value: { error: [{}, {}] }
     });
 
-  }
-
-  checkBeginEndValue(begin: string, end: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (!control) { return null; }
-      const beginControl = control.get(begin);
-      const endControl = control.get(end);
-      if (!beginControl.value || !endControl.value) {
-        return null;
-      }
-
-      if (Number(beginControl.value) >= Number(endControl.value)) {
-        return { beginend: true };
-      }
-
-      return null;
-    };
-  }
-
-  checkOverlaping(begin: string, end: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (!control) { return null; }
-      const beginControl = control.get(begin);
-      const endControl = control.get(end);
-      if (!beginControl.value || !endControl.value) {
-        return null;
-      }
-      let value = null;
-      /*
-      this.allData.forEach(line => {
-        if ((Number(line.beginvalue) <= Number(beginControl.value) && Number(beginControl.value) < Number(line.endvalue)) ||
-          (Number(line.beginvalue) < Number(endControl.value) && Number(endControl.value) < Number(line.endvalue))
-        ) {
-          console.log('Error');
-          value = { overlap: true };
-        }
-      });
-      */
-
-      return value;
-    };
+    this.fieldsButton.push({
+      component: KlesFormButtonFileComponent,
+      name: 'buttonfile',
+      label: 'Choose file',
+      color: 'accent',
+      iconSvg: 'excel',
+      ngClass: 'mat-raised-button',
+      tooltip: 'tooltip button',
+    });
   }
 
   french() {
