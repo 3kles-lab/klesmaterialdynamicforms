@@ -32,6 +32,7 @@ import { KlesFormIconComponent } from './fields/icon.component';
 import { KlesTransformPipe } from './pipe/transform.pipe';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { KlesFormSelectSearchComponent } from './fields/select.search.component';
+import { ArrayFormatPipe } from './pipe/array.pipe';
 
 const components = [
   KlesDynamicFormComponent,
@@ -58,7 +59,7 @@ const components = [
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
-const pipes = [KlesTransformPipe];
+const pipes = [KlesTransformPipe, ArrayFormatPipe];
 
 @NgModule({
   declarations: [
