@@ -11,10 +11,12 @@ export * from './lib/directive/dynamic-component.directive';
 /*FORMS*/
 export * from './lib/forms/button-control.component';
 export * from './lib/forms/buttonchecker-control.component';
+export * from './lib/forms/buttonfile-control.component';
 
 /**FIELDS */
 export * from './lib/fields/button-form.component';
 export * from './lib/fields/buttonchecker-form.component';
+export * from './lib/fields/buttonfile-form.component';
 export * from './lib/fields/button-submit.component';
 export * from './lib/fields/checkbox.component';
 export * from './lib/fields/color.component';

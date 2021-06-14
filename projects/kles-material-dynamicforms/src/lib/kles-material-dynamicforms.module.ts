@@ -20,9 +20,11 @@ import { KlesFormCheckboxComponent } from './fields/checkbox.component';
 import { KlesFormListFieldComponent } from './fields/list-field.component';
 import { KlesFormColorComponent } from './fields/color.component';
 import { KlesButtonComponent } from './forms/button-control.component';
-import { KlesButtonCheckerComponent } from './forms/buttonchecker-control.component';
 import { KlesFormButtonComponent } from './fields/button-form.component';
+import { KlesButtonCheckerComponent } from './forms/buttonchecker-control.component';
 import { KlesFormButtonCheckerComponent } from './fields/buttonchecker-form.component';
+import { KlesButtonFileComponent } from './forms/buttonfile-control.component';
+import { KlesFormButtonFileComponent } from './fields/buttonfile-form.component';
 import { KlesFormTextareaComponent } from './fields/textarea.component';
 import { KlesFormTextComponent } from './fields/text.component';
 import { KlesFormChipComponent } from './fields/chip.component';
@@ -34,6 +36,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { KlesFormSelectSearchComponent } from './fields/select.search.component';
 import { ArrayFormatPipe } from './pipe/array.pipe';
 
+
 const components = [
   KlesDynamicFormComponent,
   KlesFormLabelComponent,
@@ -44,6 +47,8 @@ const components = [
   KlesFormButtonComponent,
   KlesButtonCheckerComponent,
   KlesFormButtonCheckerComponent,
+  KlesButtonFileComponent,
+  KlesFormButtonFileComponent,
   KlesFormSelectComponent,
   KlesFormDateComponent,
   KlesFormRadioComponent,
