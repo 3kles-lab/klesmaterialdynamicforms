@@ -82,12 +82,9 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                             //     return option;
                             // })
                             .filter(option => {
-                                console.log('opiton', option, option[this.field.property])
-
                                 if (this.field.property) {
-                                    option[this.field.property].toLowerCase().indexOf(search) > -1;
+                                    return option[this.field.property].toLowerCase().indexOf(search) > -1;
                                 }
-
                                 return option.toLowerCase().indexOf(search) > -1;
                             })
                     }))
