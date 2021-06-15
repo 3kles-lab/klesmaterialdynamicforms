@@ -84,13 +84,15 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
     NgxMatSelectSearchModule
   ],
   providers: [
-    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }
+    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
+    pipes
   ],
   entryComponents: [
     components
   ],
   exports: [
     components,
+    pipes,
     directives,
     ColorPickerModule
   ],

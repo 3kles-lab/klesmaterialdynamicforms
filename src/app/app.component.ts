@@ -12,9 +12,11 @@ import {
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
-import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent } from 'projects/kles-material-dynamicforms/src/public-api';
-import { of } from 'rxjs';
+import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { SelectOptionComponent } from './select/select-option.component';
+import { SelectTriggerComponent } from './select/select-trigger.component';
 
 @Component({
   selector: 'app-root',
@@ -33,19 +35,19 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'KlesMaterialDynamicForms';
 
-  @ViewChild(KlesDynamicFormComponent, { static: false }) form: KlesDynamicFormComponent;
+  @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
   fields: IKlesFieldConfig[] = [];
   formValidators: IKlesValidator<ValidatorFn>[] = [];
 
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formText: KlesDynamicFormComponent;
+  @ViewChild('formText', { static: false }) formText: KlesDynamicFormComponent;
   fieldsText: IKlesFieldConfig[] = [];
   formValidatorsText: IKlesValidator<ValidatorFn>[] = [];
 
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formInput: KlesDynamicFormComponent;
+  @ViewChild('formInput', { static: false }) formInput: KlesDynamicFormComponent;
   fieldsInput: IKlesFieldConfig[] = [];
   formValidatorsInput: IKlesValidator<ValidatorFn>[] = [];
 
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formButton: KlesDynamicFormComponent;
+  @ViewChild('formButton', { static: false }) formButton: KlesDynamicFormComponent;
   fieldsButton: IKlesFieldConfig[] = [];
   formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
 
@@ -64,7 +66,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     //Button Form
     this.buildButtonForm();
-  
+
     //Form
     this.buildForm();
 
@@ -155,6 +157,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       tooltip: 'tooltip text',
       value: 'input text value',
       component: KlesFormInputComponent,
+      valueChanges: (field, group, siblingFields) => {
+        if (group.controls[field.name].value === 'test') {
+          console.log('on rentre ici');
+          (siblingFields.find(sibling => sibling.name === 'selectTest').options as BehaviorSubject<string[]>).next(['ccc', 'dddd']);
+        }
+      }
     });
 
     this.fieldsInput.push({

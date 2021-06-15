@@ -9,16 +9,10 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
-        <mat-select-trigger>
-            <ng-container *ngIf="group.controls[field.name].value">
-                <ng-container *ngIf="field.multiple; else unique">
-                    {{group.controls[field.name].value | arrayFormat:field.property}}
-                </ng-container>
-                <ng-template #unique>
-                    {{field.property ? group.controls[field.name].value[field.property] : group.controls[field.name].value}}
-                </ng-template>
-            </ng-container>
+        <mat-select-trigger *ngIf="field.triggerComponent">
+            <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value"></ng-container>
         </mat-select-trigger>
+
 
         <mat-option>
             <ngx-mat-select-search [formControl]="searchControl"
@@ -30,7 +24,18 @@ import { KlesFieldAbstract } from './field.abstract';
                 {{'selectAll' | translate}}
         </mat-checkbox>
         
-        <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+
+        <ng-container *ngIf="!field.autocompleteComponent">
+            <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+        </ng-container>
+
+        <ng-container *ngIf="field.autocompleteComponent">
+            <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">
+                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+            </mat-option>
+        </ng-container>
+
+
         </mat-select>
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
                 <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
@@ -54,6 +59,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     ngOnInit() {
         super.ngOnInit();
 
+        this.optionsFiltered$.subscribe(console.log)
+
         if (!(this.field.options instanceof Observable)) {
             this.options$ = of(this.field.options);
         } else {
@@ -67,12 +74,22 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 if (value) {
                     const search = value.toLowerCase();
                     return this.options$.pipe(map(options => {
-                        return options.map(option => {
-                            if (this.field.property) {
-                                return option[this.field.property];
-                            }
-                            return option;
-                        }).filter(option => option.toLowerCase().indexOf(search) > -1)
+                        return options
+                            // .map(option => {
+                            //     if (this.field.property) {
+                            //         return option[this.field.property];
+                            //     }
+                            //     return option;
+                            // })
+                            .filter(option => {
+                                console.log('opiton', option, option[this.field.property])
+
+                                if (this.field.property) {
+                                    option[this.field.property].toLowerCase().indexOf(search) > -1;
+                                }
+
+                                return option.toLowerCase().indexOf(search) > -1;
+                            })
                     }))
                 } else {
                     return this.options$;

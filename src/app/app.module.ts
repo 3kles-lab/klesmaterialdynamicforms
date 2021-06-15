@@ -12,13 +12,18 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { KlesNgPipeModule} from '@3kles/kles-ng-pipe';
 import localeFr from '@angular/common/locales/fr';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import { SelectTriggerComponent } from './select/select-trigger.component';
+import { SelectOptionComponent } from './select/select-option.component';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SelectTriggerComponent,
+    SelectOptionComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     MaterialModule,
@@ -38,7 +43,7 @@ registerLocaleData(localeFr);
     )
   ],
   exports: [KlesMaterialDynamicformsModule],
-  providers: [TranslateService, { provide: LOCALE_ID, useValue: 'fr-FR' },],
+  providers: [TranslateService, { provide: LOCALE_ID, useValue: 'fr-FR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

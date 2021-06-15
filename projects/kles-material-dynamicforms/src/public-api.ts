@@ -52,3 +52,4 @@ export * from './lib/dynamic-form.component';
 
 /**PIPES */
 export * from './lib/pipe/array.pipe';
+export * from './lib/pipe/transform.pipe';
