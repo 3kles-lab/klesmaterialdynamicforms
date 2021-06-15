@@ -194,7 +194,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       name: 'selectTest',
       placeholder: 'select',
       component: KlesFormSelectComponent,
-      //options: of(['aaa', 'bbb'])
+      triggerComponent: SelectTriggerComponent,
+      autocompleteComponent: SelectOptionComponent,
+      multiple: true,
+      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      // options: of(['aaa', 'bbb'])
     });
 
 
