@@ -193,7 +193,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.fieldsInput.push({
       name: 'selectTest',
       placeholder: 'select',
-      component: KlesFormSelectComponent,
+      component: KlesFormSelectSearchComponent,
+      property: 'BUAR',
       triggerComponent: SelectTriggerComponent,
       autocompleteComponent: SelectOptionComponent,
       multiple: true,
