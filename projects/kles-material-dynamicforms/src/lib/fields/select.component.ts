@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
-    selector: 'app-select',
+    selector: 'kles-form-select',
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">

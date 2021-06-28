@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnInit, SimpleChanges, Type } from "@angular/core";
-import { IKlesComponent } from "dist/kles-material-dynamicforms/public-api";
+import { IKlesComponent } from "kles-material-dynamicforms";
 
 @Component({
     selector: 'kles-select-trigger',

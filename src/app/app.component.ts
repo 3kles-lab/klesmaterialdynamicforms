@@ -192,12 +192,22 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.fieldsInput.push({
       name: 'selectTest',
-      placeholder: 'select',
+      placeholder: 'select multiple',
       component: KlesFormSelectSearchComponent,
       property: 'BUAR',
       triggerComponent: SelectTriggerComponent,
       autocompleteComponent: SelectOptionComponent,
       multiple: true,
+      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'selectTestSimple',
+      placeholder: 'select simple',
+      component: KlesFormSelectComponent,
+      property: 'BUAR',
+      autocompleteComponent: SelectOptionComponent,
       options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
       // options: of(['aaa', 'bbb'])
     });
