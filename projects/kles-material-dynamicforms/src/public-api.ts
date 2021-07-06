@@ -34,6 +34,7 @@ export * from './lib/fields/chip.component';
 export * from './lib/fields/group.component';
 export * from './lib/fields/icon.component';
 export * from './lib/fields/select.search.component';
+export * from './lib/fields/line-break.component';
 
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';

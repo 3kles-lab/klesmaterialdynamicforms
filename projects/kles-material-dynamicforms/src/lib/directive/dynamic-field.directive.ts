@@ -15,6 +15,7 @@ import { KlesFormChipComponent } from '../fields/chip.component';
 import { KlesFormGroupComponent } from '../fields/group.component';
 import { KlesFormIconComponent } from '../fields/icon.component';
 import { KlesFormSelectSearchComponent } from '../fields/select.search.component';
+import { KlesFormLineBreakComponent } from '../fields/line-break.component';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -29,7 +30,8 @@ const componentMapper = {
     chip: KlesFormChipComponent,
     group: KlesFormGroupComponent,
     icon: KlesFormIconComponent,
-    selectSearch: KlesFormSelectSearchComponent
+    selectSearch: KlesFormSelectSearchComponent,
+    lineBreak: KlesFormLineBreakComponent
 };
 
 @Directive({

@@ -74,6 +74,11 @@ export class KlesDynamicFormComponent implements OnInit {
         const group = this.fb.group({});
 
         this.fields.forEach(field => {
+
+            if (field.type === 'lineBreak') {
+                return;
+            }
+
             if (field.type === 'listField') {
                 const array = this.fb.array([]);
 
