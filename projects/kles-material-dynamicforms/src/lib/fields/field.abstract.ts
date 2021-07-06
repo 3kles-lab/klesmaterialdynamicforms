@@ -15,7 +15,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
             this.field.valueChanges(this.field, this.group, this.siblingFields);
         }
 
-        this.group.controls[this.field.name].valueChanges
+        this.group.controls[this.field.name]?.valueChanges
             .pipe()
             .subscribe(val => {
                 if (this.field.valueChanges) {
