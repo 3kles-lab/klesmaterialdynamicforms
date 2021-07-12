@@ -98,6 +98,9 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             takeUntil(this._onDestroy),
             switchMap(selected => {
                 return this.optionsFiltered$.pipe(map(options => {
+                    if (!selected) {
+                        return false;
+                    }
                     if (options.length < selected.length) {
                         return options.length > 0 && options.every(o => selected.includes(o));
                     } else {
