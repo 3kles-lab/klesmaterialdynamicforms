@@ -1,5 +1,5 @@
 import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator, AbstractControl } from '@angular/forms';
 import { KlesFormGroupComponent } from './fields/group.component';
 import { KlesFormListFieldComponent } from './fields/list-field.component';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
@@ -34,6 +34,8 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     @Input() asyncValidators: IKlesValidator<AsyncValidatorFn>[] = [];
     // tslint:disable-next-line: no-output-native
     @Output() submit: EventEmitter<any> = new EventEmitter<any>();
+    @Output() _onLoaded = new EventEmitter();
+
     @Input() direction: 'column' | 'row' = 'column';
 
     form: FormGroup;
@@ -48,14 +50,18 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
 
     ngOnInit() {
-        this.form = this.createControl();
+        this.form = this.createForm();
         this.orientationClass = this.direction === 'row' ? 'dynamic-form-row' : 'dynamic-form-column';
         this.orientationItemClass = this.direction === 'row' ? 'dynamic-form-row-item' : 'dynamic-form-column-item';
+        this._onLoaded.emit();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.fields?.firstChange) {
-            this.form = this.createControl();
+            this.updateForm();
+            // this.form = this.createControl();
+            // this.form.controls = {};
+            this._onLoaded.emit();
         }
 
         if (!changes.validators?.firstChange && this.form) {
@@ -87,7 +93,80 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         this.form.reset();
     }
 
-    private createControl() {
+
+    private updateForm() {
+        Object.keys(this.form.controls).filter(key => {
+            return !this.fields.map(field => field.name).includes(key);
+        }).forEach(key => {
+            this.form.removeControl(key);
+        });
+
+
+        this.fields
+            .filter(field => !this.form.controls[field.name])
+            .forEach(field => {
+                if (field.type === 'lineBreak') {
+                    return;
+                }
+                const control = this.createControl(field);
+                this.form.addControl(field.name, control);
+            });
+    }
+
+
+
+
+    private createControl(field: IKlesFieldConfig): AbstractControl {
+
+        if (field.type === 'listField') {
+            const array = this.fb.array([]);
+
+            field.value.forEach((data: any) => {
+                const subGroup = this.fb.group({});
+                field.collections.forEach(subfield => {
+                    const control = this.fb.control(
+                        data[subfield.name] ? data[subfield.name] : null,
+                        this.bindValidations(subfield.validations || []),
+                        this.bindAsyncValidations(subfield.asyncValidations || [])
+                    );
+                    subGroup.addControl(subfield.name, control);
+                });
+                array.push(subGroup);
+            });
+            return array;
+        } else if (field.type === 'group') {
+            const subGroup = this.fb.group({});
+            if (field.collections && Array.isArray(field.collections)) {
+                field.collections.forEach(subfield => {
+                    const control = this.fb.control(
+                        subfield.value,
+                        this.bindValidations(subfield.validations || []),
+                        this.bindAsyncValidations(subfield.asyncValidations || [])
+                    );
+                    if (subfield.disabled) {
+                        control.disable();
+                    }
+                    subGroup.addControl(subfield.name, control);
+                });
+            }
+            return subGroup;
+
+        } else {
+            const control = this.fb.control(
+                field.value,
+                this.bindValidations(field.validations || []),
+                this.bindAsyncValidations(field.asyncValidations || [])
+            );
+            if (field.disabled) {
+                control.disable();
+            }
+            return control;
+        }
+    }
+
+
+
+    private createForm() {
         const group = this.fb.group({});
 
         this.fields.forEach(field => {
@@ -95,55 +174,9 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             if (field.type === 'lineBreak') {
                 return;
             }
+            const control = this.createControl(field);
 
-            if (field.type === 'listField') {
-                const array = this.fb.array([]);
-
-                field.value.forEach((data: any) => {
-                    const subGroup = this.fb.group({});
-                    field.collections.forEach(subfield => {
-                        const control = this.fb.control(
-                            data[subfield.name] ? data[subfield.name] : null,
-                            this.bindValidations(subfield.validations || []),
-                            this.bindAsyncValidations(subfield.asyncValidations || [])
-                        );
-                        subGroup.addControl(subfield.name, control);
-                    });
-                    array.push(subGroup);
-                });
-
-                group.addControl(field.name, array);
-
-                // } else if (field.type === 'group' || (field.component && field.component.name === KlesFormGroupComponent.name)) {
-            } else if (field.type === 'group') {
-                const subGroup = this.fb.group({});
-                if (field.collections && Array.isArray(field.collections)) {
-                    field.collections.forEach(subfield => {
-                        const control = this.fb.control(
-                            subfield.value,
-                            this.bindValidations(subfield.validations || []),
-                            this.bindAsyncValidations(subfield.asyncValidations || [])
-                        );
-                        if (subfield.disabled) {
-                            control.disable();
-                        }
-                        subGroup.addControl(subfield.name, control);
-                    });
-                }
-                group.addControl(field.name, subGroup);
-
-            } else {
-                const control = this.fb.control(
-                    field.value,
-                    this.bindValidations(field.validations || []),
-                    this.bindAsyncValidations(field.asyncValidations || [])
-                );
-                if (field.disabled) {
-                    control.disable();
-                }
-                group.addControl(field.name, control);
-            }
-
+            group.addControl(field.name, control);
         });
 
         group.setValidators(this.validators.map(v => v.validator));
