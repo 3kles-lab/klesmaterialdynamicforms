@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
@@ -37,7 +37,7 @@ const componentMapper = {
 @Directive({
     selector: '[klesDynamicField]'
 })
-export class KlesDynamicFieldDirective implements OnInit, OnChanges {
+export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() field: IKlesFieldConfig;
     @Input() group: FormGroup;
     @Input() siblingFields: IKlesFieldConfig[];
@@ -46,6 +46,10 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges {
 
     constructor(private resolver: ComponentFactoryResolver,
         private container: ViewContainerRef) { }
+
+    ngOnDestroy(): void {
+        if (this.componentRef) this.componentRef.destroy();
+    }
 
     ngOnInit() {
         this.buildComponent();
