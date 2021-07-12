@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator } from '@angular/forms';
 import { KlesFormGroupComponent } from './fields/group.component';
 import { KlesFormListFieldComponent } from './fields/list-field.component';
@@ -28,7 +28,7 @@ import { IKlesValidator } from './interfaces/validator.interface';
     ]
 
 })
-export class KlesDynamicFormComponent implements OnInit {
+export class KlesDynamicFormComponent implements OnInit, OnChanges {
     @Input() fields: IKlesFieldConfig[] = [];
     @Input() validators: IKlesValidator<ValidatorFn>[] = [];
     @Input() asyncValidators: IKlesValidator<AsyncValidatorFn>[] = [];
@@ -53,6 +53,26 @@ export class KlesDynamicFormComponent implements OnInit {
         this.orientationItemClass = this.direction === 'row' ? 'dynamic-form-row-item' : 'dynamic-form-column-item';
     }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (!changes.fields?.firstChange) {
+            this.form = this.createControl();
+        }
+
+        if (!changes.validators?.firstChange && this.form) {
+            this.form.setValidators(this.validators.map(v => v.validator));
+        }
+
+        if (!changes.asyncValidators?.firstChange && this.form) {
+            this.form.setAsyncValidators(this.asyncValidators.map(v => v.validator));
+        }
+
+        if (!changes.direction?.firstChange) {
+            this.orientationClass = this.direction === 'row' ? 'dynamic-form-row' : 'dynamic-form-column';
+            this.orientationItemClass = this.direction === 'row' ? 'dynamic-form-row-item' : 'dynamic-form-column-item';
+        }
+
+    }
+
     onSubmit(event: Event) {
         event.preventDefault();
         event.stopPropagation();
@@ -66,9 +86,6 @@ export class KlesDynamicFormComponent implements OnInit {
     reset() {
         this.form.reset();
     }
-
-
-
 
     private createControl() {
         const group = this.fb.group({});
