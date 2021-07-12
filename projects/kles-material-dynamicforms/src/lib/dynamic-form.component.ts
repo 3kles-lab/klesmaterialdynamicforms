@@ -116,9 +116,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
                 // } else if (field.type === 'group' || (field.component && field.component.name === KlesFormGroupComponent.name)) {
             } else if (field.type === 'group') {
-                if (field.component) {
-                    console.log('component name', field.component.name, KlesFormGroupComponent.name);
-                }
                 const subGroup = this.fb.group({});
                 if (field.collections && Array.isArray(field.collections)) {
                     field.collections.forEach(subfield => {

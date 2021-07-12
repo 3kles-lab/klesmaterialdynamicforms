@@ -59,8 +59,6 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     ngOnInit() {
         super.ngOnInit();
 
-        this.optionsFiltered$.subscribe(console.log)
-
         if (!(this.field.options instanceof Observable)) {
             this.options$ = of(this.field.options);
         } else {
