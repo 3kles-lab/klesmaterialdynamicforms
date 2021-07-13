@@ -36,6 +36,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { KlesFormSelectSearchComponent } from './fields/select.search.component';
 import { KlesFormLineBreakComponent } from './fields/line-break.component';
 import { ArrayFormatPipe } from './pipe/array.pipe';
+import { KlesFormLinkComponent } from './fields/link.component';
 
 
 
@@ -63,7 +64,8 @@ const components = [
   KlesFormGroupComponent,
   KlesFormIconComponent,
   KlesFormSelectSearchComponent,
-  KlesFormLineBreakComponent
+  KlesFormLineBreakComponent,
+  KlesFormLinkComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
