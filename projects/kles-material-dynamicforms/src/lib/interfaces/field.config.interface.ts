@@ -15,6 +15,7 @@ export interface IKlesFieldConfig {
     min?: number;
     max?: number;
     maxLength?: number;
+    step?: number;
     options?: any[] | Subject<any[]>;// List options for list component
     ngClass?: any;// ngclass for field
     ngStyle?: any;// ngStyle for field
