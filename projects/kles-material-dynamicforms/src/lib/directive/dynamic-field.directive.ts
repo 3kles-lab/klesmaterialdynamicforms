@@ -46,8 +46,8 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
     componentRef: ComponentRef<any>;
 
-    constructor(private resolver: ComponentFactoryResolver,
-        private container: ViewContainerRef) { }
+    constructor(protected resolver: ComponentFactoryResolver,
+        protected container: ViewContainerRef) { }
 
     ngOnDestroy(): void {
         if (this.componentRef) this.componentRef.destroy();
