@@ -36,6 +36,7 @@ export * from './lib/fields/icon.component';
 export * from './lib/fields/select.search.component';
 export * from './lib/fields/line-break.component';
 export * from './lib/fields/link.component';
+export * from './lib/fields/slide-toggle.component';
 
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';
