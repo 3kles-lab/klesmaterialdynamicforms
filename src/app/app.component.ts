@@ -1,4 +1,4 @@
-import { RoundPipe } from '@3kles/kles-ng-pipe';
+import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
@@ -83,8 +83,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
     })
 
-    this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
-      console.log('Button file changed=', s);
+    // this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
+    //   console.log('Button file changed=', s);
+    // });
+
+    this.formButton.form.valueChanges.subscribe(s => {
+      console.log('Button changed=', s);
+      const val = Object.keys(s).find(f => s[f]);
+      console.log(val);
+      if (val) {
+        this.formButton.form.reset();
+      }
     })
 
 
@@ -166,6 +175,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.fieldsInput.push({
+      name: 'inputtextmax',
+      placeholder: 'Input Text MaxLength',
+      inputType: 'text',
+      tooltip: 'tooltip text',
+      maxLength: 10,
+      component: KlesFormInputComponent,
+    });
+
+    this.fieldsInput.push({
       name: 'inputnumber',
       placeholder: 'Input Number',
       inputType: 'number',
@@ -176,6 +194,24 @@ export class AppComponent implements OnInit, AfterViewInit {
         {
           pipe: new DecimalPipe('fr-FR'),
           options: ['1.2-2']
+        },
+      ]
+    });
+
+    this.fieldsInput.push({
+      name: 'inputobj',
+      placeholder: 'Input Object',
+      inputType: 'text',
+      tooltip: 'tooltip object',
+      value: {
+        usid: "USID",
+        name: "Name"
+      },
+      component: KlesFormInputComponent,
+      pipeTransform: [
+        {
+          pipe: new PropertyPipe(),
+          options: ['usid']
         },
       ]
     });
@@ -219,6 +255,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       name: 'autocompleteWithobjectMandatory',
       autocomplete: true,
       autocompleteComponent: AutocompleteComponent,
+      maxLength: 3,
       property: 'test',
       options: [
         { test: 'aaa', val: 'rrr' },
@@ -238,6 +275,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       placeholder: 'autocomplete optional with object array',
       name: 'autocompleteWithobjectOptional',
       autocomplete: true,
+      maxLength: 3,
       autocompleteComponent: AutocompleteComponent,
       property: 'test',
       options: [
