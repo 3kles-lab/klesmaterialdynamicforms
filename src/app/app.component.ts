@@ -50,6 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('formButton', { static: false }) formButton: KlesDynamicFormComponent;
   fieldsButton: IKlesFieldConfig[] = [];
   formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
+  colorVariable = "#00FF00";
 
   constructor(private _adapter: DateAdapter<any>, private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
@@ -134,7 +135,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.fields.push({
       component: KlesFormIconComponent,
       name: 'icon',
-      value: 'home'
+      value: 'dns',
+      // color: 'accent'
+      ngStyle: {
+        color: this.colorVariable
+      }
     });
   }
 
