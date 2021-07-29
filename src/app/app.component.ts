@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
+  KlesFormColorComponent,
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
@@ -140,6 +141,12 @@ export class AppComponent implements OnInit, AfterViewInit {
       ngStyle: {
         color: this.colorVariable
       }
+    });
+
+    this.fields.push({
+      component: KlesFormColorComponent,
+      name: 'color',
+      value: 'red',
     });
   }
 
