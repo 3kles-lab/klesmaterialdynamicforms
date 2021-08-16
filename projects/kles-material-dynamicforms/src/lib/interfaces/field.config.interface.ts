@@ -40,6 +40,6 @@ export interface IKlesFieldConfig {
         options?: any[]
     }[];
     direction?: 'row' | 'column';
-    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField?: IKlesFieldConfig[]) => void);
+    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void);
     triggerComponent?: Type<any>; //trigger component to customize trigger label in select
 }

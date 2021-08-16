@@ -19,7 +19,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
             .pipe()
             .subscribe(val => {
                 if (this.field.valueChanges) {
-                    this.field.valueChanges(this.field, this.group, this.siblingFields);
+                    this.field.valueChanges(this.field, this.group, this.siblingFields, val);
                 }
 
                 // this.applyPipeTransform();
