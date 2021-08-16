@@ -8,7 +8,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
-  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
+  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
   KlesFormColorComponent,
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
@@ -98,6 +98,10 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     })
 
+    this.form.form.valueChanges.subscribe(s => {
+      console.log('Group changed=', this.form, ' with value=', s);
+    })
+
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);
@@ -148,6 +152,53 @@ export class AppComponent implements OnInit, AfterViewInit {
       name: 'color',
       value: 'red',
     });
+
+    this.fields.push(
+      {
+        type: 'group',
+        name: 'environment',
+        direction: 'column',
+        collections: [
+          {
+            name: 'key',
+            value: 'KeyCRUD',
+            component: KlesFormTextComponent,
+          } as IKlesFieldConfig,
+          {
+            type: 'group',
+            name: 'crud',
+            direction: 'row',
+            collections: [
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'read',
+                label: 'read.text',
+                tooltip: 'read.text',
+              },
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'create',
+                label: 'create.text',
+                tooltip: 'create.text',
+
+              },
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'delete',
+                label: 'delete.text',
+                tooltip: 'delete.text',
+              },
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'update',
+                label: 'update.text',
+                tooltip: 'update.text',
+              }
+            ]
+          }
+        ]
+      }
+    )
   }
 
   buildTextForm() {
