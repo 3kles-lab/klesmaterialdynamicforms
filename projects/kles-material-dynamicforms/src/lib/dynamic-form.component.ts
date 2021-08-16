@@ -113,9 +113,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             });
     }
 
-
-
-
     private createControl(field: IKlesFieldConfig): AbstractControl {
 
         if (field.type === 'listField') {
@@ -124,11 +121,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             field.value.forEach((data: any) => {
                 const subGroup = this.fb.group({});
                 field.collections.forEach(subfield => {
-                    const control = this.fb.control(
-                        data[subfield.name] ? data[subfield.name] : null,
-                        this.bindValidations(subfield.validations || []),
-                        this.bindAsyncValidations(subfield.asyncValidations || [])
-                    );
+                    const control=this.createControl(subfield);
                     subGroup.addControl(subfield.name, control);
                 });
                 array.push(subGroup);
@@ -138,14 +131,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             const subGroup = this.fb.group({});
             if (field.collections && Array.isArray(field.collections)) {
                 field.collections.forEach(subfield => {
-                    const control = this.fb.control(
-                        subfield.value,
-                        this.bindValidations(subfield.validations || []),
-                        this.bindAsyncValidations(subfield.asyncValidations || [])
-                    );
-                    if (subfield.disabled) {
-                        control.disable();
-                    }
+                    const control=this.createControl(subfield);
                     subGroup.addControl(subfield.name, control);
                 });
             }
@@ -163,6 +149,56 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             return control;
         }
     }
+
+
+
+    // private createControl(field: IKlesFieldConfig): AbstractControl {
+
+    //     if (field.type === 'listField') {
+    //         const array = this.fb.array([]);
+
+    //         field.value.forEach((data: any) => {
+    //             const subGroup = this.fb.group({});
+    //             field.collections.forEach(subfield => {
+    //                 const control = this.fb.control(
+    //                     data[subfield.name] ? data[subfield.name] : null,
+    //                     this.bindValidations(subfield.validations || []),
+    //                     this.bindAsyncValidations(subfield.asyncValidations || [])
+    //                 );
+    //                 subGroup.addControl(subfield.name, control);
+    //             });
+    //             array.push(subGroup);
+    //         });
+    //         return array;
+    //     } else if (field.type === 'group') {
+    //         const subGroup = this.fb.group({});
+    //         if (field.collections && Array.isArray(field.collections)) {
+    //             field.collections.forEach(subfield => {
+    //                 const control = this.fb.control(
+    //                     subfield.value,
+    //                     this.bindValidations(subfield.validations || []),
+    //                     this.bindAsyncValidations(subfield.asyncValidations || [])
+    //                 );
+    //                 if (subfield.disabled) {
+    //                     control.disable();
+    //                 }
+    //                 subGroup.addControl(subfield.name, control);
+    //             });
+    //         }
+    //         return subGroup;
+
+    //     } else {
+    //         const control = this.fb.control(
+    //             field.value,
+    //             this.bindValidations(field.validations || []),
+    //             this.bindAsyncValidations(field.asyncValidations || [])
+    //         );
+    //         if (field.disabled) {
+    //             control.disable();
+    //         }
+    //         return control;
+    //     }
+    // }
 
 
 
