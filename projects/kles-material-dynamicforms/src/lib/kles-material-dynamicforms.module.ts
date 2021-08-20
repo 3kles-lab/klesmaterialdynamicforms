@@ -38,6 +38,7 @@ import { KlesFormLineBreakComponent } from './fields/line-break.component';
 import { ArrayFormatPipe } from './pipe/array.pipe';
 import { KlesFormLinkComponent } from './fields/link.component';
 import { KlesFormSlideToggleComponent } from './fields/slide-toggle.component';
+import { KlesFormSelectionListComponent } from './fields/selection-list.component';
 
 
 
@@ -67,7 +68,8 @@ const components = [
   KlesFormSelectSearchComponent,
   KlesFormLineBreakComponent,
   KlesFormLinkComponent,
-  KlesFormSlideToggleComponent
+  KlesFormSlideToggleComponent,
+  KlesFormSelectionListComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];

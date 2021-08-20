@@ -11,7 +11,7 @@ import {
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
   KlesFormColorComponent,
   KlesFormIconComponent,
-  KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
+  KlesFormInputComponent, KlesFormLabelComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
@@ -151,6 +151,13 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormColorComponent,
       name: 'color',
       value: 'red',
+    });
+
+    this.fields.push({
+      component: KlesFormSelectionListComponent,
+      name: 'selectionList',
+      multiple: true,
+      options: of([...Array(500).keys()]) as Subject<any>
     });
 
     this.fields.push(
