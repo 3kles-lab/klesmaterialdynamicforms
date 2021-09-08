@@ -10,6 +10,7 @@ import { MaterialModule } from './modules/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatSelectInfiniteScrollModule } from 'ng-mat-select-infinite-scroll';
 import { KlesFormLabelComponent } from './fields/label.component';
 import { KlesFormInputComponent } from './fields/input.component';
 import { KlesFormSubmitButtonComponent } from './fields/button-submit.component';
@@ -90,7 +91,8 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
     FormsModule,
     MaterialModule,
     ColorPickerModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    MatSelectInfiniteScrollModule
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },

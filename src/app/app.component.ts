@@ -309,12 +309,30 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.fieldsInput.push({
+      name: 'selectInfinite',
+      placeholder: 'select search infinite',
+      component: KlesFormSelectSearchComponent,
+      multiple: true,
+      options: new BehaviorSubject<any[]>([...Array(100000).keys()])
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
       name: 'selectTestSimple',
       placeholder: 'select simple',
       component: KlesFormSelectComponent,
       property: 'BUAR',
       autocompleteComponent: SelectOptionComponent,
       options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'selectTestSimpleInfinite',
+      placeholder: 'select simple infinite',
+      component: KlesFormSelectComponent,
+      multiple:true,
+      options: new BehaviorSubject<any[]>([...Array(1000).keys()])
       // options: of(['aaa', 'bbb'])
     });
 

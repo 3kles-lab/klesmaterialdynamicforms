@@ -1,21 +1,22 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { map, scan, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
     selector: 'kles-form-select-search',
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
-        <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
+        <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
+        (infiniteScroll)="getNextBatch()" [complete]="offset === size" msInfiniteScroll
+        [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value"></ng-container>
         </mat-select-trigger>
 
-
         <mat-option>
-            <ngx-mat-select-search [formControl]="searchControl"
+            <ngx-mat-select-search [formControl]="searchControl" [disableScrollToActiveOnOptionsChanged]="true"
             placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
         </mat-option>
         
@@ -26,11 +27,11 @@ import { KlesFieldAbstract } from './field.abstract';
         
 
         <ng-container *ngIf="!field.autocompleteComponent">
-            <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+            <mat-option *ngFor="let item of optionsDisplayed$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
         </ng-container>
 
         <ng-container *ngIf="field.autocompleteComponent">
-            <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">
+            <mat-option *ngFor="let item of optionsDisplayed$ | async" [value]="item">
                 <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
             </mat-option>
         </ng-container>
@@ -51,10 +52,17 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
     searchControl = new FormControl();
     selectAllControl = new FormControl(false);
-    private _onDestroy = new Subject<void>();
-
     options$: Observable<any[]>;
-    optionsFiltered$ = new ReplaySubject<any[]>(1);
+    private optionsFiltered$ = new ReplaySubject<any[]>(1);
+    optionsDisplayed$: Observable<any[]>;
+
+    private _onDestroy = new Subject<void>();
+    private data: any[] = [];
+    private optionsLoaded$ = new BehaviorSubject<string[]>([]);
+
+    limit = 20;
+    offset = 0;
+    size = 0;
 
     ngOnInit() {
         super.ngOnInit();
@@ -65,32 +73,36 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             this.options$ = this.field.options;
         }
 
+        this.options$.pipe(takeUntil(this._onDestroy))
+            .subscribe(options => {
+                this.data = [...options];
+                this.size = this.data.length;
+                this.searchControl.reset();
+            });
+
+        this.optionsDisplayed$ = this.optionsLoaded$.asObservable();
+
         this.searchControl.valueChanges.pipe(
             startWith(this.searchControl.value),
             takeUntil(this._onDestroy),
-            switchMap(value => {
+            map(value => {
                 if (value) {
                     const search = value.toLowerCase();
-                    return this.options$.pipe(map(options => {
-                        return options
-                            // .map(option => {
-                            //     if (this.field.property) {
-                            //         return option[this.field.property];
-                            //     }
-                            //     return option;
-                            // })
-                            .filter(option => {
-                                if (this.field.property) {
-                                    return option[this.field.property].toLowerCase().indexOf(search) > -1;
-                                }
-                                return option.toLowerCase().indexOf(search) > -1;
-                            })
-                    }))
+                    return this.data.filter(option => {
+                        if (this.field.property) {
+                            return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
+                        }
+                        return option.toString().toLowerCase().indexOf(search) > -1;
+                    })
                 } else {
-                    return this.options$;
+                    return this.data;
                 }
             })
-        ).subscribe(this.optionsFiltered$);
+        ).subscribe(options => {
+            this.resetOffset();
+            this.optionsFiltered$.next(options);
+            this.getNextBatch();
+        });
 
         this.group.controls[this.field.name].valueChanges.pipe(
             takeUntil(this._onDestroy),
@@ -127,5 +139,19 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         } else {
             this.group.controls[this.field.name].patchValue([]);
         }
+    }
+
+    private resetOffset() {
+        this.offset = 0;
+    }
+
+    getNextBatch() {
+        this.optionsFiltered$.pipe(
+            take(1),
+            map(options => options.slice(0, this.offset + this.limit))
+        ).subscribe(options => {
+            this.optionsLoaded$.next(options);
+            this.offset += this.limit;
+        })
     }
 }
