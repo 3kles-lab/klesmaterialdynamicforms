@@ -23,13 +23,12 @@ import { KlesFieldAbstract } from './field.abstract';
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
                 
-            <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+            <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
+                <ng-container *ngIf="!field.autocompleteComponent">
+                <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
                 (change)="toggleAllSelection($event)">
                     {{'selectAll' | translate}}
             </mat-checkbox>
-            
-            <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48-5>
-                <ng-container *ngIf="!field.autocompleteComponent">
                     <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
                     
                     <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
