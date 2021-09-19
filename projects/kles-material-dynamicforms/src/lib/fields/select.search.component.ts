@@ -1,7 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { map, scan, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { MatOption } from '@angular/material/core';
+import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
@@ -9,31 +11,63 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
-        (infiniteScroll)="getNextBatch()" [complete]="offset === size" msInfiniteScroll
+        (openedChange)="openChange($event)" 
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value"></ng-container>
         </mat-select-trigger>
 
-        <mat-option>
-            <ngx-mat-select-search [formControl]="searchControl" [disableScrollToActiveOnOptionsChanged]="true"
-            placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
-        </mat-option>
-        
-        <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+        <ng-container *ngIf="field.virtualScroll">
+            <mat-option>
+                <ngx-mat-select-search [formControl]="searchControl"
+                placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
+            </mat-option>
+                
+            <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
                 (change)="toggleAllSelection($event)">
-                {{'selectAll' | translate}}
-        </mat-checkbox>
-        
+                    {{'selectAll' | translate}}
+            </mat-checkbox>
+            
+            <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48-5>
+                <ng-container *ngIf="!field.autocompleteComponent">
+                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                    
+                    <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                    style="display:none">
+                        {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                    </mat-option>
+                </ng-container>
 
-        <ng-container *ngIf="!field.autocompleteComponent">
-            <mat-option *ngFor="let item of optionsDisplayed$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                <ng-container *ngIf="field.autocompleteComponent">
+                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                    </mat-option>
+                </ng-container>
+            </cdk-virtual-scroll-viewport>
+
         </ng-container>
 
-        <ng-container *ngIf="field.autocompleteComponent">
-            <mat-option *ngFor="let item of optionsDisplayed$ | async" [value]="item">
-                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+        <ng-container *ngIf="!field.virtualScroll">
+           
+            <mat-option>
+                <ngx-mat-select-search [formControl]="searchControl"
+                placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
+            
+            <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                    (change)="toggleAllSelection($event)">
+                    {{'selectAll' | translate}}
+            </mat-checkbox>
+
+            <ng-container *ngIf="!field.autocompleteComponent">
+                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+            </ng-container>
+
+            <ng-container *ngIf="field.autocompleteComponent">
+                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">
+                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                </mat-option>
+            </ng-container>
         </ng-container>
 
 
@@ -52,17 +86,15 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
     searchControl = new FormControl();
     selectAllControl = new FormControl(false);
+
+
     options$: Observable<any[]>;
-    private optionsFiltered$ = new ReplaySubject<any[]>(1);
-    optionsDisplayed$: Observable<any[]>;
+    optionsFiltered$ = new ReplaySubject<any[]>(1);
 
     private _onDestroy = new Subject<void>();
-    private data: any[] = [];
-    private optionsLoaded$ = new BehaviorSubject<string[]>([]);
 
-    limit = 20;
-    offset = 0;
-    size = 0;
+    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+    @ViewChildren(MatOption) options: QueryList<MatOption>;
 
     ngOnInit() {
         super.ngOnInit();
@@ -73,36 +105,26 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             this.options$ = this.field.options;
         }
 
-        this.options$.pipe(takeUntil(this._onDestroy))
-            .subscribe(options => {
-                this.data = [...options];
-                this.size = this.data.length;
-                this.searchControl.reset();
-            });
-
-        this.optionsDisplayed$ = this.optionsLoaded$.asObservable();
-
         this.searchControl.valueChanges.pipe(
             startWith(this.searchControl.value),
             takeUntil(this._onDestroy),
-            map(value => {
+            switchMap(value => {
                 if (value) {
                     const search = value.toLowerCase();
-                    return this.data.filter(option => {
-                        if (this.field.property) {
-                            return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
-                        }
-                        return option.toString().toLowerCase().indexOf(search) > -1;
-                    })
+                    return this.options$.pipe(map(options => {
+                        return options
+                            .filter(option => {
+                                if (this.field.property) {
+                                    return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
+                                }
+                                return option.toString().toLowerCase().indexOf(search) > -1;
+                            })
+                    }))
                 } else {
-                    return this.data;
+                    return this.options$;
                 }
             })
-        ).subscribe(options => {
-            this.resetOffset();
-            this.optionsFiltered$.next(options);
-            this.getNextBatch();
-        });
+        ).subscribe(this.optionsFiltered$);
 
         this.group.controls[this.field.name].valueChanges.pipe(
             takeUntil(this._onDestroy),
@@ -141,17 +163,12 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         }
     }
 
-    private resetOffset() {
-        this.offset = 0;
-    }
-
-    getNextBatch() {
-        this.optionsFiltered$.pipe(
-            take(1),
-            map(options => options.slice(0, this.offset + this.limit))
-        ).subscribe(options => {
-            this.optionsLoaded$.next(options);
-            this.offset += this.limit;
-        })
+    openChange($event: boolean) {
+        if (this.field.virtualScroll) {
+            if ($event) {
+                this.cdkVirtualScrollViewport.scrollToIndex(0);
+                this.cdkVirtualScrollViewport.checkViewportSize();
+            }
+        }
     }
 }

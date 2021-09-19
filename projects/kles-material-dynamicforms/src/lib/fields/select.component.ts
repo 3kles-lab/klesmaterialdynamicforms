@@ -1,28 +1,58 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { map, scan, take, takeUntil } from 'rxjs/operators';
+import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { MatOption } from '@angular/material/core';
+import { Observable, of } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
     selector: 'kles-form-select',
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
-        <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
-        (infiniteScroll)="getNextBatch()" [complete]="offset === size" msInfiniteScroll
-        [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
+        <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id"
+        (openedChange)="openChange($event)"
+        [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value"></ng-container>
         </mat-select-trigger>
 
-        
-        <ng-container *ngIf="!field.autocompleteComponent">
-            <mat-option *ngFor="let item of optionsDisplayed$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+
+        <ng-container *ngIf="!field.virtualScroll">
+            <ng-container *ngIf="!field.autocompleteComponent">
+                <mat-option *ngFor="let item of options$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+            </ng-container>
+
+            <ng-container *ngIf="field.autocompleteComponent">
+                <mat-option *ngFor="let item of options$ | async" [value]="item">
+                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                </mat-option>
+            </ng-container>
         </ng-container>
 
-        <ng-container *ngIf="field.autocompleteComponent">
-            <mat-option *ngFor="let item of optionsDisplayed$ | async" [value]="item">
-                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
-            </mat-option>
+        <ng-container *ngIf="field.virtualScroll">
+            <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=5*48>
+                <ng-container *ngIf="!field.autocompleteComponent">
+                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item">
+                    {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                    </mat-option>
+
+                    <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                    style="display:none">
+                        {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                    </mat-option>
+                </ng-container>
+
+                <ng-container *ngIf="field.autocompleteComponent">
+                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                    </mat-option>
+                    <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                    style="display:none">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                    </mat-option>
+                </ng-container>
+            </cdk-virtual-scroll-viewport>
+
         </ng-container>
 
        
@@ -37,17 +67,19 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
+export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit {
+
+
+    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+    @ViewChildren(MatOption) options: QueryList<MatOption>;
+
     options$: Observable<any[]>;
-    optionsDisplayed$: Observable<any[]>;
 
-    private optionsLoaded$ = new BehaviorSubject<string[]>([]);
-    private _onDestroy = new Subject<void>();
-    private data: any[];
+    selected: any[] = [];
 
-    limit = 20;
-    offset = 0;
-    size = 0;
+    constructor() {
+        super();
+    }
 
     ngOnInit() {
         super.ngOnInit();
@@ -57,29 +89,14 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         } else {
             this.options$ = this.field.options;
         }
-
-        this.options$
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(options => {
-                this.size = options.length;
-                this.data = [...options];
-                this.getNextBatch();
-            });
-
-        this.optionsDisplayed$ = this.optionsLoaded$.asObservable().pipe(
-            scan((acc, curr) => {
-                return [...acc, ...curr];
-            }, [])
-        );
-
     }
 
-    ngOnDestroy(): void {
-        this._onDestroy.next();
-    }
-
-    getNextBatch() {
-        this.optionsLoaded$.next(this.data.slice(this.offset, this.offset + this.limit));
-        this.offset += this.limit;
+    openChange($event: boolean) {
+        if (this.field.virtualScroll) {
+            if ($event) {
+                this.cdkVirtualScrollViewport.scrollToIndex(0);
+                this.cdkVirtualScrollViewport.checkViewportSize();
+            }
+        }
     }
 }

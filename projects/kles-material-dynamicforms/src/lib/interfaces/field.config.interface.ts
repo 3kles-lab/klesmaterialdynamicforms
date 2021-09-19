@@ -42,4 +42,6 @@ export interface IKlesFieldConfig {
     direction?: 'row' | 'column';
     valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void);
     triggerComponent?: Type<any>; //trigger component to customize trigger label in select
+    virtualScroll?: boolean; //To activate virtual scroll
+    itemSize?: number; // itemSize for virtual scroll viewport
 }

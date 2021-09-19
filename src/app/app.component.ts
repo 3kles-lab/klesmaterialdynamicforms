@@ -77,6 +77,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     //Input Form
     this.buildInputForm();
+
+
+
   }
 
   ngAfterViewInit(): void {
@@ -101,6 +104,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.form.form.valueChanges.subscribe(s => {
       console.log('Group changed=', this.form, ' with value=', s);
     })
+
+    this.formInput.form.valueChanges.subscribe(value => console.log(value))
 
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
@@ -308,12 +313,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       // options: of(['aaa', 'bbb'])
     });
 
+    const options = [...Array(10000).keys()];
+
     this.fieldsInput.push({
       name: 'selectInfinite',
       placeholder: 'select search infinite',
       component: KlesFormSelectSearchComponent,
       multiple: true,
-      options: new BehaviorSubject<any[]>([...Array(100000).keys()])
+      virtualScroll: true,
+      options: new BehaviorSubject<any[]>(options),
+      value: [options[99]]
       // options: of(['aaa', 'bbb'])
     });
 
@@ -327,12 +336,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       // options: of(['aaa', 'bbb'])
     });
 
+    
+
     this.fieldsInput.push({
       name: 'selectTestSimpleInfinite',
       placeholder: 'select simple infinite',
       component: KlesFormSelectComponent,
-      multiple:true,
-      options: new BehaviorSubject<any[]>([...Array(1000).keys()])
+      multiple: true,
+      virtualScroll: true,
+      options: options,
+      value: [options[9999]]
       // options: of(['aaa', 'bbb'])
     });
 

@@ -36,7 +36,6 @@
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
     "moment": "^2.24.0",
-    "ng-mat-select-infinite-scroll": "^2.1.1",
     "ngx-color-picker": "^10.0.1",
     "ngx-mat-select-search": "^3.2.0",
     "rxjs": "~6.5.4",
