@@ -39,6 +39,7 @@ import { ArrayFormatPipe } from './pipe/array.pipe';
 import { KlesFormLinkComponent } from './fields/link.component';
 import { KlesFormSlideToggleComponent } from './fields/slide-toggle.component';
 import { KlesFormSelectionListComponent } from './fields/selection-list.component';
+import { KlesFormBadgeComponent } from './fields/badge.component';
 
 
 
@@ -48,6 +49,7 @@ const components = [
   KlesFormInputComponent,
   KlesFormInputClearableComponent,
   KlesFormSubmitButtonComponent,
+  KlesFormBadgeComponent,
   KlesButtonComponent,
   KlesFormButtonComponent,
   KlesButtonCheckerComponent,
