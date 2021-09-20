@@ -25,23 +25,53 @@ import { KlesFieldAbstract } from './field.abstract';
                 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
                 <ng-container *ngIf="!field.autocompleteComponent">
-                <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
-                (change)="toggleAllSelection($event)">
-                    {{'selectAll' | translate}}
-            </mat-checkbox>
+                    <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                    (change)="toggleAllSelection($event)">
+                        {{'selectAll' | translate}}
+                    </mat-checkbox>
                     <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
                     
-                    <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
-                    style="display:none">
-                        {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                    </mat-option>
+                    <ng-container *ngIf="field.multiple">
+                        <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                        style="display:none">
+                            {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                        </mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="!field.multiple">
+                        <ng-container *ngIf="group.controls[field.name].value">
+                            <mat-option *ngIf="group.controls[field.name].value" [value]="group.controls[field.name].value"
+                            style="display:none">
+                                {{(field.property ? group.controls[field.name].value[field.property] : group.controls[field.name].value) | klesTransform:field.pipeTransform}}
+                            </mat-option>
+                        </ng-container>
+                    </ng-container>
+                   
                 </ng-container>
 
                 <ng-container *ngIf="field.autocompleteComponent">
                     <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">
                         <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
                     </mat-option>
+
+                    <ng-container *ngIf="field.multiple">
+                        <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                        style="display:none">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                        </mat-option>
+                    </ng-container>
+
+                    <ng-container *ngIf="!field.multiple">
+                        <ng-container *ngIf="group.controls[field.name].value">
+                            <mat-option *ngIf="group.controls[field.name].value" [value]="group.controls[field.name].value"
+                            style="display:none">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="group.controls[field.name].value"></ng-container>
+                            </mat-option>
+                        </ng-container>
+                    </ng-container>
                 </ng-container>
+
+                
             </cdk-virtual-scroll-viewport>
 
         </ng-container>
