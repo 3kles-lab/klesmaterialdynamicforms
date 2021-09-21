@@ -75,7 +75,7 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit 
     }
 
     isPending() {
-        return this.group.controls[this.field.name].pending;
+        return (this.group.controls[this.field.name].pending || this.field.pending);
     }
 
     private filterData(value: any): Observable<any[]> {
