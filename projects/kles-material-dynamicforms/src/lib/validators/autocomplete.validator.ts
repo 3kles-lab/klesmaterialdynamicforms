@@ -2,7 +2,7 @@ import { AbstractControl, ValidatorFn } from "@angular/forms"
 
 export function autocompleteObjectValidator(optional?: boolean): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        if (control.value === null && !optional) return { 'invalidAutocompleteObject': { value: control.value } }
+        if ((control.value === null || control.value === undefined) && !optional) return { 'invalidAutocompleteObject': { value: control.value } }
 
         if (typeof control.value === 'string') {
             if (control.value === '' && optional) return null;

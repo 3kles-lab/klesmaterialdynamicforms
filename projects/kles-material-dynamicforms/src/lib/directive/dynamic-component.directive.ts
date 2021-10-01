@@ -17,13 +17,13 @@ export class KlesComponentDirective implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.field) {
-            if (changes.component.previousValue && changes.component.currentValue !== changes.component.previousValue) {
-                this.component = changes.component.currentValue;
-                this.buildComponent();
-            } else {
-                this.value = changes.value.currentValue;
-            }
+        if (changes.component && !changes.component.isFirstChange()) {
+            this.component = changes.component.currentValue;
+            this.buildComponent();
+        }
+        if (changes.value && !changes.value.isFirstChange()) {
+            this.value = changes.value.currentValue;
+            this.componentRef.instance.value = this.value;
         }
     }
 

@@ -9,7 +9,8 @@ import { startWith, map, switchMap } from 'rxjs/operators';
     <mat-form-field [formGroup]="group" class="form-element">
 
         <ng-container *ngIf="field.autocomplete; else notAutoComplete">
-            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
+            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType" 
+            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step"
             [matAutocomplete]="auto">
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
@@ -29,7 +30,8 @@ import { startWith, map, switchMap } from 'rxjs/operators';
         </ng-container>
 
         <ng-template #notAutoComplete>
-            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType">
+            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
+            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step">
         </ng-template>
 
         <mat-spinner matSuffix mode="indeterminate" *ngIf="isPending()" diameter="17"></mat-spinner>
@@ -64,11 +66,14 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit 
                 // map(data => data ? this.filterData(data) : this.field.options.slice())
                 switchMap(data => data ? this.filterData(data) : this.options$)
             );
+        if (!this.field.maxLength) {
+            this.field.maxLength = 524288; // Max default input W3C
+        }
         super.ngOnInit();
     }
 
     isPending() {
-        return this.group.controls[this.field.name].pending;
+        return (this.group.controls[this.field.name].pending || this.field.pending);
     }
 
     private filterData(value: any): Observable<any[]> {

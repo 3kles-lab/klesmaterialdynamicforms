@@ -8,6 +8,7 @@ import { KlesFormInputComponent } from './input.component';
 
         <ng-container *ngIf="field.autocomplete; else notAutoComplete">
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
+            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step"
             [matAutocomplete]="auto">
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
@@ -27,7 +28,8 @@ import { KlesFormInputComponent } from './input.component';
         </ng-container>
 
         <ng-template #notAutoComplete>
-            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType">
+            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
+            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step">
         </ng-template>
         <button mat-button matSuffix mat-icon-button aria-label="Clear"
             (click)="group.controls[field.name].reset();">

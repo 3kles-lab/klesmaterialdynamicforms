@@ -20,9 +20,11 @@ import { KlesFormCheckboxComponent } from './fields/checkbox.component';
 import { KlesFormListFieldComponent } from './fields/list-field.component';
 import { KlesFormColorComponent } from './fields/color.component';
 import { KlesButtonComponent } from './forms/button-control.component';
-import { KlesButtonCheckerComponent } from './forms/buttonchecker-control.component';
 import { KlesFormButtonComponent } from './fields/button-form.component';
+import { KlesButtonCheckerComponent } from './forms/buttonchecker-control.component';
 import { KlesFormButtonCheckerComponent } from './fields/buttonchecker-form.component';
+import { KlesButtonFileComponent } from './forms/buttonfile-control.component';
+import { KlesFormButtonFileComponent } from './fields/buttonfile-form.component';
 import { KlesFormTextareaComponent } from './fields/textarea.component';
 import { KlesFormTextComponent } from './fields/text.component';
 import { KlesFormChipComponent } from './fields/chip.component';
@@ -32,6 +34,12 @@ import { KlesFormIconComponent } from './fields/icon.component';
 import { KlesTransformPipe } from './pipe/transform.pipe';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { KlesFormSelectSearchComponent } from './fields/select.search.component';
+import { KlesFormLineBreakComponent } from './fields/line-break.component';
+import { ArrayFormatPipe } from './pipe/array.pipe';
+import { KlesFormLinkComponent } from './fields/link.component';
+import { KlesFormSlideToggleComponent } from './fields/slide-toggle.component';
+import { KlesFormSelectionListComponent } from './fields/selection-list.component';
+import { KlesFormBadgeComponent } from './fields/badge.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -39,10 +47,13 @@ const components = [
   KlesFormInputComponent,
   KlesFormInputClearableComponent,
   KlesFormSubmitButtonComponent,
+  KlesFormBadgeComponent,
   KlesButtonComponent,
   KlesFormButtonComponent,
   KlesButtonCheckerComponent,
   KlesFormButtonCheckerComponent,
+  KlesButtonFileComponent,
+  KlesFormButtonFileComponent,
   KlesFormSelectComponent,
   KlesFormDateComponent,
   KlesFormRadioComponent,
@@ -54,12 +65,15 @@ const components = [
   KlesFormChipComponent,
   KlesFormGroupComponent,
   KlesFormIconComponent,
-  KlesFormSelectSearchComponent
+  KlesFormSelectSearchComponent,
+  KlesFormLineBreakComponent,
+  KlesFormLinkComponent,
+  KlesFormSlideToggleComponent,
+  KlesFormSelectionListComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
-const pipes = [KlesTransformPipe];
-
+const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
   declarations: [
     components,
@@ -78,13 +92,15 @@ const pipes = [KlesTransformPipe];
     NgxMatSelectSearchModule
   ],
   providers: [
-    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }
+    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
+    pipes
   ],
   entryComponents: [
     components
   ],
   exports: [
     components,
+    pipes,
     directives,
     ColorPickerModule
   ],

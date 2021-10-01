@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
@@ -15,6 +15,9 @@ import { KlesFormChipComponent } from '../fields/chip.component';
 import { KlesFormGroupComponent } from '../fields/group.component';
 import { KlesFormIconComponent } from '../fields/icon.component';
 import { KlesFormSelectSearchComponent } from '../fields/select.search.component';
+import { KlesFormLineBreakComponent } from '../fields/line-break.component';
+import { KlesFormLinkComponent } from '../fields/link.component';
+import { KlesFormSelectionListComponent } from '../fields/selection-list.component';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -29,21 +32,28 @@ const componentMapper = {
     chip: KlesFormChipComponent,
     group: KlesFormGroupComponent,
     icon: KlesFormIconComponent,
-    selectSearch: KlesFormSelectSearchComponent
+    selectSearch: KlesFormSelectSearchComponent,
+    lineBreak: KlesFormLineBreakComponent,
+    link: KlesFormLinkComponent,
+    selectionList: KlesFormSelectionListComponent
 };
 
 @Directive({
     selector: '[klesDynamicField]'
 })
-export class KlesDynamicFieldDirective implements OnInit, OnChanges {
+export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() field: IKlesFieldConfig;
     @Input() group: FormGroup;
     @Input() siblingFields: IKlesFieldConfig[];
 
     componentRef: ComponentRef<any>;
 
-    constructor(private resolver: ComponentFactoryResolver,
-        private container: ViewContainerRef) { }
+    constructor(protected resolver: ComponentFactoryResolver,
+        protected container: ViewContainerRef) { }
+
+    ngOnDestroy(): void {
+        if (this.componentRef) this.componentRef.destroy();
+    }
 
     ngOnInit() {
         this.buildComponent();
@@ -71,5 +81,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges {
         this.componentRef = this.container.createComponent(factory);
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
+        this.componentRef.instance.siblingFields = this.siblingFields;
     }
 }

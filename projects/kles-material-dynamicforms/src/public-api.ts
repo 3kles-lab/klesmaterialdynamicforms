@@ -11,10 +11,13 @@ export * from './lib/directive/dynamic-component.directive';
 /*FORMS*/
 export * from './lib/forms/button-control.component';
 export * from './lib/forms/buttonchecker-control.component';
+export * from './lib/forms/buttonfile-control.component';
 
 /**FIELDS */
+export * from './lib/fields/badge.component';
 export * from './lib/fields/button-form.component';
 export * from './lib/fields/buttonchecker-form.component';
+export * from './lib/fields/buttonfile-form.component';
 export * from './lib/fields/button-submit.component';
 export * from './lib/fields/checkbox.component';
 export * from './lib/fields/color.component';
@@ -32,6 +35,10 @@ export * from './lib/fields/chip.component';
 export * from './lib/fields/group.component';
 export * from './lib/fields/icon.component';
 export * from './lib/fields/select.search.component';
+export * from './lib/fields/line-break.component';
+export * from './lib/fields/link.component';
+export * from './lib/fields/slide-toggle.component';
+export * from './lib/fields/selection-list.component';
 
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';
@@ -47,3 +54,7 @@ export * from './lib/validators/autocomplete.validator';
 
 /**FORM */
 export * from './lib/dynamic-form.component';
+
+/**PIPES */
+export * from './lib/pipe/array.pipe';
+export * from './lib/pipe/transform.pipe';

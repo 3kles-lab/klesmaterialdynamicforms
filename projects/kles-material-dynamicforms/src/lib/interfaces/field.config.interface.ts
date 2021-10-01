@@ -1,7 +1,7 @@
 import { IKlesValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn, FormGroup } from '@angular/forms';
 import { PipeTransform, Type } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 
 export interface IKlesFieldConfig {
     type?: string;// Mapper type if(type && !component)=>type
@@ -15,7 +15,8 @@ export interface IKlesFieldConfig {
     min?: number;
     max?: number;
     maxLength?: number;
-    options?: any[] | Observable<any[]>;// List options for list component
+    step?: number;
+    options?: any[] | Subject<any[]>;// List options for list component
     ngClass?: any;// ngclass for field
     ngStyle?: any;// ngStyle for field
     property?: string;// Property for field
@@ -39,5 +40,9 @@ export interface IKlesFieldConfig {
         options?: any[]
     }[];
     direction?: 'row' | 'column';
-    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField: IKlesFieldConfig[]) => void);
+    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void);
+    triggerComponent?: Type<any>; //trigger component to customize trigger label in select
+    virtualScroll?: boolean; //To activate virtual scroll
+    itemSize?: number; // itemSize for virtual scroll viewport
+    pending?: boolean
 }

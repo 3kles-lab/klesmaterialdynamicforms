@@ -1,6 +1,6 @@
-import { RoundPipe } from '@3kles/kles-ng-pipe';
+import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -8,13 +8,16 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
-  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormChipComponent,
+  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
+  KlesFormColorComponent,
   KlesFormIconComponent,
-  KlesFormInputComponent, KlesFormLabelComponent, KlesFormTextareaComponent, KlesFormTextComponent,
+  KlesFormInputComponent, KlesFormLabelComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
-import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent } from 'projects/kles-material-dynamicforms/src/public-api';
-import { of } from 'rxjs';
+import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { SelectOptionComponent } from './select/select-option.component';
+import { SelectTriggerComponent } from './select/select-trigger.component';
 
 @Component({
   selector: 'app-root',
@@ -30,35 +33,37 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
 })
-export class AppComponent implements AfterViewInit {
-  @ViewChild(KlesDynamicFormComponent, { static: false }) form: KlesDynamicFormComponent;
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formInput: KlesDynamicFormComponent;
-  @ViewChild(KlesDynamicFormComponent, { static: false }) formButton: KlesDynamicFormComponent;
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'KlesMaterialDynamicForms';
 
-  item = { error: [] };
+  @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
   fields: IKlesFieldConfig[] = [];
   formValidators: IKlesValidator<ValidatorFn>[] = [];
 
+  @ViewChild('formText', { static: false }) formText: KlesDynamicFormComponent;
+  fieldsText: IKlesFieldConfig[] = [];
+  formValidatorsText: IKlesValidator<ValidatorFn>[] = [];
+
+  @ViewChild('formInput', { static: false }) formInput: KlesDynamicFormComponent;
   fieldsInput: IKlesFieldConfig[] = [];
   formValidatorsInput: IKlesValidator<ValidatorFn>[] = [];
 
+  @ViewChild('formButton', { static: false }) formButton: KlesDynamicFormComponent;
   fieldsButton: IKlesFieldConfig[] = [];
   formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
+  colorVariable = "#00FF00";
 
-  fieldTest = {
-    name: 'matbutton',
-    label: 'mat button',
-    color: 'accent',
-    icon: 'clear',
-    ngClass: 'mat-button',
-    tooltip: 'tooltip button'
-  };
+  options2 = [...Array(10000).keys()];
 
-  formTest: FormGroup=new FormGroup({
-    matbutton: new FormControl()
- });
-
+  warehouseList = [
+    // { WHLO: 100, test: 100 },
+    // { WHLO: 200, test: 200 },
+    // { WHLO: 300, test: 300 },
+    // { WHLO: 400, test: 400 },
+    // { WHLO: 500, test: 500 },
+    // { WHLO: 600, test: 600 },
+    // { WHLO: 700, test: 700 }
+  ];
 
   constructor(private _adapter: DateAdapter<any>, private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
@@ -70,55 +75,64 @@ export class AppComponent implements AfterViewInit {
     const decPipe = new DecimalPipe('fr-FR');
     const val = decPipe.transform(10.467, '1.2-2');
     console.log('Val=', val);
+  }
 
-    //Label
-    this.fields.push({
-      component: KlesFormTextComponent,
-      name: 'label',
-      value: 'Label Value'
-    });
+  ngOnInit() {
 
-    this.fields.push({
-      component: KlesFormChipComponent,
-      name: 'chip',
-      value: 'chip'
-    });
+    this.warehouseList = this.options2.map((o) => { return { WHLO: o, test: o }; });
 
-    this.fields.push({
-      component: KlesFormIconComponent,
-      name: 'icon',
-      value:'home'
-    });
+    //Button Form
+    this.buildButtonForm();
+
+    //Form
+    this.buildForm();
+
+    //Text Form
+    this.buildTextForm();
 
     //Input Form
     this.buildInputForm();
 
 
-    //Button Form
-    this.buildButtonForm();
-
-    this.formValidators = [
-      // {
-      //   name: 'overlap',
-      //   validator: this.checkOverlaping('beginvalue', 'endvalue'),
-      //   message: 'statusSettings.validator.overlap'
-      // },
-      // {
-      //   name: 'beginend',
-      //   validator: this.checkBeginEndValue('beginvalue', 'endvalue'),
-      //   message: 'statusSettings.validator.beginend'
-      // },
-
-    ];
 
   }
+
   ngAfterViewInit(): void {
-    console.log('Form=', this.form.form);
-    // this.form.form.valueChanges.subscribe(s => {
-    //   console.log('Value change=', s);
-    //   console.log('Change form=', this.form.form);
+
+    Object.keys(this.formButton.form.controls).forEach(e => {
+      console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
+    })
+
+    // this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
+    //   console.log('Button file changed=', s);
     // });
 
+    this.formButton.form.valueChanges.subscribe(s => {
+      console.log('Button changed=', s);
+      const val = Object.keys(s).find(f => s[f]);
+      console.log(val);
+      if (val) {
+        this.formButton.form.reset();
+      }
+    })
+
+    this.form.form.valueChanges.subscribe(s => {
+      console.log('Group changed=', this.form, ' with value=', s);
+    })
+
+
+    // setTimeout((() => {
+    //   console.log('AAA!!!');
+    //   this.formInput?.form?.controls?.testSelectGino?.setValue(this.warehouseList[4], { onlySelf: true, emitEvent: false });
+    // }).bind(this), 3000);
+
+    // setTimeout((() => {
+    //   console.log('BBB!!!');
+    //   const value = this.formInput?.form?.controls?.testSelectGino?.value;
+    //   this.formInput?.form?.controls?.testSelectGino2?.setValue(value, { onlySelf: true, emitEvent: false });
+    // }).bind(this), 5000);
+
+    this.formInput.form.valueChanges.subscribe(value => console.log(value));
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);
@@ -147,14 +161,126 @@ export class AppComponent implements AfterViewInit {
     // });
   }
 
+  buildForm() {
+    this.fields.push({
+      component: KlesFormChipComponent,
+      name: 'chip',
+      value: 'chip'
+    });
+
+    this.fields.push({
+      component: KlesFormIconComponent,
+      name: 'icon',
+      value: 'dns',
+      // color: 'accent'
+      ngStyle: {
+        color: this.colorVariable
+      }
+    });
+
+    this.fields.push({
+      component: KlesFormColorComponent,
+      name: 'color',
+      value: 'red',
+    });
+
+    this.fields.push({
+      component: KlesFormSelectionListComponent,
+      name: 'selectionList',
+      multiple: true,
+      options: of([...Array(500).keys()]) as Subject<any>
+    });
+
+    this.fields.push(
+      {
+        type: 'group',
+        name: 'environment',
+        direction: 'column',
+        collections: [
+          {
+            name: 'key',
+            value: 'KeyCRUD',
+            component: KlesFormTextComponent,
+          } as IKlesFieldConfig,
+          {
+            type: 'group',
+            name: 'crud',
+            direction: 'row',
+            collections: [
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'read',
+                label: 'read.text',
+                tooltip: 'read.text',
+              },
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'create',
+                label: 'create.text',
+                tooltip: 'create.text',
+
+              },
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'delete',
+                label: 'delete.text',
+                tooltip: 'delete.text',
+              },
+              {
+                component: KlesFormCheckboxComponent,
+                name: 'update',
+                label: 'update.text',
+                tooltip: 'update.text',
+              }
+            ]
+          }
+        ]
+      }
+    )
+  }
+
+  buildTextForm() {
+    this.fieldsText.push({
+      name: 'text',
+      placeholder: 'Text',
+      inputType: 'text',
+      tooltip: 'tooltip text',
+      value: 'text value',
+      component: KlesFormTextComponent,
+    });
+    this.fieldsText.push({
+      name: 'text',
+      placeholder: 'Text',
+      inputType: 'text',
+      tooltip: 'tooltip text',
+      value: 'text value',
+      component: KlesFormTextareaComponent,
+    });
+  }
+
   buildInputForm() {
-    
+
     this.fieldsInput.push({
       name: 'inputtext',
       placeholder: 'Input Text',
       inputType: 'text',
       tooltip: 'tooltip text',
       value: 'input text value',
+      component: KlesFormInputComponent,
+      valueChanges: (field, group, siblingFields) => {
+        if (group.controls[field.name].value === 'test') {
+          console.log('on rentre ici');
+          (siblingFields.find(sibling => sibling.name === 'selectTest').options as BehaviorSubject<string[]>).next(['ccc', 'dddd']);
+        }
+      }
+    });
+
+    this.fieldsInput.push({
+      name: 'inputtextmax',
+      placeholder: 'Input Text MaxLength',
+      inputType: 'text',
+      tooltip: 'tooltip text',
+      maxLength: 10,
       component: KlesFormInputComponent,
     });
 
@@ -173,7 +299,25 @@ export class AppComponent implements AfterViewInit {
       ]
     });
 
-    
+    this.fieldsInput.push({
+      name: 'inputobj',
+      placeholder: 'Input Object',
+      inputType: 'text',
+      tooltip: 'tooltip object',
+      value: {
+        usid: "USID",
+        name: "Name"
+      },
+      component: KlesFormInputComponent,
+      pipeTransform: [
+        {
+          pipe: new PropertyPipe(),
+          options: ['usid']
+        },
+      ]
+    });
+
+
     this.fieldsInput.push({
       name: 'inputclear',
       placeholder: 'Input clearable',
@@ -185,9 +329,79 @@ export class AppComponent implements AfterViewInit {
 
     this.fieldsInput.push({
       name: 'selectTest',
-      placeholder: 'select',
+      placeholder: 'select multiple',
+      component: KlesFormSelectSearchComponent,
+      property: 'BUAR',
+      triggerComponent: SelectTriggerComponent,
+      autocompleteComponent: SelectOptionComponent,
+      multiple: true,
+      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      // options: of(['aaa', 'bbb'])
+    });
+
+    const options = [...Array(10000).keys()];
+
+    this.fieldsInput.push({
+      name: 'selectInfinite',
+      placeholder: 'select search infinite',
+      component: KlesFormSelectSearchComponent,
+      // multiple: true,
+      virtualScroll: true,
+      options: new BehaviorSubject<any[]>(options),
+      value: [options[99]]
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'selectTestSimple',
+      placeholder: 'select simple',
       component: KlesFormSelectComponent,
-      options: of(['aaa','bbb'])
+      property: 'BUAR',
+      autocompleteComponent: SelectOptionComponent,
+      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'testSelectGino',
+      placeholder: 'TEST SELECT GINO',
+      component: KlesFormSelectComponent,
+      autocompleteComponent: AutocompleteComponent,
+      // multiple: true,
+      virtualScroll: true,
+      // options: this.warehouseList,
+      options: new BehaviorSubject<any[]>(this.warehouseList),
+      value: null,
+      property: 'WHLO',
+      valueChanges: (field, group, siblingField, valueChanged) => {
+        group?.controls?.testSelectGino2?.setValue(valueChanged, { onlySelf: true, emitEvent: true });
+      },
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'testSelectGino2',
+      placeholder: 'TEST SELECT GINO',
+      component: KlesFormSelectComponent,
+      autocompleteComponent: AutocompleteComponent,
+      // multiple: true,
+      virtualScroll: true,
+      // options: this.warehouseList,
+      options: new BehaviorSubject<any[]>(this.warehouseList),
+      value: null,
+      property: 'WHLO',
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'selectTestSimpleInfinite',
+      placeholder: 'select simple infinite',
+      component: KlesFormSelectComponent,
+      multiple: true,
+      virtualScroll: true,
+      options: options,
+      value: [options[9999]]
+      // options: of(['aaa', 'bbb'])
     });
 
 
@@ -197,6 +411,7 @@ export class AppComponent implements AfterViewInit {
       name: 'autocompleteWithobjectMandatory',
       autocomplete: true,
       autocompleteComponent: AutocompleteComponent,
+      maxLength: 3,
       property: 'test',
       options: [
         { test: 'aaa', val: 'rrr' },
@@ -216,6 +431,7 @@ export class AppComponent implements AfterViewInit {
       placeholder: 'autocomplete optional with object array',
       name: 'autocompleteWithobjectOptional',
       autocomplete: true,
+      maxLength: 3,
       autocompleteComponent: AutocompleteComponent,
       property: 'test',
       options: [
@@ -361,47 +577,15 @@ export class AppComponent implements AfterViewInit {
       value: { error: [{}, {}] }
     });
 
-  }
-
-  checkBeginEndValue(begin: string, end: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (!control) { return null; }
-      const beginControl = control.get(begin);
-      const endControl = control.get(end);
-      if (!beginControl.value || !endControl.value) {
-        return null;
-      }
-
-      if (Number(beginControl.value) >= Number(endControl.value)) {
-        return { beginend: true };
-      }
-
-      return null;
-    };
-  }
-
-  checkOverlaping(begin: string, end: string): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: boolean } | null => {
-      if (!control) { return null; }
-      const beginControl = control.get(begin);
-      const endControl = control.get(end);
-      if (!beginControl.value || !endControl.value) {
-        return null;
-      }
-      let value = null;
-      /*
-      this.allData.forEach(line => {
-        if ((Number(line.beginvalue) <= Number(beginControl.value) && Number(beginControl.value) < Number(line.endvalue)) ||
-          (Number(line.beginvalue) < Number(endControl.value) && Number(endControl.value) < Number(line.endvalue))
-        ) {
-          console.log('Error');
-          value = { overlap: true };
-        }
-      });
-      */
-
-      return value;
-    };
+    this.fieldsButton.push({
+      component: KlesFormButtonFileComponent,
+      name: 'buttonfile',
+      label: 'Choose file',
+      color: 'accent',
+      iconSvg: 'excel',
+      ngClass: 'mat-raised-button',
+      tooltip: 'tooltip button',
+    });
   }
 
   french() {
