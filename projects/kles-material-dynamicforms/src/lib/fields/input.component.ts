@@ -66,11 +66,9 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit 
                 // map(data => data ? this.filterData(data) : this.field.options.slice())
                 switchMap(data => data ? this.filterData(data) : this.options$)
             );
-        console.log('this.field.maxLength=', this.field.maxLength);
         if (!this.field.maxLength) {
-            this.field.maxLength = 524288;// Max default input W3C
+            this.field.maxLength = 524288; // Max default input W3C
         }
-        console.log('this.field.maxLength After=', this.field.maxLength);
         super.ngOnInit();
     }
 
