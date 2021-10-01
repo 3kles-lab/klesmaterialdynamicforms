@@ -147,8 +147,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                                     return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
                                 }
                                 return option.toString().toLowerCase().indexOf(search) > -1;
-                            })
-                    }))
+                            });
+                    }));
                 } else {
                     return this.options$;
                 }
