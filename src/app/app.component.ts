@@ -53,6 +53,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
   colorVariable = "#00FF00";
 
+  options2 = [...Array(10000).keys()];
+
+  warehouseList = [
+    // { WHLO: 100, test: 100 },
+    // { WHLO: 200, test: 200 },
+    // { WHLO: 300, test: 300 },
+    // { WHLO: 400, test: 400 },
+    // { WHLO: 500, test: 500 },
+    // { WHLO: 600, test: 600 },
+    // { WHLO: 700, test: 700 }
+  ];
+
   constructor(private _adapter: DateAdapter<any>, private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
@@ -66,6 +78,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+    this.warehouseList = this.options2.map((o) => { return { WHLO: o, test: o }; });
+
     //Button Form
     this.buildButtonForm();
 
@@ -105,8 +120,19 @@ export class AppComponent implements OnInit, AfterViewInit {
       console.log('Group changed=', this.form, ' with value=', s);
     })
 
-    this.formInput.form.valueChanges.subscribe(value => console.log(value))
 
+    // setTimeout((() => {
+    //   console.log('AAA!!!');
+    //   this.formInput?.form?.controls?.testSelectGino?.setValue(this.warehouseList[4], { onlySelf: true, emitEvent: false });
+    // }).bind(this), 3000);
+
+    // setTimeout((() => {
+    //   console.log('BBB!!!');
+    //   const value = this.formInput?.form?.controls?.testSelectGino?.value;
+    //   this.formInput?.form?.controls?.testSelectGino2?.setValue(value, { onlySelf: true, emitEvent: false });
+    // }).bind(this), 5000);
+
+    this.formInput.form.valueChanges.subscribe(value => console.log(value));
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);
@@ -319,7 +345,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       name: 'selectInfinite',
       placeholder: 'select search infinite',
       component: KlesFormSelectSearchComponent,
-      multiple: true,
+      // multiple: true,
       virtualScroll: true,
       options: new BehaviorSubject<any[]>(options),
       value: [options[99]]
@@ -336,7 +362,36 @@ export class AppComponent implements OnInit, AfterViewInit {
       // options: of(['aaa', 'bbb'])
     });
 
-    
+    this.fieldsInput.push({
+      name: 'testSelectGino',
+      placeholder: 'TEST SELECT GINO',
+      component: KlesFormSelectComponent,
+      autocompleteComponent: AutocompleteComponent,
+      // multiple: true,
+      virtualScroll: true,
+      // options: this.warehouseList,
+      options: new BehaviorSubject<any[]>(this.warehouseList),
+      value: null,
+      property: 'WHLO',
+      valueChanges: (field, group, siblingField, valueChanged) => {
+        group?.controls?.testSelectGino2?.setValue(valueChanged, { onlySelf: true, emitEvent: true });
+      },
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
+      name: 'testSelectGino2',
+      placeholder: 'TEST SELECT GINO',
+      component: KlesFormSelectComponent,
+      autocompleteComponent: AutocompleteComponent,
+      // multiple: true,
+      virtualScroll: true,
+      // options: this.warehouseList,
+      options: new BehaviorSubject<any[]>(this.warehouseList),
+      value: null,
+      property: 'WHLO',
+      // options: of(['aaa', 'bbb'])
+    });
 
     this.fieldsInput.push({
       name: 'selectTestSimpleInfinite',
