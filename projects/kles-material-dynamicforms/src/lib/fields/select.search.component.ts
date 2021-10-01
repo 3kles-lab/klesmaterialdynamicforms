@@ -38,15 +38,11 @@ import { KlesFieldAbstract } from './field.abstract';
                         </mat-option>
                     </ng-container>
 
-                    <ng-container *ngIf="!field.multiple">
-                        <ng-container *ngIf="group.controls[field.name].value">
-                            <mat-option *ngIf="group.controls[field.name].value" [value]="group.controls[field.name].value"
-                            style="display:none">
-                                {{(field.property ? group.controls[field.name].value[field.property] : group.controls[field.name].value) | klesTransform:field.pipeTransform}}
-                            </mat-option>
-                        </ng-container>
+                    <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                        <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
+                            {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                        </mat-option>
                     </ng-container>
-                   
                 </ng-container>
 
                 <ng-container *ngIf="field.autocompleteComponent">
@@ -61,17 +57,12 @@ import { KlesFieldAbstract } from './field.abstract';
                         </mat-option>
                     </ng-container>
 
-                    <ng-container *ngIf="!field.multiple">
-                        <ng-container *ngIf="group.controls[field.name].value">
-                            <mat-option *ngIf="group.controls[field.name].value" [value]="group.controls[field.name].value"
-                            style="display:none">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="group.controls[field.name].value"></ng-container>
-                            </mat-option>
-                        </ng-container>
+                    <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                        <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                        </mat-option>
                     </ng-container>
                 </ng-container>
-
-                
             </cdk-virtual-scroll-viewport>
 
         </ng-container>
