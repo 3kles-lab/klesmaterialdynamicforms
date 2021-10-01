@@ -51,7 +51,6 @@ import { KlesFieldAbstract } from './field.abstract';
                     </ng-container>
                 </ng-container>
 
-                
                 <ng-container *ngIf="field.autocompleteComponent">
                     <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item">
                         <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
@@ -62,10 +61,9 @@ import { KlesFieldAbstract } from './field.abstract';
                             <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
                         </mat-option>
                     </ng-container>
-                    <ng-container *ngIf="!field.multiple">
-                        <mat-option *ngIf="group.controls[field.name].value" [value]="group.controls[field.name].value"
-                        style="display:none">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="group.controls[field.name].value"></ng-container>
+                    <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                        <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
                         </mat-option>
                     </ng-container>
                 </ng-container>
@@ -73,7 +71,6 @@ import { KlesFieldAbstract } from './field.abstract';
 
         </ng-container>
 
-       
         </mat-select>
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
                 <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
@@ -87,13 +84,10 @@ import { KlesFieldAbstract } from './field.abstract';
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit {
 
-
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
 
     options$: Observable<any[]>;
-
-    selected: any[] = [];
 
     constructor() {
         super();
