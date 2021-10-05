@@ -363,6 +363,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.fieldsInput.push({
+      name: 'selectSearchMultipleKey',
+      placeholder: 'select search with multiple key',
+      component: KlesFormSelectSearchComponent,
+      searchKeys: ['BUAR', 'TX40'],
+      property: 'BUAR',
+      autocompleteComponent: SelectOptionComponent,
+      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      // options: of(['aaa', 'bbb'])
+    });
+
+    this.fieldsInput.push({
       name: 'testSelectGino',
       placeholder: 'TEST SELECT GINO',
       component: KlesFormSelectComponent,

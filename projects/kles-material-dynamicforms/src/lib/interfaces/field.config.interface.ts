@@ -44,5 +44,6 @@ export interface IKlesFieldConfig {
     triggerComponent?: Type<any>; //trigger component to customize trigger label in select
     virtualScroll?: boolean; //To activate virtual scroll
     itemSize?: number; // itemSize for virtual scroll viewport
-    pending?: boolean
+    pending?: boolean;
+    searchKeys?: string[]; //list of keys for multiple searches
 }

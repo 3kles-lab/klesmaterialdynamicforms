@@ -134,8 +134,19 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                     return this.options$.pipe(map(options => {
                         return options
                             .filter(option => {
-                                if (this.field.property) {
-                                    return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
+                                if (this.field.searchKeys && this.field.searchKeys.length) {
+                                    return this.field.searchKeys.some(searchKey => {
+                                        if (option[searchKey]) {
+                                            return option[searchKey].toString().toLowerCase().indexOf(search) > -1;
+                                        }
+                                        return false;
+                                    }) || (this.field.property ?
+                                        option[this.field.property].toString().toLowerCase().indexOf(search) > -1 : false);
+
+                                } else {
+                                    if (this.field.property) {
+                                        return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
+                                    }
                                 }
                                 return option.toString().toLowerCase().indexOf(search) > -1;
                             });
