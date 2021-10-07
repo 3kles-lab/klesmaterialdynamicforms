@@ -39,6 +39,7 @@ export * from './lib/fields/line-break.component';
 export * from './lib/fields/link.component';
 export * from './lib/fields/slide-toggle.component';
 export * from './lib/fields/selection-list.component';
+export * from './lib/fields/button-toogle-group.component';
 
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';

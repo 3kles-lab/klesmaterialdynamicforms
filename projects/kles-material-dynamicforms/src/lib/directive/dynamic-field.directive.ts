@@ -18,6 +18,7 @@ import { KlesFormSelectSearchComponent } from '../fields/select.search.component
 import { KlesFormLineBreakComponent } from '../fields/line-break.component';
 import { KlesFormLinkComponent } from '../fields/link.component';
 import { KlesFormSelectionListComponent } from '../fields/selection-list.component';
+import { KlesFormButtonToogleGroupComponent } from '../fields/button-toogle-group.component';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -35,7 +36,8 @@ const componentMapper = {
     selectSearch: KlesFormSelectSearchComponent,
     lineBreak: KlesFormLineBreakComponent,
     link: KlesFormLinkComponent,
-    selectionList: KlesFormSelectionListComponent
+    selectionList: KlesFormSelectionListComponent,
+    buttonToogleGroup: KlesFormButtonToogleGroupComponent
 };
 
 @Directive({

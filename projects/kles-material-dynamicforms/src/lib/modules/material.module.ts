@@ -34,7 +34,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CdkScrollable } from '@angular/cdk/scrolling';
 
 
@@ -75,7 +75,8 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
         MatSliderModule,
         MatButtonModule,
         MatSlideToggleModule,
-        ColorPickerModule
+        ColorPickerModule,
+        MatButtonToggleModule
     ],
 
     exports: [
@@ -114,7 +115,8 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
         MatSlideToggleModule,
         ColorPickerModule,
         ScrollingModule,
-        CdkScrollable 
+        CdkScrollable,
+        MatButtonToggleModule
     ],
     providers: [
         MatDatepickerModule,

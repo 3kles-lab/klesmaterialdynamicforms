@@ -13,6 +13,7 @@ import {
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
+import { KlesFormButtonToogleGroupComponent } from 'projects/kles-material-dynamicforms/src/lib/fields/button-toogle-group.component';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
@@ -596,6 +597,14 @@ export class AppComponent implements OnInit, AfterViewInit {
       iconSvg: 'excel',
       ngClass: 'mat-raised-button',
       tooltip: 'tooltip button',
+    });
+
+    this.fieldsButton.push({
+      component: KlesFormButtonToogleGroupComponent,
+      name: 'buttonToogleTest',
+      options: ['toto', 'titi'],
+      multiple:true,
+      tooltip: 'tooltip button toogle',
     });
   }
 
