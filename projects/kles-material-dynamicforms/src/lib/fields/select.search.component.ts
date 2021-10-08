@@ -157,8 +157,10 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             })
         ).subscribe(this.optionsFiltered$);
 
-        this.group.controls[this.field.name].valueChanges.pipe(
+        this.group.controls[this.field.name]
+        .valueChanges.pipe(
             takeUntil(this._onDestroy),
+            startWith(this.group.controls[this.field.name].value),
             switchMap(selected => {
                 return this.optionsFiltered$.pipe(map(options => {
                     if (!selected) {
