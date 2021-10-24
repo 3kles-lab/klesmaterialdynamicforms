@@ -21,8 +21,8 @@ export interface IButtonChecker extends IButton {
                 matBadge="{{countError()}}" (click)="click($event)">
             </kles-button>
         </span>
-        <span style="text-align: center;" *ngIf="value.busy||false">
-            <span style="text-align: center;margin-right: 10px">
+        <span style="text-align: center;">
+            <span style="text-align: center;margin-right: 10px" *ngIf="value.busy||false">
                 <mat-spinner [diameter]="25"></mat-spinner>
             </span>
             <span *ngIf="value.message" style="margin-right: 10px">
