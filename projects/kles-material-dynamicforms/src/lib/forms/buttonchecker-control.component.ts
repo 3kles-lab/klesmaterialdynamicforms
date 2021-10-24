@@ -18,6 +18,7 @@ export interface IButtonChecker extends IButton {
                 [icon]="icon" [iconSvg]="iconSvg"
                 [value]="value" 
                 [tooltip]="tooltip"
+                [disabled]="disabled"
                 matBadge="{{countError()}}" (click)="click($event)">
             </kles-button>
         </span>
@@ -26,7 +27,7 @@ export interface IButtonChecker extends IButton {
                 <mat-spinner [diameter]="25"></mat-spinner>
             </span>
             <span *ngIf="value.message" style="margin-right: 10px">
-                {{value.message|translate}}...
+                {{value.message|translate}}
             </span>
         </span>
     `,

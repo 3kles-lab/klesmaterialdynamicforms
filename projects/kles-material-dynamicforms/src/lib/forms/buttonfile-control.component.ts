@@ -14,6 +14,7 @@ export interface IButtonFile extends IButton {
             [classButton]="classButton" 
             [name]="name" [label]="label" [color]="color" 
             [icon]="icon" [iconSvg]="iconSvg"
+            [disabled]="disabled"
             [value]="value" (click)="click($event)">
         </kles-button>
     `,
