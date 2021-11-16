@@ -20,7 +20,7 @@ import { KlesFormInputComponent } from './input.component';
 
                 <ng-container *ngIf="field.autocompleteComponent">
                     <mat-option *ngFor="let option of filteredOption | async" [value]="option">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field">
                         </ng-container>
                     </mat-option>
                 </ng-container>

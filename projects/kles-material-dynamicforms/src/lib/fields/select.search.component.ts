@@ -11,10 +11,10 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
-        (openedChange)="openChange($event)" 
+        (openedChange)="openChange($event)"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
-            <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value"></ng-container>
+            <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
         </mat-select-trigger>
 
         <ng-container *ngIf="field.virtualScroll">
@@ -47,19 +47,19 @@ import { KlesFieldAbstract } from './field.abstract';
 
                 <ng-container *ngIf="field.autocompleteComponent">
                     <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                     </mat-option>
 
                     <ng-container *ngIf="field.multiple">
                         <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
                         style="display:none">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                         </mat-option>
                     </ng-container>
 
                     <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
                         <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                         </mat-option>
                     </ng-container>
                 </ng-container>
@@ -85,7 +85,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
             <ng-container *ngIf="field.autocompleteComponent">
                 <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                 </mat-option>
             </ng-container>
         </ng-container>

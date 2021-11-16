@@ -17,11 +17,10 @@ import { KlesFieldAbstract } from './field.abstract';
 
             <ng-container *ngIf="field.autocompleteComponent">
                 <mat-list-option  *ngFor="let item of options$ | async;" [value]="item">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item"></ng-container>
+                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                 </mat-list-option>
             </ng-container>
         </mat-selection-list>
-
     </div>
 `,
     styles: ['mat-selection-list {width: calc(100%);height: 250px; overflow:auto}'],

@@ -1,4 +1,6 @@
 import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
+import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+
 
 @Directive({
     selector: '[klesComponent]'
@@ -6,6 +8,7 @@ import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, C
 export class KlesComponentDirective implements OnInit, OnChanges {
     @Input() component: Type<any>;
     @Input() value: any;
+    @Input() field?: IKlesFieldConfig;
 
     componentRef: ComponentRef<any>;
 
@@ -35,5 +38,6 @@ export class KlesComponentDirective implements OnInit, OnChanges {
         this.componentRef = this.container.createComponent(factory);
         this.componentRef.instance.component = this.component;
         this.componentRef.instance.value = this.value;
+        this.componentRef.instance.field = this.field;
     }
 }
