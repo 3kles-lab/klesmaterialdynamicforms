@@ -121,7 +121,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             field.value.forEach((data: any) => {
                 const subGroup = this.fb.group({});
                 field.collections.forEach(subfield => {
-                    const control=this.createControl(subfield);
+                    const control = this.createControl(subfield);
                     subGroup.addControl(subfield.name, control);
                 });
                 array.push(subGroup);
@@ -131,7 +131,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             const subGroup = this.fb.group({});
             if (field.collections && Array.isArray(field.collections)) {
                 field.collections.forEach(subfield => {
-                    const control=this.createControl(subfield);
+                    const control = this.createControl(subfield);
                     subGroup.addControl(subfield.name, control);
                 });
             }
@@ -140,8 +140,11 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         } else {
             const control = this.fb.control(
                 field.value,
-                this.bindValidations(field.validations || []),
-                this.bindAsyncValidations(field.asyncValidations || [])
+                {
+                    validators: this.bindValidations(field.validations || []),
+                    asyncValidators: this.bindAsyncValidations(field.asyncValidations || []),
+                    updateOn: field.updateOn || 'change'
+                }
             );
             if (field.disabled) {
                 control.disable();

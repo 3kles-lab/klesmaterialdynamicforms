@@ -46,4 +46,5 @@ export interface IKlesFieldConfig {
     itemSize?: number; // itemSize for virtual scroll viewport
     pending?: boolean;
     searchKeys?: string[]; //list of keys for multiple searches
+    updateOn?: 'change' | 'blur' | 'submit';
 }
