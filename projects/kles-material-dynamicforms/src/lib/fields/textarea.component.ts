@@ -7,7 +7,7 @@ import { KlesFieldAbstract } from "./field.abstract";
     <mat-form-field [formGroup]="group" class="form-element">
         <textarea matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" 
         [formControlName]="field.name" cdkTextareaAutosize [placeholder]="field.placeholder | translate"
-        [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows">
+        [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows"  [maxlength]="field.maxLength">
         </textarea>
 
 
