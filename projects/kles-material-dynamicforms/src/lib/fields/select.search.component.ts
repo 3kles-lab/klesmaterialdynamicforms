@@ -11,7 +11,7 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
-        (openedChange)="openChange($event)"
+        (openedChange)="openChange($event)" [compareWith]="compareFn"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
@@ -158,24 +158,24 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         ).subscribe(this.optionsFiltered$);
 
         this.group.controls[this.field.name]
-        .valueChanges.pipe(
-            takeUntil(this._onDestroy),
-            startWith(this.group.controls[this.field.name].value),
-            switchMap(selected => {
-                return this.optionsFiltered$.pipe(map(options => {
-                    if (!selected) {
-                        return false;
-                    }
-                    if (options.length < selected.length) {
-                        return options.length > 0 && options.every(o => selected.includes(o));
-                    } else {
-                        return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
-                    }
-                }));
-            })
-        ).subscribe(isChecked => {
-            this.selectAllControl.setValue(isChecked);
-        });
+            .valueChanges.pipe(
+                takeUntil(this._onDestroy),
+                startWith(this.group.controls[this.field.name].value),
+                switchMap(selected => {
+                    return this.optionsFiltered$.pipe(map(options => {
+                        if (!selected) {
+                            return false;
+                        }
+                        if (options.length < selected.length) {
+                            return options.length > 0 && options.every(o => selected.includes(o));
+                        } else {
+                            return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
+                        }
+                    }));
+                })
+            ).subscribe(isChecked => {
+                this.selectAllControl.setValue(isChecked);
+            });
     }
 
     ngOnDestroy(): void {
@@ -189,7 +189,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 if (options.length > 0) {
                     this.group.controls[this.field.name].patchValue(options.slice());
                 }
-            })
+            });
 
         } else {
             this.group.controls[this.field.name].patchValue([]);
@@ -203,5 +203,12 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 this.cdkVirtualScrollViewport.checkViewportSize();
             }
         }
+    }
+
+    compareFn = (o1: any, o2: any) => {
+        if (this.field.property && o1 && o2) {
+            return o1[this.field.property] === o2[this.field.property];
+        }
+        return o1 === o2;
     }
 }

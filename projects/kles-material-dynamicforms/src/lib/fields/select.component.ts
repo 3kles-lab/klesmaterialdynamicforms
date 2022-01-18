@@ -10,7 +10,7 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id"
-        (openedChange)="openChange($event)"
+        (openedChange)="openChange($event)" [compareWith]="compareFn"
         [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
@@ -109,5 +109,12 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                 this.cdkVirtualScrollViewport.checkViewportSize();
             }
         }
+    }
+
+    compareFn = (o1: any, o2: any) => {
+        if (this.field.property && o1 && o2) {
+            return o1[this.field.property] === o2[this.field.property];
+        }
+        return o1 === o2;
     }
 }
