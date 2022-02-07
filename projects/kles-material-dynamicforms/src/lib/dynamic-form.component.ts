@@ -1,7 +1,5 @@
-import { OnInit, Component, Input, Output, EventEmitter, AfterContentInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, ValidationErrors, AsyncValidator, AbstractControl } from '@angular/forms';
-import { KlesFormGroupComponent } from './fields/group.component';
-import { KlesFormListFieldComponent } from './fields/list-field.component';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
 
@@ -115,17 +113,38 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     private createControl(field: IKlesFieldConfig): AbstractControl {
 
-        if (field.type === 'listField') {
+        if (field.type === 'array') {
             const array = this.fb.array([]);
 
-            field.value.forEach((data: any) => {
-                const subGroup = this.fb.group({});
+            if (field.value && Array.isArray(field.value)) {
+                if (field.collections && Array.isArray(field.collections)) {
+                    field.value.forEach(val => {
+                        const group = this.fb.group({});
+                        field.collections.forEach(subfield => {
+                            const data = val[subfield.name] || null;
+                            const control = this.createControl({ ...subfield, ...(data && { value: data }) });
+                            group.addControl(subfield.name, control);
+                        });
+                        array.push(group);
+                    });
+                }
+            } else {
+                const group = this.fb.group({});
                 field.collections.forEach(subfield => {
-                    const control = this.createControl(subfield);
-                    subGroup.addControl(subfield.name, control);
+                    const control = this.createControl({ ...subfield });
+                    group.addControl(subfield.name, control);
                 });
-                array.push(subGroup);
-            });
+                array.push(group);
+            }
+
+            // field.value.forEach((data: any) => {
+            //     const subGroup = this.fb.group({});
+            //     field.collections.forEach(subfield => {
+            //         const control = this.createControl(subfield);
+            //         subGroup.addControl(subfield.name, control);
+            //     });
+            //     array.push(subGroup);
+            // });
             return array;
         } else if (field.type === 'group') {
             const subGroup = this.fb.group({});

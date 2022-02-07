@@ -14,7 +14,7 @@ import {
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'projects/kles-material-dynamicforms/src/lib/fields/button-toogle-group.component';
-import { autocompleteObjectValidator, autocompleteStringValidator, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { SelectOptionComponent } from './select/select-option.component';
@@ -234,6 +234,33 @@ export class AppComponent implements OnInit, AfterViewInit {
                 tooltip: 'update.text',
               }
             ]
+          }
+        ]
+      }
+    )
+
+    this.fields.push(
+      {
+        type: 'array',
+        name: 'arrayField',
+        value: [{ firstElement: 'aaa', secondElement: 'bbb' }, { firstElement: 'cccc' }],
+        collections: [
+          {
+            component: KlesFormInputComponent,
+            name: 'firstElement',
+            placeholder: 'firstElement',
+            value: 'aaaa'
+          },
+          {
+            component: KlesFormInputComponent,
+            name: 'secondElement',
+            placeholder: 'secondElement'
+          },
+          {
+            component: KlesFormButtonComponent,
+            name: 'matbutton',
+            label: 'mat button',
+            color: 'accent',
           }
         ]
       }
@@ -603,7 +630,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormButtonToogleGroupComponent,
       name: 'buttonToogleTest',
       options: ['toto', 'titi'],
-      multiple:true,
+      multiple: true,
       tooltip: 'tooltip button toogle',
     });
   }

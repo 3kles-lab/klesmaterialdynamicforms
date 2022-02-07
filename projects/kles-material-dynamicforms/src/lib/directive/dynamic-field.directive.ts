@@ -19,6 +19,7 @@ import { KlesFormLineBreakComponent } from '../fields/line-break.component';
 import { KlesFormLinkComponent } from '../fields/link.component';
 import { KlesFormSelectionListComponent } from '../fields/selection-list.component';
 import { KlesFormButtonToogleGroupComponent } from '../fields/button-toogle-group.component';
+import { KlesFormArrayComponent } from '../fields/array.component';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -29,6 +30,7 @@ const componentMapper = {
     radio: KlesFormRadioComponent,
     checkbox: KlesFormCheckboxComponent,
     listField: KlesFormListFieldComponent,
+    array: KlesFormArrayComponent,
     color: KlesFormColorComponent,
     chip: KlesFormChipComponent,
     group: KlesFormGroupComponent,
