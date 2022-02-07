@@ -4,10 +4,10 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-array',
     template: `
-    <div [formGroup]="group" class="group-container">
+    <div [formGroup]="group">
         <ng-container [formArrayName]="field.name">
-            <div class="group-container" *ngFor="let subGroup of formArray.controls let index = index;" [style.flex-direction]="field.direction || 'row'"
-            [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
+            <div class="group-container" *ngFor="let subGroup of formArray.controls let index = index;"
+            [ngClass]="field.direction === 'column' ? 'column': 'row'">
                 <ng-container *ngFor="let subfield of field.collections;"
                     klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
                 </ng-container>
@@ -17,7 +17,9 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
-        '.group-container {display:flex; flex-direction: inherit}'
+        '.group-container {display:flex; flex-direction: inherit}',
+        '.row { gap:10px; flex-direction: row }',
+        '.column { flex-direction: column, gap:0px}'
     ]
 })
 export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit {
