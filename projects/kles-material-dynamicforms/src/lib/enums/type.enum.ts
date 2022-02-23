@@ -1,5 +1,7 @@
 export enum EnumType {
     text = 'text',
+    button = 'button',
+    checkbox = 'checkbox',
     number = 'number',
     time = 'time',
     date = 'date',
