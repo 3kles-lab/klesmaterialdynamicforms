@@ -2,9 +2,10 @@ import { IKlesValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn, FormGroup } from '@angular/forms';
 import { PipeTransform, Type } from '@angular/core';
 import { Subject } from 'rxjs';
+import { EnumType } from '../enums/type.enum';
 
 export interface IKlesFieldConfig {
-    type?: string;// Mapper type if(type && !component)=>type
+    type?: EnumType;// Mapper type if(type && !component)=>type
     name: string;// Name Field (key for FormControlName)
     component?: Type<any>;
     id?: string;// Attribut html id

@@ -42,6 +42,9 @@ export * from './lib/fields/selection-list.component';
 export * from './lib/fields/button-toogle-group.component';
 export * from './lib/fields/array.component';
 
+/**ENUMS */
+export * from './lib/enums/type.enum';
+
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';
 export * from './lib/interfaces/field.interface';

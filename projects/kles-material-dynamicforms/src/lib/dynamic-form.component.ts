@@ -1,5 +1,6 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl } from '@angular/forms';
+import { EnumType } from './enums/type.enum';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
 
@@ -103,7 +104,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         this.fields
             .filter(field => !this.form.controls[field.name])
             .forEach(field => {
-                if (field.type === 'lineBreak') {
+                if (field.type === EnumType.lineBreak) {
                     return;
                 }
                 const control = this.createControl(field);
@@ -113,7 +114,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     private createControl(field: IKlesFieldConfig): AbstractControl {
 
-        if (field.type === 'array') {
+        if (field.type === EnumType.array) {
             const array = this.fb.array([]);
 
             if (field.value && Array.isArray(field.value)) {
@@ -146,7 +147,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             //     array.push(subGroup);
             // });
             return array;
-        } else if (field.type === 'group') {
+        } else if (field.type === EnumType.group) {
             const subGroup = this.fb.group({});
             if (field.collections && Array.isArray(field.collections)) {
                 field.collections.forEach(subfield => {
@@ -229,7 +230,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
         this.fields.forEach(field => {
 
-            if (field.type === 'lineBreak') {
+            if (field.type === EnumType.lineBreak) {
                 return;
             }
             const control = this.createControl(field);
