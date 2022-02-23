@@ -6,6 +6,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAda
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { EnumType } from 'kles-material-dynamicforms';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
@@ -13,7 +14,7 @@ import {
   KlesFormIconComponent,
   KlesFormInputComponent, KlesFormLabelComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
-import { KlesFormButtonToogleGroupComponent } from 'projects/kles-material-dynamicforms/src/lib/fields/button-toogle-group.component';
+import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
@@ -194,7 +195,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.fields.push(
       {
-        type: 'group',
+        type: EnumType.group,
         name: 'environment',
         direction: 'column',
         collections: [
@@ -241,7 +242,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.fields.push(
       {
-        type: 'array',
+        type: EnumType.array,
         name: 'arrayField',
         value: [{ firstElement: 'aaa', secondElement: 'bbb' }, { firstElement: 'cccc' }],
         collections: [
