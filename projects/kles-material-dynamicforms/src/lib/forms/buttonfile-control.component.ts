@@ -67,12 +67,6 @@ export class KlesButtonFileComponent extends KlesButtonComponent implements Cont
             const files = input.files;
             let fileContent = [];
             if (files && files.length) {
-                console.log('Filename: ' + files[0].name);
-                console.log('Type: ' + files[0].type);
-                console.log('Size: ' + files[0].size + ' bytes');
-
-                console.log('Files=', files.length);
-
                 for (let i = 0; i < files.length; i++) {
                     try {
                         fileContent[i] = await this.readUploadedFile(files[i]);

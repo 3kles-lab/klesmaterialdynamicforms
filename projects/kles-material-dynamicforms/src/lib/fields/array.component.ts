@@ -32,8 +32,5 @@ export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit 
         // this.subGroup = this.group.controls[this.field.name] as FormGroup;
         super.ngOnInit();
         this.formArray = this.group.controls[this.field.name] as FormArray;
-        console.log('on arrive ici')
-        console.log(this.field)
-        console.log(this.formArray)
     }
 }

@@ -64,7 +64,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('ngOnCHange',changes)
         if (changes.group) {
             this.group = changes.group.currentValue;
         }
