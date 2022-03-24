@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { KlesFieldAbstract } from "./field.abstract";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
     selector: 'kles-form-textarea',
@@ -21,8 +21,12 @@ import { KlesFieldAbstract } from "./field.abstract";
     `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit(): void {
         super.ngOnInit();
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }

@@ -2,7 +2,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { Observable, of, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
@@ -111,7 +111,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     options$: Observable<any[]>;
     optionsFiltered$ = new ReplaySubject<any[]>(1);
 
-    private _onDestroy = new Subject<void>();
+    // private _onDestroy = new Subject<void>();
 
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
@@ -179,7 +179,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     }
 
     ngOnDestroy(): void {
-        this._onDestroy.next();
+        // this._onDestroy.next();
+        super.ngOnDestroy();
     }
 
 

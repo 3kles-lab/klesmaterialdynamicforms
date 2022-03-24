@@ -1,4 +1,4 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
@@ -17,9 +17,13 @@ import { KlesFieldAbstract } from './field.abstract';
     `,
     styles: []
 })
-export class KlesFormButtonFileComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormButtonFileComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         super.ngOnInit();
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }

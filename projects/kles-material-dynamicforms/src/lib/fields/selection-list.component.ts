@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
@@ -25,7 +25,7 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-selection-list {width: calc(100%);height: 250px; overflow:auto}'],
 })
-export class KlesFormSelectionListComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormSelectionListComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     options$: Observable<any[]>;
 
@@ -37,5 +37,8 @@ export class KlesFormSelectionListComponent extends KlesFieldAbstract implements
         } else {
             this.options$ = this.field.options;
         }
+    }
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
 
@@ -15,7 +15,7 @@ import { KlesFieldAbstract } from './field.abstract';
         </div>
 `
 })
-export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     options$: Observable<any[]>;
 
@@ -28,11 +28,7 @@ export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implem
             this.options$ = this.field.options;
         }
     }
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+    }
 }
-
-
-// <mat-button-toggle-group [formControlName]="field.name">
-//                 <mat-button-toggle value="bold">Bold</mat-button-toggle>
-//                 <mat-button-toggle value="italic">Italic</mat-button-toggle>
-//                 <mat-button-toggle value="underline">Underline</mat-button-toggle>
-//             </mat-button-toggle-group>

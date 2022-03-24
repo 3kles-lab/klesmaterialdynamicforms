@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { KlesFieldAbstract } from './field.abstract';
@@ -20,6 +20,10 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: []
 })
-export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+    }
 }

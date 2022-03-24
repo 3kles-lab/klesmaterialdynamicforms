@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { KlesFieldAbstract } from './field.abstract';
 @Component({
@@ -22,7 +22,7 @@ import { KlesFieldAbstract } from './field.abstract';
         '.column { flex-direction: column, gap:0px}'
     ]
 })
-export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     // subGroup: FormGroup
 
@@ -32,5 +32,9 @@ export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit 
         // this.subGroup = this.group.controls[this.field.name] as FormGroup;
         super.ngOnInit();
         this.formArray = this.group.controls[this.field.name] as FormArray;
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }

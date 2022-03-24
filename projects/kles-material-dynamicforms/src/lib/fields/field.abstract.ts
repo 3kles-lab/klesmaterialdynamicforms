@@ -1,13 +1,16 @@
 import { IKlesField } from '../interfaces/field.interface';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { FormGroup } from '@angular/forms';
-import { AfterViewInit, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit {
+export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit, OnDestroy {
     field: IKlesFieldConfig;
     group: FormGroup;
     siblingFields: IKlesFieldConfig[];
+
+    protected _onDestroy = new Subject<void>();
 
     ngOnInit(): void {
         // this.applyPipeTransform();
@@ -16,18 +19,22 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
         }
 
         this.group.controls[this.field.name]?.valueChanges
-            .pipe()
+            .pipe(takeUntil(this._onDestroy))
             .subscribe(val => {
                 if (this.field.valueChanges) {
                     this.field.valueChanges(this.field, this.group, this.siblingFields, val);
                 }
-
                 // this.applyPipeTransform();
             });
     }
 
     ngAfterViewInit(): void {
 
+    }
+
+    ngOnDestroy(): void {
+        this._onDestroy.next();
+        this._onDestroy.complete();
     }
 
     applyPipeTransform() {
@@ -46,7 +53,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
                             pipeVal = p.pipe.transform(val);
                         }
                         control.patchValue(pipeVal, { onlySelf: true, emitEvent: false });
-                    })
+                    });
                 }
             }
         }

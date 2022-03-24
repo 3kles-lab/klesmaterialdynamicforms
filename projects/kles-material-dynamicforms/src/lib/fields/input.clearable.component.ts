@@ -1,4 +1,4 @@
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFormInputComponent } from './input.component';
 
 @Component({
@@ -48,6 +48,9 @@ import { KlesFormInputComponent } from './input.component';
     `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit {
+export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit, OnDestroy {
 
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+    }
 }

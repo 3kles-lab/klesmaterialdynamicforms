@@ -1,5 +1,5 @@
 import { KlesFieldAbstract } from './field.abstract';
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 @Component({
     selector: 'kles-form-color',
     template: `
@@ -22,10 +22,10 @@ import { OnInit, Component } from '@angular/core';
     `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
 
-    ngOnInit() {super.ngOnInit(); }
+    ngOnInit() { super.ngOnInit(); }
 
     invertColor(hex, bw): string {
         if (hex.indexOf('#') === 0) {
@@ -52,5 +52,9 @@ export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit 
         const b1 = (255 - b).toString(16);
         // pad each with zeros and return
         return "#" + r1 + g1 + b1;
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }

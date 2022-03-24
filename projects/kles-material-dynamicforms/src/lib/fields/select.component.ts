@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -81,7 +81,7 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
@@ -100,6 +100,10 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         } else {
             this.options$ = this.field.options;
         }
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 
     openChange($event: boolean) {

@@ -1,5 +1,5 @@
 import { KlesFieldAbstract } from './field.abstract';
-import { OnInit, Component } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { startWith, map, switchMap } from 'rxjs/operators';
 
@@ -46,7 +46,7 @@ import { startWith, map, switchMap } from 'rxjs/operators';
     `,
     styles: ['mat-form-field {width: calc(100%)}']
 })
-export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     filteredOption: Observable<any[]>;
     options$: Observable<any[]>;
@@ -104,5 +104,9 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit 
             }
             return value ? value : '';
         }
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }

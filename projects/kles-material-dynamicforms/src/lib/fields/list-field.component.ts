@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { FormGroup, FormArray, FormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
@@ -32,7 +32,7 @@ import { IKlesValidator } from '../interfaces/validator.interface';
     `,
     styles: []
 })
-export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     formArray: FormArray;
 
@@ -95,6 +95,8 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         return null;
     }
 
-
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+    }
 }
 

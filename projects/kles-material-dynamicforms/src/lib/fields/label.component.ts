@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
 
 
@@ -13,10 +13,14 @@ import { KlesFieldAbstract } from './field.abstract';
     </div>
 `
 })
-export class KlesFormLabelComponent extends KlesFieldAbstract implements OnInit {
+export class KlesFormLabelComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.group.controls[this.field.name].disable();
         super.ngOnInit();
+    }
+
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
     }
 }
