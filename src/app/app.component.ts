@@ -355,6 +355,15 @@ export class AppComponent implements OnInit, AfterViewInit {
       value: 'input clearable',
       component: KlesFormInputClearableComponent,
     });
+    this.fieldsInput.push({
+      name: 'inputcleardisabled',
+      placeholder: 'Input clearable disabled',
+      inputType: 'text',
+      tooltip: 'tooltip input clear disabled',
+      value: 'input clearable disabled',
+      disabled: true,
+      component: KlesFormInputClearableComponent,
+    });
 
     this.fieldsInput.push({
       name: 'selectTest',
