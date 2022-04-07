@@ -19,11 +19,11 @@ import { KlesFieldAbstract } from './field.abstract';
 
         <ng-container *ngIf="!field.virtualScroll">
             <ng-container *ngIf="!field.autocompleteComponent">
-                <mat-option *ngFor="let item of options$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                <mat-option *ngFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
             </ng-container>
 
             <ng-container *ngIf="field.autocompleteComponent">
-                <mat-option *ngFor="let item of options$ | async" [value]="item">
+                <mat-option *ngFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
                     <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                 </mat-option>
             </ng-container>
@@ -32,7 +32,7 @@ import { KlesFieldAbstract } from './field.abstract';
         <ng-container *ngIf="field.virtualScroll">
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=5*48>
                 <ng-container *ngIf="!field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item">
+                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item"  [disabled]="item?.disabled">
                     {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
                     </mat-option>
 
@@ -51,7 +51,7 @@ import { KlesFieldAbstract } from './field.abstract';
                 </ng-container>
 
                 <ng-container *ngIf="field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item">
+                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
                         <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                     </mat-option>
                     <ng-container *ngIf="field.multiple">

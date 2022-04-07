@@ -373,7 +373,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       triggerComponent: SelectTriggerComponent,
       autocompleteComponent: SelectOptionComponent,
       multiple: true,
-      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa', disabled: true }, { BUAR: 'C', TX40: 'bbb' }])
       // options: of(['aaa', 'bbb'])
     });
 

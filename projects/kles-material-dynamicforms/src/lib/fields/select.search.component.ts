@@ -29,7 +29,7 @@ import { KlesFieldAbstract } from './field.abstract';
                     (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
                     </mat-checkbox>
-                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
                     
                     <ng-container *ngIf="field.multiple">
                         <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
@@ -46,7 +46,7 @@ import { KlesFieldAbstract } from './field.abstract';
                 </ng-container>
 
                 <ng-container *ngIf="field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item">
+                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
                         <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                     </mat-option>
 
@@ -80,11 +80,11 @@ import { KlesFieldAbstract } from './field.abstract';
             </mat-checkbox>
 
             <ng-container *ngIf="!field.autocompleteComponent">
-                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
             </ng-container>
 
             <ng-container *ngIf="field.autocompleteComponent">
-                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item">
+                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
                     <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                 </mat-option>
             </ng-container>
@@ -162,16 +162,18 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 takeUntil(this._onDestroy),
                 startWith(this.group.controls[this.field.name].value),
                 switchMap(selected => {
-                    return this.optionsFiltered$.pipe(map(options => {
-                        if (!selected) {
-                            return false;
-                        }
-                        if (options.length < selected.length) {
-                            return options.length > 0 && options.every(o => selected.includes(o));
-                        } else {
-                            return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
-                        }
-                    }));
+                    return this.optionsFiltered$.pipe(
+                        map((options) => options.filter((option) => !option?.disabled)),
+                        map(options => {
+                            if (!selected) {
+                                return false;
+                            }
+                            if (options.length < selected.length) {
+                                return options.length > 0 && options.every(o => selected.includes(o));
+                            } else {
+                                return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
+                            }
+                        }));
                 })
             ).subscribe(isChecked => {
                 this.selectAllControl.setValue(isChecked);
@@ -186,7 +188,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
     toggleAllSelection(state) {
         if (state.checked) {
-            this.optionsFiltered$.pipe(take(1)).subscribe(options => {
+            this.optionsFiltered$.pipe(take(1), map((options) => options.filter((option) => !option?.disabled))).subscribe(options => {
                 if (options.length > 0) {
                     this.group.controls[this.field.name].patchValue(options.slice());
                 }
