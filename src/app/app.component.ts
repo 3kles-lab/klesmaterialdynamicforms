@@ -197,45 +197,70 @@ export class AppComponent implements OnInit, AfterViewInit {
       {
         type: EnumType.group,
         name: 'environment',
-        direction: 'column',
+        direction: 'row',
         collections: [
           {
-            name: 'key',
-            value: 'KeyCRUD',
-            component: KlesFormTextComponent,
-          } as IKlesFieldConfig,
+            component: KlesFormInputClearableComponent,
+            name: 'read',
+            label: 'read.text',
+            tooltip: 'read.text',
+          },
           {
-            type: 'group',
-            name: 'crud',
-            direction: 'row',
-            collections: [
-              {
-                component: KlesFormCheckboxComponent,
-                name: 'read',
-                label: 'read.text',
-                tooltip: 'read.text',
-              },
-              {
-                component: KlesFormCheckboxComponent,
-                name: 'create',
-                label: 'create.text',
-                tooltip: 'create.text',
+            component: KlesFormInputClearableComponent,
+            name: 'create',
+            label: 'create.text',
+            tooltip: 'create.text',
 
-              },
-              {
-                component: KlesFormCheckboxComponent,
-                name: 'delete',
-                label: 'delete.text',
-                tooltip: 'delete.text',
-              },
-              {
-                component: KlesFormCheckboxComponent,
-                name: 'update',
-                label: 'update.text',
-                tooltip: 'update.text',
-              }
-            ]
+          },
+          {
+            component: KlesFormInputClearableComponent,
+            name: 'delete',
+            label: 'delete.text',
+            tooltip: 'delete.text',
+          },
+          {
+            component: KlesFormInputClearableComponent,
+            name: 'update',
+            label: 'update.text',
+            tooltip: 'update.text',
           }
+          // {
+          //   name: 'key',
+          //   value: 'KeyCRUD',
+          //   component: KlesFormTextComponent,
+          // } as IKlesFieldConfig,
+          // {
+          //   type: 'group',
+          //   name: 'crud',
+          //   direction: 'column',
+          //   collections: [
+          //     {
+          //       component: KlesFormInputClearableComponent,
+          //       name: 'read',
+          //       label: 'read.text',
+          //       tooltip: 'read.text',
+          //     },
+          //     {
+          //       component: KlesFormInputClearableComponent,
+          //       name: 'create',
+          //       label: 'create.text',
+          //       tooltip: 'create.text',
+
+          //     },
+          //     {
+          //       component: KlesFormInputClearableComponent,
+          //       name: 'delete',
+          //       label: 'delete.text',
+          //       tooltip: 'delete.text',
+          //     },
+          //     {
+          //       component: KlesFormInputClearableComponent,
+          //       name: 'update',
+          //       label: 'update.text',
+          //       tooltip: 'update.text',
+          //     }
+          //   ]
+          // }
         ]
       }
     )

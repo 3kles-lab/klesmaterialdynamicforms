@@ -5,7 +5,8 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: 'kles-group',
     template: `
     <div [formGroup]="group" class="group-container">
-        <div [formGroupName]="field.name" class="group-container" [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.ngClass" >
+        <div [formGroupName]="field.name" class="group-container" [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.ngClass"
+        [ngClass]="field.direction === 'column' ? null: 'row'" >
             <ng-container *ngFor="let subfield of field.collections;" klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
             </ng-container>
         </div>
@@ -13,7 +14,8 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
-        '.group-container {display:flex; flex-direction: inherit}'
+        '.row { gap:10px;}',
+        '.group-container {display:flex; flex-direction: inherit; width: inherit; flex-wrap: wrap}'
     ]
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
