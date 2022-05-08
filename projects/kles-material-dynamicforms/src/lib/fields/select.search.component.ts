@@ -9,7 +9,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-form-select-search',
     template: `
-    <mat-form-field class="margin-top" [formGroup]="group">
+    <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
         (openedChange)="openChange($event)" [compareWith]="compareFn"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">

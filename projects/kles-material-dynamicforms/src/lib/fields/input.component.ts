@@ -6,7 +6,7 @@ import { startWith, map, switchMap } from 'rxjs/operators';
 @Component({
     selector: 'kles-form-input',
     template: `
-    <mat-form-field [formGroup]="group" class="form-element">
+    <mat-form-field [formGroup]="group" [color]="field.color" class="form-element">
 
         <ng-container *ngIf="field.autocomplete; else notAutoComplete">
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType" 
