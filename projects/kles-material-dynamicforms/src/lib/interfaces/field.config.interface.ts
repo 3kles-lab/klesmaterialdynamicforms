@@ -48,4 +48,5 @@ export interface IKlesFieldConfig {
     pending?: boolean;
     searchKeys?: string[]; //list of keys for multiple searches
     updateOn?: 'change' | 'blur' | 'submit';
+    debounceTime?: number;
 }

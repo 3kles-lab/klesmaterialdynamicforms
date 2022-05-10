@@ -14,8 +14,9 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
-        '.row { gap:10px;}',
-        '.group-container {display:flex; flex-direction: inherit; width: inherit; flex-wrap: wrap}'
+        // '.row { gap:10px;}',
+        // '.group-container {display:flex; flex-direction: inherit; width: inherit; flex-wrap: wrap}'
+        '.group-container {display:flex; flex-direction: inherit; width: inherit;}'
     ]
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
