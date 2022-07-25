@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray, FormGroup } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-array',
@@ -18,8 +18,8 @@ import { KlesFieldAbstract } from './field.abstract';
     styles: ['mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
         '.group-container {display:flex; flex-direction: inherit}',
-        '.row { gap:10px; flex-direction: row }',
-        '.column { flex-direction: column, gap:0px}'
+        '.row { gap: 10px; flex-direction: row }',
+        '.column { flex-direction: column; gap: 0px}'
     ]
 })
 export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
