@@ -1,5 +1,5 @@
 import { IKlesValidator } from './validator.interface';
-import { ValidatorFn, AsyncValidatorFn, FormGroup } from '@angular/forms';
+import { ValidatorFn, AsyncValidatorFn, UntypedFormGroup } from '@angular/forms';
 import { PipeTransform, Type } from '@angular/core';
 import { Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
@@ -41,7 +41,7 @@ export interface IKlesFieldConfig {
         options?: any[]
     }[];
     direction?: 'row' | 'column';
-    valueChanges?: ((field: IKlesFieldConfig, group: FormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void);
+    valueChanges?: ((field: IKlesFieldConfig, group: UntypedFormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void);
     triggerComponent?: Type<any>; //trigger component to customize trigger label in select
     virtualScroll?: boolean; //To activate virtual scroll
     itemSize?: number; // itemSize for virtual scroll viewport

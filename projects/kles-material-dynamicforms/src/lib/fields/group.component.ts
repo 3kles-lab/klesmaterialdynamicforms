@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-group',
@@ -21,10 +21,10 @@ import { KlesFieldAbstract } from './field.abstract';
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
-    subGroup: FormGroup;
+    subGroup: UntypedFormGroup;
 
     ngOnInit() {
-        this.subGroup = this.group.controls[this.field.name] as FormGroup;
+        this.subGroup = this.group.controls[this.field.name] as UntypedFormGroup;
         super.ngOnInit();
     }
 

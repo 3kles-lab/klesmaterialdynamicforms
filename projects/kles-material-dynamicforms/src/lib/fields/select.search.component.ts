@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -104,8 +104,8 @@ import { KlesFieldAbstract } from './field.abstract';
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
-    searchControl = new FormControl();
-    selectAllControl = new FormControl(false);
+    searchControl = new UntypedFormControl();
+    selectAllControl = new UntypedFormControl(false);
 
 
     options$: Observable<any[]>;

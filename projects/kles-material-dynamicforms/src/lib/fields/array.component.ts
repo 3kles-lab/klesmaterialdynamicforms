@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { UntypedFormArray, FormGroup } from '@angular/forms';
 import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-array',
@@ -26,12 +26,12 @@ export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit,
 
     // subGroup: FormGroup
 
-    formArray: FormArray;
+    formArray: UntypedFormArray;
 
     ngOnInit() {
         // this.subGroup = this.group.controls[this.field.name] as FormGroup;
         super.ngOnInit();
-        this.formArray = this.group.controls[this.field.name] as FormArray;
+        this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
     }
 
     ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { KlesFormLabelComponent } from '../fields/label.component';
 import { KlesFormInputComponent } from '../fields/input.component';
@@ -47,7 +47,7 @@ const componentMapper = {
 })
 export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() field: IKlesFieldConfig;
-    @Input() group: FormGroup;
+    @Input() group: UntypedFormGroup;
     @Input() siblingFields: IKlesFieldConfig[];
 
     componentRef: ComponentRef<any>;

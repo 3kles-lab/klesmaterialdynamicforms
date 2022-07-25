@@ -1,5 +1,5 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl } from '@angular/forms';
 import { EnumType } from './enums/type.enum';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
@@ -37,7 +37,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     @Input() direction: 'column' | 'row' = 'column';
 
-    form: FormGroup;
+    form: UntypedFormGroup;
     orientationClass: 'dynamic-form-column' | 'dynamic-form-row' = 'dynamic-form-column';
     orientationItemClass: 'dynamic-form-column-item' | 'dynamic-form-row-item' = 'dynamic-form-column-item';
 
@@ -45,7 +45,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         return this.form.value;
     }
 
-    constructor(private fb: FormBuilder) { }
+    constructor(private fb: UntypedFormBuilder) { }
 
 
     ngOnInit() {
@@ -270,7 +270,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         return null;
     }
 
-    private validateAllFormFields(formGroup: FormGroup) {
+    private validateAllFormFields(formGroup: UntypedFormGroup) {
         Object.keys(formGroup.controls).forEach(field => {
             const control = formGroup.get(field);
             control.markAsTouched({ onlySelf: true });

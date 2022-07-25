@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
-import { FormGroup, FormArray, FormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
 
 @Component({
@@ -34,18 +34,18 @@ import { IKlesValidator } from '../interfaces/validator.interface';
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
-    formArray: FormArray;
+    formArray: UntypedFormArray;
 
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: UntypedFormBuilder) {
         super();
     }
 
     ngOnInit(): void {
-        this.formArray = this.group.controls[this.field.name] as FormArray;
+        this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
         super.ngOnInit();
     }
 
-    private createFormGroup(): FormGroup {
+    private createFormGroup(): UntypedFormGroup {
         const group = this.fb.group({});
         this.field.collections.forEach(item => {
             const control = this.fb.control(
