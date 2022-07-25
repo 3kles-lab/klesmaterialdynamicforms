@@ -44,7 +44,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
@@ -133,7 +132,7 @@
       "prefix": "kles",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/kles-material-dynamicforms/tsconfig.lib.json",
             "project": "projects/kles-material-dynamicforms/ng-package.json"
