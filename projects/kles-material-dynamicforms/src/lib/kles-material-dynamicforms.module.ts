@@ -79,35 +79,31 @@ const components = [
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
-  declarations: [
-    components,
-    directives,
-    pipes
-
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    TranslateModule,
-    FlexLayoutModule,
-    FormsModule,
-    MaterialModule,
-    ColorPickerModule,
-    NgxMatSelectSearchModule
-  ],
-  providers: [
-    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
-    pipes
-  ],
-  entryComponents: [
-    components
-  ],
-  exports: [
-    components,
-    pipes,
-    directives,
-    ColorPickerModule
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+    declarations: [
+        components,
+        directives,
+        pipes
+    ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        TranslateModule,
+        FlexLayoutModule,
+        FormsModule,
+        MaterialModule,
+        ColorPickerModule,
+        NgxMatSelectSearchModule
+    ],
+    providers: [
+        { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
+        pipes
+    ],
+    exports: [
+        components,
+        pipes,
+        directives,
+        ColorPickerModule
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class KlesMaterialDynamicformsModule { }
