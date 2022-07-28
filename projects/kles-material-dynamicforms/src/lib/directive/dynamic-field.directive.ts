@@ -1,4 +1,7 @@
-import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import {
+    Directive, Input, OnInit, ComponentFactoryResolver,
+    ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy
+} from '@angular/core';
 
 import { UntypedFormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
@@ -69,8 +72,8 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         }
         if (changes.field) {
             // if (changes.field.previousValue && changes.field.currentValue.component !== changes.field.previousValue.component) {
-                this.field = changes.field.currentValue;
-                this.buildComponent();
+            this.field = changes.field.currentValue;
+            this.buildComponent();
             // } else {
             //     this.field = changes.field.currentValue;
             // }
@@ -78,11 +81,16 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     buildComponent() {
-        const factory = this.resolver.resolveComponentFactory(
-            this.field.component || componentMapper[this.field.type]
-        );
-        if (this.componentRef) this.componentRef.destroy();
-        this.componentRef = this.container.createComponent(factory);
+        // const factory = this.resolver.resolveComponentFactory<any>(
+        //     this.field.component || componentMapper[this.field.type]
+        // );
+        if (this.componentRef) {
+            this.componentRef.destroy();
+        }
+
+        // this.componentRef = this.container.createComponent(factory);
+        this.componentRef = this.container.createComponent(this.field.component || componentMapper[this.field.type]);
+
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
         this.componentRef.instance.siblingFields = this.siblingFields;
