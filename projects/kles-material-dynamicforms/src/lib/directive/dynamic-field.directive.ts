@@ -1,6 +1,5 @@
 import {
-    Directive, Input, OnInit, ComponentFactoryResolver,
-    ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy
+    Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy
 } from '@angular/core';
 
 import { UntypedFormGroup } from '@angular/forms';
@@ -55,11 +54,12 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
     componentRef: ComponentRef<any>;
 
-    constructor(protected resolver: ComponentFactoryResolver,
-        protected container: ViewContainerRef) { }
+    constructor(protected container: ViewContainerRef) { }
 
     ngOnDestroy(): void {
-        if (this.componentRef) this.componentRef.destroy();
+        if (this.componentRef) {
+            this.componentRef.destroy();
+        }
     }
 
     ngOnInit() {
@@ -71,24 +71,15 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
             this.group = changes.group.currentValue;
         }
         if (changes.field) {
-            // if (changes.field.previousValue && changes.field.currentValue.component !== changes.field.previousValue.component) {
             this.field = changes.field.currentValue;
             this.buildComponent();
-            // } else {
-            //     this.field = changes.field.currentValue;
-            // }
         }
     }
 
     buildComponent() {
-        // const factory = this.resolver.resolveComponentFactory<any>(
-        //     this.field.component || componentMapper[this.field.type]
-        // );
         if (this.componentRef) {
             this.componentRef.destroy();
         }
-
-        // this.componentRef = this.container.createComponent(factory);
         this.componentRef = this.container.createComponent(this.field.component || componentMapper[this.field.type]);
 
         this.componentRef.instance.field = this.field;
