@@ -18,6 +18,7 @@ import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 
@@ -299,8 +300,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       placeholder: 'Text',
       inputType: 'text',
       tooltip: 'tooltip text',
-      value: 'text value',
+      value: 'ici la directive',
       component: KlesFormTextComponent,
+      directive: PeekABooDirective
     });
     this.fieldsText.push({
       name: 'text',
@@ -328,7 +330,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }
     });
-
     this.fieldsInput.push({
       name: 'inputtextmax',
       placeholder: 'Input Text MaxLength',
@@ -337,7 +338,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       maxLength: 10,
       component: KlesFormInputComponent,
     });
-
+    
     this.fieldsInput.push({
       name: 'inputnumber',
       placeholder: 'Input Number',
