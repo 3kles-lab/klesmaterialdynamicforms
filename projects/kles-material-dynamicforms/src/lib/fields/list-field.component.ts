@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { FormGroup, FormArray, FormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
@@ -36,8 +36,8 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
 
     formArray: FormArray;
 
-    constructor(private fb: FormBuilder) {
-        super();
+    constructor(private fb: FormBuilder, protected viewRef: ViewContainerRef) {
+        super(viewRef);
     }
 
     ngOnInit(): void {

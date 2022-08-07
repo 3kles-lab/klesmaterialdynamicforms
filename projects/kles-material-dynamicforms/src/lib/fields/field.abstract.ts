@@ -1,16 +1,23 @@
 import { IKlesField } from '../interfaces/field.interface';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { FormGroup } from '@angular/forms';
-import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Directive, HostBinding, Inject, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+@Directive()
 export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit, OnDestroy {
     field: IKlesFieldConfig;
     group: FormGroup;
     siblingFields: IKlesFieldConfig[];
 
+    @HostBinding('attr.klesDirective') directive;
+
     protected _onDestroy = new Subject<void>();
+
+    constructor(protected viewRef: ViewContainerRef) {
+
+    }
 
     ngOnInit(): void {
         // this.applyPipeTransform();
@@ -26,6 +33,11 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
                 }
                 // this.applyPipeTransform();
             });
+
+        if (this.field.directive) {
+            this.directive = new this.field.directive(this.viewRef, this);
+            this.directive.ngOnInit();
+        }
     }
 
     ngAfterViewInit(): void {
@@ -33,6 +45,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     }
 
     ngOnDestroy(): void {
+        this.directive?.ngOnDestroy();
         this._onDestroy.next();
         this._onDestroy.complete();
     }
