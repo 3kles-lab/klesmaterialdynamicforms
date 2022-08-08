@@ -1,6 +1,6 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -26,6 +26,7 @@ import { SelectTriggerComponent } from './select/select-trigger.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'ja-JP' },
     {
@@ -198,7 +199,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       {
         type: EnumType.group,
         name: 'environment',
-        direction: 'row',
+        direction: 'column',
+        ngClass: 'group-block',
         collections: [
           {
             component: KlesFormInputClearableComponent,
@@ -338,7 +340,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       maxLength: 10,
       component: KlesFormInputComponent,
     });
-    
+
     this.fieldsInput.push({
       name: 'inputnumber',
       placeholder: 'Input Number',
