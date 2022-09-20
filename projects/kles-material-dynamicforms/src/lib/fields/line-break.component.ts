@@ -1,8 +1,11 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { KlesFieldAbstract } from "./field.abstract";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FieldMapper } from '../decorators/component.decorator';
+import { EnumType } from '../enums/type.enum';
+import { KlesFieldAbstract } from './field.abstract';
 
+@FieldMapper({ type: EnumType.lineBreak })
 @Component({
-    selector: "kles-form-line-break",
+    selector: 'kles-form-line-break',
     template: ``,
     styles: [
         `:host{

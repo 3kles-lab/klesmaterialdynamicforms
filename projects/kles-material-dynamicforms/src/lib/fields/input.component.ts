@@ -2,7 +2,10 @@ import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { startWith, map, switchMap } from 'rxjs/operators';
+import { EnumType } from '../enums/type.enum';
+import { FieldMapper } from '../decorators/component.decorator';
 
+@FieldMapper({ type: EnumType.input })
 @Component({
     selector: 'kles-form-input',
     template: `

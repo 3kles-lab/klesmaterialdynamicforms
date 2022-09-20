@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
+import { FieldMapper } from '../decorators/component.decorator';
+import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+
+@FieldMapper({type: EnumType.group})
 @Component({
     selector: 'kles-group',
     template: `

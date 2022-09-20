@@ -1,7 +1,9 @@
 import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component, OnDestroy } from '@angular/core';
+import { EnumType } from '../enums/type.enum';
+import { FieldMapper } from '../decorators/component.decorator';
 
-
+@FieldMapper({ type: EnumType.button })
 @Component({
     selector: 'kles-submit-button',
     template: `

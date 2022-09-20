@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FieldMapper } from '../decorators/component.decorator';
+import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 
+@FieldMapper({ type: EnumType.badge })
 @Component({
     selector: 'kles-form-badge',
     template: `

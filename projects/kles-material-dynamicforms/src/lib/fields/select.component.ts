@@ -3,8 +3,11 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, QueryLi
 import { MatOption } from '@angular/material/core';
 import { Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { FieldMapper } from '../decorators/component.decorator';
+import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 
+@FieldMapper({ type: EnumType.select })
 @Component({
     selector: 'kles-form-select',
     template: `

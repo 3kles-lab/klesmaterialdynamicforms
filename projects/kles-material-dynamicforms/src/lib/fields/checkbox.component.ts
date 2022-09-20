@@ -1,12 +1,14 @@
 
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { FieldMapper } from '../decorators/component.decorator';
+import { EnumType } from '../enums/type.enum';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { KlesFieldAbstract } from './field.abstract';
 
-
+@FieldMapper({ type: EnumType.checkbox })
 @Component({
-    selector: "kles-form-checkbox",
+    selector: 'kles-form-checkbox',
     template: `
     <div [formGroup]="group" >  
         <mat-checkbox matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [indeterminate]="field.indeterminate" [color]="field.color" [formControlName]="field.name">{{field.label | translate}}</mat-checkbox>

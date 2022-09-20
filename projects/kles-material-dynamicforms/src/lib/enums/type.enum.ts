@@ -1,4 +1,6 @@
 export enum EnumType {
+    input = 'input',
+    select = 'select',
     text = 'text',
     button = 'button',
     checkbox = 'checkbox',
@@ -11,4 +13,5 @@ export enum EnumType {
     array = 'array',
     group = 'group',
     lineBreak = 'lineBreak',
+    badge = 'badge'
 }
