@@ -1,6 +1,6 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -18,6 +18,7 @@ import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
+import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 
@@ -25,6 +26,7 @@ import { SelectTriggerComponent } from './select/select-trigger.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'ja-JP' },
     {
@@ -197,7 +199,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       {
         type: EnumType.group,
         name: 'environment',
-        direction: 'row',
+        direction: 'column',
+        ngClass: 'group-block',
         collections: [
           {
             component: KlesFormInputClearableComponent,
@@ -299,8 +302,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       placeholder: 'Text',
       inputType: 'text',
       tooltip: 'tooltip text',
-      value: 'text value',
+      value: 'ici la directive',
       component: KlesFormTextComponent,
+      directive: PeekABooDirective
     });
     this.fieldsText.push({
       name: 'text',
@@ -328,7 +332,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
       }
     });
-
     this.fieldsInput.push({
       name: 'inputtextmax',
       placeholder: 'Input Text MaxLength',

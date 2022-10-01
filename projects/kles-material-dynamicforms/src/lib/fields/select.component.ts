@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -91,8 +91,8 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     options$: Observable<any[]>;
 
-    constructor() {
-        super();
+    constructor(protected viewRef: ViewContainerRef) {
+        super(viewRef);
     }
 
     ngOnInit() {

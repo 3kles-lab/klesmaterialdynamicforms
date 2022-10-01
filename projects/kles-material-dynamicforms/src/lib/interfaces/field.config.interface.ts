@@ -1,8 +1,10 @@
 import { IKlesValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn, UntypedFormGroup } from '@angular/forms';
-import { PipeTransform, Type } from '@angular/core';
+import { PipeTransform, Type, ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
+import { IKlesField } from './field.interface';
+import { IKlesDirective } from './directive.interface';
 
 export interface IKlesFieldConfig {
     type?: EnumType;// Mapper type if(type && !component)=>type
@@ -49,4 +51,5 @@ export interface IKlesFieldConfig {
     searchKeys?: string[]; //list of keys for multiple searches
     updateOn?: 'change' | 'blur' | 'submit';
     debounceTime?: number;
+    directive?: (new (ref: ViewContainerRef, field: IKlesField) => IKlesDirective);
 }

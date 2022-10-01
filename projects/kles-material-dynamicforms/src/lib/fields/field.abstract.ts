@@ -11,7 +11,13 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     group: UntypedFormGroup;
     siblingFields: IKlesFieldConfig[];
 
+    @HostBinding('attr.klesDirective') directive;
+
     protected _onDestroy = new Subject<void>();
+
+    constructor(protected viewRef: ViewContainerRef) {
+
+    }
 
     ngOnInit(): void {
         // this.applyPipeTransform();
@@ -27,6 +33,11 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
                 }
                 // this.applyPipeTransform();
             });
+
+        if (this.field.directive) {
+            this.directive = new this.field.directive(this.viewRef, this);
+            this.directive.ngOnInit();
+        }
     }
 
     ngAfterViewInit(): void {
@@ -34,6 +45,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     }
 
     ngOnDestroy(): void {
+        this.directive?.ngOnDestroy();
         this._onDestroy.next();
         this._onDestroy.complete();
     }
