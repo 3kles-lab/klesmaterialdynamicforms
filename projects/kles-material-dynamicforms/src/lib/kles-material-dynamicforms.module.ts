@@ -106,4 +106,10 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
-export class KlesMaterialDynamicformsModule { }
+export class KlesMaterialDynamicformsModule {
+    static declarations = [
+        components,
+        directives,
+        pipes
+    ];
+}
