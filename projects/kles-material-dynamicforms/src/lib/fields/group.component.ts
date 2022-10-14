@@ -10,7 +10,9 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <div [formGroup]="group" class="group-container">
         <div [formGroupName]="field.name" class="group-container" [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.ngClass">
-            <ng-container *ngFor="let subfield of field.collections;" klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
+            <ng-container *ngFor="let subfield of field.collections;">
+                <ng-container *ngIf="subfield.visible !== false" klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
+                </ng-container>
             </ng-container>
         </div>
     </div>

@@ -9,7 +9,9 @@ import { IKlesValidator } from './interfaces/validator.interface';
     selector: 'app-kles-dynamic-form',
     template: `
     <form class="{{orientationClass}}" [formGroup]="form" (submit)="onSubmit($event)">
-        <ng-container *ngFor="let field of fields;" class="{{orientationItemClass}}" klesDynamicField [field]="field" [group]="form" [siblingFields]="fields">
+        <ng-container *ngFor="let field of fields;">
+            <ng-container *ngIf="field.visible !== false" class="{{orientationItemClass}}" klesDynamicField [field]="field" [group]="form" [siblingFields]="fields">
+            </ng-container>
         </ng-container>
         <!--<button (click)="reset()" mat-raised-button color="primary">RESET</button>-->
     </form>
