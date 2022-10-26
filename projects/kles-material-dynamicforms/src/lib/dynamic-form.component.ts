@@ -109,7 +109,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
                 if (this.form.controls[field.name]) {
                     const control = this.updateControl(field, this.form.controls[field.name]);
-                    this.form.setControl(field.name, control, {emitEvent: false});
+                    this.form.setControl(field.name, control);
                 } else {
                     const control = this.createControl(field);
                     this.form.addControl(field.name, control);
@@ -131,7 +131,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
                     } else {
                         control = this.createControl(subfield);
                     }
-                    group.setControl(subfield.name, control, { emitEvent: false });
+                    group.setControl(subfield.name, control);
                 });
             }
             return group;
