@@ -1,5 +1,5 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { EnumType } from './enums/type.enum';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
@@ -102,16 +102,50 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             this.form.removeControl(key);
         });
 
-
         this.fields
-            .filter(field => !this.form.controls[field.name])
+            // .filter(field => !this.form.controls[field.name])
             .forEach(field => {
                 if (field.type === EnumType.lineBreak) {
                     return;
                 }
-                const control = this.createControl(field);
-                this.form.addControl(field.name, control);
+
+                if (this.form.controls[field.name]) {
+                    const control = this.updateControl(field, this.form.controls[field.name]);
+                    this.form.setControl(field.name, control, {emitEvent: false});
+                } else {
+                    const control = this.createControl(field);
+                    this.form.addControl(field.name, control);
+                }
             });
+    }
+
+    private updateControl(field: IKlesFieldConfig, control: AbstractControl): AbstractControl {
+        if (field.type === EnumType.array) {
+            const array = control as FormArray;
+            /*TODO*/
+            return array;
+        } else if (field.type === EnumType.group) {
+            const group = control as FormGroup;
+            if (field.collections && Array.isArray(field.collections)) {
+                field.collections.forEach(subfield => {
+                    if (group.controls[subfield]) {
+                        control = this.updateControl(subfield, group.controls[subfield]);
+                    } else {
+                        control = this.createControl(subfield);
+                    }
+                    group.setControl(subfield.name, control, { emitEvent: false });
+                });
+            }
+            return group;
+        } else {
+            control.setValidators(this.bindValidations(field.validations || []));
+            control.setAsyncValidators(this.bindAsyncValidations(field.asyncValidations || []));
+            if (field.value && control.value !== field.value) {
+                control.setValue(field.value);
+            }
+            return control;
+        }
+
     }
 
     private createControl(field: IKlesFieldConfig): AbstractControl {
