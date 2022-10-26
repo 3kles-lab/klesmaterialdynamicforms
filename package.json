@@ -1,6 +1,6 @@
 {
   "name": "@3kles/kles-material-dynamic-forms",
-  "version": "14.0.4",
+  "version": "14.0.5",
   "scripts": {
     "build:lib": "ng build kles-material-dynamicforms --configuration production",
     "publish:lib": "cd dist/kles-material-dynamicforms && npm publish --registry 'http://192.168.111.61:8081/repository/npm-3kles/'  --force",
@@ -23,6 +23,7 @@
     "@angular/forms": "^14.1.0",
     "@angular/localize": "^14.1.0",
     "@angular/material": "^14.1.0",
+    "@angular/material-luxon-adapter": "^14.2.5",
     "@angular/material-moment-adapter": "^14.1.0",
     "@angular/platform-browser": "^14.1.0",
     "@angular/platform-browser-dynamic": "^14.1.0",
@@ -35,6 +36,7 @@
     "fp-ts": "^1.13.0",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
+    "luxon": "^3.0.4",
     "moment": "^2.24.0",
     "ngx-color-picker": "^10.0.1",
     "ngx-mat-select-search": "^3.2.0",
