@@ -17,6 +17,7 @@ import {
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { delay, shareReplay } from 'rxjs/operators';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
@@ -401,20 +402,26 @@ export class AppComponent implements OnInit, AfterViewInit {
       triggerComponent: SelectTriggerComponent,
       autocompleteComponent: SelectOptionComponent,
       multiple: true,
+      lazy: true,
+      virtualScroll: true,
       options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa', disabled: true }, { BUAR: 'C', TX40: 'bbb' }])
+        .pipe(delay(1000), shareReplay(1))
       // options: of(['aaa', 'bbb'])
     });
 
     const options = [...Array(10000).keys()];
 
+    const toto = [{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }]
+
     this.fieldsInput.push({
       name: 'selectInfinite',
       placeholder: 'select search infinite',
-      component: KlesFormSelectSearchComponent,
+      component: KlesFormSelectComponent,
       // multiple: true,
       virtualScroll: true,
-      options: new BehaviorSubject<any[]>(options),
-      value: [options[99]]
+      options: new BehaviorSubject<any[]>(options).pipe(delay(1000), shareReplay(1)),
+      value: [options[99]],
+      lazy: true,
       // options: of(['aaa', 'bbb'])
     });
 
@@ -424,7 +431,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormSelectComponent,
       property: 'BUAR',
       autocompleteComponent: SelectOptionComponent,
-      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
+      lazy: true,
+      // value: toto[0],
+      // options: toto
+      options: new BehaviorSubject<any[]>(toto).pipe(delay(2000))
+      // options: [{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }]
       // options: of(['aaa', 'bbb'])
     });
 
