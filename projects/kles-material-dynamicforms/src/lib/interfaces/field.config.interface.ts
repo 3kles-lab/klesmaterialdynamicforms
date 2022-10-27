@@ -1,7 +1,7 @@
 import { IKlesValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn, UntypedFormGroup } from '@angular/forms';
 import { PipeTransform, Type, ViewContainerRef } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
@@ -19,9 +19,9 @@ export interface IKlesFieldConfig {
     max?: number;
     maxLength?: number;
     step?: number;
-    options?: any[] | Subject<any[]>;// List options for list component
-    ngClass?: any;// ngclass for field
-    ngStyle?: any;// ngStyle for field
+    options?: any[] | Subject<any[]> | Observable<any[]>; // List options for list component
+    ngClass?: any; // ngclass for field
+    ngStyle?: any; // ngStyle for field
     property?: string;// Property for field
     collections?: any;// Collections for subfield
     value?: any;// Value field
@@ -53,4 +53,5 @@ export interface IKlesFieldConfig {
     debounceTime?: number;
     directive?: (new (ref: ViewContainerRef, field: IKlesField) => IKlesDirective);
     visible?: boolean;
+    lazy?: boolean;
 }

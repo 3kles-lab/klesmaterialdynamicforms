@@ -1,8 +1,8 @@
-import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatOption } from '@angular/material/core';
-import { Observable, of } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { finalize, switchMap, take } from 'rxjs/operators';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -19,25 +19,33 @@ import { KlesFieldAbstract } from './field.abstract';
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
         </mat-select-trigger>
 
-
         <ng-container *ngIf="!field.virtualScroll">
             <ng-container *ngIf="!field.autocompleteComponent">
-                <mat-option *ngFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                <ng-container *ngIf="!isLoading; else emptyOption">
+                    <mat-option *ngFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                </ng-container>
             </ng-container>
 
             <ng-container *ngIf="field.autocompleteComponent">
-                <mat-option *ngFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                </mat-option>
+                <ng-container *ngIf="!isLoading; else emptyOption">
+                        <mat-option *ngFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                        </mat-option>
+                </ng-container>
             </ng-container>
+            <ng-template #emptyOption>
+                <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+            </ng-template>
         </ng-container>
 
         <ng-container *ngIf="field.virtualScroll">
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=5*48>
                 <ng-container *ngIf="!field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item"  [disabled]="item?.disabled">
-                    {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                    </mat-option>
+                    <ng-container *ngIf="!isLoading; else emptyOption">
+                        <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item"  [disabled]="item?.disabled">
+                        {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                        </mat-option>
+                    </ng-container>
 
                     <ng-container *ngIf="field.multiple">
                         <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
@@ -54,9 +62,11 @@ import { KlesFieldAbstract } from './field.abstract';
                 </ng-container>
 
                 <ng-container *ngIf="field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                    </mat-option>
+                    <ng-container *ngIf="!isLoading; else emptyOption">
+                        <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                        </mat-option>
+                    </ng-container>
                     <ng-container *ngIf="field.multiple">
                         <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
                         style="display:none">
@@ -69,6 +79,10 @@ import { KlesFieldAbstract } from './field.abstract';
                         </mat-option>
                     </ng-container>
                 </ng-container>
+
+                <ng-template #emptyOption>
+                    <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                </ng-template>
             </cdk-virtual-scroll-viewport>
 
         </ng-container>
@@ -82,7 +96,8 @@ import { KlesFieldAbstract } from './field.abstract';
             </ng-container>
     </mat-form-field>
 `,
-    styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}',
+    `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`]
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
@@ -91,17 +106,27 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     options$: Observable<any[]>;
 
+    isLoading = false;
+
     constructor(protected viewRef: ViewContainerRef) {
         super(viewRef);
     }
 
     ngOnInit() {
         super.ngOnInit();
-
-        if (!(this.field.options instanceof Observable)) {
-            this.options$ = of(this.field.options);
+        if (this.field.lazy) {
+            this.isLoading = true;
+            if (this.field.value) {
+                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
+            } else {
+                this.options$ = new BehaviorSubject<any[]>(null);
+            }
         } else {
-            this.options$ = this.field.options;
+            if (!(this.field.options instanceof Observable)) {
+                this.options$ = of(this.field.options);
+            } else {
+                this.options$ = this.field.options;
+            }
         }
     }
 
@@ -110,6 +135,20 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     }
 
     openChange($event: boolean) {
+        if (this.field.lazy) {
+            if ($event) {
+                if (!(this.field.options instanceof Observable)) {
+                    (this.options$ as BehaviorSubject<any[]>).next(this.field.options);
+                } else {
+                    this.isLoading = true;
+                    this.field.options.pipe(take(1)).subscribe(options => {
+                        (this.options$ as BehaviorSubject<any[]>).next(options);
+                        this.isLoading = false;
+                    });
+                }
+            }
+        }
+
         if (this.field.virtualScroll) {
             if ($event) {
                 this.cdkVirtualScrollViewport.scrollToIndex(0);

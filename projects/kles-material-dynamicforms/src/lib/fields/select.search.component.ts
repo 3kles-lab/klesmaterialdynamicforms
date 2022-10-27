@@ -1,8 +1,9 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { ViewEncapsulation } from '@angular/compiler';
 import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
@@ -22,72 +23,83 @@ import { KlesFieldAbstract } from './field.abstract';
                 <ngx-mat-select-search [formControl]="searchControl"
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
-                
+
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
                 <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
                 (change)="toggleAllSelection($event)">
                     {{'selectAll' | translate}}
                 </mat-checkbox>
-                <ng-container *ngIf="!field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
-                    
-                    <ng-container *ngIf="field.multiple">
-                        <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
-                        style="display:none">
-                            {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                        </mat-option>
+
+                <ng-container *ngIf="!isLoading; else emptyOption">
+                    <ng-container *ngIf="!field.autocompleteComponent">
+                        <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+
+                        <ng-container *ngIf="field.multiple">
+                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                            style="display:none">
+                                {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                            </mat-option>
+                        </ng-container>
+
+                        <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                            <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
+                                {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                            </mat-option>
+                        </ng-container>
                     </ng-container>
 
-                    <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
-                        <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
-                            {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                        </mat-option>
-                    </ng-container>
-                </ng-container>
-
-                <ng-container *ngIf="field.autocompleteComponent">
-                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                    </mat-option>
-
-                    <ng-container *ngIf="field.multiple">
-                        <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
-                        style="display:none">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                        </mat-option>
-                    </ng-container>
-
-                    <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
-                        <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
+                    <ng-container *ngIf="field.autocompleteComponent">
+                        <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
                             <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                         </mat-option>
+
+                        <ng-container *ngIf="field.multiple">
+                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
+                            style="display:none">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                            </mat-option>
+                        </ng-container>
+
+                        <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                            <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
+                                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                            </mat-option>
+                        </ng-container>
                     </ng-container>
                 </ng-container>
+                <ng-template #emptyOption>
+                    <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                </ng-template>
             </cdk-virtual-scroll-viewport>
 
         </ng-container>
 
         <ng-container *ngIf="!field.virtualScroll">
-           
             <mat-option>
                 <ngx-mat-select-search [formControl]="searchControl"
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
-            
+
             <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
                     (change)="toggleAllSelection($event)">
                     {{'selectAll' | translate}}
             </mat-checkbox>
 
-            <ng-container *ngIf="!field.autocompleteComponent">
-                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+            <ng-container *ngIf="!isLoading; else emptyOption">
+                <ng-container *ngIf="!field.autocompleteComponent">
+                    <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                </ng-container>
+
+                <ng-container *ngIf="field.autocompleteComponent">
+                    <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                    </mat-option>
+                </ng-container>
             </ng-container>
 
-            <ng-container *ngIf="field.autocompleteComponent">
-                <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                </mat-option>
-            </ng-container>
+            <ng-template #emptyOption>
+                <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+            </ng-template>
         </ng-container>
 
 
@@ -100,13 +112,15 @@ import { KlesFieldAbstract } from './field.abstract';
             </ng-container>
     </mat-form-field>
 `,
-    styles: ['mat-form-field {width: calc(100%)}', '.selectAll {padding: 10px 16px;}']
+    styles: ['mat-form-field {width: calc(100%)}', '.selectAll {padding: 10px 16px;}',
+        `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     searchControl = new UntypedFormControl();
     selectAllControl = new UntypedFormControl(false);
 
+    isLoading = false;
 
     options$: Observable<any[]>;
     optionsFiltered$ = new ReplaySubject<any[]>(1);
@@ -119,10 +133,19 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     ngOnInit() {
         super.ngOnInit();
 
-        if (!(this.field.options instanceof Observable)) {
-            this.options$ = of(this.field.options);
+        if (this.field.lazy) {
+            this.isLoading = true;
+            if (this.field.value) {
+                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
+            } else {
+                this.options$ = new BehaviorSubject<any[]>(null);
+            }
         } else {
-            this.options$ = this.field.options;
+            if (!(this.field.options instanceof Observable)) {
+                this.options$ = of(this.field.options);
+            } else {
+                this.options$ = this.field.options;
+            }
         }
 
         this.searchControl.valueChanges.pipe(
@@ -163,7 +186,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 startWith(this.group.controls[this.field.name].value),
                 switchMap(selected => {
                     return this.optionsFiltered$.pipe(
-                        map((options) => options.filter((option) => !option?.disabled)),
+                        map((options) => options?.filter((option) => !option?.disabled)),
                         map(options => {
                             if (!selected) {
                                 return false;
@@ -200,6 +223,20 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     }
 
     openChange($event: boolean) {
+        if (this.field.lazy) {
+            if ($event) {
+                if (!(this.field.options instanceof Observable)) {
+                    (this.options$ as BehaviorSubject<any[]>).next(this.field.options);
+                } else {
+                    this.isLoading = true;
+                    this.field.options.pipe(take(1)).subscribe(options => {
+                        (this.options$ as BehaviorSubject<any[]>).next(options);
+                        this.isLoading = false;
+                    });
+                }
+            }
+        }
+
         if (this.field.virtualScroll) {
             if ($event) {
                 this.cdkVirtualScrollViewport.scrollToIndex(0);
