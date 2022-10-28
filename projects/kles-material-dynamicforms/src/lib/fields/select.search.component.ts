@@ -142,7 +142,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             if (this.field.value) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
             } else {
-                this.options$ = new BehaviorSubject<any[]>(null);
+                this.options$ = new BehaviorSubject<any[]>([]);
             }
         } else {
             if (!(this.field.options instanceof Observable)) {
