@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, switchMap, take } from 'rxjs/operators';
@@ -108,7 +108,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     isLoading = false;
 
-    constructor(protected viewRef: ViewContainerRef) {
+    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
         super(viewRef);
     }
 
@@ -144,6 +144,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                     this.field.options.pipe(take(1)).subscribe(options => {
                         (this.options$ as BehaviorSubject<any[]>).next(options);
                         this.isLoading = false;
+                        this.ref.markForCheck();
                     });
                 }
             }

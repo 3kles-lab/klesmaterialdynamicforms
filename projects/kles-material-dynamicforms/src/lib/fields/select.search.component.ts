@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ViewEncapsulation } from '@angular/compiler';
-import { Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
@@ -130,6 +130,10 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
 
+    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
+        super(viewRef);
+    }
+
     ngOnInit() {
         super.ngOnInit();
 
@@ -232,6 +236,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                     this.field.options.pipe(take(1)).subscribe(options => {
                         (this.options$ as BehaviorSubject<any[]>).next(options);
                         this.isLoading = false;
+                        this.ref.markForCheck();
                     });
                 }
             }
