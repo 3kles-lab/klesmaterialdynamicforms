@@ -12,14 +12,15 @@ export interface IUIButton {
     icon?: string;
     iconSvg?: string;
     disabled?: boolean;
-    class?: string
+    class?: string;
+    type?: string;
 }
 
 @Component({
     selector: 'kles-button',
     template: `
         <span>
-            <button mat-button [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
+            <button mat-button [type]="type" [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
             (click)="click($event)" [matTooltip]="tooltip">
                 {{label | translate}}
                 <mat-icon *ngIf="icon">{{icon}}</mat-icon>
@@ -42,6 +43,7 @@ export class KlesButtonComponent implements OnInit, ControlValueAccessor {
     @Input() icon = '';
     @Input() iconSvg = '';
     @Input() disabled = false;
+    @Input() type = 'submit';
     @Input() classButton = '';
     @Input() value: IButton = {};
     @Input() tooltip?: string;
@@ -72,6 +74,7 @@ export class KlesButtonComponent implements OnInit, ControlValueAccessor {
             this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
             this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
             this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
+            this.type = (uiButton.type) ? uiButton.type : this.type;
         }
         this.value = value;
     }

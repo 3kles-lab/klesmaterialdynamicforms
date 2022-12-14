@@ -54,4 +54,5 @@ export interface IKlesFieldConfig {
     directive?: (new (ref: ViewContainerRef, field: IKlesField) => IKlesDirective);
     visible?: boolean;
     lazy?: boolean;
+    buttonType?: 'submit' | 'button' | 'reset';
 }
