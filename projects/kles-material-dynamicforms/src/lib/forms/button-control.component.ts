@@ -74,7 +74,7 @@ export class KlesButtonComponent implements OnInit, ControlValueAccessor {
             this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
             this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
             this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
-            this.type = (uiButton.type) ? uiButton.type : this.type;
+            this.type = (uiButton.type) ? uiButton.type : 'submit';
         }
         this.value = value;
     }
