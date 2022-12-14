@@ -52,4 +52,5 @@ export interface IKlesFieldConfig {
     updateOn?: 'change' | 'blur' | 'submit';
     debounceTime?: number;
     directive?: (new (ref: ViewContainerRef, field: IKlesField) => IKlesDirective);
+    buttonType?: 'submit' | 'button' | 'reset';
 }
