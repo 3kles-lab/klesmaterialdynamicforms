@@ -673,6 +673,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       iconSvg: 'excel',
       ngClass: 'mat-raised-button',
       tooltip: 'tooltip button',
+      accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     });
 
     this.fieldsButton.push({
