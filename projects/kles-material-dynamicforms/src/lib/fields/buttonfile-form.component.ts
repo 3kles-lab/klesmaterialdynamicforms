@@ -13,6 +13,7 @@ import { KlesFieldAbstract } from './field.abstract';
             [value]="field.value"
             [formControlName]="field.name"
             [type]="field.buttonType"
+            [accept]="field.accept"
         >
         </kles-button-file>
     </div>

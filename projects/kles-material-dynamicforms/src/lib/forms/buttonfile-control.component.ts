@@ -1,3 +1,4 @@
+import { Input } from '@angular/core';
 import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonComponent } from './button-control.component';
@@ -9,10 +10,10 @@ export interface IButtonFile extends IButton {
 @Component({
     selector: 'kles-button-file',
     template: `
-        <input type="file" #file style="display: none" accept="{{accept}}" (change)="onFileSelect($event.target)" multiple />
-        <kles-button 
-            [classButton]="classButton" 
-            [name]="name" [label]="label" [color]="color" 
+        <input type="file" #file style="display: none" [accept]="accept" (change)="onFileSelect($event.target)" multiple />
+        <kles-button
+            [classButton]="classButton"
+            [name]="name" [label]="label" [color]="color"
             [icon]="icon" [iconSvg]="iconSvg"
             [disabled]="disabled"
             [value]="value" (click)="click($event)">
@@ -28,7 +29,7 @@ export interface IButtonFile extends IButton {
 })
 export class KlesButtonFileComponent extends KlesButtonComponent implements ControlValueAccessor {
     @ViewChild('file') file;
-    accept = '*.*';
+    @Input() accept = '*.*';
     fileReader = new FileReader();
     fileContent: string | string[];
     value: IButtonFile = {};
@@ -52,6 +53,7 @@ export class KlesButtonFileComponent extends KlesButtonComponent implements Cont
             this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
             this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
             this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
+            this.accept = (uiButton.accept) ? uiButton.accept : this.accept;
         }
         this.value = value;
     }

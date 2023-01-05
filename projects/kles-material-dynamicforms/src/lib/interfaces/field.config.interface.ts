@@ -55,4 +55,5 @@ export interface IKlesFieldConfig {
     visible?: boolean;
     lazy?: boolean;
     buttonType?: 'submit' | 'button' | 'reset';
+    accept?: string;
 }

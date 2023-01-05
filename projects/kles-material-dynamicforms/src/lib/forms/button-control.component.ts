@@ -3,7 +3,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 export interface IButton {
     event?: any;
-    uiButton?: IUIButton
+    uiButton?: IUIButton;
 }
 
 export interface IUIButton {
@@ -14,6 +14,7 @@ export interface IUIButton {
     disabled?: boolean;
     class?: string;
     type?: string;
+    accept?: string;
 }
 
 @Component({
