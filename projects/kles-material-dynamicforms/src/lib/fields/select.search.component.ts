@@ -138,7 +138,6 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         super.ngOnInit();
 
         if (this.field.lazy) {
-            this.isLoading = true;
             if (this.field.value) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
             } else {

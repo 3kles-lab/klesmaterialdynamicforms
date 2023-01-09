@@ -2,7 +2,7 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { finalize, switchMap, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -97,7 +97,7 @@ import { KlesFieldAbstract } from './field.abstract';
     </mat-form-field>
 `,
     styles: ['mat-form-field {width: calc(100%)}',
-    `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`]
+        `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`]
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
@@ -115,7 +115,6 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     ngOnInit() {
         super.ngOnInit();
         if (this.field.lazy) {
-            this.isLoading = true;
             if (this.field.value) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
             } else {
