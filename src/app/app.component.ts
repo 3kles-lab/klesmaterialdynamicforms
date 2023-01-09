@@ -394,6 +394,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormInputClearableComponent,
     });
 
+    const toto = [{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }];
+
     this.fieldsInput.push({
       name: 'selectTest',
       placeholder: 'select multiple',
@@ -403,15 +405,15 @@ export class AppComponent implements OnInit, AfterViewInit {
       autocompleteComponent: SelectOptionComponent,
       multiple: true,
       lazy: true,
-      virtualScroll: true,
-      options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa', disabled: true }, { BUAR: 'C', TX40: 'bbb' }])
+      virtualScroll: true, value: [toto[0]],
+      options: new BehaviorSubject<any[]>(toto)
         .pipe(delay(1000), shareReplay(1))
       // options: of(['aaa', 'bbb'])
     });
 
     const options = [...Array(10000).keys()];
 
-    const toto = [{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }]
+
 
     this.fieldsInput.push({
       name: 'selectInfinite',
@@ -432,9 +434,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       property: 'BUAR',
       autocompleteComponent: SelectOptionComponent,
       lazy: true,
-      // value: toto[0],
+      value: toto[0],
       // options: toto
-      options: new BehaviorSubject<any[]>(toto).pipe(delay(2000))
+      options: new BehaviorSubject<any[]>(toto).pipe(delay(2000), shareReplay(1))
       // options: [{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }]
       // options: of(['aaa', 'bbb'])
     });
