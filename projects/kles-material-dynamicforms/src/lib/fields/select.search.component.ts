@@ -141,8 +141,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
         if (this.field.lazy) {
             this.isLoading = true;
-            if (this.field.value) {
-                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
+            if (this.group.controls[this.field.name].value) {
+                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]);
                 this.isLoading = false;
             } else {
                 this.options$ = new BehaviorSubject<any[]>([]);
@@ -209,27 +209,29 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             })
         ).subscribe(this.optionsFiltered$);
 
-        this.group.controls[this.field.name]
-            .valueChanges.pipe(
-                takeUntil(this._onDestroy),
-                startWith(this.group.controls[this.field.name].value),
-                switchMap(selected => {
-                    return this.optionsFiltered$.pipe(
-                        map((options) => options?.filter((option) => !option?.disabled)),
-                        map(options => {
-                            if (!selected) {
-                                return false;
-                            }
-                            if (options.length < selected.length) {
-                                return options.length > 0 && options.every(o => selected.includes(o));
-                            } else {
-                                return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
-                            }
-                        }));
-                })
-            ).subscribe(isChecked => {
-                this.selectAllControl.setValue(isChecked);
-            });
+        if (this.field.multiple) {
+            this.group.controls[this.field.name]
+                .valueChanges.pipe(
+                    takeUntil(this._onDestroy),
+                    startWith(this.group.controls[this.field.name].value),
+                    switchMap(selected => {
+                        return this.optionsFiltered$.pipe(
+                            map((options) => options?.filter((option) => !option?.disabled)),
+                            map(options => {
+                                if (!selected) {
+                                    return false;
+                                }
+                                if (options.length < selected.length) {
+                                    return options.length > 0 && options.every(o => selected.includes(o));
+                                } else {
+                                    return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
+                                }
+                            }));
+                    })
+                ).subscribe(isChecked => {
+                    this.selectAllControl.setValue(isChecked);
+                });
+        }
     }
 
     ngOnDestroy(): void {

@@ -119,7 +119,8 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         if (this.field.lazy) {
             this.isLoading = true;
             if (this.field.value) {
-                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
+                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value
+                    : [this.group.controls[this.field.name].value]);
                 this.isLoading = false;
             } else {
                 this.options$ = new BehaviorSubject<any[]>([]);
