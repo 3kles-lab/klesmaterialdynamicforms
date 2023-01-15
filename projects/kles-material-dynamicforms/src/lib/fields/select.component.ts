@@ -138,7 +138,6 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     }
 
     openChange($event: boolean) {
-        console.log('event', $event)
         if (this.field.lazy) {
             if ($event) {
                 if (!(this.field.options instanceof Observable)) {
@@ -146,7 +145,6 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                 } else {
                     this.isLoading = true;
                     this.field.options.pipe(take(1)).subscribe(options => {
-                        console.log('on arrive là');
                         (this.options$ as BehaviorSubject<any[]>).next(options);
                         this.isLoading = false;
                         this.ref.markForCheck();

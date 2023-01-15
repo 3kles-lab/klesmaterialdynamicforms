@@ -120,7 +120,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     searchControl = new UntypedFormControl();
     selectAllControl = new UntypedFormControl(false);
 
-    isLoading = false;
+    isLoading = true;
 
     options$: Observable<any[]>;
     optionsFiltered$ = new ReplaySubject<any[]>(1);
@@ -140,6 +140,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         if (this.field.lazy) {
             if (this.field.value) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
+                this.isLoading = false;
             } else {
                 this.options$ = new BehaviorSubject<any[]>([]);
             }
@@ -238,6 +239,11 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                         this.ref.markForCheck();
                     });
                 }
+            } else {
+                (this.options$ as BehaviorSubject<any[]>)
+                    .next(this.group.controls[this.field.name].value !== undefined ? [this.group.controls[this.field.name].value] : []);
+                this.isLoading = false;
+                this.ref.markForCheck();
             }
         }
 
