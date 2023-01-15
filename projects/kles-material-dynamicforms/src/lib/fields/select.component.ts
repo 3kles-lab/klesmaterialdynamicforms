@@ -106,7 +106,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     options$: Observable<any[]>;
 
-    isLoading = false;
+    isLoading = true;
 
     constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
         super(viewRef);
@@ -117,9 +117,11 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         if (this.field.lazy) {
             if (this.field.value) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
+                this.isLoading = false;
             } else {
                 this.options$ = new BehaviorSubject<any[]>([]);
             }
+
         } else {
             if (!(this.field.options instanceof Observable)) {
                 this.options$ = of(this.field.options);
@@ -127,6 +129,8 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                 this.options$ = this.field.options;
             }
         }
+
+
     }
 
     ngOnDestroy(): void {
@@ -134,6 +138,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     }
 
     openChange($event: boolean) {
+        console.log('event', $event)
         if (this.field.lazy) {
             if ($event) {
                 if (!(this.field.options instanceof Observable)) {
@@ -141,11 +146,17 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                 } else {
                     this.isLoading = true;
                     this.field.options.pipe(take(1)).subscribe(options => {
+                        console.log('on arrive là');
                         (this.options$ as BehaviorSubject<any[]>).next(options);
                         this.isLoading = false;
                         this.ref.markForCheck();
                     });
                 }
+            } else {
+                (this.options$ as BehaviorSubject<any[]>)
+                    .next(this.group.controls[this.field.name].value !== undefined ? [this.group.controls[this.field.name].value] : []);
+                this.ref.markForCheck();
+                // this.isLoading = true;
             }
         }
 
