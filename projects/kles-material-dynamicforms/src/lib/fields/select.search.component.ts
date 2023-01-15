@@ -3,7 +3,7 @@ import { ViewEncapsulation } from '@angular/compiler';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { BehaviorSubject, Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
@@ -120,10 +120,12 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     searchControl = new UntypedFormControl();
     selectAllControl = new UntypedFormControl(false);
 
-    isLoading = true;
+    isLoading = false;
 
     options$: Observable<any[]>;
     optionsFiltered$ = new ReplaySubject<any[]>(1);
+
+    openChange$ = new Subject<boolean>();
 
     // private _onDestroy = new Subject<void>();
 
@@ -138,12 +140,35 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         super.ngOnInit();
 
         if (this.field.lazy) {
+            this.isLoading = true;
             if (this.field.value) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.field.value) ? this.field.value : [this.field.value]);
                 this.isLoading = false;
             } else {
                 this.options$ = new BehaviorSubject<any[]>([]);
             }
+
+            this.openChange$
+                .pipe(
+                    takeUntil(this._onDestroy),
+                    switchMap((isOpen) => {
+                        if (isOpen) {
+                            if (!(this.field.options instanceof Observable)) {
+                                return of(this.field.options);
+                            } else {
+                                this.isLoading = true;
+                                return this.field.options.pipe(take(1));
+                            }
+                        } else {
+                            return of(this.group.controls[this.field.name].value !== undefined ? [this.group.controls[this.field.name].value] : [])
+                        }
+                    })
+                )
+                .subscribe((options) => {
+                    (this.options$ as BehaviorSubject<any[]>).next(options);
+                    this.isLoading = false;
+                    this.ref.markForCheck();
+                });
         } else {
             if (!(this.field.options instanceof Observable)) {
                 this.options$ = of(this.field.options);
@@ -228,23 +253,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
     openChange($event: boolean) {
         if (this.field.lazy) {
-            if ($event) {
-                if (!(this.field.options instanceof Observable)) {
-                    (this.options$ as BehaviorSubject<any[]>).next(this.field.options);
-                } else {
-                    this.isLoading = true;
-                    this.field.options.pipe(take(1)).subscribe(options => {
-                        (this.options$ as BehaviorSubject<any[]>).next(options);
-                        this.isLoading = false;
-                        this.ref.markForCheck();
-                    });
-                }
-            } else {
-                (this.options$ as BehaviorSubject<any[]>)
-                    .next(this.group.controls[this.field.name].value !== undefined ? [this.group.controls[this.field.name].value] : []);
-                this.isLoading = false;
-                this.ref.markForCheck();
-            }
+            this.openChange$.next($event);
         }
 
         if (this.field.virtualScroll) {
