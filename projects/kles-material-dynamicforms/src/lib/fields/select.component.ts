@@ -118,7 +118,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         super.ngOnInit();
         if (this.field.lazy) {
             this.isLoading = true;
-            if (this.field.value) {
+            if (this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value
                     : [this.group.controls[this.field.name].value]);
                 this.isLoading = false;
@@ -138,7 +138,8 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                                 return this.field.options.pipe(take(1));
                             }
                         } else {
-                            return of(this.group.controls[this.field.name].value !== undefined ? [this.group.controls[this.field.name].value] : [])
+                            return of(this.group.controls[this.field.name].value !== undefined
+                                && this.group.controls[this.field.name].value !== null ? [this.group.controls[this.field.name].value] : [])
                         }
                     })
                 )

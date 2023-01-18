@@ -141,7 +141,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
         if (this.field.lazy) {
             this.isLoading = true;
-            if (this.group.controls[this.field.name].value) {
+            if (this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null) {
                 this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]);
                 this.isLoading = false;
             } else {
@@ -160,11 +160,13 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                                 return this.field.options.pipe(take(1));
                             }
                         } else {
-                            return of(this.group.controls[this.field.name].value !== undefined ? [this.group.controls[this.field.name].value] : [])
+                            return of(this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
+                                ? [this.group.controls[this.field.name].value] : [])
                         }
                     })
                 )
                 .subscribe((options) => {
+                    console.log('options', options);
                     (this.options$ as BehaviorSubject<any[]>).next(options);
                     this.isLoading = false;
                     this.ref.markForCheck();
@@ -186,6 +188,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                     return this.options$.pipe(map(options => {
                         return options
                             .filter(option => {
+                                console.log('option', option)
                                 if (this.field.searchKeys && this.field.searchKeys.length) {
                                     return this.field.searchKeys.some(searchKey => {
                                         if (option[searchKey]) {
