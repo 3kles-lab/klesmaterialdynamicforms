@@ -166,7 +166,6 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                     })
                 )
                 .subscribe((options) => {
-                    console.log('options', options);
                     (this.options$ as BehaviorSubject<any[]>).next(options);
                     this.isLoading = false;
                     this.ref.markForCheck();
