@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
+import { DateAdapter, MatDateFormats } from '@angular/material/core';
 
 export interface IKlesFieldConfig {
     type?: EnumType;// Mapper type if(type && !component)=>type
@@ -53,4 +54,10 @@ export interface IKlesFieldConfig {
     debounceTime?: number;
     directive?: (new (ref: ViewContainerRef, field: IKlesField) => IKlesDirective);
     buttonType?: 'submit' | 'button' | 'reset';
+    dateOptions?: {
+        language: string,
+        // dateAdapter: any,
+        // dateAdapterOptions: any;
+        dateFormat: MatDateFormats
+    }
 }

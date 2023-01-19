@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Directive, Input, OnInit, ComponentFactoryResolver, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, OnDestroy, Injector } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
@@ -20,6 +20,8 @@ import { KlesFormLinkComponent } from '../fields/link.component';
 import { KlesFormSelectionListComponent } from '../fields/selection-list.component';
 import { KlesFormButtonToogleGroupComponent } from '../fields/button-toogle-group.component';
 import { KlesFormArrayComponent } from '../fields/array.component';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 const componentMapper = {
     label: KlesFormLabelComponent,
@@ -69,8 +71,8 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         }
         if (changes.field) {
             // if (changes.field.previousValue && changes.field.currentValue.component !== changes.field.previousValue.component) {
-                this.field = changes.field.currentValue;
-                this.buildComponent();
+            this.field = changes.field.currentValue;
+            this.buildComponent();
             // } else {
             //     this.field = changes.field.currentValue;
             // }
@@ -82,7 +84,24 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
             this.field.component || componentMapper[this.field.type]
         );
         if (this.componentRef) this.componentRef.destroy();
-        this.componentRef = this.container.createComponent(factory);
+        if (this.field.dateOptions) {
+            const options: any = {
+                providers: [
+                    { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
+                    // {
+                    //     provide: DateAdapter,
+                    //     useClass: this.field.dateOptions.dateAdapter,
+                    //     // deps: [MAT_DATE_LOCALE, this.field.dateOptions.dateAdapterOptions]
+                    //     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+                    // },
+                    { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
+                ]
+            };
+            const injector: Injector = Injector.create(options);
+            this.componentRef = this.container.createComponent(factory, 0, injector);
+        } else {
+            this.componentRef = this.container.createComponent(factory);
+        }
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
         this.componentRef.instance.siblingFields = this.siblingFields;
