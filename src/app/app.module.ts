@@ -15,6 +15,7 @@ import localeFr from '@angular/common/locales/fr';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 import { SelectOptionComponent } from './select/select-option.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ registerLocaleData(localeFr);
     BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
+    MatMomentDateModule,
     TranslateModule.forRoot(
       {
         loader: {

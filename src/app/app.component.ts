@@ -6,7 +6,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAda
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumType } from 'kles-material-dynamicforms';
+import { EnumType, KlesFormDateComponent } from 'kles-material-dynamicforms';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
@@ -29,7 +29,7 @@ import { SelectTriggerComponent } from './select/select-trigger.component';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'ja-JP' },
+    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
@@ -412,17 +412,40 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     const options = [...Array(10000).keys()];
+    const optionsTest = [{ SUNO: 'aaa' }, { SUNO: 'vbbb' }, { SUNO: 'ccc' }]
 
+    this.fieldsInput.push({
+      name: 'date',
+      placeholder: 'date',
+      component: KlesFormDateComponent,
+      dateOptions: {
+        language: 'fr-FR',
+
+        dateFormat: {
+          parse: {
+            dateInput: 'DD/MM/YYYY',
+          },
+          display: {
+            dateInput: 'MM/YYYY/DD',
+            monthYearLabel: 'MMM YYYY',
+            dateA11yLabel: 'MM/YYYY/DD',
+            monthYearA11yLabel: 'MMM YYYY',
+          }
+
+        }
+      }
+    });
 
 
     this.fieldsInput.push({
       name: 'selectInfinite',
       placeholder: 'select search infinite',
-      component: KlesFormSelectComponent,
+      component: KlesFormSelectSearchComponent,
       // multiple: true,
       virtualScroll: true,
-      options: new BehaviorSubject<any[]>(options).pipe(delay(1000), shareReplay(1)),
-      value: [options[99]],
+      property: 'SUNO',
+      options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
+      // value: 'aaa',
       lazy: true,
       // options: of(['aaa', 'bbb'])
     });
