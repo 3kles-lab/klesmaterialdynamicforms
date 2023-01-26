@@ -1,6 +1,6 @@
 {
   "name": "@3kles/kles-material-dynamic-forms",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "build:lib": "ng build kles-material-dynamicforms --prod",
     "publish:lib": "cd dist/kles-material-dynamicforms && npm publish --registry 'http://192.168.111.61:8081/repository/npm-3kles/'  --force",
