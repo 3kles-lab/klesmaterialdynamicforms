@@ -17,7 +17,7 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
     componentRef: ComponentRef<any>;
 
-    constructor(protected container: ViewContainerRef) { }
+    constructor(protected container: ViewContainerRef, private injector: Injector) { }
 
     ngOnDestroy(): void {
         if (this.componentRef) {
@@ -52,14 +52,14 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
             providers: this.field.dateOptions ? [
                 { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
                 { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
-            ] : []
+            ] : [],
+            parent: this.injector
         };
 
         const injector: Injector = Injector.create(options);
 
         this.componentRef = this.container.createComponent(this.field.component
             || componentMapper.find(element => element.type === this.field.type)?.component, { injector });
-
 
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
