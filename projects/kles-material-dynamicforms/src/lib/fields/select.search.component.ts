@@ -187,7 +187,6 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                     return this.options$.pipe(map(options => {
                         return options
                             .filter(option => {
-                                console.log('option', option)
                                 if (this.field.searchKeys && this.field.searchKeys.length) {
                                     return this.field.searchKeys.some(searchKey => {
                                         if (option[searchKey]) {
