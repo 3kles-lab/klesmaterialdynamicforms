@@ -1,12 +1,12 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumType, KlesFormDateComponent } from 'kles-material-dynamicforms';
+import { EnumType, KlesFormDateComponent, KlesFormRangeComponent } from 'kles-material-dynamicforms';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
@@ -137,7 +137,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   this.formInput?.form?.controls?.testSelectGino2?.setValue(value, { onlySelf: true, emitEvent: false });
     // }).bind(this), 5000);
 
-    this.formInput.form.valueChanges.subscribe(value => console.log(value));
+    this.formInput.form.valueChanges.subscribe(value => console.log(this.formInput.form));
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);
@@ -417,6 +417,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.fieldsInput.push({
       name: 'date',
       placeholder: 'date',
+      hint: 'test',
       component: KlesFormDateComponent,
       dateOptions: {
         language: 'fr-FR',
@@ -436,17 +437,25 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     });
 
+    this.fieldsInput.push({
+      name: 'range',
+      placeholder: { start: 'debut', end: 'fin' },
+      type: EnumType.range,
+      label: 'Enter a date range',
+    });
+
 
     this.fieldsInput.push({
       name: 'selectInfinite',
       placeholder: 'select search infinite',
       component: KlesFormSelectSearchComponent,
-      // multiple: true,
+      multiple: true,
       virtualScroll: true,
-      property: 'SUNO',
-      options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
-      // value: 'aaa',
-      lazy: true,
+      options: Array.from(Array(2000).keys())
+      // property: 'SUNO',
+      // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
+      // // value: 'aaa',
+      // lazy: true,
       // options: of(['aaa', 'bbb'])
     });
 
