@@ -111,7 +111,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
                 if (this.form.controls[field.name]) {
                     const control = this.updateControl(field, this.form.controls[field.name]);
-                    this.form.setControl(field.name, control, {emitEvent: false});
+                    this.form.setControl(field.name, control, { emitEvent: false });
                 } else {
                     const control = this.createControl(field);
                     this.form.addControl(field.name, control);
@@ -173,15 +173,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
                 });
                 array.push(group);
             }
-
-            // field.value.forEach((data: any) => {
-            //     const subGroup = this.fb.group({});
-            //     field.collections.forEach(subfield => {
-            //         const control = this.createControl(subfield);
-            //         subGroup.addControl(subfield.name, control);
-            //     });
-            //     array.push(subGroup);
-            // });
             return array;
         } else if (field.type === EnumType.group) {
             const subGroup = this.fb.group({});
@@ -192,7 +183,21 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
                 });
             }
             return subGroup;
+        } else if (field.type === EnumType.range) {
+            const range = this.fb.group({
+                start: this.fb.control(field.value?.start),
+                end: this.fb.control(field.value?.end),
+            }, {
+                validators: this.bindValidations(field.validations || []),
+                asyncValidators: this.bindAsyncValidations(field.asyncValidations || []),
+            });
 
+            if (field.disabled) {
+                range.disable();
+            }
+
+            console.log(range)
+            return range;
         } else {
             const control = this.fb.control(
                 field.value,

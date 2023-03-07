@@ -13,5 +13,6 @@ export enum EnumType {
     array = 'array',
     group = 'group',
     lineBreak = 'lineBreak',
-    badge = 'badge'
+    badge = 'badge',
+    range = 'range'
 }

@@ -42,6 +42,7 @@ import { KlesFormSelectionListComponent } from './fields/selection-list.componen
 import { KlesFormBadgeComponent } from './fields/badge.component';
 import { KlesFormButtonToogleGroupComponent } from './fields/button-toogle-group.component';
 import { KlesFormArrayComponent } from './fields/array.component';
+import { KlesFormRangeComponent } from './fields/range.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -73,7 +74,8 @@ const components = [
   KlesFormSlideToggleComponent,
   KlesFormSelectionListComponent,
   KlesFormButtonToogleGroupComponent,
-  KlesFormArrayComponent
+  KlesFormArrayComponent,
+  KlesFormRangeComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];

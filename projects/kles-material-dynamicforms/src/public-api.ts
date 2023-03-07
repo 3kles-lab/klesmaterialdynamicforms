@@ -41,6 +41,7 @@ export * from './lib/fields/slide-toggle.component';
 export * from './lib/fields/selection-list.component';
 export * from './lib/fields/button-toogle-group.component';
 export * from './lib/fields/array.component';
+export * from './lib/fields/range.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';

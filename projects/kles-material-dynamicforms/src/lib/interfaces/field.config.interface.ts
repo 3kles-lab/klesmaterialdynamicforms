@@ -13,7 +13,7 @@ export interface IKlesFieldConfig {
     component?: Type<any>;
     id?: string;// Attribut html id
     label?: string;// Label field
-    placeholder?: string;// Placeholder field
+    placeholder?: any;// Placeholder field
     tooltip?: string;// Tooltip field
     inputType?: string;// Type 
     min?: number;
@@ -60,5 +60,6 @@ export interface IKlesFieldConfig {
     dateOptions?: {
         language: string,
         dateFormat: MatDateFormats
-    }
+    },
+    hint?: string;
 }
