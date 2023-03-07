@@ -25,12 +25,11 @@ import { KlesFieldAbstract } from './field.abstract';
             </mat-option>
 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
-                <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
-                (change)="toggleAllSelection($event)">
-                    {{'selectAll' | translate}}
-                </mat-checkbox>
-
                 <ng-container *ngIf="!isLoading; else emptyOption">
+                    <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                    (change)="toggleAllSelection($event)">
+                        {{'selectAll' | translate}}
+                    </mat-checkbox>
                     <ng-container *ngIf="!field.autocompleteComponent">
                         <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
 
@@ -80,12 +79,11 @@ import { KlesFieldAbstract } from './field.abstract';
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
-            <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
-                    (change)="toggleAllSelection($event)">
-                    {{'selectAll' | translate}}
-            </mat-checkbox>
-
             <ng-container *ngIf="!isLoading; else emptyOption">
+                <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                        (change)="toggleAllSelection($event)">
+                        {{'selectAll' | translate}}
+                </mat-checkbox>
                 <ng-container *ngIf="!field.autocompleteComponent">
                     <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
                 </ng-container>
@@ -161,7 +159,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                             }
                         } else {
                             return of(this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
-                                ? [this.group.controls[this.field.name].value] : [])
+                                ? (Array.isArray(this.group.controls[this.field.name].value) ?
+                                    this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]) : [])
                         }
                     })
                 )

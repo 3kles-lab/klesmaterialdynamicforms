@@ -138,8 +138,9 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                                 return this.field.options.pipe(take(1));
                             }
                         } else {
-                            return of(this.group.controls[this.field.name].value !== undefined
-                                && this.group.controls[this.field.name].value !== null ? [this.group.controls[this.field.name].value] : [])
+                            return of(this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
+                                ? (Array.isArray(this.group.controls[this.field.name].value) ?
+                                    this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]) : [])
                         }
                     })
                 )
