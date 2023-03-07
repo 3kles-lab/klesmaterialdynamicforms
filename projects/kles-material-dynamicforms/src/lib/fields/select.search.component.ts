@@ -214,9 +214,10 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 .valueChanges.pipe(
                     takeUntil(this._onDestroy),
                     startWith(this.group.controls[this.field.name].value),
+                    map((selected) => (this.field.property ? selected?.map(s => s[this.field.property]) : selected)),
                     switchMap(selected => {
                         return this.optionsFiltered$.pipe(
-                            map((options) => options?.filter((option) => !option?.disabled)),
+                            map((options) => options?.filter((option) => !option?.disabled).map((option) => (this.field.property ? option[this.field.property] : option))),
                             map(options => {
                                 if (!selected) {
                                     return false;
