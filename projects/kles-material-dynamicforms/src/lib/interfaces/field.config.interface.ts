@@ -26,6 +26,7 @@ export interface IKlesFieldConfig {
     property?: string;// Property for field
     collections?: any;// Collections for subfield
     value?: any;// Value field
+    asyncValue?: Observable<any>;// Value field
     multiple?: boolean;// Multiple selection field
     disabled?: boolean;// Disabled field
     autocomplete?: boolean;// Autocomplete input field

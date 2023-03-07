@@ -1,5 +1,7 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { of, concat } from 'rxjs';
+import { catchError, map, take } from 'rxjs/operators';
 import { EnumType } from './enums/type.enum';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
@@ -195,8 +197,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             if (field.disabled) {
                 range.disable();
             }
-
-            console.log(range)
             return range;
         } else {
             const control = this.fb.control(
@@ -209,6 +209,26 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             );
             if (field.disabled) {
                 control.disable();
+            }
+
+            if (field.asyncValue) {
+                concat(
+                    of({ value: null, pending: true }),
+                    field.asyncValue.pipe(
+                        take(1),
+                        catchError((err) => {
+                            console.error(err);
+                            return of(null);
+                        }),
+                        map((value) => ({ value, pending: false }))
+                    )
+                ).subscribe((response) => {
+                    response.pending ? control.disable({ emitEvent: false }) : control.enable({ emitEvent: false });
+                    control.setValue(response.value);
+                    field.pending = response.pending;
+                    field.value = response.value;
+                    
+                });
             }
             return control;
         }
