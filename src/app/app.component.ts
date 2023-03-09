@@ -17,7 +17,7 @@ import {
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { delay, shareReplay } from 'rxjs/operators';
+import { delay, map, shareReplay } from 'rxjs/operators';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
@@ -138,6 +138,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // }).bind(this), 5000);
 
     this.formInput.form.valueChanges.subscribe(value => console.log(this.formInput.form));
+    this.formInput.form.statusChanges.subscribe(value => console.log('status',this.formInput.form));
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);
@@ -324,7 +325,13 @@ export class AppComponent implements OnInit, AfterViewInit {
       placeholder: 'Input Text',
       inputType: 'text',
       tooltip: 'tooltip text',
-      value: 'input text value',
+      // value: 'input text value',
+      asyncValue: of(null).pipe(delay(5000)),
+      validations: [{
+        validator: Validators.required,
+        name:'required',
+        message:'fsdfdsfdsf'
+      }],
       component: KlesFormInputComponent,
       valueChanges: (field, group, siblingFields) => {
         if (group.controls[field.name].value === 'test') {
@@ -419,6 +426,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       placeholder: 'date',
       hint: 'test',
       component: KlesFormDateComponent,
+      clearable: true,
       dateOptions: {
         language: 'fr-FR',
 
@@ -441,21 +449,27 @@ export class AppComponent implements OnInit, AfterViewInit {
       name: 'range',
       placeholder: { start: 'debut', end: 'fin' },
       type: EnumType.range,
+      clearable: true,
       label: 'Enter a date range',
     });
 
+
+    const obs$ = of(Array.from(Array(100).keys()).map((val) => ( val))).pipe(delay(3000))
 
     this.fieldsInput.push({
       name: 'selectInfinite',
       placeholder: 'select search infinite',
       component: KlesFormSelectSearchComponent,
       multiple: true,
-      virtualScroll: true,
-      options: Array.from(Array(2000).keys())
-      // property: 'SUNO',
+      virtualScroll: false,
+      options: obs$,
+      asyncValue: of(0),
+     
+      // property: 'key',
+      // property: 'STKY',
       // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
       // // value: 'aaa',
-      // lazy: true,
+      lazy: true,
       // options: of(['aaa', 'bbb'])
     });
 
@@ -463,6 +477,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       name: 'selectTestSimple',
       placeholder: 'select simple',
       component: KlesFormSelectComponent,
+      // component: KlesFormSelectComponent,
       property: 'BUAR',
       autocompleteComponent: SelectOptionComponent,
       lazy: true,
@@ -479,6 +494,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormSelectSearchComponent,
       searchKeys: ['BUAR', 'TX40'],
       property: 'BUAR',
+      clearable: true,
       autocompleteComponent: SelectOptionComponent,
       options: new BehaviorSubject<any[]>([{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }])
       // options: of(['aaa', 'bbb'])
@@ -529,6 +545,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.fieldsInput.push({
       component: KlesFormInputComponent,
+      clearable: true,
       placeholder: 'autocomplete mandatory with object array',
       name: 'autocompleteWithobjectMandatory',
       autocomplete: true,
@@ -539,13 +556,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         { test: 'aaa', val: 'rrr' },
         { test: 'bbb', val: 'bbb' }
       ] as any,
-      validations: [
-        {
-          name: 'list',
-          validator: autocompleteObjectValidator(),
-          message: 'Not in list'
-        }
-      ]
+      // validations: [
+      //   {
+      //     name: 'list',
+      //     validator: autocompleteObjectValidator(),
+      //     message: 'Not in list'
+      //   }
+      // ]
     });
 
     this.fieldsInput.push({
@@ -560,13 +577,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         { test: 'aaa', val: 'rrr' },
         { test: 'bbb', val: 'bbb' }
       ] as any,
-      validations: [
-        {
-          name: 'list',
-          validator: autocompleteObjectValidator(true),
-          message: 'Not in list'
-        }
-      ]
+      // validations: [
+      //   {
+      //     name: 'list',
+      //     validator: autocompleteObjectValidator(true),
+      //     message: 'Not in list'
+      //   }
+      // ]
     });
 
     this.fieldsInput.push({
@@ -579,16 +596,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         'aaa',
         'bbb'
       ] as any,
-      validations: [
-        {
-          name: 'list',
-          validator: autocompleteStringValidator([
-            'aaa',
-            'bbb'
-          ]),
-          message: 'Not in list'
-        }
-      ]
+      // validations: [
+      //   {
+      //     name: 'list',
+      //     validator: autocompleteStringValidator([
+      //       'aaa',
+      //       'bbb'
+      //     ]),
+      //     message: 'Not in list'
+      //   }
+      // ]
     });
 
     this.fieldsInput.push({
@@ -601,16 +618,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         'aaa',
         'bbb'
       ] as any,
-      validations: [
-        {
-          name: 'list',
-          validator: autocompleteStringValidator([
-            'aaa',
-            'bbb'
-          ], true),
-          message: 'Not in list'
-        }
-      ]
+      // validations: [
+      //   {
+      //     name: 'list',
+      //     validator: autocompleteStringValidator([
+      //       'aaa',
+      //       'bbb'
+      //     ], true),
+      //     message: 'Not in list'
+      //   }
+      // ]
     });
 
     this.fieldsInput.push({
