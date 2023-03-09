@@ -63,4 +63,7 @@ export interface IKlesFieldConfig {
         dateFormat: MatDateFormats
     },
     hint?: string;
+    clearable?: boolean;    /*active default clear component*/
+    clearableComponent?: Type<any>; /*Override default clear component*/
+    subComponents?: Type<any>[];
 }

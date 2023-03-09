@@ -42,6 +42,7 @@ export * from './lib/fields/selection-list.component';
 export * from './lib/fields/button-toogle-group.component';
 export * from './lib/fields/array.component';
 export * from './lib/fields/range.component';
+export * from './lib/fields/clear.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';
@@ -52,6 +53,7 @@ export * from './lib/interfaces/field.interface';
 export * from './lib/interfaces/field.config.interface';
 export * from './lib/interfaces/validator.interface';
 export * from './lib/interfaces/directive.interface';
+export * from './lib/interfaces/clear-control.interface';
 
 /**MATCHER */
 export * from './lib/matcher/form-error.matcher';

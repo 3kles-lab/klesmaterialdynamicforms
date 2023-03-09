@@ -16,10 +16,13 @@ import { KlesFieldAbstract } from './field.abstract';
             <input matEndDate formControlName="end" [placeholder]="(field.placeholder?.end ? field.placeholder?.end : '') | translate">
         </mat-date-range-input>
         
-        <mat-datepicker-toggle matIconSuffix [for]="picker" matSuffix></mat-datepicker-toggle>
+        <div matSuffix>
+            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+            <ng-content></ng-content>
+        </div>
+
         <mat-date-range-picker #picker></mat-date-range-picker>
         <mat-hint>{{field.hint}}</mat-hint>
-
 
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
             <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>

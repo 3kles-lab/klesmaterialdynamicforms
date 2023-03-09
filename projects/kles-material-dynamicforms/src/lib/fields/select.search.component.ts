@@ -99,9 +99,12 @@ import { KlesFieldAbstract } from './field.abstract';
                 <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
             </ng-template>
         </ng-container>
-
-
         </mat-select>
+
+        <div matSuffix>
+            <ng-content></ng-content>
+        </div>
+        
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
                 <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
             </ng-container>

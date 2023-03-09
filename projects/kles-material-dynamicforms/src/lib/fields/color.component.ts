@@ -12,6 +12,11 @@ import { OnInit, Component, OnDestroy } from '@angular/core';
             [style.background]="group.get(field.name).value"
             [style.color]="invertColor(group.get(field.name).value,true)"
             [formControlName]="field.name">
+
+        <div matSuffix>
+            <ng-content></ng-content>
+        </div>
+ 
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
             <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
         </ng-container>

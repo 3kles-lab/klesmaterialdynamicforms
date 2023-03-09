@@ -5,6 +5,7 @@ import {
 import { UntypedFormGroup } from '@angular/forms';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
+import { KlesFormClearComponent } from '../fields/clear.component';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 
 @Directive({
@@ -16,6 +17,7 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() siblingFields: IKlesFieldConfig[];
 
     componentRef: ComponentRef<any>;
+    subComponents: (ComponentRef<any>)[] = [];
 
     constructor(protected container: ViewContainerRef, private injector: Injector) { }
 
@@ -41,6 +43,8 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
     buildComponent() {
         if (this.componentRef) {
+            this.subComponents.forEach(c => c.destroy());
+            this.subComponents = [];
             this.componentRef.destroy();
         }
 
@@ -58,11 +62,28 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
         const injector: Injector = Injector.create(options);
 
+        if (this.field.clearable) {
+            const composant = this.createSubComponent(this.field.clearableComponent || KlesFormClearComponent);
+            this.subComponents.push(composant);
+        }
+        if (this.field.subComponents) {
+            this.subComponents.push(...this.field.subComponents.map((subComponent) => this.createSubComponent(subComponent)));
+        }
+
         this.componentRef = this.container.createComponent(this.field.component
-            || componentMapper.find(element => element.type === this.field.type)?.component, { injector });
+            || componentMapper.find(element => element.type === this.field.type)?.component,
+            { injector, projectableNodes: [this.subComponents.map(sub => sub.location.nativeElement)] });
 
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
         this.componentRef.instance.siblingFields = this.siblingFields;
+    }
+
+    private createSubComponent(componentType: Type<any>): ComponentRef<any> {
+        const component = this.container.createComponent(componentType);
+        component.instance.field = this.field;
+        component.instance.group = this.group;
+        component.instance.siblingFields = this.siblingFields;
+        return component;
     }
 }
