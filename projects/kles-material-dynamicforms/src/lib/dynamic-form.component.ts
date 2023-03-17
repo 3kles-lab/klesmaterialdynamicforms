@@ -1,10 +1,23 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName } from '@angular/forms';
 import { of, concat } from 'rxjs';
 import { catchError, map, take } from 'rxjs/operators';
 import { EnumType } from './enums/type.enum';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
+
+const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
+FormControlDirective.prototype.ngOnChanges = function () {
+    this.form.nativeElement = this.valueAccessor._elementRef?.nativeElement;
+    return originFormControlNgOnChanges.apply(this, arguments);
+};
+
+const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
+FormControlName.prototype.ngOnChanges = function () {
+    const result = originFormControlNameNgOnChanges.apply(this, arguments);
+    this.control.nativeElement = this.valueAccessor._elementRef?.nativeElement;
+    return result;
+};
 
 @Component({
     exportAs: 'klesDynamicForm',

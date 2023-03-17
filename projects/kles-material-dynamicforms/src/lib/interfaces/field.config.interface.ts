@@ -66,4 +66,5 @@ export interface IKlesFieldConfig {
     clearable?: boolean;    /*active default clear component*/
     clearableComponent?: Type<any>; /*Override default clear component*/
     subComponents?: Type<any>[];
+    autofocus?: boolean;
 }

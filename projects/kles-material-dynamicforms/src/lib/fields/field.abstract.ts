@@ -39,7 +39,22 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     }
 
     ngAfterViewInit(): void {
-        this.directive?.ngAfterViewInit();
+        if (this.directive && this.directive.ngAfterViewInit) {
+            this.directive?.ngAfterViewInit();
+        }
+
+
+        if (this.field.autofocus) {
+            setTimeout(() => {
+                (<any>this.group.controls[this.field.name])?.nativeElement.focus();
+            })
+
+            // console.log('result', (<any>this.group.controls[this.field.name]))
+        }
+
+
+
+
     }
 
     ngOnDestroy(): void {
