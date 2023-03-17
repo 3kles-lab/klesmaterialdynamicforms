@@ -223,11 +223,14 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
                         map((value) => ({ value, pending: false }))
                     )
                 ).subscribe((response) => {
-                    response.pending ? control.disable({ emitEvent: false }) : control.enable({ emitEvent: false });
-                    control.setValue(response.value);
                     field.pending = response.pending;
-                    field.value = response.value;
-                    
+                    if (response.pending) {
+                        control.disable({ emitEvent: false });
+                    } else {
+                        control.enable({ emitEvent: false });
+                        control.setValue(response.value);
+                        field.value = response.value;
+                    }
                 });
             }
             return control;

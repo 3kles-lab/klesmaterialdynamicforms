@@ -20,7 +20,6 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     }
 
     ngOnInit(): void {
-        // this.applyPipeTransform();
         if (this.field.valueChanges) {
             this.field.valueChanges(this.field, this.group, this.siblingFields);
         }
@@ -31,7 +30,6 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
                 if (this.field.valueChanges) {
                     this.field.valueChanges(this.field, this.group, this.siblingFields, val);
                 }
-                // this.applyPipeTransform();
             });
 
         if (this.field.directive) {
@@ -41,7 +39,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     }
 
     ngAfterViewInit(): void {
-
+        this.directive?.ngAfterViewInit();
     }
 
     ngOnDestroy(): void {
