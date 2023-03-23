@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { KlesFormRange } from "../controls/range.control";
 import { FieldMapper } from "../decorators/component.decorator";
 import { EnumType } from "../enums/type.enum";
 import { KlesFieldAbstract } from './field.abstract';
 
-@FieldMapper({ type: EnumType.range })
+@FieldMapper({ type: EnumType.range, factory: (field) => (new KlesFormRange(field).create()) })
 @Component({
     selector: "kles-form-rangepicker",
     template: `

@@ -70,3 +70,13 @@ export * from './lib/pipe/transform.pipe';
 
 /**DECORATORS */
 export * from './lib/decorators/component.decorator';
+
+/**FACTORIES */
+export * from './lib/factories/field.factory';
+
+/**CONTROLS */
+export * from './lib/controls/array.control';
+export * from './lib/controls/control.interface';
+export * from './lib/controls/default.control';
+export * from './lib/controls/group.control';
+export * from './lib/controls/range.control';

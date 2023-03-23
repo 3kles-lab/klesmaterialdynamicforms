@@ -1,8 +1,8 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName } from '@angular/forms';
-import { of, concat } from 'rxjs';
-import { catchError, map, take } from 'rxjs/operators';
+import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName } from '@angular/forms';
+import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
+import { klesFieldControlFactory } from './factories/field.factory';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
 
@@ -153,153 +153,23 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             }
             return group;
         } else {
-            control.setValidators(this.bindValidations(field.validations || []));
-            control.setAsyncValidators(this.bindAsyncValidations(field.asyncValidations || []));
-            if (field.value && control.value !== field.value) {
-                control.setValue(field.value);
-            }
+            // control.setValidators(this.bindValidations(field.validations || []));
+            // control.setAsyncValidators(this.bindAsyncValidations(field.asyncValidations || []));
+            // if (field.value && control.value !== field.value) {
+            //     control.setValue(field.value);
+            // }
             return control;
         }
 
     }
 
     private createControl(field: IKlesFieldConfig): AbstractControl {
-
-        if (field.type === EnumType.array) {
-            const array = this.fb.array([]);
-
-            if (field.value && Array.isArray(field.value)) {
-                if (field.collections && Array.isArray(field.collections)) {
-                    field.value.forEach(val => {
-                        const group = this.fb.group({});
-                        field.collections.forEach(subfield => {
-                            const data = val[subfield.name] || null;
-                            const control = this.createControl({ ...subfield, ...(data && { value: data }) });
-                            group.addControl(subfield.name, control);
-                        });
-                        array.push(group);
-                    });
-                }
-            } else {
-                const group = this.fb.group({});
-                field.collections.forEach(subfield => {
-                    const control = this.createControl({ ...subfield });
-                    group.addControl(subfield.name, control);
-                });
-                array.push(group);
-            }
-            return array;
-        } else if (field.type === EnumType.group) {
-            const subGroup = this.fb.group({});
-            if (field.collections && Array.isArray(field.collections)) {
-                field.collections.forEach(subfield => {
-                    const control = this.createControl(subfield);
-                    subGroup.addControl(subfield.name, control);
-                });
-            }
-            return subGroup;
-        } else if (field.type === EnumType.range) {
-            const range = this.fb.group({
-                start: this.fb.control(field.value?.start),
-                end: this.fb.control(field.value?.end),
-            }, {
-                validators: this.bindValidations(field.validations || []),
-                asyncValidators: this.bindAsyncValidations(field.asyncValidations || []),
-            });
-
-            if (field.disabled) {
-                range.disable();
-            }
-            return range;
+        if (field.type) {
+            return componentMapper.find(c => c.type === field.type)?.factory(field) || klesFieldControlFactory(field);
         } else {
-            const control = this.fb.control(
-                field.value,
-                {
-                    validators: this.bindValidations(field.validations || []),
-                    asyncValidators: this.bindAsyncValidations(field.asyncValidations || []),
-                    updateOn: field.updateOn || 'change'
-                }
-            );
-            if (field.disabled) {
-                control.disable();
-            }
-
-            if (field.asyncValue) {
-                concat(
-                    of({ value: null, pending: true }),
-                    field.asyncValue.pipe(
-                        take(1),
-                        catchError((err) => {
-                            console.error(err);
-                            return of(null);
-                        }),
-                        map((value) => ({ value, pending: false }))
-                    )
-                ).subscribe((response) => {
-                    field.pending = response.pending;
-                    if (response.pending) {
-                        control.disable({ emitEvent: false });
-                    } else {
-                        control.enable({ emitEvent: false });
-                        control.setValue(response.value);
-                        field.value = response.value;
-                    }
-                });
-            }
-            return control;
+            return componentMapper.find(c => c.component === field.component)?.factory(field) || klesFieldControlFactory(field);
         }
     }
-
-
-
-    // private createControl(field: IKlesFieldConfig): AbstractControl {
-
-    //     if (field.type === 'listField') {
-    //         const array = this.fb.array([]);
-
-    //         field.value.forEach((data: any) => {
-    //             const subGroup = this.fb.group({});
-    //             field.collections.forEach(subfield => {
-    //                 const control = this.fb.control(
-    //                     data[subfield.name] ? data[subfield.name] : null,
-    //                     this.bindValidations(subfield.validations || []),
-    //                     this.bindAsyncValidations(subfield.asyncValidations || [])
-    //                 );
-    //                 subGroup.addControl(subfield.name, control);
-    //             });
-    //             array.push(subGroup);
-    //         });
-    //         return array;
-    //     } else if (field.type === 'group') {
-    //         const subGroup = this.fb.group({});
-    //         if (field.collections && Array.isArray(field.collections)) {
-    //             field.collections.forEach(subfield => {
-    //                 const control = this.fb.control(
-    //                     subfield.value,
-    //                     this.bindValidations(subfield.validations || []),
-    //                     this.bindAsyncValidations(subfield.asyncValidations || [])
-    //                 );
-    //                 if (subfield.disabled) {
-    //                     control.disable();
-    //                 }
-    //                 subGroup.addControl(subfield.name, control);
-    //             });
-    //         }
-    //         return subGroup;
-
-    //     } else {
-    //         const control = this.fb.control(
-    //             field.value,
-    //             this.bindValidations(field.validations || []),
-    //             this.bindAsyncValidations(field.asyncValidations || [])
-    //         );
-    //         if (field.disabled) {
-    //             control.disable();
-    //         }
-    //         return control;
-    //     }
-    // }
-
 
 
     private createForm() {
@@ -322,30 +192,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     }
 
 
-    private bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
-        if (validations.length > 0) {
-            const validList = [];
-            validations.forEach(valid => {
-                validList.push(valid.validator);
-            });
-            return Validators.compose(validList);
 
-        }
-        return null;
-    }
-
-
-    private bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
-        if (validations.length > 0) {
-            const validList = [];
-            validations.forEach(valid => {
-                validList.push(valid.validator);
-            });
-            return Validators.composeAsync(validList);
-
-        }
-        return null;
-    }
 
     private validateAllFormFields(formGroup: UntypedFormGroup) {
         Object.keys(formGroup.controls).forEach(field => {

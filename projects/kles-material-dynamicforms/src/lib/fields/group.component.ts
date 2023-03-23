@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
+import { KlesFormGroup } from '../controls/group.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 
-@FieldMapper({type: EnumType.group})
+@FieldMapper({ type: EnumType.group, factory: (field) => (new KlesFormGroup(field).create()) })
 @Component({
     selector: 'kles-group',
     template: `
