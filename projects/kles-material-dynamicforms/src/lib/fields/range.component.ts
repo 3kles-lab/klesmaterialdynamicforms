@@ -11,7 +11,8 @@ import { KlesFieldAbstract } from './field.abstract';
 
         <mat-label>{{field.label}}</mat-label>
 
-        <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" >
+        <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
+        [min]="field.min" [max]="field.max" >
             <input matStartDate formControlName="start" [placeholder]="(field.placeholder?.start ? field.placeholder?.start : '') | translate">
             <input matEndDate formControlName="end" [placeholder]="(field.placeholder?.end ? field.placeholder?.end : '') | translate">
         </mat-date-range-input>

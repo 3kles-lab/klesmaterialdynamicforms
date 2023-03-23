@@ -5,7 +5,8 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: "kles-form-datepicker",
     template: `
     <mat-form-field class="demo-full-width margin-top" [color]="field.color" [formGroup]="group">
-        <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder | translate">
+        <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder | translate"
+        [min]="field.min" [max]="field.max">
         <div matSuffix>
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <ng-content></ng-content>

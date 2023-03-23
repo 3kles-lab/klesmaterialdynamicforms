@@ -16,8 +16,8 @@ export interface IKlesFieldConfig {
     placeholder?: any;// Placeholder field
     tooltip?: string;// Tooltip field
     inputType?: string;// Type 
-    min?: number;
-    max?: number;
+    min?: number | Date;
+    max?: number | Date;
     maxLength?: number;
     step?: number;
     options?: any[] | Subject<any[]> | Observable<any[]>; // List options for list component
