@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormArray } from '@angular/forms';
+import { KlesFormArray } from '../controls/array.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 
-@FieldMapper({type: EnumType.array})
+@FieldMapper({ type: EnumType.array, factory: (field) => (new KlesFormArray(field).create()) })
 @Component({
     selector: 'kles-array',
     template: `
