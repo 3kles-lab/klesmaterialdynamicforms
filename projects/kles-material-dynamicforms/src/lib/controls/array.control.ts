@@ -1,5 +1,6 @@
-import { AbstractControl, FormArray, FormGroup } from "@angular/forms";
+import { AbstractControl, FormArray, FormControl, FormGroup } from "@angular/forms";
 import { KlesFormControl } from "./default.control";
+import { v4 as uuidv4 } from 'uuid';
 
 export class KlesFormArray extends KlesFormControl {
 
@@ -10,6 +11,7 @@ export class KlesFormArray extends KlesFormControl {
             if (this.field.collections && Array.isArray(this.field.collections)) {
                 this.field.value.forEach(val => {
                     const group = new FormGroup({});
+                    group.addControl('_id', new FormControl(uuidv4()));
                     this.field.collections.forEach(subfield => {
                         const data = val[subfield.name] || null;
                         const control = new KlesFormControl({ ...subfield, ...(data && { value: data }) }).create();
