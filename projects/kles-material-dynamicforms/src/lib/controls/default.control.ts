@@ -20,6 +20,10 @@ export class KlesFormControl implements IKlesControl {
             }
         );
 
+        if (this.field.disabled) {
+            control.disable();
+        }
+
         if (this.field.asyncValue) {
             concat(
                 of({ value: null, pending: true }),
@@ -36,7 +40,9 @@ export class KlesFormControl implements IKlesControl {
                 if (response.pending) {
                     control.disable({ emitEvent: false });
                 } else {
-                    control.enable({ emitEvent: false });
+                    if (!this.field.disabled) {
+                        control.enable({ emitEvent: false });
+                    }
                     control.setValue(response.value);
                     this.field.value = response.value;
                 }

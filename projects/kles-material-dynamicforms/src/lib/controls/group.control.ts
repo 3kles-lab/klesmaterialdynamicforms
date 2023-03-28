@@ -11,6 +11,11 @@ export class KlesFormGroup extends KlesFormControl {
                 subGroup.addControl(subfield.name, control);
             });
         }
+
+        if (this.field.disabled) {
+            subGroup.disable();
+        }
+
         return subGroup;
     }
 }

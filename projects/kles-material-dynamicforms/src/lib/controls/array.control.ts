@@ -5,7 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 export class KlesFormArray extends KlesFormControl {
 
     public create(): AbstractControl<any, any> {
-        const array = new FormArray([]);
+        const array = new FormArray([], {
+            validators: this.bindValidations(this.field.validations || []),
+            asyncValidators: this.bindAsyncValidations(this.field.asyncValidations || []),
+            updateOn: this.field.updateOn || 'change'
+        });
 
         if (this.field.value && Array.isArray(this.field.value)) {
             if (this.field.collections && Array.isArray(this.field.collections)) {
@@ -28,6 +32,13 @@ export class KlesFormArray extends KlesFormControl {
             });
             array.push(group);
         }
+
+
+        if (this.field.disabled) {
+            array.disable();
+        }
+
+
         return array;
     }
 }
