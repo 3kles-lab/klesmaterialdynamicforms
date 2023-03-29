@@ -3,12 +3,13 @@ import { ViewEncapsulation } from '@angular/compiler';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
+import { KlesFormSelectSearchComponent } from './select.search.component';
 
 @Component({
-    selector: 'kles-form-select-search',
+    selector: 'kles-form-select-lazy-search',
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
@@ -20,7 +21,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
         <ng-container *ngIf="field.virtualScroll">
             <mat-option>
-                <ngx-mat-select-search [formControl]="searchControl"
+                <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false"
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
@@ -75,7 +76,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
         <ng-container *ngIf="!field.virtualScroll">
             <mat-option>
-                <ngx-mat-select-search [formControl]="searchControl"
+                <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false" 
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
@@ -116,189 +117,46 @@ import { KlesFieldAbstract } from './field.abstract';
     styles: ['mat-form-field {width: calc(100%)}', '.selectAll {padding: 10px 16px;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
 })
-export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
-    searchControl = new UntypedFormControl();
-    selectAllControl = new UntypedFormControl(false);
-
-    isLoading = false;
-
-    options$: Observable<any[]>;
-    optionsFiltered$ = new ReplaySubject<any[]>(1);
-
-    openChange$ = new Subject<boolean>();
-
-    // private _onDestroy = new Subject<void>();
-
-    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-    @ViewChildren(MatOption) options: QueryList<MatOption>;
+export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchComponent implements OnInit, OnDestroy {
 
     constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
-        super(viewRef);
+        super(viewRef, ref);
     }
 
     ngOnInit() {
+        this.field.lazy = true;
         super.ngOnInit();
 
-        if (this.field.lazy) {
-            this.isLoading = true;
-            if (this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null) {
-                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]);
-                this.isLoading = false;
-            } else {
-                this.options$ = new BehaviorSubject<any[]>([]);
-            }
-
-            this.openChange$
-                .pipe(
-                    takeUntil(this._onDestroy),
-                    switchMap((isOpen) => {
-                        return this.onOpenChange(isOpen);
-                    })
-                )
-                .subscribe((options) => {
-                    (this.options$ as BehaviorSubject<any[]>).next(options);
-                    this.isLoading = false;
-                    this.ref.markForCheck();
-                });
-        } else {
-            if (this.field.options instanceof Observable) {
-                this.options$ = this.field.options;
-            }
-            else if (this.field.options instanceof Function) {
-                this.options$ = this.field.options();
-            }
-            else {
-                this.options$ = of(this.field.options);
-            }
-        }
-
-        this.searchControl.valueChanges.pipe(
+        this.openChange$.pipe(
             takeUntil(this._onDestroy),
-            startWith(this.searchControl.value),
-            switchMap(value => {
-                return concat(
-                    of({ loading: true, options: [] }),
-                    this.onSearchChange(value).pipe(map((options) => ({ loading: false, options })))
-                )
-
-            })
-        ).subscribe(({ loading, options }) => {
-            this.isLoading = loading;
-            this.optionsFiltered$.next(options);
-        });
-
-        if (this.field.multiple) {
-            this.group.controls[this.field.name]
-                .valueChanges.pipe(
-                    takeUntil(this._onDestroy),
-                    startWith(this.group.controls[this.field.name].value),
-                    map((selected) => (this.field.property ? selected?.map(s => s[this.field.property]) : selected)),
-                    switchMap(selected => {
-                        return this.optionsFiltered$.pipe(
-                            map((options) => options?.filter((option) => !option?.disabled).map((option) => (this.field.property ? option[this.field.property] : option))),
-                            map(options => {
-                                if (!selected) {
-                                    return false;
-                                }
-                                if (options.length < selected.length) {
-                                    return options.length > 0 && options.every(o => selected.includes(o));
-                                } else {
-                                    return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
-                                }
-                            }));
-                    })
-                ).subscribe(isChecked => {
-                    this.selectAllControl.setValue(isChecked);
-                });
-        }
+        )
+            .subscribe((open) => {
+                if (open) {
+                    this.searchControl.reset(null);
+                } else {
+                    this.searchControl.reset(null, { emitEvent: false });
+                }
+            });
     }
 
     ngOnDestroy(): void {
-        // this._onDestroy.next();
         super.ngOnDestroy();
     }
 
-
-    toggleAllSelection(state) {
-        if (state.checked) {
-            this.optionsFiltered$.pipe(take(1), map((options) => options.filter((option) => !option?.disabled))).subscribe(options => {
-                if (options.length > 0) {
-                    this.group.controls[this.field.name].patchValue(options.slice());
-                }
-            });
-
-        } else {
-            this.group.controls[this.field.name].patchValue([]);
-        }
-    }
-
-    protected onOpenChange(isOpen: boolean): Observable<any[]> {
-        if (isOpen) {
-
-            if (this.field.options instanceof Observable) {
-                this.isLoading = true;
-                return this.field.options.pipe(take(1));
-            }
-            else if (this.field.options instanceof Function) {
-                this.isLoading = true;
-                return this.field.options();
-            }
-            else {
-                return of(this.field.options);
-            }
-        } else {
-            return of(this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
-                ? (Array.isArray(this.group.controls[this.field.name].value) ?
-                    this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]) : [])
-        }
-    }
-
     protected onSearchChange(value: string): Observable<any[]> {
-        if (value) {
-            const search = value.toLowerCase();
-            return this.options$.pipe(map(options => {
-                return options
-                    .filter(option => {
-                        if (this.field.searchKeys && this.field.searchKeys.length) {
-                            return this.field.searchKeys.some(searchKey => {
-                                if (option[searchKey]) {
-                                    return option[searchKey].toString().toLowerCase().indexOf(search) > -1;
-                                }
-                                return false;
-                            }) || (this.field.property ?
-                                option[this.field.property].toString().toLowerCase().indexOf(search) > -1 : false);
-
-                        } else {
-                            if (this.field.property) {
-                                return option[this.field.property].toString().toLowerCase().indexOf(search) > -1;
-                            }
-                        }
-                        return option.toString().toLowerCase().indexOf(search) > -1;
-                    });
-            }));
-        } else {
-            return this.options$;
-        }
-    }
-
-    openChange($event: boolean) {
-        if (this.field.lazy) {
-            this.openChange$.next($event);
-        }
-
-        if (this.field.virtualScroll) {
-            if ($event) {
-                this.cdkVirtualScrollViewport.scrollToIndex(0);
-                this.cdkVirtualScrollViewport.checkViewportSize();
+        if (this.field.options instanceof Function) {
+            if (value) {
+                const search = value.toLowerCase();
+                return this.field.options(search).pipe(take(1));
+            } else {
+                return this.field.options().pipe(take(1));
             }
-        }
-    }
 
-    compareFn = (o1: any, o2: any) => {
-        if (this.field.property && o1 && o2) {
-            return o1[this.field.property] === o2[this.field.property];
         }
-        return o1 === o2;
+        else {
+            return super.onSearchChange(value);
+        }
+
+
     }
 }

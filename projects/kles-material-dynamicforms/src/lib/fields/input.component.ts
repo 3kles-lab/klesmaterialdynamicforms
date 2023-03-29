@@ -62,7 +62,11 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
 
         if (this.field.options instanceof Observable) {
             this.options$ = this.field.options;
-        } else {
+        }
+        else if (this.field.options instanceof Function) {
+            this.options$ = this.field.options();
+        }
+        else {
             this.options$ = of(this.field.options);
         }
 

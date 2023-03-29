@@ -32,10 +32,14 @@ export class KlesFormSelectionListComponent extends KlesFieldAbstract implements
     ngOnInit() {
         super.ngOnInit();
 
-        if (!(this.field.options instanceof Observable)) {
-            this.options$ = of(this.field.options);
-        } else {
+        if (this.field.options instanceof Observable) {
             this.options$ = this.field.options;
+        }
+        else if (this.field.options instanceof Function) {
+            this.options$ = this.field.options();
+        }
+        else {
+            this.options$ = of(this.field.options);
         }
     }
     ngOnDestroy(): void {

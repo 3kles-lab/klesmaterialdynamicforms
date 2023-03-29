@@ -135,11 +135,16 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                     takeUntil(this._onDestroy),
                     switchMap((isOpen) => {
                         if (isOpen) {
-                            if (!(this.field.options instanceof Observable)) {
-                                return of(this.field.options);
-                            } else {
+                            if (this.field.options instanceof Observable) {
                                 this.isLoading = true;
                                 return this.field.options.pipe(take(1));
+                            }
+                            else if (this.field.options instanceof Function) {
+                                this.isLoading = true;
+                                return this.field.options();
+                            }
+                            else {
+                                return of(this.field.options);
                             }
                         } else {
                             return of(this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
@@ -155,14 +160,17 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                 });
 
         } else {
-            if (!(this.field.options instanceof Observable)) {
-                this.options$ = of(this.field.options);
-            } else {
+
+            if (this.field.options instanceof Observable) {
                 this.options$ = this.field.options;
             }
+            else if (this.field.options instanceof Function) {
+                this.options$ = this.field.options();
+            }
+            else {
+                this.options$ = of(this.field.options);
+            }
         }
-
-
     }
 
     ngOnDestroy(): void {

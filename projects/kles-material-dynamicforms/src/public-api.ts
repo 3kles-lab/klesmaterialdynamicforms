@@ -43,6 +43,7 @@ export * from './lib/fields/button-toogle-group.component';
 export * from './lib/fields/array.component';
 export * from './lib/fields/range.component';
 export * from './lib/fields/clear.component';
+export * from './lib/fields/select.lazy-search.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';

@@ -44,6 +44,7 @@ import { KlesFormButtonToogleGroupComponent } from './fields/button-toogle-group
 import { KlesFormArrayComponent } from './fields/array.component';
 import { KlesFormRangeComponent } from './fields/range.component';
 import { KlesFormClearComponent } from './fields/clear.component';
+import { KlesFormSelectLazySearchComponent } from './fields/select.lazy-search.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -77,7 +78,8 @@ const components = [
   KlesFormButtonToogleGroupComponent,
   KlesFormArrayComponent,
   KlesFormRangeComponent,
-  KlesFormClearComponent
+  KlesFormClearComponent,
+  KlesFormSelectLazySearchComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
