@@ -146,8 +146,7 @@ export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchCompo
     protected onSearchChange(value: string): Observable<any[]> {
         if (this.field.options instanceof Function) {
             if (value) {
-                const search = value.toLowerCase();
-                return this.field.options(search).pipe(take(1));
+                return this.field.options(value).pipe(take(1));
             } else {
                 return this.field.options().pipe(take(1));
             }

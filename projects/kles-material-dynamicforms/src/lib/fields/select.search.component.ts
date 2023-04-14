@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, 
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
@@ -176,6 +176,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         this.searchControl.valueChanges.pipe(
             takeUntil(this._onDestroy),
             startWith(this.searchControl.value),
+            distinctUntilChanged(),
             switchMap(value => {
                 return concat(
                     of({ loading: true, options: [] }),
