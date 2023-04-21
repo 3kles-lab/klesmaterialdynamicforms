@@ -4,7 +4,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, 
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
@@ -126,7 +126,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     options$: Observable<any[]>;
     optionsFiltered$ = new ReplaySubject<any[]>(1);
 
-    openChange$ = new Subject<boolean>();
+    openChange$ = new BehaviorSubject<boolean>(false);
 
     // private _onDestroy = new Subject<void>();
 
@@ -149,18 +149,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 this.options$ = new BehaviorSubject<any[]>([]);
             }
 
-            this.openChange$
-                .pipe(
-                    takeUntil(this._onDestroy),
-                    switchMap((isOpen) => {
-                        return this.onOpenChange(isOpen);
-                    })
-                )
-                .subscribe((options) => {
-                    (this.options$ as BehaviorSubject<any[]>).next(options);
-                    this.isLoading = false;
-                    this.ref.markForCheck();
-                });
+            this.openChangeEvent();
         } else {
             if (this.field.options instanceof Observable) {
                 this.options$ = this.field.options;
@@ -175,9 +164,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
         this.searchControl.valueChanges.pipe(
             takeUntil(this._onDestroy),
-            debounceTime(200),
+            debounceTime(this.field.debounceTime || 0),
             startWith(this.searchControl.value),
-            distinctUntilChanged(),
             switchMap(value => {
                 return concat(
                     of({ loading: true, options: [] }),
@@ -236,6 +224,22 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         }
     }
 
+
+    protected openChangeEvent(): void {
+        this.openChange$
+            .pipe(
+                takeUntil(this._onDestroy),
+                switchMap((isOpen) => {
+                    return this.onOpenChange(isOpen);
+                })
+            )
+            .subscribe((options) => {
+                (this.options$ as BehaviorSubject<any[]>).next(options);
+                this.isLoading = false;
+                this.ref.markForCheck();
+            });
+    }
+
     protected onOpenChange(isOpen: boolean): Observable<any[]> {
         if (isOpen) {
 
@@ -245,7 +249,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             }
             else if (this.field.options instanceof Function) {
                 this.isLoading = true;
-                return this.field.options();
+                return this.field.options().pipe(take(1));
             }
             else {
                 return of(this.field.options);

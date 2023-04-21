@@ -125,18 +125,8 @@ export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchCompo
 
     ngOnInit() {
         this.field.lazy = true;
+        this.field.debounceTime = this.field.debounceTime ? this.field.debounceTime : 500;
         super.ngOnInit();
-
-        this.openChange$.pipe(
-            takeUntil(this._onDestroy),
-        )
-            .subscribe((open) => {
-                if (open) {
-                    this.searchControl.reset(null);
-                } else {
-                    this.searchControl.reset(null, { emitEvent: false });
-                }
-            });
     }
 
     ngOnDestroy(): void {
@@ -145,17 +135,32 @@ export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchCompo
 
     protected onSearchChange(value: string): Observable<any[]> {
         if (this.field.options instanceof Function) {
-            if (value) {
-                return this.field.options(value).pipe(take(1));
-            } else {
-                return this.field.options().pipe(take(1));
+            if (this.openChange$.getValue() && this.field.options instanceof Function) {
+                if (value) {
+                    return this.field.options(value).pipe(take(1));
+                } else {
+                    return this.field.options().pipe(take(1));
+                }
             }
-
+            return of(this.group.controls[this.field.name].value ? [this.group.controls[this.field.name].value] : []);
         }
         else {
             return super.onSearchChange(value);
         }
+    }
 
-
+    protected openChangeEvent(): void {
+        this.openChange$
+            .pipe(
+                takeUntil(this._onDestroy),
+                switchMap((isOpen) => {
+                    return this.onOpenChange(isOpen);
+                })
+            )
+            .subscribe((options) => {
+                this.optionsFiltered$.next(options);
+                this.isLoading = false;
+                this.ref.markForCheck();
+            });
     }
 }
