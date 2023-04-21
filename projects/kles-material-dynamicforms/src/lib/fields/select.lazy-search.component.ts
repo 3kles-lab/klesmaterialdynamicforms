@@ -154,10 +154,13 @@ export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchCompo
             .pipe(
                 takeUntil(this._onDestroy),
                 switchMap((isOpen) => {
-                    return this.onOpenChange(isOpen);
+                    return this.onOpenChange(isOpen).pipe(map((options) => ({ options, isOpen })));
                 })
             )
-            .subscribe((options) => {
+            .subscribe(({ options, isOpen }) => {
+                if (!isOpen) {
+                    this.searchControl.reset(null, { emitEvent: false });
+                }
                 this.optionsFiltered$.next(options);
                 this.isLoading = false;
                 this.ref.markForCheck();
