@@ -7,7 +7,7 @@ export class KlesFormGroup extends KlesFormControl {
         const subGroup = new UntypedFormGroup({});
         if (this.field.collections && Array.isArray(this.field.collections)) {
             this.field.collections.forEach(subfield => {
-                const control = new KlesFormControl(subfield).create();
+                const control = new KlesFormControl({ ...subfield, value: subfield.value || this.field.value?.[subfield.name] }).create();
                 subGroup.addControl(subfield.name, control);
             });
         }
