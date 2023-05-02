@@ -1,6 +1,8 @@
 import { AbstractControl, FormArray, FormControl, FormGroup } from "@angular/forms";
 import { KlesFormControl } from "./default.control";
 import { v4 as uuidv4 } from 'uuid';
+import { componentMapper } from "../decorators/component.decorator";
+import { klesFieldControlFactory } from "../factories/field.factory";
 
 export class KlesFormArray extends KlesFormControl {
 
@@ -18,7 +20,15 @@ export class KlesFormArray extends KlesFormControl {
                     group.addControl('_id', new FormControl(uuidv4()));
                     this.field.collections.forEach(subfield => {
                         const data = val[subfield.name] || null;
-                        const control = new KlesFormControl({ ...subfield, ...(data && { value: data }) }).create();
+                        // const control = new KlesFormControl({ ...subfield, ...(data && { value: data }) }).create();
+                        let control;
+                        if (subfield.type) {
+                            control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, ...(data && { value: data }) })
+                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) });
+                        } else {
+                            control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield, ...(data && { value: data }) })
+                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) });
+                        }
                         group.addControl(subfield.name, control);
                     });
                     array.push(group);
@@ -27,7 +37,15 @@ export class KlesFormArray extends KlesFormControl {
         } else {
             const group = new FormGroup({});
             this.field.collections.forEach(subfield => {
-                const control = new KlesFormControl({ ...subfield }).create();
+                // const control = new KlesFormControl({ ...subfield }).create();
+                let control;
+                if (subfield.type) {
+                    control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield })
+                        || klesFieldControlFactory({ ...subfield });
+                } else {
+                    control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield })
+                        || klesFieldControlFactory({ ...subfield });
+                }
                 group.addControl(subfield.name, control);
             });
             array.push(group);
