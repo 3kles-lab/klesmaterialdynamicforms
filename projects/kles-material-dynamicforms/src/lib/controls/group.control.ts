@@ -27,8 +27,6 @@ export class KlesFormGroup extends KlesFormControl {
             subGroup.disable();
         }
 
-        console.log('subGroup', subGroup)
-
         return subGroup;
     }
 }
