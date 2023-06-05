@@ -39,7 +39,7 @@
     "luxon": "^3.2.1",
     "moment": "^2.24.0",
     "ngx-color-picker": "^10.0.1",
-    "ngx-mat-select-search": "^3.2.0",
+    "ngx-mat-select-search": "^7.0.2",
     "rxjs": "~6.5.4",
     "tslib": "^2.0.0",
     "uuid": "^8.3.0",

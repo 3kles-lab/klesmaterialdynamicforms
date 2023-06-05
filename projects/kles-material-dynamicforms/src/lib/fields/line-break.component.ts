@@ -9,10 +9,10 @@ import { KlesFieldAbstract } from './field.abstract';
     template: ``,
     styles: [
         `:host{
-            flex-basis: 100%;
-            display: flex;
-            height:0;
-        }`
+                     flex-basis: 100%;
+                     display: flex;
+                     height:0;
+                 }`
     ]
 })
 export class KlesFormLineBreakComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

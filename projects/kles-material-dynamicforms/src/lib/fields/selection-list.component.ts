@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatLegacySelectionListChange as MatSelectionListChange } from '@angular/material/legacy-list';
+import { MatSelectionListChange } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
 
@@ -23,7 +23,9 @@ import { KlesFieldAbstract } from './field.abstract';
         </mat-selection-list>
     </div>
 `,
-    styles: ['mat-selection-list {width: calc(100%);height: 250px; overflow:auto}'],
+    styles: [`
+/* TODO(mdc-migration): The following rule targets internal classes of select that may no longer apply for the MDC version. */
+mat-selection-list {width: calc(100%);height: 250px; overflow:auto}`],
 })
 export class KlesFormSelectionListComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
