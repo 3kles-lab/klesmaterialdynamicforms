@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
-import { MatOption } from '@angular/material/core';
+import { MatLegacyOption as MatOption } from '@angular/material/legacy-core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { switchMap, take, takeUntil } from 'rxjs/operators';
 import { FieldMapper } from '../decorators/component.decorator';
