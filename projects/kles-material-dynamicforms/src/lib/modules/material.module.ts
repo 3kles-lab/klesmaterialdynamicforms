@@ -73,7 +73,6 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
         MatSnackBarModule,
         MatTreeModule,
         MatSliderModule,
-        MatButtonModule,
         MatSlideToggleModule,
         ColorPickerModule,
         MatButtonToggleModule
@@ -111,7 +110,6 @@ import { CdkScrollable } from '@angular/cdk/scrolling';
         MatSnackBarModule,
         MatTreeModule,
         MatSliderModule,
-        MatButtonModule,
         MatSlideToggleModule,
         ColorPickerModule,
         ScrollingModule,
