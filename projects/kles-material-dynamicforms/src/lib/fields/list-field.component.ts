@@ -2,7 +2,10 @@ import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
+import { FieldMapper } from '../decorators/component.decorator';
+import { KlesFormArray } from '../controls/array.control';
 
+@FieldMapper({ type:'listfield', factory: (field) => (new KlesFormArray(field).create()) })
 @Component({
     selector: 'kles-form-listfield',
     template: `
@@ -15,7 +18,7 @@ import { IKlesValidator } from '../interfaces/validator.interface';
         <div class="dynamic-form" [formGroupName]="field.name">
             <div *ngFor="let subGroup of formArray.controls let index = index;" fxLayout="row" fxLayoutGap="5px">
                 <ng-container *ngFor="let subfield of field.collections;"
-                    dynamicField [field]="subfield" [group]="subGroup">
+                    klesDynamicField [field]="subfield" [group]="subGroup">
                 </ng-container>
                 <button mat-icon-button (click)="deleteField(index)" color="primary">
                     <mat-icon>delete_outlined</mat-icon>
