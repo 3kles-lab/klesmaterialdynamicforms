@@ -56,8 +56,10 @@ export class KlesButtonComponent implements OnInit, ControlValueAccessor {
     }
 
     click(event) {
-        this.value.event = this.name;
-        this.onChange(this.value);
+        if (!this.disabled) {
+            this.value.event = this.name;
+            this.onChange(this.value);
+        }
     }
 
     writeValue(value: IButton): void {

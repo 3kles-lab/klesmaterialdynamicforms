@@ -35,7 +35,9 @@ export class KlesButtonFileComponent extends KlesButtonComponent implements Cont
     value: IButtonFile = {};
 
     click(event) {
-        this.file.nativeElement.click();
+        if (!this.disabled) {
+            this.file.nativeElement.click();
+        }
     }
 
     writeValue(value: IButton): void {

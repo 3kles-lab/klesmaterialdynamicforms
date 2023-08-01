@@ -14,6 +14,7 @@ import { KlesFieldAbstract } from './field.abstract';
             [formControlName]="field.name"
             [type]="field.buttonType"
             [accept]="field.accept"
+            [disabled]="field.disabled"
         >
         </kles-button-file>
     </div>
@@ -24,6 +25,7 @@ export class KlesFormButtonFileComponent extends KlesFieldAbstract implements On
 
     ngOnInit(): void {
         super.ngOnInit();
+        this.field.buttonType = 'button';
     }
 
     ngOnDestroy(): void {
