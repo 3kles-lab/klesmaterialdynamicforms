@@ -45,6 +45,8 @@ import { KlesFormArrayComponent } from './fields/array.component';
 import { KlesFormRangeComponent } from './fields/range.component';
 import { KlesFormClearComponent } from './fields/clear.component';
 import { KlesFormSelectLazySearchComponent } from './fields/select.lazy-search.component';
+import { KlesFormDateTimeComponent } from './fields/date-time.component';
+import { KlesMaterialDatepickerModule } from '@3kles/kles-material-datepicker';
 
 const components = [
   KlesDynamicFormComponent,
@@ -79,7 +81,8 @@ const components = [
   KlesFormArrayComponent,
   KlesFormRangeComponent,
   KlesFormClearComponent,
-  KlesFormSelectLazySearchComponent
+  KlesFormSelectLazySearchComponent,
+  KlesFormDateTimeComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
@@ -98,7 +101,8 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
         FormsModule,
         MaterialModule,
         ColorPickerModule,
-        NgxMatSelectSearchModule
+        NgxMatSelectSearchModule,
+        KlesMaterialDatepickerModule
     ],
     providers: [
         { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
@@ -108,7 +112,8 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
         components,
         pipes,
         directives,
-        ColorPickerModule
+        ColorPickerModule,
+        KlesMaterialDatepickerModule
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })

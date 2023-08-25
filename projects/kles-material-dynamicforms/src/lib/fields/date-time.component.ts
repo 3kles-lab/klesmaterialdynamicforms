@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
-    selector: "kles-form-datepicker",
+    selector: "kles-form-datetimepicker",
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder | translate"
@@ -11,7 +11,7 @@ import { KlesFieldAbstract } from './field.abstract';
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <ng-content></ng-content>
         </div>
-        <mat-datepicker #picker></mat-datepicker>
+        <kles-mat-datepicker #picker [hasBackdrop]="false"></kles-mat-datepicker>
         <mat-hint>{{field.hint}}</mat-hint>
 
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
@@ -24,7 +24,7 @@ import { KlesFieldAbstract } from './field.abstract';
     `,
     styles: []
 })
-export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
+export class KlesFormDateTimeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }
 
     ngOnDestroy(): void {
