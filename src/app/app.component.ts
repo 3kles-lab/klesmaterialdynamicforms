@@ -6,7 +6,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAda
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumType, KlesFormDateComponent, KlesFormRangeComponent } from 'kles-material-dynamicforms';
+import { EnumType, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormRangeComponent } from 'kles-material-dynamicforms';
 import {
   IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
@@ -22,6 +22,7 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
+import { KLES_MAT_MOMENT_FORMATS } from '@3kles/kles-material-datepicker';
 
 @Component({
   selector: 'app-root',
@@ -138,7 +139,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // }).bind(this), 5000);
 
     this.formInput.form.valueChanges.subscribe(value => console.log(this.formInput.form));
-    this.formInput.form.statusChanges.subscribe(value => console.log('status',this.formInput.form));
+    this.formInput.form.statusChanges.subscribe(value => console.log('status', this.formInput.form));
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);
@@ -316,6 +317,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       value: 'text value',
       component: KlesFormTextareaComponent,
     });
+
+    this.fieldsText.push({
+      name: 'datetime',
+      component: KlesFormDateTimeComponent,
+      placeholder: 'datetime',
+      dateOptions: {
+        language: 'fr-FR',
+        dateFormat: KLES_MAT_MOMENT_FORMATS
+      }
+    })
   }
 
   buildInputForm() {
@@ -329,8 +340,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       asyncValue: of(null).pipe(delay(5000)),
       validations: [{
         validator: Validators.required,
-        name:'required',
-        message:'fsdfdsfdsf'
+        name: 'required',
+        message: 'fsdfdsfdsf'
       }],
       component: KlesFormInputComponent,
       valueChanges: (field, group, siblingFields) => {
@@ -454,7 +465,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
 
-    const obs$ = of(Array.from(Array(100).keys()).map((val) => ( val))).pipe(delay(3000))
+    const obs$ = of(Array.from(Array(100).keys()).map((val) => (val))).pipe(delay(3000))
 
     this.fieldsInput.push({
       name: 'selectInfinite',
@@ -464,7 +475,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       virtualScroll: false,
       options: obs$,
       asyncValue: of(0),
-     
+
       // property: 'key',
       // property: 'STKY',
       // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),

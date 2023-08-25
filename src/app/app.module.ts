@@ -16,6 +16,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 import { SelectOptionComponent } from './select/select-option.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { KlesMomentDateModule } from '@3kles/kles-material-datepicker';
 registerLocaleData(localeFr);
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ registerLocaleData(localeFr);
     FlexLayoutModule,
     HttpClientModule,
     MatMomentDateModule,
+    KlesMomentDateModule,
     TranslateModule.forRoot(
       {
         loader: {
