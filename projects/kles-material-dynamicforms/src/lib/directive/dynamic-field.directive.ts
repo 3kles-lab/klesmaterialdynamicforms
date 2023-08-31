@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import { UntypedFormGroup } from '@angular/forms';
-import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
 import { KlesFormClearComponent } from '../fields/clear.component';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
@@ -54,6 +54,11 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
             name?: string;
         } = {
             providers: this.field.dateOptions ? [
+                ...(this.field.dateOptions.adapter ? [{
+                    provide: DateAdapter,
+                    useClass: this.field.dateOptions.adapter.class,
+                    deps: this.field.dateOptions.adapter.deps || [],
+                }] : []),
                 { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
                 { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
             ] : [],
