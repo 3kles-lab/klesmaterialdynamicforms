@@ -1,28 +1,28 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { ValidatorFn, Validators } from '@angular/forms';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumType, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormRangeComponent } from 'kles-material-dynamicforms';
+import { EnumType, KlesFormDateComponent, KlesFormDateTimeComponent } from 'kles-material-dynamicforms';
 import {
-  IButton, IButtonChecker, IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
-  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormCheckboxComponent, KlesFormChipComponent,
+  IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
+  KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
   KlesFormColorComponent,
   KlesFormIconComponent,
-  KlesFormInputComponent, KlesFormLabelComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
+  KlesFormInputComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
-import { autocompleteObjectValidator, autocompleteStringValidator, KlesButtonComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { delay, map, shareReplay } from 'rxjs/operators';
+import { KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { BehaviorSubject, of, Subject } from 'rxjs';
+import { delay, shareReplay } from 'rxjs/operators';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
-import { KLES_MAT_MOMENT_FORMATS } from '@3kles/kles-material-datepicker';
+import { KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS, KLES_MAT_MOMENT_FORMATS, KlesMatMomentAdapter } from '@3kles/kles-material-datepicker';
 
 @Component({
   selector: 'app-root',
@@ -30,13 +30,13 @@ import { KLES_MAT_MOMENT_FORMATS } from '@3kles/kles-material-datepicker';
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None,
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    // { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
+    // {
+    //   provide: DateAdapter,
+    //   useClass: MomentDateAdapter,
+    //   deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    // },
+    // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
 })
 export class AppComponent implements OnInit, AfterViewInit {
@@ -323,7 +323,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormDateTimeComponent,
       placeholder: 'datetime',
       dateOptions: {
-        language: 'fr-FR',
+        language: 'en-EN',
+        adapter: {
+          class: KlesMatMomentAdapter,
+          deps: [MAT_DATE_LOCALE, KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
         dateFormat: KLES_MAT_MOMENT_FORMATS
       }
     })
@@ -439,8 +443,11 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormDateComponent,
       clearable: true,
       dateOptions: {
-        language: 'fr-FR',
-
+        adapter: {
+          class: MomentDateAdapter,
+          deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
+        language: 'hi-IN',
         dateFormat: {
           parse: {
             dateInput: 'DD/MM/YYYY',
