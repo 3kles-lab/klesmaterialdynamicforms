@@ -97,7 +97,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
         </ng-container>
         </mat-select>
 
-        <div matSuffix>
+        <div matSuffix *ngIf="field.subComponents || field.clearable">
             <ng-content></ng-content>
         </div>
         

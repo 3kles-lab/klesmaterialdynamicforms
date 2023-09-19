@@ -39,7 +39,7 @@ import { FieldMapper } from '../decorators/component.decorator';
 
         <mat-spinner matSuffix mode="indeterminate" *ngIf="isPending()" diameter="17"></mat-spinner>
 
-        <div matSuffix>
+        <div matSuffix *ngIf="field.subComponents || field.clearable">
             <ng-content></ng-content>
         </div>
 

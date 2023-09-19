@@ -13,7 +13,7 @@ import { OnInit, Component, OnDestroy } from '@angular/core';
             [style.color]="invertColor(group.get(field.name).value,true)"
             [formControlName]="field.name">
 
-        <div matSuffix>
+        <div matSuffix *ngIf="field.subComponents || field.clearable">
             <ng-content></ng-content>
         </div>
  

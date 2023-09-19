@@ -101,7 +101,7 @@ import { KlesFieldAbstract } from './field.abstract';
         </ng-container>
         </mat-select>
 
-        <div matSuffix>
+        <div matSuffix *ngIf="field.subComponents || field.clearable">
             <ng-content></ng-content>
         </div>
         

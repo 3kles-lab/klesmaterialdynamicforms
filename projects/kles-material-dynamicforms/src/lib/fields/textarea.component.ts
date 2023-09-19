@@ -10,7 +10,7 @@ import { KlesFieldAbstract } from './field.abstract';
         [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows"  [maxlength]="field.maxLength">
         </textarea>
 
-        <div matSuffix>
+        <div matSuffix *ngIf="field.subComponents || field.clearable">
             <ng-content></ng-content>
         </div>
 

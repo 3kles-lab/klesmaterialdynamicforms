@@ -89,7 +89,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
         </mat-select>
 
-        <div matSuffix>
+        <div matSuffix *ngIf="field.subComponents || field.clearable">
             <ng-content></ng-content>
         </div>
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
