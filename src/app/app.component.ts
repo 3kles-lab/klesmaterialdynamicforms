@@ -472,22 +472,23 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
 
-    const obs$ = of(Array.from(Array(100).keys()).map((val) => (val))).pipe(delay(3000))
+    const obs$ = of(Array.from(Array(100).keys()).map((val) => ( val)))
 
     this.fieldsInput.push({
       name: 'selectInfinite',
-      placeholder: 'select search infinite',
+      placeholder: 'select search infinite iciii',
+      // component: KlesFormSelectComponent,
       component: KlesFormSelectSearchComponent,
-      multiple: true,
-      virtualScroll: false,
-      options: obs$,
-      asyncValue: of(0),
-
+      // multiple: true,
+      // virtualScroll: false,
+      options: ['aaaa'],
+      // asyncValue: of(0),
+     
       // property: 'key',
       // property: 'STKY',
       // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
       // // value: 'aaa',
-      lazy: true,
+      // lazy: true,
       // options: of(['aaa', 'bbb'])
     });
 

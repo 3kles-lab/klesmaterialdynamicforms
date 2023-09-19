@@ -31,7 +31,7 @@ import { KlesFormInputComponent } from './input.component';
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
             [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step">
         </ng-template>
-        <button *ngIf="!group.get(field.name).disabled" mat-button matSuffix mat-icon-button aria-label="Clear" type="button"
+        <button *ngIf="!group.get(field.name).disabled" matSuffix mat-icon-button aria-label="Clear" type="button"
             (click)="group.controls[field.name].reset();">
             <mat-icon>close</mat-icon>
         </button>
