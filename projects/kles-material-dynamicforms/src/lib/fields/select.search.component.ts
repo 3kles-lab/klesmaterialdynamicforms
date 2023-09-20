@@ -1,14 +1,14 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { ViewEncapsulation } from '@angular/compiler';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, concat, Observable, of, ReplaySubject } from 'rxjs';
+import { debounceTime, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
     selector: 'kles-form-select-search',
+    encapsulation: ViewEncapsulation.None,
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
@@ -26,7 +26,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
                 <ng-container *ngIf="!isLoading; else emptyOption">
-                    <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                    <mat-checkbox *ngIf="field.multiple" class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl"
                     (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
                     </mat-checkbox>
@@ -80,7 +80,7 @@ import { KlesFieldAbstract } from './field.abstract';
             </mat-option>
 
             <ng-container *ngIf="!isLoading; else emptyOption">
-                <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                <mat-checkbox *ngIf="field.multiple" class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl"
                         (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
                 </mat-checkbox>
@@ -113,7 +113,11 @@ import { KlesFieldAbstract } from './field.abstract';
             </ng-container>
     </mat-form-field>
 `,
-    styles: ['mat-form-field {width: calc(100%)}', '.selectAll {padding: 10px 16px;}',
+    styles: ['mat-form-field {width: calc(100%)}', 
+        '.selectAll {padding: 0 16px 0 5px; display: flex !important;}',
+        '.selectAll .mdc-form-field {width: 100%;}',
+        '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
+        '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

@@ -22,7 +22,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
                 <ng-container *ngIf="!isLoading; else emptyOption">
-                    <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                    <mat-checkbox *ngIf="field.multiple" class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl"
                     (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
                     </mat-checkbox>
@@ -76,7 +76,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
             </mat-option>
 
             <ng-container *ngIf="!isLoading; else emptyOption">
-                <mat-checkbox *ngIf="field.multiple" class="selectAll" [formControl]="selectAllControl"
+                <mat-checkbox *ngIf="field.multiple" class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl"
                         (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
                 </mat-checkbox>
@@ -109,7 +109,11 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
             </ng-container>
     </mat-form-field>
 `,
-    styles: ['mat-form-field {width: calc(100%)}', '.selectAll {padding: 10px 16px;}',
+    styles: ['mat-form-field {width: calc(100%)}',
+        '.selectAll {padding: 0 16px 0 5px; display: flex !important;}',
+        '.selectAll .mdc-form-field {width: 100%;}',
+        '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
+        '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
 })
 export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchComponent implements OnInit, OnDestroy {
