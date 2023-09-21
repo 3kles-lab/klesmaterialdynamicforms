@@ -114,7 +114,7 @@ import { KlesFieldAbstract } from './field.abstract';
     </mat-form-field>
 `,
     styles: ['mat-form-field {width: calc(100%)}', 
-        '.selectAll {padding: 0 16px 0 5px; display: flex !important;}',
+        '.selectAll {padding: 0 16px 0 5px !important; display: flex !important;}',
         '.selectAll .mdc-form-field {width: 100%;}',
         '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
         '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
