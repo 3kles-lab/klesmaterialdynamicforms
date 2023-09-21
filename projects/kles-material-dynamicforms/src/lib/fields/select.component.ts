@@ -34,7 +34,7 @@ import { KlesFieldAbstract } from './field.abstract';
                 </ng-container>
             </ng-container>
             <ng-template #emptyOption>
-                <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
             </ng-template>
         </ng-container>
 
@@ -81,7 +81,7 @@ import { KlesFieldAbstract } from './field.abstract';
                 </ng-container>
 
                 <ng-template #emptyOption>
-                    <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                    <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
                 </ng-template>
             </cdk-virtual-scroll-viewport>
 
@@ -101,7 +101,8 @@ import { KlesFieldAbstract } from './field.abstract';
     </mat-form-field>
 `,
     styles: ['mat-form-field {width: calc(100%)}',
-        `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`]
+        `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
+    styleUrls: ['../styles/loading-select.style.scss']
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

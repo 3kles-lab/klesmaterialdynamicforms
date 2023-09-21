@@ -5,7 +5,7 @@ import { IKlesValidator } from '../interfaces/validator.interface';
 import { FieldMapper } from '../decorators/component.decorator';
 import { KlesFormArray } from '../controls/array.control';
 
-@FieldMapper({ type:'listfield', factory: (field) => (new KlesFormArray(field).create()) })
+@FieldMapper({ type: 'listfield', factory: (field) => (new KlesFormArray(field).create()) })
 @Component({
     selector: 'kles-form-listfield',
     template: `
@@ -16,7 +16,7 @@ import { KlesFormArray } from '../controls/array.control';
         </button>
 
         <div class="dynamic-form" [formGroupName]="field.name">
-            <div *ngFor="let subGroup of formArray.controls let index = index;" fxLayout="row" fxLayoutGap="5px">
+            <div *ngFor="let subGroup of formArray.controls let index = index;" class="subfields">
                 <ng-container *ngFor="let subfield of field.collections;"
                     klesDynamicField [field]="subfield" [group]="subGroup">
                 </ng-container>
@@ -33,7 +33,7 @@ import { KlesFormArray } from '../controls/array.control';
         </div>
     </div>
     `,
-    styles: []
+    styles: ['.subfields {display: flex; flex-direction: row; gap:5px}',]
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

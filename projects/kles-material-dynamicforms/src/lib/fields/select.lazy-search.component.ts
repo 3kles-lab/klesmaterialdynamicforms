@@ -63,7 +63,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
                     </ng-container>
                 </ng-container>
                 <ng-template #emptyOption>
-                    <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                    <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
                 </ng-template>
             </cdk-virtual-scroll-viewport>
 
@@ -92,7 +92,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
             </ng-container>
 
             <ng-template #emptyOption>
-                <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
             </ng-template>
         </ng-container>
         </mat-select>
@@ -115,6 +115,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
         '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
         '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
+    styleUrls: ['../styles/loading-select.style.scss']
 })
 export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchComponent implements OnInit, OnDestroy {
 

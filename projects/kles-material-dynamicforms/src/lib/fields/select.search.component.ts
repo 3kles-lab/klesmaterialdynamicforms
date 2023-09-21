@@ -67,7 +67,7 @@ import { KlesFieldAbstract } from './field.abstract';
                     </ng-container>
                 </ng-container>
                 <ng-template #emptyOption>
-                    <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                    <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
                 </ng-template>
             </cdk-virtual-scroll-viewport>
 
@@ -96,7 +96,7 @@ import { KlesFieldAbstract } from './field.abstract';
             </ng-container>
 
             <ng-template #emptyOption>
-                <mat-option class="hide-checkbox" disabled><div fxLayout="row" fxLayoutAlign="space-between center">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+                <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
             </ng-template>
         </ng-container>
         </mat-select>
@@ -113,12 +113,13 @@ import { KlesFieldAbstract } from './field.abstract';
             </ng-container>
     </mat-form-field>
 `,
-    styles: ['mat-form-field {width: calc(100%)}', 
+    styles: ['mat-form-field {width: calc(100%)}',
         '.selectAll {padding: 0 16px 0 5px !important; display: flex !important;}',
         '.selectAll .mdc-form-field {width: 100%;}',
         '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
         '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
+    styleUrls: ['../styles/loading-select.style.scss']
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
