@@ -1,26 +1,26 @@
 <main class="content">
-  <div fxFlex fxLayout="column" fxLayoutGap="10px">
+  <div class="container">
     <div fxLayout="row" style="justify-content:center">
       <button mat-button (click)=" french()">Dynamically switch to French</button>
     </div>
-    <div fxLayout="row" fxLayoutGap="20px">
-      <div fxFlex="25" fxLayout="column">
+    <div class="example">
+      <div class="block">
         <div style="align-self: center; font-size: x-large;">Button Form</div>
         <app-kles-dynamic-form #formButton direction="column" [fields]="fieldsButton"
           [validators]="formValidatorsButton" style="align-self: center;">
         </app-kles-dynamic-form>
       </div>
-      <div fxFlex="25" fxLayout="column">
+      <div class="block">
         <div style="align-self: center; font-size: x-large;">Form</div>
         <app-kles-dynamic-form #form direction="column" [fields]="fields" [validators]="formValidators">
         </app-kles-dynamic-form>
       </div>
-      <div fxFlex="25" fxLayout="column">
+      <div class="block">
         <div style="align-self: center; font-size: x-large;">Text Form</div>
         <app-kles-dynamic-form #formText direction="column" [fields]="fieldsText" [validators]="formValidatorsText">
         </app-kles-dynamic-form>
       </div>
-      <div fxFlex="25" fxLayout="column">
+      <div class="block">
         <div style="align-self: center; font-size: x-large;">Input Form</div>
         <app-kles-dynamic-form #formInput direction="column" [fields]="fieldsInput" [validators]="formValidatorsInput">
         </app-kles-dynamic-form>

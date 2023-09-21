@@ -5,3 +5,20 @@
 .group-block {
     display: group !important;
 }
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.example {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.block{
+    flex: 1 1 100%;
+    flex-direction: column;
+}

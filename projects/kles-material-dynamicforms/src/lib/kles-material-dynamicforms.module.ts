@@ -7,7 +7,6 @@ import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { TranslateModule } from '@ngx-translate/core';
 import { KlesFormLabelComponent } from './fields/label.component';
@@ -97,7 +96,6 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
         CommonModule,
         ReactiveFormsModule,
         TranslateModule,
-        FlexLayoutModule,
         FormsModule,
         MaterialModule,
         ColorPickerModule,

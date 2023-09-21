@@ -9,7 +9,6 @@ import { MaterialModule } from './modules/material.module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { KlesNgPipeModule} from '@3kles/kles-ng-pipe';
 import localeFr from '@angular/common/locales/fr';
 import { CommonModule, registerLocaleData } from '@angular/common';
@@ -32,7 +31,6 @@ registerLocaleData(localeFr);
     KlesNgPipeModule,
     KlesMaterialDynamicformsModule,
     BrowserAnimationsModule,
-    FlexLayoutModule,
     HttpClientModule,
     MatMomentDateModule,
     KlesMomentDateModule,
