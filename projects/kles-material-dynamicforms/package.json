@@ -1,8 +1,8 @@
 {
   "name": "@3kles/kles-material-dynamicforms",
-  "version": "16.0.3",
+  "version": "16.1.1",
   "peerDependencies": {
-    "@3kles/kles-material-datepicker": "^14.0.3",
+    "@3kles/kles-material-datepicker": "^16.0.0",
     "@angular/animations": "^16.0.0",
     "@angular/cdk": "^16.0.0",
     "@angular/common": "^16.0.0",
