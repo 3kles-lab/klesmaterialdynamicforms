@@ -10,7 +10,9 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: 'kles-group',
     template: `
     <div [formGroup]="group" class="group-container">
-        <div [formGroupName]="field.name" class="group-container" [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.ngClass">
+        <div [formGroupName]="field.name" class="group-container" 
+        [ngClass]="{'row': field.direction ==='row'}"
+        [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.direction ==='row' ? (field.ngClass+' '+ 'row'): field.ngClass">
             <ng-container *ngFor="let subfield of field.collections;">
                 <ng-container *ngIf="subfield.visible !== false" klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
                 </ng-container>
@@ -20,7 +22,7 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
-        // '.row { gap:10px;}',
+        '.row { align-items: baseline }',
         // '.group-container {display:flex; flex-direction: inherit; width: inherit; flex-wrap: wrap}'
         '.group-container {display:flex; flex-direction: inherit; width: inherit;}'
     ]

@@ -28,7 +28,6 @@ import { KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS, KLES_MAT_MOMENT_FORMATS, KlesMatM
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   providers: [
     // { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
     // {

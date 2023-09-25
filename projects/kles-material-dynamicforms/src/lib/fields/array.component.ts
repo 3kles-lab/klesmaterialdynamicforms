@@ -9,7 +9,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-array',
     template: `
-    <div [formGroup]="group">
+    <div [formGroup]="group" class="container" [ngClass]="{'container-column': field.direction ==='column'}">
         <ng-container [formArrayName]="field.name">
             <div class="group-container" *ngFor="let subGroup of formArray.controls let index = index;"
             [ngClass]="field.direction === 'column' ? 'column': 'row'">
@@ -24,8 +24,10 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
+        '.container { display: flex; flex-direction: inherit}',
+        '.container-column {gap: 10px}',
         '.group-container {display:flex; flex-direction: inherit}',
-        '.row { gap: 10px; flex-direction: row }',
+        '.row { gap: 10px; flex-direction: row; align-items: baseline }',
         '.column { flex-direction: column; gap: 0px}'
     ]
 })
