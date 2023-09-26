@@ -22,7 +22,7 @@ import { KlesFieldAbstract } from './field.abstract';
         </ng-container>
         </mat-form-field>
     `,
-    styles: []
+    styles: ['mat-form-field {width: calc(100%)}']
 })
 export class KlesFormDateTimeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }
