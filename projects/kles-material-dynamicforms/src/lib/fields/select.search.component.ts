@@ -8,7 +8,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
     selector: 'kles-form-select-search',
-    encapsulation: ViewEncapsulation.None,
+    // encapsulation: ViewEncapsulation.None,
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
@@ -114,10 +114,10 @@ import { KlesFieldAbstract } from './field.abstract';
     </mat-form-field>
 `,
     styles: ['mat-form-field {width: calc(100%)}',
-        '.selectAll {padding: 0 16px 0 5px !important; display: flex !important;}',
-        '.selectAll .mdc-form-field {width: 100%;}',
-        '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
-        '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
+        '::ng-deep .selectAll {padding: 0 16px 0 5px !important; display: flex !important;}',
+        '::ng-deep .selectAll .mdc-form-field {width: 100%;}',
+        '::ng-deep .selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
+        '::ng-deep .selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
     styleUrls: ['../styles/loading-select.style.scss']
 })
