@@ -12,6 +12,7 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: 'kles-form-select',
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
+        <mat-label *ngIf="field.label">{{field.label}}</mat-label>
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id"
         (openedChange)="openChange($event)" [compareWith]="compareFn"
         [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">

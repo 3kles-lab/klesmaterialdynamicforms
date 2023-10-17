@@ -7,6 +7,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
     selector: 'kles-form-select-lazy-search',
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
+        <mat-label *ngIf="field.label">{{field.label}}</mat-label>
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
         (openedChange)="openChange($event)" [compareWith]="compareFn"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
