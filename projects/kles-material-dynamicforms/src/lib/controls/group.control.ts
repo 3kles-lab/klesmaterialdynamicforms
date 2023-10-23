@@ -23,6 +23,9 @@ export class KlesFormGroup extends KlesFormControl {
             });
         }
 
+        subGroup.addValidators(this.bindValidations(this.field.validations || []));
+        subGroup.addAsyncValidators(this.bindAsyncValidations(this.field.asyncValidations || []));
+
         if (this.field.disabled) {
             subGroup.disable();
         }
