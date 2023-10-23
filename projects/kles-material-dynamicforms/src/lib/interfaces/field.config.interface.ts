@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
-import { DateAdapter, MatDateFormats } from '@angular/material/core';
+import { DateAdapter, ErrorStateMatcher, MatDateFormats } from '@angular/material/core';
 
 export interface IKlesFieldConfig {
     type?: EnumType;// Mapper type if(type && !component)=>type
@@ -71,4 +71,5 @@ export interface IKlesFieldConfig {
     clearableComponent?: Type<any>; /*Override default clear component*/
     subComponents?: Type<any>[];
     autofocus?: boolean;
+    errorStateMatcher?: ErrorStateMatcher;
 }
