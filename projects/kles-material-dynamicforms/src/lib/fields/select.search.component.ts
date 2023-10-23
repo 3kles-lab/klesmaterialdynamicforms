@@ -12,7 +12,7 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
-        (openedChange)="openChange($event)" [compareWith]="compareFn"
+        (openedChange)="openChange($event)" [compareWith]="compareFn" [errorStateMatcher]="field.errorStateMatcher"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         <mat-select-trigger *ngIf="field.triggerComponent">
             <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>

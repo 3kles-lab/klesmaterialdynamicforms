@@ -14,7 +14,7 @@ import { FieldMapper } from '../decorators/component.decorator';
         <ng-container *ngIf="field.autocomplete; else notAutoComplete">
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType" 
             [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step"
-            [matAutocomplete]="auto">
+            [matAutocomplete]="auto" [errorStateMatcher]="field.errorStateMatcher">
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
                 <ng-container *ngIf="!field.autocompleteComponent">
@@ -34,7 +34,7 @@ import { FieldMapper } from '../decorators/component.decorator';
 
         <ng-template #notAutoComplete>
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
-            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step">
+            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step" [errorStateMatcher]="field.errorStateMatcher">
         </ng-template>
 
         <mat-spinner matSuffix mode="indeterminate" *ngIf="isPending()" diameter="17"></mat-spinner>
