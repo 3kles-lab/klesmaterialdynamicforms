@@ -14,6 +14,6 @@ export class AutocompleteComponent implements IKlesComponent, OnInit {
     value: any;
 
     ngOnInit() {
-        console.log('Value=', this.value);
+        // console.log('Value=', this.value);
     }
 }

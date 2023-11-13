@@ -16,24 +16,31 @@ import { KlesFormArray } from '../controls/array.control';
         </button>
 
         <div class="dynamic-form" [formGroupName]="field.name">
-            <div *ngFor="let subGroup of formArray.controls let index = index;" class="subfields">
-                <ng-container *ngFor="let subfield of field.collections;"
-                    klesDynamicField [field]="subfield" [group]="subGroup">
+            @for (subGroup of formArray.controls; track subGroup.value._id) {
+                <div class="subfields">
+                    @for (subfield of field.collections; track subfield.name) {
+                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup">
+                        </ng-container>
+                    }
+                    <button mat-icon-button (click)="deleteField($index)" color="primary">
+                        <mat-icon>delete_outlined</mat-icon>
+                    </button>
+                </div>
+            }
+            @for (validation of field.validations; track validation.name) {
+                <ng-container ngProjectAs="mat-error">
+                    @if (group.get(field.name).hasError(validation.name)) {
+                        <mat-error>{{validation.message | translate}}</mat-error>
+                    }
                 </ng-container>
-                <button mat-icon-button (click)="deleteField(index)" color="primary">
-                    <mat-icon>delete_outlined</mat-icon>
-                </button>
-            </div>
-            <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-                @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
-                }
-            </ng-container>
-            <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-                @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
-                }
-            </ng-container>
+            }
+            @for (validation of field.asyncValidations; track validation.name) {
+                <ng-container ngProjectAs="mat-error">
+                    @if (group.get(field.name).hasError(validation.name)) {
+                        <mat-error>{{validation.message | translate}}</mat-error>
+                    }
+                </ng-container>
+            }
         </div>
     </div>
     `,

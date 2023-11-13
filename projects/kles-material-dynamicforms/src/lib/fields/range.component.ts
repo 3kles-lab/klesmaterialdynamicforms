@@ -26,16 +26,20 @@ import { KlesFieldAbstract } from './field.abstract';
         <mat-date-range-picker #picker></mat-date-range-picker>
         <mat-hint>{{field.hint}}</mat-hint>
 
-        <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
-        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
+        @for (validation of field.validations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
+        @for (validation of field.asyncValidations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
         </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}']

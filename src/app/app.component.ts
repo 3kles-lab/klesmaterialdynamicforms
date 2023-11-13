@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     const decPipe = new DecimalPipe('fr-FR');
     const val = decPipe.transform(10.467, '1.2-2');
-    console.log('Val=', val);
+    // console.log('Val=', val);
   }
 
   ngOnInit() {
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
     Object.keys(this.formButton.form.controls).forEach(e => {
-      console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
+      // console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
     })
 
     // this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
@@ -137,8 +137,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     //   this.formInput?.form?.controls?.testSelectGino2?.setValue(value, { onlySelf: true, emitEvent: false });
     // }).bind(this), 5000);
 
-    this.formInput.form.valueChanges.subscribe(value => console.log(this.formInput.form));
-    this.formInput.form.statusChanges.subscribe(value => console.log('status', this.formInput.form));
+    // this.formInput.form.valueChanges.subscribe(value => console.log(this.formInput.form));
+    // this.formInput.form.statusChanges.subscribe(value => console.log('status', this.formInput.form));
 
     // this.form.form.controls['input'].valueChanges.subscribe(s => {
     //   console.log('Input change=', s);

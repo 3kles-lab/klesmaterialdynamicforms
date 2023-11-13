@@ -11,15 +11,16 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <div [formGroup]="group" class="container" [ngClass]="{'container-column': field.direction ==='column'}">
         <ng-container [formArrayName]="field.name">
-            <div class="group-container" *ngFor="let subGroup of formArray.controls let index = index;"
-            [ngClass]="field.direction === 'column' ? 'column': 'row'">
-                <ng-container *ngFor="let subfield of field.collections;">
-                    @if (subfield.visible !== false) {
-                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
-                        </ng-container>
+            @for (subGroup of formArray.controls; track subGroup.value._id) {
+                <div class="group-container" [ngClass]="field.direction === 'column' ? 'column': 'row'">
+                    @for (subfield of field.collections; track subfield.name) {
+                        @if (subfield.visible !== false) {
+                            <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
+                            </ng-container>
+                        }
                     }
-                </ng-container>
-            </div>
+                </div>
+            }
         </ng-container>
     </div>
 `,

@@ -8,16 +8,21 @@ import { KlesFieldAbstract } from './field.abstract';
     template: `
     <div [formGroup]="group" >
         <mat-slide-toggle matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [color]="field.color" [formControlName]="field.name">{{field.label | translate}}</mat-slide-toggle>
-        <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message}}</mat-error>
-            }
-        </ng-container>
-        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message}}</mat-error>
-            }
-        </ng-container>
+
+        @for (validation of field.validations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message}}</mat-error>
+                }
+            </ng-container>
+        }
+        @for (validation of field.asyncValidations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message}}</mat-error>
+                }
+            </ng-container>
+        }
     </div>
 `,
     styles: []

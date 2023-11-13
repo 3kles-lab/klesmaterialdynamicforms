@@ -16,15 +16,19 @@ import { KlesFormInputComponent } from './input.component';
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
                 @if (!field.autocompleteComponent) {
-                    <mat-option *ngFor="let option of filteredOption | async" [value]="option">
-                        {{field.property ? option[field.property] : option}}
-                    </mat-option>
+                    @for (option of filteredOption | async; track option) {
+                        <mat-option [value]="option">
+                            {{field.property ? option[field.property] : option}}
+                        </mat-option>
+                    }
                 }
                 @else {
-                    <mat-option *ngFor="let option of filteredOption | async" [value]="option">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field">
-                        </ng-container>
-                    </mat-option>
+                    @for (option of filteredOption | async; track option) {
+                        <mat-option [value]="option">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field">
+                            </ng-container>
+                        </mat-option>
+                    }
                 }
             </mat-autocomplete>
         }
@@ -43,16 +47,20 @@ import { KlesFormInputComponent } from './input.component';
             <mat-spinner matSuffix mode="indeterminate" diameter="17"></mat-spinner>
         }
 
-        <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
-        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
+        @for (validation of field.validations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
+        @for (validation of field.asyncValidations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
     </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}']

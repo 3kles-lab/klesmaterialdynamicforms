@@ -19,7 +19,7 @@ export class SelectOptionComponent implements IKlesComponent, OnInit {
     }
 
     ngOnInit() {
-        console.log('ici Value=', this.value);
+        // console.log('ici Value=', this.value);
     }
 
 

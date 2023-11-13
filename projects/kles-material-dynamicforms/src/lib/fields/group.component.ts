@@ -13,12 +13,12 @@ import { KlesFieldAbstract } from './field.abstract';
         <div [formGroupName]="field.name" class="group-container" 
         [ngClass]="{'row': field.direction ==='row'}"
         [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.direction ==='row' ? (field.ngClass+' '+ 'row'): field.ngClass">
-            <ng-container *ngFor="let subfield of field.collections;">
+            @for (subfield of field.collections; track subfield.name) {
                 @if (subfield.visible !== false) {
                     <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
                     </ng-container>
                 }
-            </ng-container>
+            }
         </div>
     </div>
 `,

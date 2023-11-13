@@ -11,16 +11,20 @@ import { KlesFieldAbstract } from 'dist/kles-material-dynamicforms';
             {{((field.property && group.controls[field.name].value) ? group.controls[field.name].value[field.property] : group.controls[field.name].value) | klesTransform:field.pipeTransform}}
         </span>
 
-        <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
-        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
+        @for (validation of field.validations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
+        @for (validation of field.asyncValidations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
     </div>
     `,
     styles: ['mat-form-field {width: calc(100%)}']

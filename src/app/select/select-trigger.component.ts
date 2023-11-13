@@ -19,11 +19,11 @@ export class SelectTriggerComponent implements IKlesComponent, OnInit, OnChanges
     }
 
     ngOnInit() {
-        console.log('ici Value=', this.value);
+        // console.log('ici Value=', this.value);
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('changes inside SelectTriggerComponent', changes)
+        // console.log('changes inside SelectTriggerComponent', changes)
     }
 
 

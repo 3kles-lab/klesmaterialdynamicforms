@@ -38,15 +38,19 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
                         <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
 
                         @if (field.multiple) {
-                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item" style="display:none">
-                                {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                            </mat-option>
+                            @for (item of group.controls[field.name].value | slice:0:30; track item) {
+                                <mat-option [value]="item" style="display:none">
+                                    {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                                </mat-option>
+                            }
                         }
 
                         @if (!field.multiple && group.controls[field.name].value) {
-                            <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
-                                {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                            </mat-option>
+                            @for (item of [group?.controls[field.name]?.value]; track item) {
+                                <mat-option [value]="item" style="display:none">
+                                    {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                                </mat-option>
+                            }
                         }
                     }
                     @else {
@@ -55,15 +59,19 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
                         </mat-option>
 
                         @if (field.multiple) {
-                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item" style="display:none">
-                                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                            </mat-option>
+                            @for (item of group.controls[field.name].value | slice:0:30; track item) {
+                                <mat-option [value]="item" style="display:none">
+                                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                                </mat-option>
+                            }
                         }
 
                         @if (!field.multiple && group.controls[field.name].value) {
-                            <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
-                                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                            </mat-option>
+                            @for (item of [group?.controls[field.name]?.value]; track item) {
+                                <mat-option [value]="item" style="display:none">
+                                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                                </mat-option>
+                            }
                         }
                     }
                 }
@@ -86,12 +94,16 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
                 }
 
                 @if (!field.autocompleteComponent) {
-                    <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                    @for (item of optionsFiltered$ | async; track item) {
+                        <mat-option [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                    }
                 }
                 @else {
-                    <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                    </mat-option>
+                    @for (item of optionsFiltered$ | async; track item) {
+                        <mat-option [value]="item" [disabled]="item?.disabled">
+                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                        </mat-option>
+                    }
                 }
             }
             @else {
@@ -106,17 +118,21 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
                 <ng-content></ng-content>
             </div>
         }
-        
-        <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
-        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            @if (group.get(field.name).hasError(validation.name)) {
-                <mat-error>{{validation.message | translate}}</mat-error>
-            }
-        </ng-container>
+
+        @for (validation of field.validations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
+        @for (validation of field.asyncValidations; track validation.name) {
+            <ng-container ngProjectAs="mat-error">
+                @if (group.get(field.name).hasError(validation.name)) {
+                    <mat-error>{{validation.message | translate}}</mat-error>
+                }
+            </ng-container>
+        }
     </mat-form-field>
 `,
     styles: ['mat-form-field {width: calc(100%)}',

@@ -10,14 +10,18 @@ import { KlesFieldAbstract } from './field.abstract';
     <div class="margin-top" [formGroup]="group">
         <mat-selection-list [formControlName]="field.name" [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="field.ngClass">
             @if (!field.autocompleteComponent) {
-                <mat-list-option [value]="item" *ngFor="let item of options$ | async;">
-                    {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                </mat-list-option>
+                @for (item of options$ | async; track item) {
+                    <mat-list-option [value]="item">
+                        {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
+                    </mat-list-option>
+                }
             }
             @else {
-                <mat-list-option  *ngFor="let item of options$ | async;" [value]="item">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                </mat-list-option>
+                @for (item of options$ | async; track item) {
+                    <mat-list-option [value]="item">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                    </mat-list-option>
+                }
             }
         </mat-selection-list>
     </div>
