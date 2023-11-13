@@ -72,18 +72,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "KlesMaterialDynamicForms:build"
+            "buildTarget": "KlesMaterialDynamicForms:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "KlesMaterialDynamicForms:build:production"
+              "buildTarget": "KlesMaterialDynamicForms:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "KlesMaterialDynamicForms:build"
+            "buildTarget": "KlesMaterialDynamicForms:build"
           }
         },
         "test": {
