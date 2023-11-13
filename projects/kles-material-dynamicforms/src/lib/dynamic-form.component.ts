@@ -24,12 +24,12 @@ FormControlName.prototype.ngOnChanges = function () {
     selector: 'app-kles-dynamic-form',
     template: `
     <form class="{{orientationClass}}" [formGroup]="form" (submit)="onSubmit($event)">
-        <ng-container *ngFor="let field of fields;">
+        @for (field of fields; track field.name) {
             @if (field.visible !== false) {
                 <ng-container class="{{orientationItemClass}}" klesDynamicField [field]="field" [group]="form" [siblingFields]="fields">
                 </ng-container>
             }
-        </ng-container>
+        }
         <!--<button (click)="reset()" mat-raised-button color="primary">RESET</button>-->
     </form>
     `,
