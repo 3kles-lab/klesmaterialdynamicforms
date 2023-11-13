@@ -11,24 +11,31 @@ export interface IButtonChecker extends IButton {
 @Component({
     selector: 'kles-button-checker',
     template: `
-        <span *ngIf="value.error && !value.busy">
-            <kles-button 
-                [classButton]="classButton" 
-                [name]="name" [label]="label" [color]="color" 
-                [icon]="icon" [iconSvg]="iconSvg"
-                [value]="value" 
-                [tooltip]="tooltip"
-                [disabled]="disabled"
-                matBadge="{{countError()}}" (click)="click($event)">
-            </kles-button>
-        </span>
+        @if (value.error && !value.busy) {
+            <span>
+                <kles-button 
+                    [classButton]="classButton" 
+                    [name]="name" [label]="label" [color]="color" 
+                    [icon]="icon" [iconSvg]="iconSvg"
+                    [value]="value" 
+                    [tooltip]="tooltip"
+                    [disabled]="disabled"
+                    matBadge="{{countError()}}" (click)="click($event)">
+                </kles-button>
+            </span>
+        }
         <span style="text-align: center;">
-            <span style="text-align: center;margin-right: 10px" *ngIf="value.busy||false">
-                <mat-spinner [diameter]="25"></mat-spinner>
-            </span>
-            <span *ngIf="value.message" style="margin-right: 10px">
-                {{value.message|translate}}
-            </span>
+            @if (value.busy || false) {
+                <span style="text-align: center;margin-right: 10px">
+                    <mat-spinner [diameter]="25"></mat-spinner>
+                </span>
+            }
+
+            @if (value.message) {
+                <span style="margin-right: 10px">
+                    {{value.message|translate}}
+                </span>
+            }
         </span>
     `,
     providers: [

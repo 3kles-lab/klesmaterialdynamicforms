@@ -14,8 +14,10 @@ import { KlesFieldAbstract } from './field.abstract';
         [ngClass]="{'row': field.direction ==='row'}"
         [style.flex-direction]="field.direction || 'inherit'" [ngClass]="field.direction ==='row' ? (field.ngClass+' '+ 'row'): field.ngClass">
             <ng-container *ngFor="let subfield of field.collections;">
-                <ng-container *ngIf="subfield.visible !== false" klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
-                </ng-container>
+                @if (subfield.visible !== false) {
+                    <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
+                    </ng-container>
+                }
             </ng-container>
         </div>
     </div>

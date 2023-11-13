@@ -10,11 +10,15 @@ import { KlesFieldAbstract } from './field.abstract';
             <mat-radio-button *ngFor="let item of field.options" [value]="item">{{item}}</mat-radio-button>
         </mat-radio-group>
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-                <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
-            </ng-container>
-            <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-                <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
-            </ng-container>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
+        </ng-container>
+        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
+        </ng-container>
     </div>
 `,
     styles: []

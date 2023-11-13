@@ -11,107 +11,120 @@ import { KlesFieldAbstract } from './field.abstract';
     // encapsulation: ViewEncapsulation.None,
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
-        <mat-label *ngIf="field.label">{{field.label}}</mat-label>
+        @if (field.label) {
+            <mat-label>{{field.label}}</mat-label>
+        }
+
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
         (openedChange)="openChange($event)" [compareWith]="compareFn"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
-        <mat-select-trigger *ngIf="field.triggerComponent">
-            <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
-        </mat-select-trigger>
+        @if (field.triggerComponent) {
+            <mat-select-trigger>
+                <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
+            </mat-select-trigger>
+        }
 
-        <ng-container *ngIf="field.virtualScroll">
+        @if (field.virtualScroll) {
             <mat-option>
                 <ngx-mat-select-search [formControl]="searchControl"
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
-                <ng-container *ngIf="!isLoading; else emptyOption">
-                    <mat-checkbox *ngIf="field.multiple" class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl"
-                    (change)="toggleAllSelection($event)">
-                        {{'selectAll' | translate}}
-                    </mat-checkbox>
-                    <ng-container *ngIf="!field.autocompleteComponent">
+                @if (!isLoading) {
+                    @if (field.multiple) {
+                        <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
+                            {{'selectAll' | translate}}
+                        </mat-checkbox>
+                    }
+
+                    @if (!field.autocompleteComponent) {
                         <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
 
-                        <ng-container *ngIf="field.multiple">
-                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
-                            style="display:none">
+                        @if (field.multiple) {
+                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item" style="display:none">
                                 {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
                             </mat-option>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                        @if (!field.multiple && group.controls[field.name].value) {
                             <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
                                 {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
                             </mat-option>
-                        </ng-container>
-                    </ng-container>
-
-                    <ng-container *ngIf="field.autocompleteComponent">
+                        }
+                    }
+                    @else {
                         <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
                             <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                         </mat-option>
 
-                        <ng-container *ngIf="field.multiple">
-                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item"
-                            style="display:none">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                        @if (field.multiple) {
+                            <mat-option *ngFor="let item of group.controls[field.name].value | slice:0:30" [value]="item" style="display:none">
+                                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                             </mat-option>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="!field.multiple && group.controls[field.name].value">
+                        @if (!field.multiple && group.controls[field.name].value) {
                             <mat-option *ngFor="let item of [group?.controls[field.name]?.value]" [value]="item" style="display:none">
                                 <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                             </mat-option>
-                        </ng-container>
-                    </ng-container>
-                </ng-container>
-                <ng-template #emptyOption>
+                        }
+                    }
+                }
+                @else {
                     <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
-                </ng-template>
+                }
             </cdk-virtual-scroll-viewport>
-
-        </ng-container>
-
-        <ng-container *ngIf="!field.virtualScroll">
+        }
+        @else {
             <mat-option>
                 <ngx-mat-select-search [formControl]="searchControl"
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
-            <ng-container *ngIf="!isLoading; else emptyOption">
-                <mat-checkbox *ngIf="field.multiple" class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl"
-                        (change)="toggleAllSelection($event)">
+            @if (!isLoading) {
+                @if (field.multiple) {
+                    <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
-                </mat-checkbox>
-                <ng-container *ngIf="!field.autocompleteComponent">
-                    <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
-                </ng-container>
+                    </mat-checkbox>
+                }
 
-                <ng-container *ngIf="field.autocompleteComponent">
+                @if (!field.autocompleteComponent) {
+                    <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
+                }
+                @else {
                     <mat-option *ngFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
                         <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
                     </mat-option>
-                </ng-container>
-            </ng-container>
+                }
+            }
+            @else {
+                <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
+            }
 
             <ng-template #emptyOption>
                 <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
             </ng-template>
-        </ng-container>
+        }
+
         </mat-select>
 
-        <div matSuffix *ngIf="field.subComponents || field.clearable">
-            <ng-content></ng-content>
-        </div>
+        @if (field.subComponents || field.clearable) {
+            <div matSuffix>
+                <ng-content></ng-content>
+            </div>
+        }
         
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-                <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
-            </ng-container>
-            <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-                <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
-            </ng-container>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
+        </ng-container>
+        <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
+        </ng-container>
     </mat-form-field>
 `,
     styles: ['mat-form-field {width: calc(100%)}',

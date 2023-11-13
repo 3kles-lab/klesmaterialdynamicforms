@@ -13,15 +13,21 @@ import { OnInit, Component, OnDestroy } from '@angular/core';
             [style.color]="invertColor(group.get(field.name).value,true)"
             [formControlName]="field.name">
 
-        <div matSuffix *ngIf="field.subComponents || field.clearable">
-            <ng-content></ng-content>
-        </div>
+        @if (field.subComponents || field.clearable) {
+            <div matSuffix>
+                <ng-content></ng-content>
+            </div>
+        }
  
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
         <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
     </mat-form-field>
     `,

@@ -5,21 +5,30 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: 'kles-form-textarea',
     template: `
     <mat-form-field [formGroup]="group" [color]="field.color" class="form-element">
-        <mat-label *ngIf="field.label">{{field.label}}</mat-label>
+        @if (field.label) {
+            <mat-label>{{field.label}}</mat-label>
+        }
+
         <textarea matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" 
         [formControlName]="field.name" cdkTextareaAutosize [placeholder]="field.placeholder | translate"
         [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows"  [maxlength]="field.maxLength">
         </textarea>
 
-        <div matSuffix *ngIf="field.subComponents || field.clearable">
-            <ng-content></ng-content>
-        </div>
+        @if (field.subComponents || field.clearable) {
+            <div matSuffix>
+                <ng-content></ng-content>
+            </div>
+        }
 
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
         <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
     </mat-form-field>
     `,

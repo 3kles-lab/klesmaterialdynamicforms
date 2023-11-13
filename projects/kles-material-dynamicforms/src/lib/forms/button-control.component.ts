@@ -24,8 +24,14 @@ export interface IUIButton {
             <button mat-button [type]="type" [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
             (click)="click($event)" [matTooltip]="tooltip">
                 {{label | translate}}
-                <mat-icon *ngIf="icon">{{icon}}</mat-icon>
-                <mat-icon svgIcon="{{iconSvg}}" *ngIf="iconSvg"></mat-icon>
+
+                @if (icon) {
+                    <mat-icon>{{icon}}</mat-icon>
+                }
+
+                @if (iconSvg) {
+                    <mat-icon svgIcon="{{iconSvg}}"></mat-icon>
+                }
             </button>
         </span>
     `,

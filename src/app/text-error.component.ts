@@ -12,10 +12,14 @@ import { KlesFieldAbstract } from 'dist/kles-material-dynamicforms';
         </span>
 
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
         <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
     </div>
     `,

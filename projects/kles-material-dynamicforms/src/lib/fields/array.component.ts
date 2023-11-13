@@ -14,9 +14,10 @@ import { KlesFieldAbstract } from './field.abstract';
             <div class="group-container" *ngFor="let subGroup of formArray.controls let index = index;"
             [ngClass]="field.direction === 'column' ? 'column': 'row'">
                 <ng-container *ngFor="let subfield of field.collections;">
-                    <ng-container *ngIf="subfield.visible !== false"
-                        klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
-                    </ng-container>
+                    @if (subfield.visible !== false) {
+                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
+                        </ng-container>
+                    }
                 </ng-container>
             </div>
         </ng-container>

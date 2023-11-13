@@ -7,7 +7,9 @@ import { KlesFieldAbstract } from "./field.abstract";
     <div [formGroup]="group">  
         <mat-chip-listbox>
             <mat-chip-option [color]="field.color" matTooltip="{{field.tooltip}}" [attr.id]="field.id" selected [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
-                <mat-icon *ngIf="field.icon">{{field.icon}}</mat-icon>
+                @if (field.icon) {
+                    <mat-icon>{{field.icon}}</mat-icon>
+                }
                 {{group.controls[field.name].value | klesTransform:field.pipeTransform}}
             </mat-chip-option>
         </mat-chip-listbox>

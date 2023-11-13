@@ -5,7 +5,9 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: "kles-form-datepicker",
     template: `
     <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
-        <mat-label *ngIf="field.label">{{field.label}}</mat-label>
+        @if (field.label) {
+            <mat-label>{{field.label}}</mat-label>
+        }
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder | translate"
         [min]="field.min" [max]="field.max">
         <div matSuffix>
@@ -16,10 +18,14 @@ import { KlesFieldAbstract } from './field.abstract';
         <mat-hint>{{field.hint}}</mat-hint>
 
         <ng-container *ngFor="let validation of field.validations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
         <ng-container *ngFor="let validation of field.asyncValidations;" ngProjectAs="mat-error">
-            <mat-error *ngIf="group.get(field.name).hasError(validation.name)">{{validation.message | translate}}</mat-error>
+            @if (group.get(field.name).hasError(validation.name)) {
+                <mat-error>{{validation.message | translate}}</mat-error>
+            }
         </ng-container>
         </mat-form-field>
     `,
