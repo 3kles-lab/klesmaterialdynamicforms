@@ -8,7 +8,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: "kles-form-rangepicker",
     template: `
-    <mat-form-field [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" [color]="field.color" [formGroup]="group">
 
         <mat-label>{{field.label}}</mat-label>
 

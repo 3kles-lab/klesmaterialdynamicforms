@@ -4,7 +4,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-form-textarea',
     template: `
-    <mat-form-field [formGroup]="group" [color]="field.color" class="form-element">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" [color]="field.color" class="form-element">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }

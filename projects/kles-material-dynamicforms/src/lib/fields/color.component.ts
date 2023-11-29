@@ -3,7 +3,7 @@ import { OnInit, Component, OnDestroy } from '@angular/core';
 @Component({
     selector: 'kles-form-color',
     template: `
-    <mat-form-field [formGroup]="group" class="form-element">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" class="form-element">
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate"
             [colorPicker]="group.get(field.name).value"
             [value]="group.get(field.name).value"

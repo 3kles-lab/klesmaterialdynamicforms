@@ -7,6 +7,7 @@ import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
 import { DateAdapter, MatDateFormats } from '@angular/material/core';
 import { EnumButtonAttribute } from '../enums/button-attribute.enum';
+import { SubscriptSizing } from '@angular/material/form-field';
 
 export interface IKlesFieldConfig {
     type?: EnumType;// Mapper type if(type && !component)=>type
@@ -73,4 +74,5 @@ export interface IKlesFieldConfig {
     subComponents?: Type<any>[];
     autofocus?: boolean;
     attribute?: EnumButtonAttribute;
+    subscriptSizing?: SubscriptSizing;
 }

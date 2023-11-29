@@ -39,7 +39,7 @@ FormControlName.prototype.ngOnChanges = function () {
         //'.dynamic-form { width: 100%; }',
         '.dynamic-form-column { display: flex;flex-direction: column; }',
         '.dynamic-form-column > * { width: 100%; }',
-        '.dynamic-form-row { display: inline-flex;flex-wrap:wrap;gap:10px; align-items: baseline }',
+        '.dynamic-form-row { display: inline-flex;flex-wrap:wrap;gap:10px; }',
         '.dynamic-form-row > * { width: 100%; }',
         '.dynamic-form-row-item { margin-right: 10px; }',
         '.dynamic-form-column-item { margin-bottom: 10px; }',

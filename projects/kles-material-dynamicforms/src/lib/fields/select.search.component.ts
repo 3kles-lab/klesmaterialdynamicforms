@@ -10,7 +10,7 @@ import { KlesFieldAbstract } from './field.abstract';
     selector: 'kles-form-select-search',
     // encapsulation: ViewEncapsulation.None,
     template: `
-    <mat-form-field class="margin-top" [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
@@ -120,6 +120,10 @@ import { KlesFieldAbstract } from './field.abstract';
         }
 
         </mat-select>
+
+        @if (field.hint) {
+            <mat-hint>{{field.hint}}</mat-hint>
+        }
 
         @if (field.subComponents || field.clearable) {
             <div matSuffix>

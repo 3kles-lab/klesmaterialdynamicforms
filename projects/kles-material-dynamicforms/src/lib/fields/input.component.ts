@@ -9,7 +9,7 @@ import { FieldMapper } from '../decorators/component.decorator';
 @Component({
     selector: 'kles-form-input',
     template: `
-    <mat-form-field [formGroup]="group" [color]="field.color" class="form-element">
+    <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
@@ -40,6 +40,9 @@ import { FieldMapper } from '../decorators/component.decorator';
         @else {
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
             [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step">
+        }
+        @if (field.hint) {
+            <mat-hint>{{field.hint}}</mat-hint>
         }
 
         @if (isPending()) {

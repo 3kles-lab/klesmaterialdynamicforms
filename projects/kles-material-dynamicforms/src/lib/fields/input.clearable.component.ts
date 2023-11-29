@@ -4,7 +4,7 @@ import { KlesFormInputComponent } from './input.component';
 @Component({
     selector: 'kles-form-input-clearable',
     template: `
-    <mat-form-field [formGroup]="group" [color]="field.color" class="form-element">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" [color]="field.color" class="form-element">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
