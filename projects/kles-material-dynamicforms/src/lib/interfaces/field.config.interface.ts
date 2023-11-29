@@ -6,6 +6,7 @@ import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
 import { DateAdapter, MatDateFormats } from '@angular/material/core';
+import { EnumButtonAttribute } from '../enums/button-attribute.enum';
 
 export interface IKlesFieldConfig {
     type?: EnumType;// Mapper type if(type && !component)=>type
@@ -71,4 +72,5 @@ export interface IKlesFieldConfig {
     clearableComponent?: Type<any>; /*Override default clear component*/
     subComponents?: Type<any>[];
     autofocus?: boolean;
+    attribute?: EnumButtonAttribute;
 }

@@ -11,7 +11,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { TranslateModule } from '@ngx-translate/core';
 import { KlesFormLabelComponent } from './fields/label.component';
 import { KlesFormInputComponent } from './fields/input.component';
-import { KlesFormSubmitButtonComponent } from './fields/button-submit.component';
 import { KlesFormSelectComponent } from './fields/select.component';
 import { KlesFormDateComponent } from './fields/date.component';
 import { KlesFormRadioComponent } from './fields/radio.component';
@@ -46,42 +45,53 @@ import { KlesFormClearComponent } from './fields/clear.component';
 import { KlesFormSelectLazySearchComponent } from './fields/select.lazy-search.component';
 import { KlesFormDateTimeComponent } from './fields/date-time.component';
 import { KlesMaterialDatepickerModule } from '@3kles/kles-material-datepicker';
+import { KlesFormFabComponent } from './fields/button-fab.component';
+import { KlesFabComponent } from './forms/fab-control.component';
+import { KlesMiniFabComponent } from './forms/mini-fab-control.component';
+import { KlesFormMiniFabComponent } from './fields/button-mini-fab.component';
+import { KlesIconButtonComponent } from './forms/icon-button-control.component';
+import { KlesFormIconButtonComponent } from './fields/button-icon.component';
 
 const components = [
-  KlesDynamicFormComponent,
-  KlesFormLabelComponent,
-  KlesFormInputComponent,
-  KlesFormInputClearableComponent,
-  KlesFormSubmitButtonComponent,
-  KlesFormBadgeComponent,
-  KlesButtonComponent,
-  KlesFormButtonComponent,
-  KlesButtonCheckerComponent,
-  KlesFormButtonCheckerComponent,
-  KlesButtonFileComponent,
-  KlesFormButtonFileComponent,
-  KlesFormSelectComponent,
-  KlesFormDateComponent,
-  KlesFormRadioComponent,
-  KlesFormCheckboxComponent,
-  KlesFormListFieldComponent,
-  KlesFormColorComponent,
-  KlesFormTextareaComponent,
-  KlesFormTextComponent,
-  KlesFormChipComponent,
-  KlesFormGroupComponent,
-  KlesFormIconComponent,
-  KlesFormSelectSearchComponent,
-  KlesFormLineBreakComponent,
-  KlesFormLinkComponent,
-  KlesFormSlideToggleComponent,
-  KlesFormSelectionListComponent,
-  KlesFormButtonToogleGroupComponent,
-  KlesFormArrayComponent,
-  KlesFormRangeComponent,
-  KlesFormClearComponent,
-  KlesFormSelectLazySearchComponent,
-  KlesFormDateTimeComponent
+    KlesDynamicFormComponent,
+    KlesFormLabelComponent,
+    KlesFormInputComponent,
+    KlesFormInputClearableComponent,
+    KlesFormBadgeComponent,
+    KlesButtonComponent,
+    KlesFormButtonComponent,
+    KlesButtonCheckerComponent,
+    KlesFormButtonCheckerComponent,
+    KlesButtonFileComponent,
+    KlesFormButtonFileComponent,
+    KlesFormSelectComponent,
+    KlesFormDateComponent,
+    KlesFormRadioComponent,
+    KlesFormCheckboxComponent,
+    KlesFormListFieldComponent,
+    KlesFormColorComponent,
+    KlesFormTextareaComponent,
+    KlesFormTextComponent,
+    KlesFormChipComponent,
+    KlesFormGroupComponent,
+    KlesFormIconComponent,
+    KlesFormSelectSearchComponent,
+    KlesFormLineBreakComponent,
+    KlesFormLinkComponent,
+    KlesFormSlideToggleComponent,
+    KlesFormSelectionListComponent,
+    KlesFormButtonToogleGroupComponent,
+    KlesFormArrayComponent,
+    KlesFormRangeComponent,
+    KlesFormClearComponent,
+    KlesFormSelectLazySearchComponent,
+    KlesFormDateTimeComponent,
+    KlesFormFabComponent,
+    KlesFabComponent,
+    KlesMiniFabComponent,
+    KlesFormMiniFabComponent,
+    KlesIconButtonComponent,
+    KlesFormIconButtonComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];

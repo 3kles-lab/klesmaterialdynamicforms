@@ -1,7 +1,7 @@
 import { Input } from '@angular/core';
-import { Component, OnInit, forwardRef, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IButton, KlesButtonComponent } from './button-control.component';
+import { Component, forwardRef, ViewChild } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { IButton, KlesButtonBase } from './button-control-base';
 
 export interface IButtonFile extends IButton {
     fileContent?: string | string[];
@@ -27,12 +27,13 @@ export interface IButtonFile extends IButton {
         }
     ]
 })
-export class KlesButtonFileComponent extends KlesButtonComponent implements ControlValueAccessor {
+export class KlesButtonFileComponent extends KlesButtonBase {
     @ViewChild('file') file;
     @Input() accept = '*.*';
     fileReader = new FileReader();
     fileContent: string | string[];
     value: IButtonFile = {};
+
 
     click(event) {
         if (!this.disabled) {

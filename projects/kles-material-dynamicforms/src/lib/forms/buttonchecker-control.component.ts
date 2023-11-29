@@ -1,6 +1,7 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IButton, KlesButtonComponent } from './button-control.component';
+import { IButton, KlesButtonBase } from './button-control-base';
+
 
 export interface IButtonChecker extends IButton {
     busy: boolean;
@@ -46,7 +47,7 @@ export interface IButtonChecker extends IButton {
         }
     ]
 })
-export class KlesButtonCheckerComponent extends KlesButtonComponent implements ControlValueAccessor {
+export class KlesButtonCheckerComponent extends KlesButtonBase implements ControlValueAccessor {
     value: IButtonChecker = {
         busy: false,
         error: [],

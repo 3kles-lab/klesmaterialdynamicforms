@@ -1,15 +1,13 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 
-
 @Component({
-    selector: 'kles-form-button',
+    selector: 'kles-form-fab',
     template: `
     <div [formGroup]="group">
-        <kles-button
+        <kles-fab
             [attr.id]="field.id" [classButton]="field.ngClass" 
-            [name]="field.name" [label]="field.label" [color]="field.color" 
-            [attribute]="field.attribute"
+            [name]="field.name" [label]="field.label" [color]="field.color"
             [icon]="field.icon"
             [iconSvg]="field.iconSvg"
             [value]="field.value"
@@ -17,12 +15,12 @@ import { KlesFieldAbstract } from './field.abstract';
             [tooltip]="field.tooltip"
             [type]="field.buttonType"
             >
-        </kles-button>
+        </kles-fab>
     </div>
     `,
     styles: []
 })
-export class KlesFormButtonComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
+export class KlesFormFabComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         super.ngOnInit();

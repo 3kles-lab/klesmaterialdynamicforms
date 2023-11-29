@@ -1,27 +1,35 @@
-import { Component, OnInit, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, OnInit, Signal, forwardRef, signal } from '@angular/core';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { KlesButtonBase } from './button-control-base';
+import { EnumButtonAttribute } from '../enums/button-attribute.enum';
 
-export interface IButton {
-    event?: any;
-    uiButton?: IUIButton;
-}
+/*From angular material 
+    https://github.com/angular/components/blob/17.0.x/src/material/button/button-base.ts#L40C1-L56C5
+ */
+const HOST_SELECTOR_MDC_CLASS_PAIR: { attribute: string; mdcClasses: string[] }[] = [
+    {
+        attribute: EnumButtonAttribute['mat-button'],
+        mdcClasses: ['mdc-button', 'mat-mdc-button'],
+    },
+    {
+        attribute: EnumButtonAttribute['mat-flat-button'],
+        mdcClasses: ['mdc-button', 'mdc-button--unelevated', 'mat-mdc-unelevated-button'],
+    },
+    {
+        attribute: EnumButtonAttribute['mat-raised-button'],
+        mdcClasses: ['mdc-button', 'mdc-button--raised', 'mat-mdc-raised-button'],
+    },
+    {
+        attribute: EnumButtonAttribute['mat-stroked-button'],
+        mdcClasses: ['mdc-button', 'mdc-button--outlined', 'mat-mdc-outlined-button'],
+    }
+];
 
-export interface IUIButton {
-    label?: string;
-    color?: string;
-    icon?: string;
-    iconSvg?: string;
-    disabled?: boolean;
-    class?: string;
-    type?: string;
-    accept?: string;
-}
 
 @Component({
     selector: 'kles-button',
     template: `
-        <span>
-            <button mat-button [type]="type" [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
+            <button mat-button [type]="type" [ngClass]="classButton || mdcClasses()" [color]="(color)?color:'primary'" [disabled]="disabled"
             (click)="click($event)" [matTooltip]="tooltip">
                 {{label | translate}}
 
@@ -33,7 +41,6 @@ export interface IUIButton {
                     <mat-icon svgIcon="{{iconSvg}}"></mat-icon>
                 }
             </button>
-        </span>
     `,
     providers: [
         {
@@ -43,60 +50,11 @@ export interface IUIButton {
         }
     ]
 })
-export class KlesButtonComponent implements OnInit, ControlValueAccessor {
-    @Input() name = '';
-    @Input() label = '';
-    @Input() color = 'accent';
-    @Input() icon = '';
-    @Input() iconSvg = '';
-    @Input() disabled = false;
-    @Input() type = 'submit';
-    @Input() classButton = '';
-    @Input() value: IButton = {};
-    @Input() tooltip?: string;
+export class KlesButtonComponent extends KlesButtonBase implements OnInit {
 
-    onChange: any = () => { };
-    onTouched: any = () => { };
+    mdcClasses = signal(HOST_SELECTOR_MDC_CLASS_PAIR[0].mdcClasses);
 
-    ngOnInit(): void {
-    }
-
-    click(event) {
-        if (!this.disabled) {
-            this.value.event = this.name;
-            this.onChange(this.value);
-        }
-    }
-
-    writeValue(value: IButton): void {
-        if (!value) {
-            value = { event: this.name };
-        }
-        if (!value.event) {
-            value.event = this.name;
-        }
-        if (value.uiButton) {
-            const uiButton = value.uiButton;
-            this.label = (uiButton.label) ? uiButton.label : this.label;
-            this.color = (uiButton.color) ? uiButton.color : this.color;
-            this.icon = (uiButton.icon) ? uiButton.icon : this.icon;
-            this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
-            this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
-            this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
-            this.type = (uiButton.type) ? uiButton.type : 'submit';
-        }
-        this.value = value;
-    }
-
-    registerOnChange(fn: any): void {
-        this.onChange = fn;
-    }
-
-    registerOnTouched(fn: any): void {
-        this.onTouched = fn;
-    }
-
-    setDisabledState?(isDisabled: boolean): void {
-        this.disabled = isDisabled;
+    @Input() set attribute(attribute: EnumButtonAttribute) {
+        this.mdcClasses.set(HOST_SELECTOR_MDC_CLASS_PAIR.find(selector => selector.attribute === attribute)?.mdcClasses || []);
     }
 }

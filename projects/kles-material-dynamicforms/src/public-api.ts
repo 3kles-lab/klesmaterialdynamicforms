@@ -9,16 +9,19 @@ export * from './lib/directive/dynamic-field.directive';
 export * from './lib/directive/dynamic-component.directive';
 
 /*FORMS*/
+export * from './lib/forms/button-control-base';
 export * from './lib/forms/button-control.component';
 export * from './lib/forms/buttonchecker-control.component';
 export * from './lib/forms/buttonfile-control.component';
+export * from './lib/forms/fab-control.component';
+export * from './lib/forms/mini-fab-control.component';
+export * from './lib/forms/icon-button-control.component';
 
 /**FIELDS */
 export * from './lib/fields/badge.component';
 export * from './lib/fields/button-form.component';
 export * from './lib/fields/buttonchecker-form.component';
 export * from './lib/fields/buttonfile-form.component';
-export * from './lib/fields/button-submit.component';
 export * from './lib/fields/checkbox.component';
 export * from './lib/fields/color.component';
 export * from './lib/fields/date.component';
@@ -45,9 +48,13 @@ export * from './lib/fields/range.component';
 export * from './lib/fields/clear.component';
 export * from './lib/fields/select.lazy-search.component';
 export * from './lib/fields/date-time.component';
+export * from './lib/fields/button-fab.component';
+export * from './lib/fields/button-mini-fab.component';
+export * from './lib/fields/button-icon.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';
+export * from './lib/enums/button-attribute.enum';
 
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';
