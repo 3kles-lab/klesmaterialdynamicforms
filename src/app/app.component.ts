@@ -6,7 +6,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumType, KlesFormDateComponent, KlesFormDateTimeComponent } from 'kles-material-dynamicforms';
+import { EnumButtonAttribute, EnumType, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormFabComponent, KlesFormIconButtonComponent, KlesFormMiniFabComponent } from 'kles-material-dynamicforms';
 import {
   IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
@@ -471,7 +471,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
 
-    const obs$ = of(Array.from(Array(100).keys()).map((val) => ( val)))
+    const obs$ = of(Array.from(Array(100).keys()).map((val) => (val)))
 
     this.fieldsInput.push({
       name: 'selectInfinite',
@@ -482,7 +482,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       // virtualScroll: false,
       options: ['aaaa'],
       // asyncValue: of(0),
-     
+
       // property: 'key',
       // property: 'STKY',
       // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
@@ -664,7 +664,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       label: 'mat button',
       color: 'accent',
       icon: 'clear',
-      ngClass: 'mat-button',
       tooltip: 'tooltip button',
       component: KlesFormButtonComponent,
     });
@@ -674,17 +673,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       label: 'mat raised button',
       color: 'accent',
       icon: 'clear',
-      ngClass: 'mat-raised-button',
-      tooltip: 'tooltip button',
-      component: KlesFormButtonComponent,
-    });
-
-    this.fieldsButton.push({
-      name: 'buttonflat',
-      label: 'mat flat button',
-      color: 'accent',
-      icon: 'clear',
-      ngClass: 'mat-flat-button',
+      attribute: EnumButtonAttribute['mat-raised-button'],
       tooltip: 'tooltip button',
       component: KlesFormButtonComponent,
     });
@@ -694,18 +683,44 @@ export class AppComponent implements OnInit, AfterViewInit {
       label: 'mat stroked button',
       color: 'accent',
       iconSvg: 'excel',
-      ngClass: 'mat-stroked-button',
+      tooltip: 'tooltip button',
+      attribute: EnumButtonAttribute['mat-stroked-button'],
+      component: KlesFormButtonComponent,
+    });
+
+    this.fieldsButton.push({
+      name: 'buttonflat',
+      label: 'mat flat button',
+      color: 'accent',
+      icon: 'clear',
+      attribute: EnumButtonAttribute['mat-flat-button'],
       tooltip: 'tooltip button',
       component: KlesFormButtonComponent,
+    });
+
+    this.fieldsButton.push({
+      name: 'buttonIcon',
+      color: 'primary',
+      icon: 'add',
+      tooltip: 'tooltip icon button',
+      component: KlesFormIconButtonComponent,
+    });
+
+    this.fieldsButton.push({
+      name: 'buttonFab',
+      color: 'primary',
+      // icon: 'add',
+      label: 'test',
+      tooltip: 'tooltip button',
+      component: KlesFormFabComponent,
     });
 
     this.fieldsButton.push({
       name: 'buttonmini',
       color: 'accent',
       icon: 'add',
-      ngClass: 'mat-mini-fab',
       tooltip: 'tooltip button',
-      component: KlesFormButtonComponent,
+      component: KlesFormMiniFabComponent,
     });
 
     this.fieldsButton.push({
@@ -714,7 +729,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       icon: 'delete',
       ngClass: 'mat-mini-fab',
       tooltip: 'tooltip button',
-      component: KlesFormButtonComponent,
+      component: KlesFormMiniFabComponent,
     });
 
     this.fieldsButton.push({
