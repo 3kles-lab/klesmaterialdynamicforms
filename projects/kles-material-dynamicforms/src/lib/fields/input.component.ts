@@ -46,7 +46,7 @@ import { FieldMapper } from '../decorators/component.decorator';
         }
 
         @if (isPending()) {
-            <mat-spinner matSuffix mode="indeterminate" diameter="17"></mat-spinner>
+            <mat-spinner matSuffix mode="indeterminate" diameter="21"></mat-spinner>
         }
 
         @if (field.subComponents || field.clearable) {
