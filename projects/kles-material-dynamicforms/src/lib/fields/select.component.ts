@@ -16,7 +16,7 @@ import { KlesFieldAbstract } from './field.abstract';
             <mat-label>{{field.label}}</mat-label>
         }
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id"
-        (openedChange)="openChange($event)" [compareWith]="compareFn"
+        (openedChange)="openChange($event)" [compareWith]="compareFn" [panelWidth]="field.panelWidth || 'auto'"
         [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         
         @if (field.triggerComponent) {

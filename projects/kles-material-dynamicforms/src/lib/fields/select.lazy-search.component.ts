@@ -12,7 +12,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
         }
 
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
-        (openedChange)="openChange($event)" [compareWith]="compareFn"
+        (openedChange)="openChange($event)" [compareWith]="compareFn" [panelWidth]="field.panelWidth || 'auto'"
         [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
         @if (field.triggerComponent) {
             <mat-select-trigger>
