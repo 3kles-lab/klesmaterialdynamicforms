@@ -15,8 +15,8 @@ import { KlesFieldAbstract } from './field.abstract';
             <ng-content></ng-content>
         </div>
         <mat-datepicker #picker></mat-datepicker>
-        @if (field.label) {
-            <mat-label>{{field.label}}</mat-label>
+        @if (field.hint) {
+            <mat-hint>{{field.hint}}</mat-hint>
         }
 
         @for (validation of field.validations; track validation.name) {
