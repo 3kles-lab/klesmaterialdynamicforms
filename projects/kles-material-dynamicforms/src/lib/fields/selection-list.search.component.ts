@@ -1,14 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
-import { Observable, ReplaySubject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
-import { debounceTime, distinctUntilChanged, map, shareReplay, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, shareReplay, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { KlesSelectionModel } from '../selection/selection-model';
 import { FormControl } from '@angular/forms';
 @Component({
     selector: 'kles-form-selection-list-search',
     template: `
-    <div class="margin-top" [formGroup]="group">
+    <div class="selection-list" [formGroup]="group">
         <mat-form-field subscriptSizing='dynamic'>
             @if (field.label) {
                 <mat-label>{{field.label}}</mat-label>
@@ -61,8 +61,9 @@ import { FormControl } from '@angular/forms';
         </mat-selection-list>
     </div>
 `,
-    styles: [`
-        mat-selection-list {width: 100%;height: 250px; overflow:auto}`
+    styles: [
+        `.selection-list {display:flex; flex-direction:column; gap:5px}`,
+        `mat-selection-list {width: 100%;max-height: 250px; overflow:auto; flex-grow: 1;}`
     ],
 })
 export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
