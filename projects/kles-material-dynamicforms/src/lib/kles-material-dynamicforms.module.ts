@@ -51,6 +51,7 @@ import { KlesMiniFabComponent } from './forms/mini-fab-control.component';
 import { KlesFormMiniFabComponent } from './fields/button-mini-fab.component';
 import { KlesIconButtonComponent } from './forms/icon-button-control.component';
 import { KlesFormIconButtonComponent } from './fields/button-icon.component';
+import { KlesFormSelectionListSearchComponent } from './fields/selection-list.search.component';
 
 const components = [
     KlesDynamicFormComponent,
@@ -91,7 +92,8 @@ const components = [
     KlesMiniFabComponent,
     KlesFormMiniFabComponent,
     KlesIconButtonComponent,
-    KlesFormIconButtonComponent
+    KlesFormIconButtonComponent,
+    KlesFormSelectionListSearchComponent
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective];

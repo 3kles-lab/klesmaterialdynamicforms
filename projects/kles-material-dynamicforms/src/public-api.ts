@@ -51,6 +51,7 @@ export * from './lib/fields/date-time.component';
 export * from './lib/fields/button-fab.component';
 export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';
+export * from './lib/fields/selection-list.search.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';
