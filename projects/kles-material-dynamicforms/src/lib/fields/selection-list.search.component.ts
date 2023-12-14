@@ -63,7 +63,7 @@ import { FormControl } from '@angular/forms';
 `,
     styles: [
         `.selection-list {display:flex; flex-direction:column; gap:5px}`,
-        `mat-selection-list {width: 100%;max-height: 250px; overflow:auto; flex-grow: 1;}`
+        `mat-selection-list {width: 100%;height: 250px; overflow:auto; flex-grow: 1;}`
     ],
 })
 export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
