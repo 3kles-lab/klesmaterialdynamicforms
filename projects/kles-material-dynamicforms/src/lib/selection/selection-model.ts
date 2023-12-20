@@ -58,7 +58,6 @@ export class KlesSelectionModel<T> {
      */
     select(values: T[], option?: { emitEvent: boolean }): boolean | void {
         this._verifyValueAssignment(values);
-        console.log(values)
         values.forEach(value => this._markSelected(value));
         const changed = this._hasQueuedChanges();
         if (!option || option?.emitEvent) {
