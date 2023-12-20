@@ -18,7 +18,7 @@ export class KlesFormArray extends KlesFormControl {
                 this.field.value.forEach(val => {
                     const group = new FormGroup({});
                     group.addControl('_id', new FormControl(uuidv4()));
-                    this.field.collections.forEach(subfield => {
+                    this.field.collections?.forEach(subfield => {
                         const data = val[subfield.name] || null;
                         // const control = new KlesFormControl({ ...subfield, ...(data && { value: data }) }).create();
                         let control;
@@ -36,7 +36,7 @@ export class KlesFormArray extends KlesFormControl {
             }
         } else {
             const group = new FormGroup({});
-            this.field.collections.forEach(subfield => {
+            this.field.collections?.forEach(subfield => {
                 // const control = new KlesFormControl({ ...subfield }).create();
                 let control;
                 if (subfield.type) {
