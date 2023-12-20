@@ -10,10 +10,12 @@ import { KlesFormArray } from '../controls/array.control';
     selector: 'kles-form-listfield',
     template: `
     <div [formGroup]="group" class="form-element">
-        {{field.label | translate}}
-        <button mat-icon-button color="primary" (click)="addField()">
-            <mat-icon>add</mat-icon>
-        </button>
+        <div class="label">
+            {{field.label | translate}}
+            <button mat-icon-button color="primary" (click)="addField()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
 
         <div class="dynamic-form" [formGroupName]="field.name">
             @for (subGroup of formArray.controls; track subGroup.value._id) {
@@ -22,9 +24,11 @@ import { KlesFormArray } from '../controls/array.control';
                         <ng-container klesDynamicField [field]="subfield" [group]="subGroup">
                         </ng-container>
                     }
-                    <button mat-icon-button (click)="deleteField($index)" color="primary">
-                        <mat-icon>delete_outlined</mat-icon>
-                    </button>
+                    @if(field.collections){
+                        <button mat-icon-button (click)="deleteField($index)" color="primary">
+                            <mat-icon>delete_outlined</mat-icon>
+                        </button>
+                    }
                 </div>
             }
             @for (validation of field.validations; track validation.name) {
@@ -44,7 +48,8 @@ import { KlesFormArray } from '../controls/array.control';
         </div>
     </div>
     `,
-    styles: ['.subfields {display: flex; flex-direction: row; gap:5px}',]
+    styles: ['.subfields {display: flex; flex-direction: row; gap:5px}',
+        `.label {display: flex; align-items: center; flex-direction: row; gap: 5px;}`]
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
@@ -61,7 +66,7 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
 
     private createFormGroup(): UntypedFormGroup {
         const group = this.fb.group({});
-        this.field.collections.forEach(item => {
+        this.field.collections?.forEach(item => {
             const control = this.fb.control(
                 null,
                 this.bindValidations(item.validations || []),

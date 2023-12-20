@@ -45,6 +45,7 @@ export class KlesFormArray extends KlesFormControl {
                 } else {
                     control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield })
                         || klesFieldControlFactory({ ...subfield });
+                        
                 }
                 group.addControl(subfield.name, control);
             });
