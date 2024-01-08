@@ -30,7 +30,6 @@ FormControlName.prototype.ngOnChanges = function () {
                 </ng-container>
             }
         }
-        <!--<button (click)="reset()" mat-raised-button color="primary">RESET</button>-->
     </form>
     `,
     styles: [
@@ -107,11 +106,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
-    reset() {
-        this.form.reset();
-    }
-
-
     private updateForm() {
         Object.keys(this.form.controls).filter(key => {
             return !this.fields.map(field => field.name).includes(key);
@@ -131,7 +125,10 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
                     this.form.setControl(field.name, control, { emitEvent: false });
                 } else {
                     const control = this.createControl(field);
-                    this.form.addControl(field.name, control);
+                    if (control) {
+                        this.form.addControl(field.name, control);
+                    }
+
                 }
             });
     }
@@ -150,7 +147,10 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
                     } else {
                         control = this.createControl(subfield);
                     }
-                    group.setControl(subfield.name, control, { emitEvent: false });
+                    if (control) {
+                        group.setControl(subfield.name, control, { emitEvent: false });
+                    }
+
                 });
             }
             return group;
@@ -167,24 +167,22 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     private createControl(field: IKlesFieldConfig): AbstractControl {
         if (field.type) {
-            return componentMapper.find(c => c.type === field.type)?.factory(field) || klesFieldControlFactory(field);
+            return componentMapper.find(c => c.type === field.type)?.factory
+                ? componentMapper.find(c => c.type === field.type)?.factory(field) : klesFieldControlFactory(field);
         } else {
-            return componentMapper.find(c => c.component === field.component)?.factory(field) || klesFieldControlFactory(field);
+            return componentMapper.find(c => c.component === field.component)?.factory ?
+                componentMapper.find(c => c.component === field.component)?.factory(field) : klesFieldControlFactory(field);
         }
     }
-
 
     private createForm() {
         const group = this.fb.group({});
 
         this.fields.forEach(field => {
-
-            if (field.type === EnumType.lineBreak) {
-                return;
-            }
             const control = this.createControl(field);
-
-            group.addControl(field.name, control);
+            if (control) {
+                group.addControl(field.name, control);
+            }
         });
 
         group.setValidators(this.validators.map(v => v.validator));
@@ -192,9 +190,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
         return group;
     }
-
-
-
 
     private validateAllFormFields(formGroup: UntypedFormGroup) {
         Object.keys(formGroup.controls).forEach(field => {

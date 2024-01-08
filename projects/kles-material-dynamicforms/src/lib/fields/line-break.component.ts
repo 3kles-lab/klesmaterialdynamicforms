@@ -3,7 +3,10 @@ import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 
-@FieldMapper({ type: EnumType.lineBreak })
+@FieldMapper({
+    type: EnumType.lineBreak,
+    factory: () => null
+})
 @Component({
     selector: 'kles-form-line-break',
     template: ``,

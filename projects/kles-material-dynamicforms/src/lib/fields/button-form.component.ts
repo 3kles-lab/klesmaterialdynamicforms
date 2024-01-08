@@ -1,7 +1,6 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 
-
 @Component({
     selector: 'kles-form-button',
     template: `

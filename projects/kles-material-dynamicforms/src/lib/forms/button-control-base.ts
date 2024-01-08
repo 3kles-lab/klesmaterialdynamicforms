@@ -27,10 +27,17 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     @Input() icon = '';
     @Input() iconSvg = '';
     @Input() disabled = false;
-    @Input() type = 'submit';
+    @Input('type') get type(): any {
+        return this._type;
+    }
+    set type(value: any) {
+        this._type = value || this._type;
+    }
     @Input() classButton = '';
     @Input() value: IButton = {};
     @Input() tooltip?: string;
+
+    protected _type = 'button';
 
     onChange: any = () => { };
     onTouched: any = () => { };
@@ -39,8 +46,8 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     }
 
     click(event) {
-
-        if (!this.disabled) {
+        if (!this.disabled && this.value && this._type === 'button') {
+            console.log(this.value)
             this.value.event = this.name;
             this.onChange(this.value);
         }
