@@ -47,7 +47,6 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
 
     click(event) {
         if (!this.disabled && this.value && this._type === 'button') {
-            console.log(this.value)
             this.value.event = this.name;
             this.onChange(this.value);
         }
