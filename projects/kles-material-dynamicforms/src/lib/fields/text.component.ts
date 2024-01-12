@@ -7,7 +7,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-form-text',
     template: `
-    <span matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass">
+    <span matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
         {{((field.property && group.controls[field.name].value) ? group.controls[field.name].value[field.property] : group.controls[field.name].value) | klesTransform:field.pipeTransform}}
     </span>
 `
