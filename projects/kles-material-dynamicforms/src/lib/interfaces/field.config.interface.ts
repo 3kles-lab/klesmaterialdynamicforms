@@ -75,4 +75,5 @@ export interface IKlesFieldConfig {
     autofocus?: boolean;
     attribute?: EnumButtonAttribute;
     subscriptSizing?: SubscriptSizing;
+    nonNullable?: boolean;
 }

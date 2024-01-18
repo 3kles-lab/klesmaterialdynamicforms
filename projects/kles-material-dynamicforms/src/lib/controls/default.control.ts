@@ -14,6 +14,7 @@ export class KlesFormControl implements IKlesControl {
         const control = new FormControl(
             this.field.value,
             {
+                nonNullable: this.field.nonNullable || false,
                 validators: this.bindValidations(this.field.validations || []),
                 asyncValidators: this.bindAsyncValidations(this.field.asyncValidations || []),
                 updateOn: this.field.updateOn || 'change'
