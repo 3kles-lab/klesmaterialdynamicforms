@@ -40,6 +40,7 @@ import { KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS, KLES_MAT_MOMENT_FORMATS, KlesMatM
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'KlesMaterialDynamicForms';
+  color=''
 
   @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
   fields: IKlesFieldConfig[] = [];

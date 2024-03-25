@@ -1,5 +1,10 @@
 <main class="content">
   <div class="container">
+    <!-- <input matInput [(colorPicker)]="color" [style.background]="color" /> -->
+    <mat-form-field class="example-full-width" [(colorPicker)]="color" [style.background]="color">
+      <mat-label>Favorite food</mat-label>
+      <input matInput>
+    </mat-form-field>
     <div style="justify-content:center">
       <button mat-button (click)=" french()">Dynamically switch to French</button>
     </div>
