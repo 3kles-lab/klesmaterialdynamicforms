@@ -4,7 +4,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: "kles-form-datepicker",
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }

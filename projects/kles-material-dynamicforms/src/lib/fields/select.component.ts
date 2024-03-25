@@ -11,14 +11,14 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-form-select',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id"
         (openedChange)="openChange($event)" [compareWith]="compareFn" [panelWidth]="field.panelWidth || 'auto'"
         [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
-        
+
         @if (field.triggerComponent) {
             <mat-select-trigger>
                 <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>

@@ -10,6 +10,7 @@ import { OnInit, Component, OnDestroy } from '@angular/core';
     [cpColorMode]="field.colorOption.mode"
     [cpOutputFormat]="field.colorOption.format"
     [cpPositionOffset]="field.colorOption.positionOffset"
+    [appearance]="field.appearance"
     >
         <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate"
             [value]="group.get(field.name).value"

@@ -9,13 +9,13 @@ import { FieldMapper } from '../decorators/component.decorator';
 @Component({
     selector: 'kles-form-input',
     template: `
-    <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element">
+    <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="field.appearance">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
 
         @if (field.autocomplete) {
-            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType" 
+            <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
             [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step"
             [matAutocomplete]="auto">
 

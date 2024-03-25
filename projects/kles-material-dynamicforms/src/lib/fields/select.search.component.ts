@@ -10,7 +10,7 @@ import { KlesFieldAbstract } from './field.abstract';
   selector: 'kles-form-select-search',
   // encapsulation: ViewEncapsulation.None,
   template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }

@@ -6,7 +6,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
 @Component({
     selector: 'kles-form-select-lazy-search',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
@@ -82,7 +82,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
         }
         @else {
             <mat-option>
-                <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false" 
+                <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false"
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 

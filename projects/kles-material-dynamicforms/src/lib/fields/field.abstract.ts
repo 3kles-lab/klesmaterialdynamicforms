@@ -7,75 +7,78 @@ import { takeUntil } from 'rxjs/operators';
 
 @Directive()
 export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit, OnDestroy {
-    field: IKlesFieldConfig;
-    group: UntypedFormGroup;
-    siblingFields: IKlesFieldConfig[];
+  field: IKlesFieldConfig;
+  group: UntypedFormGroup;
+  siblingFields: IKlesFieldConfig[];
 
-    @HostBinding('attr.klesDirective') directive;
+  @HostBinding('attr.klesDirective') directive;
 
-    protected _onDestroy = new Subject<void>();
+  protected _onDestroy = new Subject<void>();
 
-    constructor(protected viewRef: ViewContainerRef) {
+  constructor(protected viewRef: ViewContainerRef) {
 
+  }
+
+  ngOnInit(): void {
+    if (!this.field.appearance) {
+      this.field.appearance = 'fill';
+    }
+    if (this.field.valueChanges) {
+      this.field.valueChanges(this.field, this.group, this.siblingFields);
     }
 
-    ngOnInit(): void {
+    this.group.controls[this.field.name]?.valueChanges
+      .pipe(takeUntil(this._onDestroy))
+      .subscribe(val => {
         if (this.field.valueChanges) {
-            this.field.valueChanges(this.field, this.group, this.siblingFields);
+          this.field.valueChanges(this.field, this.group, this.siblingFields, val);
         }
+      });
 
-        this.group.controls[this.field.name]?.valueChanges
-            .pipe(takeUntil(this._onDestroy))
-            .subscribe(val => {
-                if (this.field.valueChanges) {
-                    this.field.valueChanges(this.field, this.group, this.siblingFields, val);
-                }
-            });
+    if (this.field.directive) {
+      this.directive = new this.field.directive(this.viewRef, this);
+      this.directive.ngOnInit();
+    }
+  }
 
-        if (this.field.directive) {
-            this.directive = new this.field.directive(this.viewRef, this);
-            this.directive.ngOnInit();
-        }
+  ngAfterViewInit(): void {
+    if (this.directive && this.directive.ngAfterViewInit) {
+      this.directive?.ngAfterViewInit();
     }
 
-    ngAfterViewInit(): void {
-        if (this.directive && this.directive.ngAfterViewInit) {
-            this.directive?.ngAfterViewInit();
-        }
 
-
-        if (this.field.autofocus) {
-            setTimeout(() => {
-                (<any>this.group.controls[this.field.name])?.nativeElement.focus();
-            })
-        }
+    if (this.field.autofocus) {
+      setTimeout(() => {
+        (<any>this.group.controls[this.field.name])?.nativeElement.focus();
+      })
     }
+  }
 
-    ngOnDestroy(): void {
-        this.directive?.ngOnDestroy();
-        this._onDestroy.next();
-        this._onDestroy.complete();
-    }
+  ngOnDestroy(): void {
+    this.directive?.ngOnDestroy();
+    this._onDestroy.next();
+    this._onDestroy.complete();
+  }
 
-    applyPipeTransform() {
-        if (this.group && this.field) {
-            const control = this.group.controls[this.field.name];
-            if (control) {
-                const val = this.group.controls[this.field.name].value;
-                if (this.field.pipeTransform) {
-                    this.field.pipeTransform.forEach(p => {
-                        let pipeVal = control.value;
-                        if (p.options) {
-                            p.options.forEach(opt => {
-                                pipeVal = p.pipe.transform(val, opt);
-                            });
-                        } else {
-                            pipeVal = p.pipe.transform(val);
-                        }
-                        control.patchValue(pipeVal, { onlySelf: true, emitEvent: false });
-                    });
-                }
+  applyPipeTransform() {
+    if (this.group && this.field) {
+      const control = this.group.controls[this.field.name];
+      if (control) {
+        const val = this.group.controls[this.field.name].value;
+        if (this.field.pipeTransform) {
+          this.field.pipeTransform.forEach(p => {
+            let pipeVal = control.value;
+            if (p.options) {
+              p.options.forEach(opt => {
+                pipeVal = p.pipe.transform(val, opt);
+              });
+            } else {
+              pipeVal = p.pipe.transform(val);
             }
+            control.patchValue(pipeVal, { onlySelf: true, emitEvent: false });
+          });
         }
+      }
     }
+  }
 }

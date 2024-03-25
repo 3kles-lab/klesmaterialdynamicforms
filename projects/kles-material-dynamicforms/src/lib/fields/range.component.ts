@@ -8,7 +8,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: "kles-form-rangepicker",
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" [color]="field.color" [formGroup]="group">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
 
         <mat-label>{{field.label}}</mat-label>
 
@@ -17,7 +17,7 @@ import { KlesFieldAbstract } from './field.abstract';
             <input matStartDate formControlName="start" [placeholder]="(field.placeholder?.start ? field.placeholder?.start : '') | translate">
             <input matEndDate formControlName="end" [placeholder]="(field.placeholder?.end ? field.placeholder?.end : '') | translate">
         </mat-date-range-input>
-        
+
         <div matSuffix>
             <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
             <ng-content></ng-content>
