@@ -1,12 +1,12 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumButtonAttribute, EnumType, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormFabComponent, KlesFormIconButtonComponent, KlesFormMiniFabComponent } from 'kles-material-dynamicforms';
+import { EnumButtonAttribute, EnumType, KlesFormCheckboxComponent, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormFabComponent, KlesFormIconButtonComponent, KlesFormMiniFabComponent } from 'kles-material-dynamicforms';
 import {
   IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
@@ -37,10 +37,11 @@ import { KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS, KLES_MAT_MOMENT_FORMATS, KlesMatM
     // },
     // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'KlesMaterialDynamicForms';
-  color=''
+  color = ''
 
   @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
   fields: IKlesFieldConfig[] = [];
@@ -72,7 +73,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   ];
 
   constructor(private _adapter: DateAdapter<any>, private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer,
+    private ref: ChangeDetectorRef) {
     this.matIconRegistry.addSvgIcon(
       'excel',
       this.domSanitizer.bypassSecurityTrustResourceUrl('./assets/images/excel.svg')
@@ -169,6 +171,13 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   buildForm() {
+    this.fields.push({
+      component: KlesFormCheckboxComponent,
+      name: 'checkbox',
+      value: -1, // -1 mean indeterminate state
+    });
+
+
     this.fields.push({
       component: KlesFormChipComponent,
       name: 'chip',
@@ -772,5 +781,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   french() {
     this._adapter.setLocale('fr');
+    // Set checkbox to indeterminate
+    this.form.form.controls.checkbox.patchValue(-1);
   }
 }
