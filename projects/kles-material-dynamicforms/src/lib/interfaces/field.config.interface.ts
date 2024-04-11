@@ -17,12 +17,13 @@ export interface IKlesFieldConfig {
   label?: string;// Label field
   placeholder?: any;// Placeholder field
   tooltip?: string;// Tooltip field
-  inputType?: string;// Type
+  inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week';// Type
   min?: number | Date;
   max?: number | Date;
   maxLength?: number;
   step?: number;
   options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string) => Observable<any[]>); // List options for list component
+  hostClass?: string | string[] | Set<string> | { [klass: string]: any; } // ngclass for host field
   ngClass?: any; // ngclass for field
   ngStyle?: any; // ngStyle for field
   property?: string;// Property for field

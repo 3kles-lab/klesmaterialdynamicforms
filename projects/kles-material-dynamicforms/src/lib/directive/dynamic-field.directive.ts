@@ -83,9 +83,15 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     protected createComponentRef(injector: Injector) {
-        return this.container.createComponent(this.field.component
+        const componentRef = this.container.createComponent(this.field.component
             || componentMapper.find(element => element.type === this.field.type)?.component,
             { injector, projectableNodes: [this.subComponents.map(sub => sub.location.nativeElement)] });
+
+        if (this.field.hostClass) {
+            componentRef.location.nativeElement.classList.add(this.field.hostClass);
+        }
+
+        return componentRef;
     }
 
     private createSubComponent(componentType: Type<any>): ComponentRef<any> {

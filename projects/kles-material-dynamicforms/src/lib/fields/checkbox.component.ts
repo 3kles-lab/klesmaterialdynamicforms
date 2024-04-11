@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+import { takeUntil } from 'rxjs/operators';
 
 @FieldMapper({ type: EnumType.checkbox })
 @Component({
@@ -34,9 +35,9 @@ export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnIn
   ngOnInit() {
     super.ngOnInit();
     this.field.indeterminate = this.group.getRawValue()[this.field.name] === -1;
-    this.group.controls[this.field.name].valueChanges.subscribe((newVal) => {
+    this.group.controls[this.field.name].valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((newVal) => {
       this.field.indeterminate = (newVal === -1);
-    })
+    });
   }
 
   ngOnDestroy(): void {

@@ -23,25 +23,22 @@ FormControlName.prototype.ngOnChanges = function () {
     exportAs: 'klesDynamicForm',
     selector: 'app-kles-dynamic-form',
     template: `
-    <form class="{{orientationClass}}" [formGroup]="form" (submit)="onSubmit($event)">
+    <form class="{{orientationClass}}" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
         @for (field of fields; track field.name) {
             @if (field.visible !== false) {
-                <ng-container class="{{orientationItemClass}}" klesDynamicField [field]="field" [group]="form" [siblingFields]="fields">
+                <ng-container klesDynamicField [field]="field" [group]="form" [siblingFields]="fields">
                 </ng-container>
             }
         }
     </form>
     `,
     styles: [
-        // '.dynamic-form {display: flex; flex-direction: column;}',
-        //'.dynamic-form {display: flex;}',
-        //'.dynamic-form { width: 100%; }',
         '.dynamic-form-column { display: flex;flex-direction: column; }',
         '.dynamic-form-column > * { width: 100%; }',
-        '.dynamic-form-row { display: inline-flex;flex-wrap:wrap;gap:10px; }',
+        '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; }',
         '.dynamic-form-row > * { width: 100%; }',
-        '.dynamic-form-row-item { margin-right: 10px; }',
-        '.dynamic-form-column-item { margin-bottom: 10px; }',
+        '.dynamic-form-grid { display: grid; }',
+        '.dynamic-form-inline-grid { display: inline-grid; }',
     ]
 
 })
@@ -53,11 +50,11 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     @Output() submit: EventEmitter<any> = new EventEmitter<any>();
     @Output() _onLoaded = new EventEmitter();
 
-    @Input() direction: 'column' | 'row' = 'column';
+    @Input() direction: 'column' | 'row' | 'grid' | 'inline-grid' = 'column';
+    @Input() formClass: string | string[] | Set<string> | { [klass: string]: any; };
 
     form: UntypedFormGroup;
-    orientationClass: 'dynamic-form-column' | 'dynamic-form-row' = 'dynamic-form-column';
-    orientationItemClass: 'dynamic-form-column-item' | 'dynamic-form-row-item' = 'dynamic-form-column-item';
+    orientationClass: 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' = 'dynamic-form-column';
 
     get value() {
         return this.form.value;
@@ -68,16 +65,13 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.form = this.createForm();
-        this.orientationClass = this.direction === 'row' ? 'dynamic-form-row' : 'dynamic-form-column';
-        this.orientationItemClass = this.direction === 'row' ? 'dynamic-form-row-item' : 'dynamic-form-column-item';
+        this.setOrientationClass();
         this._onLoaded.emit();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.fields?.firstChange) {
             this.updateForm();
-            // this.form = this.createControl();
-            // this.form.controls = {};
             this._onLoaded.emit();
         }
 
@@ -91,7 +85,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
         if (!changes.direction?.firstChange) {
             this.orientationClass = this.direction === 'row' ? 'dynamic-form-row' : 'dynamic-form-column';
-            this.orientationItemClass = this.direction === 'row' ? 'dynamic-form-row-item' : 'dynamic-form-column-item';
         }
 
     }
@@ -103,6 +96,24 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             this.submit.emit(this.form.value);
         } else {
             this.validateAllFormFields(this.form);
+        }
+    }
+
+    private setOrientationClass() {
+        switch (this.direction) {
+            case 'column':
+                this.orientationClass = 'dynamic-form-column';
+                break;
+            case 'row':
+                this.orientationClass = 'dynamic-form-row';
+                break;
+            case 'grid':
+                this.orientationClass = 'dynamic-form-grid';
+                break;
+            case 'inline-grid':
+                this.orientationClass = 'dynamic-form-inline-grid';
+                break;
+
         }
     }
 
