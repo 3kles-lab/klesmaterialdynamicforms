@@ -47,7 +47,7 @@ export interface IKlesFieldConfig {
     pipe: PipeTransform,
     options?: any[]
   }[];
-  direction?: 'row' | 'column';
+  direction?: 'column' | 'row' | 'grid' | 'inline-grid';
   valueChanges?: ((field: IKlesFieldConfig, group: UntypedFormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void);
   triggerComponent?: Type<any>; //trigger component to customize trigger label in select
   virtualScroll?: boolean; //To activate virtual scroll
