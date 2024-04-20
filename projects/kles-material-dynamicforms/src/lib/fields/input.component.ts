@@ -55,20 +55,8 @@ import { FieldMapper } from '../decorators/component.decorator';
             </div>
         }
 
-        @for (validation of field.validations; track validation.name) {
-            <ng-container ngProjectAs="mat-error">
-                @if (group.get(field.name).hasError(validation.name) && validation.message) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
-                }
-            </ng-container>
-        }
-        @for (validation of field.asyncValidations; track validation.name) {
-            <ng-container ngProjectAs="mat-error">
-                @if (group.get(field.name).hasError(validation.name) && validation.message) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
-                }
-            </ng-container>
-        }
+        <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
+  
     </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}']

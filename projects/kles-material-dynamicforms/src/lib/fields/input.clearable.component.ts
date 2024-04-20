@@ -47,20 +47,7 @@ import { KlesFormInputComponent } from './input.component';
             <mat-spinner matSuffix mode="indeterminate" diameter="17"></mat-spinner>
         }
 
-        @for (validation of field.validations; track validation.name) {
-            <ng-container ngProjectAs="mat-error">
-                @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
-                }
-            </ng-container>
-        }
-        @for (validation of field.asyncValidations; track validation.name) {
-            <ng-container ngProjectAs="mat-error">
-                @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
-                }
-            </ng-container>
-        }
+        <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
     </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}']

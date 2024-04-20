@@ -7,6 +7,7 @@ export * from './lib/kles-material-dynamicforms.module';
 /**DIRECTIVE */
 export * from './lib/directive/dynamic-field.directive';
 export * from './lib/directive/dynamic-component.directive';
+export * from './lib/directive/mat-error-message.directive';
 
 /*FORMS*/
 export * from './lib/forms/button-control-base';

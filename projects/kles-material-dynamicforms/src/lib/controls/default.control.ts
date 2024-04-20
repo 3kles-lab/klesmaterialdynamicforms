@@ -12,18 +12,14 @@ export class KlesFormControl implements IKlesControl {
 
     public create(): AbstractControl {
         const control = new FormControl(
-            this.field.value,
+            {value: this.field.value, disabled: this.field.disabled},
             {
                 nonNullable: this.field.nonNullable || false,
                 validators: this.bindValidations(this.field.validations || []),
                 asyncValidators: this.bindAsyncValidations(this.field.asyncValidations || []),
-                updateOn: this.field.updateOn || 'change'
+                updateOn: this.field.updateOn || 'change',
             }
         );
-
-        if (this.field.disabled) {
-            control.disable();
-        }
 
         if (this.field.asyncValue) {
             concat(

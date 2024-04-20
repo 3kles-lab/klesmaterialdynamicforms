@@ -2,6 +2,6 @@
 export interface IKlesValidator<T> {
     name: string;
     validator: T;
-    message: string;
+    message?: string;
     messageKey?:string;
 }

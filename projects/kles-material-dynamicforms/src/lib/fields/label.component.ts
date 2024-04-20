@@ -16,7 +16,7 @@ import { KlesFieldAbstract } from './field.abstract';
 export class KlesFormLabelComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     ngOnInit() {
-        this.group.controls[this.field.name].disable();
+        this.group.controls[this.field.name].disable({ emitEvent: false });
         super.ngOnInit();
     }
 

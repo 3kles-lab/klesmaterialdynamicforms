@@ -52,6 +52,7 @@ import { KlesFormMiniFabComponent } from './fields/button-mini-fab.component';
 import { KlesIconButtonComponent } from './forms/icon-button-control.component';
 import { KlesFormIconButtonComponent } from './fields/button-icon.component';
 import { KlesFormSelectionListSearchComponent } from './fields/selection-list.search.component';
+import { MatErrorMessageDirective } from './directive/mat-error-message.directive';
 
 const components = [
     KlesDynamicFormComponent,
@@ -96,7 +97,7 @@ const components = [
     KlesFormSelectionListSearchComponent
 ];
 
-const directives = [KlesDynamicFieldDirective, KlesComponentDirective];
+const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
     declarations: [
