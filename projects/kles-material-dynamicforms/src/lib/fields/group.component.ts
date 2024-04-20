@@ -43,7 +43,6 @@ export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit,
     subGroup: UntypedFormGroup;
 
     ngOnInit() {
-        console.log(this.field.ngClass)
         this.subGroup = this.group.controls[this.field.name] as UntypedFormGroup;
         super.ngOnInit();
         this.setOrientationClass();
