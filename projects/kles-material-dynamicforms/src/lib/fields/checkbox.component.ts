@@ -20,10 +20,10 @@ import { takeUntil } from 'rxjs/operators';
 export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
   ngOnInit() {
     super.ngOnInit();
-    this.field.indeterminate = this.group.getRawValue()[this.field.name] === -1;
-    this.group.controls[this.field.name].valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((newVal) => {
-      this.field.indeterminate = (newVal === -1);
-    });
+    // this.field.indeterminate = this.group.getRawValue()[this.field.name] === -1;
+    // this.group.controls[this.field.name].valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((newVal) => {
+    //   this.field.indeterminate = (newVal === -1);
+    // });
   }
 
   ngOnDestroy(): void {
