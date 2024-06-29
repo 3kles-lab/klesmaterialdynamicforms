@@ -30,6 +30,7 @@ FormControlName.prototype.ngOnChanges = function () {
                 </ng-container>
             }
         }
+        <mat-error matErrorForm [validations]="validators" [asyncValidations]="asyncValidators"></mat-error>
     </form>
     `,
     styles: [

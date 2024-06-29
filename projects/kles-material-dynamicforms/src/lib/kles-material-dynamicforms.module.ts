@@ -53,85 +53,86 @@ import { KlesIconButtonComponent } from './forms/icon-button-control.component';
 import { KlesFormIconButtonComponent } from './fields/button-icon.component';
 import { KlesFormSelectionListSearchComponent } from './fields/selection-list.search.component';
 import { MatErrorMessageDirective } from './directive/mat-error-message.directive';
+import { MatErrorFormDirective } from './directive/mat-error-form.directive';
 
 const components = [
-    KlesDynamicFormComponent,
-    KlesFormLabelComponent,
-    KlesFormInputComponent,
-    KlesFormInputClearableComponent,
-    KlesFormBadgeComponent,
-    KlesButtonComponent,
-    KlesFormButtonComponent,
-    KlesButtonCheckerComponent,
-    KlesFormButtonCheckerComponent,
-    KlesButtonFileComponent,
-    KlesFormButtonFileComponent,
-    KlesFormSelectComponent,
-    KlesFormDateComponent,
-    KlesFormRadioComponent,
-    KlesFormCheckboxComponent,
-    KlesFormListFieldComponent,
-    KlesFormColorComponent,
-    KlesFormTextareaComponent,
-    KlesFormTextComponent,
-    KlesFormChipComponent,
-    KlesFormGroupComponent,
-    KlesFormIconComponent,
-    KlesFormSelectSearchComponent,
-    KlesFormLineBreakComponent,
-    KlesFormLinkComponent,
-    KlesFormSlideToggleComponent,
-    KlesFormSelectionListComponent,
-    KlesFormButtonToogleGroupComponent,
-    KlesFormArrayComponent,
-    KlesFormRangeComponent,
-    KlesFormClearComponent,
-    KlesFormSelectLazySearchComponent,
-    KlesFormDateTimeComponent,
-    KlesFormFabComponent,
-    KlesFabComponent,
-    KlesMiniFabComponent,
-    KlesFormMiniFabComponent,
-    KlesIconButtonComponent,
-    KlesFormIconButtonComponent,
-    KlesFormSelectionListSearchComponent
+  KlesDynamicFormComponent,
+  KlesFormLabelComponent,
+  KlesFormInputComponent,
+  KlesFormInputClearableComponent,
+  KlesFormBadgeComponent,
+  KlesButtonComponent,
+  KlesFormButtonComponent,
+  KlesButtonCheckerComponent,
+  KlesFormButtonCheckerComponent,
+  KlesButtonFileComponent,
+  KlesFormButtonFileComponent,
+  KlesFormSelectComponent,
+  KlesFormDateComponent,
+  KlesFormRadioComponent,
+  KlesFormCheckboxComponent,
+  KlesFormListFieldComponent,
+  KlesFormColorComponent,
+  KlesFormTextareaComponent,
+  KlesFormTextComponent,
+  KlesFormChipComponent,
+  KlesFormGroupComponent,
+  KlesFormIconComponent,
+  KlesFormSelectSearchComponent,
+  KlesFormLineBreakComponent,
+  KlesFormLinkComponent,
+  KlesFormSlideToggleComponent,
+  KlesFormSelectionListComponent,
+  KlesFormButtonToogleGroupComponent,
+  KlesFormArrayComponent,
+  KlesFormRangeComponent,
+  KlesFormClearComponent,
+  KlesFormSelectLazySearchComponent,
+  KlesFormDateTimeComponent,
+  KlesFormFabComponent,
+  KlesFabComponent,
+  KlesMiniFabComponent,
+  KlesFormMiniFabComponent,
+  KlesIconButtonComponent,
+  KlesFormIconButtonComponent,
+  KlesFormSelectionListSearchComponent
 ];
 
-const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective];
+const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
-    declarations: [
-        components,
-        directives,
-        pipes
-    ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        TranslateModule,
-        FormsModule,
-        MaterialModule,
-        ColorPickerModule,
-        NgxMatSelectSearchModule,
-        KlesMaterialDatepickerModule
-    ],
-    providers: [
-        { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
-        pipes
-    ],
-    exports: [
-        components,
-        pipes,
-        directives,
-        ColorPickerModule,
-        KlesMaterialDatepickerModule
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
+  declarations: [
+    components,
+    directives,
+    pipes
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TranslateModule,
+    FormsModule,
+    MaterialModule,
+    ColorPickerModule,
+    NgxMatSelectSearchModule,
+    KlesMaterialDatepickerModule
+  ],
+  providers: [
+    { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
+    pipes
+  ],
+  exports: [
+    components,
+    pipes,
+    directives,
+    ColorPickerModule,
+    KlesMaterialDatepickerModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class KlesMaterialDynamicformsModule {
-    static declarations = [
-        components,
-        directives,
-        pipes
-    ];
+  static declarations = [
+    components,
+    directives,
+    pipes
+  ];
 }

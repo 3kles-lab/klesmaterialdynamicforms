@@ -1,7 +1,7 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -16,8 +16,8 @@ import {
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
-import { BehaviorSubject, of, Subject } from 'rxjs';
-import { delay, shareReplay } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { catchError, delay, map, shareReplay } from 'rxjs/operators';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
@@ -60,6 +60,11 @@ export class AppComponent implements OnInit, AfterViewInit {
   formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
   colorVariable = "#00FF00";
 
+  @ViewChild('formError', { static: false }) formError: KlesDynamicFormComponent;
+  fieldsError: IKlesFieldConfig[] = [];
+  formValidatorsError: IKlesValidator<ValidatorFn>[] = [];
+  formAsyncValidatorsError: IKlesValidator<AsyncValidatorFn>[] = [];
+
   options2 = [...Array(10000).keys()];
 
   warehouseList = [
@@ -101,7 +106,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     //Input Form
     this.buildInputForm();
 
-
+    //Error Form
+    this.buildErrorForm();
 
   }
 
@@ -197,7 +203,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.fields.push({
       component: KlesFormColorComponent,
       name: 'color',
-      value: 'red',
+      value: '',
     });
 
     this.fields.push({
@@ -777,6 +783,129 @@ export class AppComponent implements OnInit, AfterViewInit {
       multiple: true,
       tooltip: 'tooltip button toogle',
     });
+  }
+
+  buildErrorForm() {
+    this.fieldsError = [
+      {
+        name: 'beginvalue',
+        component: KlesFormInputComponent,
+        inputType: 'number',
+        label: 'Begin value',
+        clearable: true,
+        subscriptSizing: "dynamic",
+        validations: [
+          {
+            message: 'status.value.begin.error.required.text',
+            name: 'required',
+            validator: Validators.required
+          },
+          {
+            name: 'pattern',
+            validator: Validators.pattern('^([0-9][0-9]{0,2}|1000)$'),
+            message: 'status.value.begin.error.notValid.text',
+          }
+        ],
+      },
+      {
+        name: 'endvalue',
+        component: KlesFormInputComponent,
+        inputType: 'number',
+        label: 'End value',
+        clearable: true,
+        subscriptSizing: "dynamic",
+        validations: [
+          {
+            message: 'status.value.end.error.required.text',
+            name: 'required',
+            validator: Validators.required
+          },
+          {
+            name: 'pattern',
+            validator: Validators.pattern('^([0-9][0-9]{0,2}|1000)$'),
+            message: 'status.value.end.error.notValid.text',
+          }
+        ],
+      },
+      // {
+      //   name: 'color',
+      //   component: KlesFormColorComponent,
+      //   label: 'Color',
+      //   clearable: true,
+      //   subscriptSizing: "dynamic",
+      // }
+    ];
+    this.formAsyncValidatorsError = [
+      {
+        name: 'overlap',
+        validator: this.checkOverlaping('beginvalue', 'endvalue'),
+        message: 'status.error.overlap.text'
+      }
+    ];
+    this.formValidatorsError = [
+      {
+        name: 'beginend',
+        validator: this.checkBeginEndValue('beginvalue', 'endvalue'),
+        message: 'status.error.range.text'
+      }
+    ];
+  }
+
+  checkBeginEndValue(begin: string, end: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      if (!control) { return null; }
+      const beginControl = control.get(begin);
+      const endControl = control.get(end);
+      if (!beginControl.value || !endControl.value) {
+        return null;
+      }
+      if (Number(beginControl.value) >= Number(endControl.value)) {
+        return { beginend: true };
+      }
+
+      return null;
+    };
+  }
+
+  checkOverlaping(begin: string, end: string): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      return of([
+        {
+          beginvalue: 0,
+          endvalue: 50,
+          color: 'red'
+        },
+        {
+          beginvalue: 50,
+          endvalue: 200,
+          color: 'red'
+        }
+      ]).pipe(
+        catchError(() => {
+          return of(null)
+        }),
+        map(listStatus => {
+
+          const beginControl = control.get(begin);
+          const endControl = control.get(end);
+          if (!beginControl.value || !endControl.value) {
+            return null;
+          }
+          let value = null;
+
+          listStatus.forEach(line => {
+            if ((Number(line.beginvalue) <= Number(beginControl.value) && Number(beginControl.value) < Number(line.endvalue)) ||
+              (Number(line.beginvalue) < Number(endControl.value) && Number(endControl.value) < Number(line.endvalue))
+            ) {
+              console.log('Error');
+              value = { overlap: true };
+            }
+          });
+          return value;
+
+        })
+      )
+    };
   }
 
   french() {
