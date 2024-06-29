@@ -5,6 +5,7 @@ import { AsyncValidator, UntypedFormGroup, Validators } from "@angular/forms";
 @Component({
   selector: '[matErrorForm]',
   template: `
+      @if(form && form.errors){
         @for (validation of validations; track validation.name) {
             @if (form?.hasError(validation.name) && validation.message) {
                 {{validation.message | translate}}
@@ -15,6 +16,7 @@ import { AsyncValidator, UntypedFormGroup, Validators } from "@angular/forms";
                 {{validation.message | translate}}
             }
         }
+      }
     `
 })
 export class MatErrorFormDirective {
