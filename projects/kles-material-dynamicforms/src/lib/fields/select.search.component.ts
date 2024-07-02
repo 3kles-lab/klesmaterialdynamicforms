@@ -125,11 +125,16 @@ import { KlesFieldAbstract } from './field.abstract';
             <mat-hint>{{field.hint}}</mat-hint>
         }
 
-        @if (field.subComponents || field.clearable) {
-            <div matSuffix>
-                <ng-content></ng-content>
-            </div>
-        }
+        @if (field.subComponents || field.clearable || isPending()) {
+          <div matSuffix class="suffix">
+              @if(isPending()){
+                  <mat-spinner mode="indeterminate" diameter="21"></mat-spinner>
+              }
+              @if(field.subComponents || field.clearable){
+                  <ng-content></ng-content>
+              }       
+          </div>
+      }
 
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
     </mat-form-field>
@@ -140,7 +145,7 @@ import { KlesFieldAbstract } from './field.abstract';
     '::ng-deep .selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
     '::ng-deep .selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
     `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
-  styleUrls: ['../styles/loading-select.style.scss']
+  styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-suffix.style.scss']
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

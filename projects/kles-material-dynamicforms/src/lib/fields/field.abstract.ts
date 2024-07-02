@@ -81,4 +81,8 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
       }
     }
   }
+
+  isPending() {
+    return (this.group.controls[this.field.name].pending || this.field.pending);
+  }
 }

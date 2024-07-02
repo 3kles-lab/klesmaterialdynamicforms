@@ -45,13 +45,15 @@ import { FieldMapper } from '../decorators/component.decorator';
             <mat-hint>{{field.hint}}</mat-hint>
         }
 
-        @if (isPending()) {
-            <mat-spinner matSuffix mode="indeterminate" diameter="21"></mat-spinner>
-        }
-
-        @if (field.subComponents || field.clearable) {
-            <div matSuffix>
-                <ng-content></ng-content>
+        @if (field.subComponents || field.clearable || isPending()) {
+            <div matSuffix class="suffix">
+                @if(isPending()){
+                    <mat-spinner mode="indeterminate" diameter="21"></mat-spinner>
+                }
+                @if(field.subComponents || field.clearable){
+                    <ng-content></ng-content>
+                }
+                
             </div>
         }
 
@@ -59,7 +61,8 @@ import { FieldMapper } from '../decorators/component.decorator';
   
     </mat-form-field>
     `,
-    styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}'],
+    styleUrls:['../styles/mat-suffix.style.scss']
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
@@ -82,17 +85,12 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
         this.filteredOption = this.group.get(this.field.name).valueChanges
             .pipe(
                 startWith(''),
-                // map(data => data ? this.filterData(data) : this.field.options.slice())
                 switchMap(data => data ? this.filterData(data) : this.options$)
             );
         if (!this.field.maxLength) {
             this.field.maxLength = 524288; // Max default input W3C
         }
         super.ngOnInit();
-    }
-
-    isPending() {
-        return (this.group.controls[this.field.name].pending || this.field.pending);
     }
 
     private filterData(value: any): Observable<any[]> {
@@ -107,10 +105,7 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
         if (this.field.property) {
             return this.options$
                 .pipe(map(options => options.filter(option => option[this.field.property].toLowerCase().indexOf(filterValue) === 0)));
-            // return this.field.options
-            //     .filter(data => data[this.field.property].toLowerCase().indexOf(filterValue) === 0);
         }
-        // return this.field.options.filter(data => data.toLowerCase().indexOf(filterValue) === 0);
         return this.options$.pipe(map(options => options.filter(option => option.toLowerCase().indexOf(filterValue) === 0)));
     }
 

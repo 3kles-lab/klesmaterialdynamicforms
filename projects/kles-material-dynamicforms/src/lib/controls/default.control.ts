@@ -12,7 +12,7 @@ export class KlesFormControl implements IKlesControl {
 
     public create(): AbstractControl {
         const control = new FormControl(
-            {value: this.field.value, disabled: this.field.disabled},
+            { value: this.field.value, disabled: this.field.disabled },
             {
                 nonNullable: this.field.nonNullable || false,
                 validators: this.bindValidations(this.field.validations || []),

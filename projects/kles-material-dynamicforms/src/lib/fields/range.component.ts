@@ -18,8 +18,8 @@ import { KlesFieldAbstract } from './field.abstract';
             <input matEndDate formControlName="end" [placeholder]="(field.placeholder?.end ? field.placeholder?.end : '') | translate">
         </mat-date-range-input>
 
-        <div matSuffix>
-            <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <div matSuffix class="suffix">
+            <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <ng-content></ng-content>
         </div>
 
@@ -31,7 +31,8 @@ import { KlesFieldAbstract } from './field.abstract';
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
         </mat-form-field>
     `,
-    styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}'],
+    styleUrls:['../styles/mat-suffix.style.scss']
 })
 export class KlesFormRangeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
