@@ -194,6 +194,10 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
       }
     }
 
+    this.options$.pipe(takeUntil(this._onDestroy)).subscribe((options) => {
+      this.optionsFiltered$.next(options);
+    });
+
     this.searchControl.valueChanges.pipe(
       takeUntil(this._onDestroy),
       debounceTime(this.field.debounceTime || 0),
