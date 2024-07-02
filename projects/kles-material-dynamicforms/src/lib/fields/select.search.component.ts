@@ -1,6 +1,6 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, concat, Observable, of, ReplaySubject } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { KlesFieldAbstract } from './field.abstract';
 
         <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass"
         (openedChange)="openChange($event)" [compareWith]="compareFn" [panelWidth]="field.panelWidth || 'auto'"
-        [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple">
+        [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple"  (selectionChange)="selectionChange($event)">
         @if (field.triggerComponent) {
             <mat-select-trigger>
                 <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
@@ -170,6 +170,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
       this.isLoading = true;
       if (this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null) {
         this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]);
+
         this.isLoading = false;
       } else {
         this.options$ = new BehaviorSubject<any[]>([]);
@@ -195,9 +196,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
       switchMap(value => {
         return concat(
           of({ loading: true, options: [] }),
-          this.onSearchChange(value).pipe(map((options) => ({ loading: false, options })))
+          this.onSearchChange(value).pipe(take(1), map((options) => ({ loading: false, options })))
         )
-
       })
     ).subscribe(({ loading, options }) => {
       this.isLoading = loading;
@@ -206,28 +206,13 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     });
 
     if (this.field.multiple) {
-      this.group.controls[this.field.name]
-        .valueChanges.pipe(
-          takeUntil(this._onDestroy),
-          startWith(this.group.controls[this.field.name].value),
-          map((selected) => ((this.field.property && selected) ? selected?.map(s => s[this.field.property]) : selected)),
-          switchMap(selected => {
-            return this.optionsFiltered$.pipe(
-              map((options) => options?.filter((option) => !option?.disabled).map((option) => (this.field.property ? option[this.field.property] : option))),
-              map(options => {
-                if (!selected) {
-                  return false;
-                }
-                if (options.length < selected.length) {
-                  return options.length > 0 && options.every(o => selected.includes(o));
-                } else {
-                  return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
-                }
-              }));
-          })
-        ).subscribe(isChecked => {
-          this.selectAllControl.setValue(isChecked);
-        });
+      this.updateSelectAllControl(this.group.controls[this.field.name].value);
+
+      (this.group.controls[this.field.name] as FormControl).registerOnChange((values, emitViewToModelChange) => {
+        if (emitViewToModelChange) {
+          this.updateSelectAllControl(values);
+        }
+      });
     }
   }
 
@@ -241,12 +226,12 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     if (state.checked) {
       this.optionsFiltered$.pipe(take(1), map((options) => options.filter((option) => !option?.disabled))).subscribe(options => {
         if (options.length > 0) {
-          this.group.controls[this.field.name].patchValue(options.slice());
+          this.group.controls[this.field.name].patchValue(options.slice(), { emitModelToViewChange: false });
         }
       });
 
     } else {
-      this.group.controls[this.field.name].patchValue([]);
+      this.group.controls[this.field.name].patchValue([], { emitModelToViewChange: false });
     }
   }
 
@@ -260,8 +245,9 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         })
       )
       .subscribe((options) => {
-        (this.options$ as BehaviorSubject<any[]>).next(options);
         this.isLoading = false;
+        (this.options$ as BehaviorSubject<any[]>).next(options);
+        this.optionsFiltered$.next(options);
         this.ref.markForCheck();
       });
   }
@@ -333,5 +319,35 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
       return o1[this.field.property] === o2[this.field.property];
     }
     return o1 === o2;
+  }
+
+  selectionChange(selection) {
+    if (this.field.multiple) {
+      this.updateSelectAllControl(selection.value);
+    }
+
+  }
+
+  updateSelectAllControl(values): void {
+    if (values) {
+      const selected = ((this.field.property && values) ? values?.map(s => s[this.field.property]) : values);
+      this.optionsFiltered$.pipe(
+        take(1),
+        map((options) => options?.filter((option) => !option?.disabled).map((option) => (this.field.property ? option[this.field.property] : option))),
+        map(options => {
+          if (!selected) {
+            return false;
+          }
+
+          if (options.length < selected.length) {
+            return options.length > 0 && options.every(o => selected.includes(o));
+          } else {
+            return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
+          }
+        })).subscribe(isChecked => {
+          this.selectAllControl.setValue(isChecked, { emitEvent: false });
+        });
+    }
+
   }
 }
