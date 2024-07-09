@@ -19,10 +19,10 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: [
         ' mat-form-field {width: calc(100%)}',
-        ':host.group-container {display:flex; flex-direction: inherit; width: inherit;}',
-        ':host.group-container-column { display: flex;flex-direction: column; }',
+        ':host.group-container {display:flex; flex-direction: inherit; width: inherit; justify-content:inherit; }',
+        ':host.group-container-column { display: flex;flex-direction: column; justify-content:inherit; }',
         ':host.group-container-column > * { width: 100%; }',
-        ':host.group-container-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline;}',
+        ':host.group-container-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline; justify-content:inherit; }',
         ':host.group-container-row > * { width: 100%; }',
         ':host.group-container-grid { display: grid; }',
         ':host.group-container-inline-grid { display: inline-grid; }',
