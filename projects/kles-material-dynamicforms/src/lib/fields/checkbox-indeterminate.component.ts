@@ -3,21 +3,20 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
-import { takeUntil } from 'rxjs/operators';
 
 @FieldMapper({ type: EnumType.checkbox })
 @Component({
-  selector: 'kles-form-checkbox',
+  selector: 'kles-form-checkbox-indeterminate',
   template: `
     <div [formGroup]="group" >
-        <mat-checkbox matTooltip="{{field.tooltip}}" [attr.id]="field.id"
+        <kles-checkbox-indeterminate matTooltip="{{field.tooltip}}" [attr.id]="field.id"
         [ngClass]="field.ngClass" [(indeterminate)]="field.indeterminate"
-        [color]="field.color" [formControlName]="field.name">{{field.label | translate}}</mat-checkbox>
+        [color]="field.color" [formControlName]="field.name">{{field.label | translate}}</kles-checkbox-indeterminate>
     </div>
 `,
   styles: []
 })
-export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
+export class KlesFormCheckboxIndeterminateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
   ngOnInit() {
     super.ngOnInit();
   }

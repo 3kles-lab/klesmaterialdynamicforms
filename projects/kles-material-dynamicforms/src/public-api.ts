@@ -18,6 +18,7 @@ export * from './lib/forms/buttonfile-control.component';
 export * from './lib/forms/fab-control.component';
 export * from './lib/forms/mini-fab-control.component';
 export * from './lib/forms/icon-button-control.component';
+export * from './lib/forms/indeterminate-checkbox';
 
 /**FIELDS */
 export * from './lib/fields/badge.component';
@@ -25,6 +26,7 @@ export * from './lib/fields/button-form.component';
 export * from './lib/fields/buttonchecker-form.component';
 export * from './lib/fields/buttonfile-form.component';
 export * from './lib/fields/checkbox.component';
+export * from './lib/fields/checkbox-indeterminate.component';
 export * from './lib/fields/color.component';
 export * from './lib/fields/date.component';
 export * from './lib/fields/field.abstract';
