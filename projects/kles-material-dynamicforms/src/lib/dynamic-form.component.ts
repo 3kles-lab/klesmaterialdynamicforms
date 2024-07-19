@@ -38,7 +38,7 @@ FormControlName.prototype.ngOnChanges = function () {
   styles: [
     '.dynamic-form-column { display: flex;flex-direction: column; }',
     '.dynamic-form-column > * { width: 100%; }',
-    '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; }',
+    '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline}',
     '.dynamic-form-row > * { width: 100%; }',
     '.dynamic-form-grid { display: grid; }',
     '.dynamic-form-inline-grid { display: inline-grid; }',
