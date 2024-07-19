@@ -55,6 +55,7 @@ import { KlesFormSelectionListSearchComponent } from './fields/selection-list.se
 import { MatErrorMessageDirective } from './directive/mat-error-message.directive';
 import { MatErrorFormDirective } from './directive/mat-error-form.directive';
 import { KlesFormCheckboxIndeterminateComponent } from './fields/checkbox-indeterminate.component';
+import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkbox';
 
 const components = [
   KlesDynamicFormComponent,
@@ -72,6 +73,7 @@ const components = [
   KlesFormDateComponent,
   KlesFormRadioComponent,
   KlesFormCheckboxComponent,
+  KlesIndeterminateCheckboxComponent,
   KlesFormCheckboxIndeterminateComponent,
   KlesFormListFieldComponent,
   KlesFormColorComponent,

@@ -6,7 +6,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EnumButtonAttribute, EnumType, KlesFormCheckboxComponent, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormFabComponent, KlesFormIconButtonComponent, KlesFormMiniFabComponent } from 'kles-material-dynamicforms';
+import { EnumButtonAttribute, EnumType, KlesFormCheckboxComponent, KlesFormCheckboxIndeterminateComponent, KlesFormDateComponent, KlesFormDateTimeComponent, KlesFormFabComponent, KlesFormIconButtonComponent, KlesFormMiniFabComponent } from 'kles-material-dynamicforms';
 import {
   IKlesFieldConfig, IKlesValidator, KlesDynamicFormComponent,
   KlesFormButtonCheckerComponent, KlesFormButtonComponent, KlesFormButtonFileComponent, KlesFormChipComponent,
@@ -178,9 +178,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   buildForm() {
     this.fields.push({
-      component: KlesFormCheckboxComponent,
+      component: KlesFormCheckboxIndeterminateComponent,
       name: 'checkbox',
-      value: -1, // -1 mean indeterminate state
+      // value: -1, // -1 mean indeterminate state
     });
 
 
@@ -911,6 +911,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   french() {
     this._adapter.setLocale('fr');
     // Set checkbox to indeterminate
-    this.form.form.controls.checkbox.patchValue(-1);
+    this.form.form.controls.checkbox.patchValue(-1, { emitEvent: false, onlySelf: true });
   }
 }
