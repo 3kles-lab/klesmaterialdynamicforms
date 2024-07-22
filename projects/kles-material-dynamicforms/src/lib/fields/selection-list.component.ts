@@ -94,6 +94,8 @@ export class KlesFormSelectionListComponent extends KlesFieldAbstract implements
 
         this.selection.changed.pipe(takeUntil(this._onDestroy)).subscribe(change => {
             this.group.controls[this.field.name].patchValue(change.source.selected);
+            this.group.controls[this.field.name].markAllAsTouched();
+            this.group.controls[this.field.name].markAsDirty();
         });
     }
     ngOnDestroy(): void {
