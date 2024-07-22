@@ -27,7 +27,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
             </mat-option>
 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
-                @if (!isLoading) {
+                @if (!isLoading()) {
                     @if (field.multiple) {
                         <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
                             {{'selectAll' | translate}}
@@ -86,7 +86,7 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
-            @if (!isLoading) {
+            @if (!isLoading()) {
                 @if (field.multiple) {
                     <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
@@ -175,7 +175,7 @@ export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchCompo
                     this.searchControl.reset(null, { emitEvent: false });
                 }
                 this.optionsFiltered$.next(options);
-                this.isLoading = false;
+                this.isLoading.set(false);
                 this.ref.markForCheck();
             });
     }

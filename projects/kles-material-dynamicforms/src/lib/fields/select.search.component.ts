@@ -1,8 +1,8 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, signal, ViewChild, ViewChildren, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
-import { BehaviorSubject, concat, Observable, of, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
 
@@ -31,7 +31,7 @@ import { KlesFieldAbstract } from './field.abstract';
             </mat-option>
 
             <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=4*48>
-                @if (!isLoading) {
+                @if (!isLoading()) {
                     @if (field.multiple) {
                         <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
                             {{'selectAll' | translate}}
@@ -90,7 +90,7 @@ import { KlesFieldAbstract } from './field.abstract';
                 placeholderLabel="" noEntriesFoundLabel =""></ngx-mat-select-search>
             </mat-option>
 
-            @if (!isLoading) {
+            @if (!isLoading()) {
                 @if (field.multiple) {
                     <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
                         {{'selectAll' | translate}}
@@ -152,12 +152,13 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
   searchControl = new UntypedFormControl();
   selectAllControl = new UntypedFormControl(false);
 
-  isLoading = false;
+  isLoading = signal(false);
 
   options$: Observable<any[]>;
   optionsFiltered$ = new ReplaySubject<any[]>(1);
 
   openChange$ = new BehaviorSubject<boolean>(false);
+  openClosed$ = new Subject<void>();
 
   // private _onDestroy = new Subject<void>();
 
@@ -172,11 +173,10 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     super.ngOnInit();
 
     if (this.field.lazy) {
-      this.isLoading = true;
+      this.isLoading.set(true);
       if (this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null) {
         this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]);
-
-        this.isLoading = false;
+        this.isLoading.set(false);
       } else {
         this.options$ = new BehaviorSubject<any[]>([]);
       }
@@ -209,7 +209,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         )
       })
     ).subscribe(({ loading, options }) => {
-      this.isLoading = loading;
+      this.isLoading.set(loading);
       this.optionsFiltered$.next(options);
       this.ref.markForCheck();
     });
@@ -227,6 +227,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
   ngOnDestroy(): void {
     // this._onDestroy.next();
+    this.openClosed$.next();
+    this.openClosed$.complete();
     super.ngOnDestroy();
   }
 
@@ -235,13 +237,15 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     if (state.checked) {
       this.optionsFiltered$.pipe(take(1), map((options) => options.filter((option) => !option?.disabled))).subscribe(options => {
         if (options.length > 0) {
-          this.group.controls[this.field.name].patchValue(options.slice(), { emitModelToViewChange: false });
+          this.group.controls[this.field.name].patchValue(options);
         }
       });
 
     } else {
-      this.group.controls[this.field.name].patchValue([], { emitModelToViewChange: false });
+      this.group.controls[this.field.name].patchValue([]);
     }
+
+    this.ref.markForCheck();
   }
 
 
@@ -254,7 +258,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         })
       )
       .subscribe((options) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         (this.options$ as BehaviorSubject<any[]>).next(options);
         this.optionsFiltered$.next(options);
         this.ref.markForCheck();
@@ -265,12 +269,12 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     if (isOpen) {
 
       if (this.field.options instanceof Observable) {
-        this.isLoading = true;
-        return this.field.options.pipe(take(1));
+        this.isLoading.set(true);
+        return this.field.options.pipe(takeUntil(this.openClosed$));
       }
       else if (this.field.options instanceof Function) {
-        this.isLoading = true;
-        return this.field.options().pipe(take(1));
+        this.isLoading.set(true);
+        return this.field.options().pipe(takeUntil(this.openClosed$));
       }
       else {
         return of(this.field.options);
@@ -312,6 +316,9 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
   openChange($event: boolean) {
     if (this.field.lazy) {
+      if (!$event) {
+        this.openClosed$.next();
+      }
       this.openChange$.next($event);
     }
 
