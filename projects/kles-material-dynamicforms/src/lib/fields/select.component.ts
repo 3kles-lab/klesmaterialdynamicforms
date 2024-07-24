@@ -123,7 +123,10 @@ import { KlesFieldAbstract } from './field.abstract';
 `,
     styles: ['mat-form-field {width: calc(100%)}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
-    styleUrls: ['../styles/loading-select.style.scss']
+    styleUrls: [
+        '../styles/loading-select.style.scss',
+        '../styles/mat-field-bottom.style.scss'
+    ]
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

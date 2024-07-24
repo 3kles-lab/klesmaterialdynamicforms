@@ -9,7 +9,7 @@ import { FieldMapper } from '../decorators/component.decorator';
 @Component({
     selector: 'kles-form-input',
     template: `
-    <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="field.appearance">
+    <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="field.appearance" class="field-bottom">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
@@ -62,7 +62,10 @@ import { FieldMapper } from '../decorators/component.decorator';
     </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
-    styleUrls:['../styles/mat-suffix.style.scss']
+    styleUrls: [
+        '../styles/mat-suffix.style.scss',
+        '../styles/mat-field-bottom.style.scss'
+    ]
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

@@ -1,0 +1,5 @@
+.field-bottom {
+    .mat-mdc-form-field-bottom-align::before {
+        content: none !important;
+    }
+}

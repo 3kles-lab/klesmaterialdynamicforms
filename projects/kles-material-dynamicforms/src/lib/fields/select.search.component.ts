@@ -145,7 +145,7 @@ import { KlesFieldAbstract } from './field.abstract';
     '::ng-deep .selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
     '::ng-deep .selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
     `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
-  styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-suffix.style.scss']
+  styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss']
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
