@@ -11,7 +11,7 @@ import { KlesFieldAbstract } from './field.abstract';
 @Component({
     selector: 'kles-form-select',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance" class="field-bottom">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
