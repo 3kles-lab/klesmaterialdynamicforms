@@ -15,20 +15,32 @@ import { KlesFormInputComponent } from './input.component';
             [matAutocomplete]="auto">
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
-                @if (!field.autocompleteComponent) {
-                    @for (option of filteredOption | async; track option) {
-                        <mat-option [value]="option">
-                            {{field.property ? option[field.property] : option}}
+                @if(filteredOption$ | async; as filteredOption){
+                    @if(filteredOption.loading){
+                        <mat-option class="hide-checkbox" disabled>
+                            <div class="loadingSelect">{{'loading' | translate}}... 
+                                <mat-spinner class="spinner" diameter="20"></mat-spinner>
+                            </div>
                         </mat-option>
+                    }@else{
+                        @if (!field.autocompleteComponent) {
+                            @for (option of filteredOption.options; track option) {
+                                <mat-option [value]="option">
+                                    {{field.property ? option[field.property] : option}}
+                                </mat-option>
+                            }
+                        }
+                        @else {
+                            @for (option of filteredOption.options; track option) {
+                                <mat-option [value]="option">
+                                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field">
+                                    </ng-container>
+                                </mat-option>
+                            }
+                        }
+                    
                     }
-                }
-                @else {
-                    @for (option of filteredOption | async; track option) {
-                        <mat-option [value]="option">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field">
-                            </ng-container>
-                        </mat-option>
-                    }
+                    
                 }
             </mat-autocomplete>
         }
@@ -50,7 +62,8 @@ import { KlesFormInputComponent } from './input.component';
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
     </mat-form-field>
     `,
-    styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}'],
+    styleUrls: ['../styles/loading-select.style.scss',]
 })
 export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit, OnDestroy {
 
