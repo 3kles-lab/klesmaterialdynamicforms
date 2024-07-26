@@ -1,7 +1,7 @@
 import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component, OnDestroy, signal, ViewChild } from '@angular/core';
 import { BehaviorSubject, combineLatest, concat, Observable, of, Subject } from 'rxjs';
-import { startWith, map, switchMap, take, withLatestFrom } from 'rxjs/operators';
+import { startWith, map, switchMap, take, withLatestFrom, takeUntil, distinctUntilChanged, filter } from 'rxjs/operators';
 import { EnumType } from '../enums/type.enum';
 import { FieldMapper } from '../decorators/component.decorator';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
@@ -93,11 +93,13 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
 
         if (this.field.lazy) {
             this.options$ = this.isFocused.pipe(
+                distinctUntilChanged(),
+                filter((isFocused) => isFocused),
                 switchMap((isFocused) => {
                     if (isFocused) {
                         let obs$: Observable<any[]>;
                         if (this.field.options instanceof Observable) {
-                            obs$ = this.field.options.pipe(take(1));
+                            obs$ = this.field.options;
                         }
                         else if (this.field.options instanceof Function) {
                             obs$ = this.field.options();
