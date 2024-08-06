@@ -84,5 +84,7 @@ export interface IKlesFieldConfig {
     positionOffset?: string;
     mode?: 'color' | 'grayscale' | 'presets',
     format?: 'auto' | 'hex' | 'rgba' | 'hsla'
-  }
+  },
+  onFocus?: ((field: IKlesFieldConfig, group: UntypedFormGroup) => void);
+  onBlur?: ((field: IKlesFieldConfig, group: UntypedFormGroup) => void);
 }

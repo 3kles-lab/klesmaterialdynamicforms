@@ -19,7 +19,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
             [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step"
             [matAutocomplete]="auto"
-            (focus)="onFocus()">
+            (focus)="onFocus()" (blur)="onBlur()" >
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
                 @if(filteredOption$ | async; as filteredOption){
@@ -53,7 +53,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
         }
         @else {
             <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType"
-            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step">
+            [maxLength]="field.maxLength" [min]="field.min" [max]="field.max" [step]="field.step" (focus)="onFocus()" (blur)="onBlur()">
         }
         @if (field.hint) {
             <mat-hint>{{field.hint}}</mat-hint>
@@ -167,6 +167,8 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
         if (this.field.autocomplete && this.field.lazy) {
             this.isFocused.next(true);
         }
+
+        super.onFocus();
     }
 
     private filterData(value: any, options: any[]): any[] {
