@@ -94,3 +94,7 @@ export * from './lib/controls/control.interface';
 export * from './lib/controls/default.control';
 export * from './lib/controls/group.control';
 export * from './lib/controls/range.control';
+
+/**SELECTION */
+export * from './lib/selection/selection-model';
+
