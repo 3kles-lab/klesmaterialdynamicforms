@@ -212,11 +212,14 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     ).subscribe(({ loading, options }) => {
       this.isLoading.set(loading);
       this.optionsFiltered$.next(options);
+
+      this.updateSelectAllControl(this.group.controls[this.field.name].value);
+
       this.ref.markForCheck();
     });
 
     if (this.field.multiple) {
-      this.updateSelectAllControl(this.group.controls[this.field.name].value);
+      // this.updateSelectAllControl(this.group.controls[this.field.name].value);
 
       (this.group.controls[this.field.name] as FormControl).registerOnChange((values, emitViewToModelChange) => {
         if (emitViewToModelChange) {
@@ -262,6 +265,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         this.isLoading.set(false);
         (this.options$ as BehaviorSubject<any[]>).next(options);
         this.optionsFiltered$.next(options);
+        this.updateSelectAllControl(this.group.controls[this.field.name].value);
         this.ref.markForCheck();
       });
   }
