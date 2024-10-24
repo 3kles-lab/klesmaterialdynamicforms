@@ -212,9 +212,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     ).subscribe(({ loading, options }) => {
       this.isLoading.set(loading);
       this.optionsFiltered$.next(options);
-
       this.updateSelectAllControl(this.group.controls[this.field.name].value);
-
       this.ref.markForCheck();
     });
 
@@ -343,32 +341,33 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
   }
 
   selectionChange(selection) {
-    if (this.field.multiple) {
-      this.updateSelectAllControl(selection.value);
-    }
+
+    this.updateSelectAllControl(selection.value);
+
 
   }
 
   updateSelectAllControl(values): void {
-    if (values) {
-      const selected = ((this.field.property && values) ? values?.map(s => s[this.field.property]) : values);
-      this.optionsFiltered$.pipe(
-        take(1),
-        map((options) => options?.filter((option) => !option?.disabled).map((option) => (this.field.property ? option[this.field.property] : option))),
-        map(options => {
-          if (!selected) {
-            return false;
-          }
+    if (this.field.multiple) {
+      if (values) {
+        const selected = ((this.field.property && values) ? values?.map(s => s[this.field.property]) : values);
+        this.optionsFiltered$.pipe(
+          take(1),
+          map((options) => options?.filter((option) => !option?.disabled).map((option) => (this.field.property ? option[this.field.property] : option))),
+          map(options => {
+            if (!selected) {
+              return false;
+            }
 
-          if (options.length < selected.length) {
-            return options.length > 0 && options.every(o => selected.includes(o));
-          } else {
-            return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
-          }
-        })).subscribe(isChecked => {
-          this.selectAllControl.setValue(isChecked, { emitEvent: false });
-        });
+            if (options.length < selected.length) {
+              return options.length > 0 && options.every(o => selected.includes(o));
+            } else {
+              return options.length > 0 && options.length === selected.length && selected.every(s => options.includes(s));
+            }
+          })).subscribe(isChecked => {
+            this.selectAllControl.setValue(isChecked, { emitEvent: false });
+          });
+      }
     }
-
   }
 }
