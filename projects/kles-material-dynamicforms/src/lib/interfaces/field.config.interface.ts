@@ -17,6 +17,7 @@ export interface IKlesFieldConfig {
   label?: string;// Label field
   placeholder?: any;// Placeholder field
   tooltip?: string;// Tooltip field
+  copyTooltip?: string; // Copy component tooltip
   inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week';// Type
   min?: number | Date;
   max?: number | Date;

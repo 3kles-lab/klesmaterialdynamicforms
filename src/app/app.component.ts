@@ -15,7 +15,7 @@ import {
   KlesFormInputComponent, KlesFormSelectionListComponent, KlesFormTextareaComponent, KlesFormTextComponent,
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
-import { KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
+import { KlesFormCopyComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, delay, map, shareReplay } from 'rxjs/operators';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
@@ -376,6 +376,8 @@ export class AppComponent implements OnInit, AfterViewInit {
       inputType: 'text',
       tooltip: 'tooltip text',
       maxLength: 10,
+      copyTooltip: 'Valeur copiée',
+      subComponents: [KlesFormCopyComponent],
       component: KlesFormInputComponent,
     });
 
