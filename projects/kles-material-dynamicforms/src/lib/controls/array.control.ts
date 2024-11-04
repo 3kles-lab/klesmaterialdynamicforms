@@ -17,10 +17,9 @@ export class KlesFormArray extends KlesFormControl {
             if (this.field.collections && Array.isArray(this.field.collections)) {
                 this.field.value.forEach(val => {
                     const group = new FormGroup({});
-                    group.addControl('_id', new FormControl(uuidv4()));
+                    const line = { ...val, _id: val?._id || uuidv4() };
                     this.field.collections?.forEach(subfield => {
-                        const data = val[subfield.name] || null;
-                        // const control = new KlesFormControl({ ...subfield, ...(data && { value: data }) }).create();
+                        const data = line[subfield.name] || null;
                         let control;
                         if (subfield.type) {
                             control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, ...(data && { value: data }) })
@@ -35,9 +34,8 @@ export class KlesFormArray extends KlesFormControl {
                 });
             }
         } else {
-            const group = new FormGroup({});
+            const group = new FormGroup({ _id: new FormControl(uuidv4()) });
             this.field.collections?.forEach(subfield => {
-                // const control = new KlesFormControl({ ...subfield }).create();
                 let control;
                 if (subfield.type) {
                     control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield })
@@ -45,7 +43,7 @@ export class KlesFormArray extends KlesFormControl {
                 } else {
                     control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield })
                         || klesFieldControlFactory({ ...subfield });
-                        
+
                 }
                 group.addControl(subfield.name, control);
             });
