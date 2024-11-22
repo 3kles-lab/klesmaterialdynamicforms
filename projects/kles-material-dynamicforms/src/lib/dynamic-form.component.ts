@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -63,7 +63,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     return this.form.value;
   }
 
-  constructor(private fb: UntypedFormBuilder) { }
+  constructor(private fb: UntypedFormBuilder, private ref: ChangeDetectorRef) { }
 
 
   ngOnInit() {
@@ -182,10 +182,10 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
   private createControl(field: IKlesFieldConfig): AbstractControl {
     if (field.type) {
       return componentMapper.find(c => c.type === field.type)?.factory
-        ? componentMapper.find(c => c.type === field.type)?.factory(field) : klesFieldControlFactory(field);
+        ? componentMapper.find(c => c.type === field.type)?.factory(field, this.ref) : klesFieldControlFactory(field, this.ref);
     } else {
       return componentMapper.find(c => c.component === field.component)?.factory ?
-        componentMapper.find(c => c.component === field.component)?.factory(field) : klesFieldControlFactory(field);
+        componentMapper.find(c => c.component === field.component)?.factory(field, this.ref) : klesFieldControlFactory(field, this.ref);
     }
   }
 

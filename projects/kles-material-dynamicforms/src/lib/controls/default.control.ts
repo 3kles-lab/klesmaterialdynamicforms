@@ -1,18 +1,13 @@
-import { AbstractControl, FormControl, ValidatorFn, Validators, AsyncValidatorFn } from "@angular/forms";
+import { AbstractControl, FormControl } from "@angular/forms";
 import { concat, of } from "rxjs";
 import { catchError, map, take } from "rxjs/operators";
-import { IKlesFieldConfig } from "../interfaces/field.config.interface";
-import { IKlesValidator } from "../interfaces/validator.interface";
-import { IKlesControl } from "./control.interface";
+import { KlesAbstractFormControl } from "./control.abstract";
 
-export class KlesFormControl implements IKlesControl {
-
-    constructor(protected field: IKlesFieldConfig) {
-    }
+export class KlesFormControl extends KlesAbstractFormControl {
 
     public create(): AbstractControl {
         const control = new FormControl(
-            { value: this.field.value, disabled: this.field.disabled },
+            { value: this.field.value, disabled: this.field.disabled || false },
             {
                 nonNullable: this.field.nonNullable || false,
                 validators: this.bindValidations(this.field.validations || []),
@@ -45,31 +40,6 @@ export class KlesFormControl implements IKlesControl {
                 }
             });
         }
-
         return control;
-    }
-
-    public bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
-        if (validations.length > 0) {
-            const validList = [];
-            validations.forEach(valid => {
-                validList.push(valid.validator);
-            });
-            return Validators.compose(validList);
-
-        }
-        return null;
-    }
-
-    public bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
-        if (validations.length > 0) {
-            const validList = [];
-            validations.forEach(valid => {
-                validList.push(valid.validator);
-            });
-            return Validators.composeAsync(validList);
-
-        }
-        return null;
     }
 }
