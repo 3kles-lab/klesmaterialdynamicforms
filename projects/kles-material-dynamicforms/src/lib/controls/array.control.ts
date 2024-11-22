@@ -22,11 +22,11 @@ export class KlesFormArray extends KlesFormControl {
                         const data = line[subfield.name] || null;
                         let control;
                         if (subfield.type) {
-                            control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, ...(data && { value: data }) })
-                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) });
+                            control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, ...(data && { value: data }) }, this.ref)
+                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) }, this.ref);
                         } else {
-                            control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield, ...(data && { value: data }) })
-                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) });
+                            control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield, ...(data && { value: data }) }, this.ref)
+                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) }, this.ref);
                         }
                         group.addControl(subfield.name, control);
                     });
@@ -38,11 +38,11 @@ export class KlesFormArray extends KlesFormControl {
             this.field.collections?.forEach(subfield => {
                 let control;
                 if (subfield.type) {
-                    control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield })
-                        || klesFieldControlFactory({ ...subfield });
+                    control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield }, this.ref)
+                        || klesFieldControlFactory({ ...subfield }, this.ref);
                 } else {
-                    control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield })
-                        || klesFieldControlFactory({ ...subfield });
+                    control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield }, this.ref)
+                        || klesFieldControlFactory({ ...subfield }, this.ref);
 
                 }
                 group.addControl(subfield.name, control);
