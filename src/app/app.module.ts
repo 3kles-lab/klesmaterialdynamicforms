@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { KlesMaterialDynamicformsModule } from 'kles-material-dynamicforms';
 import { MaterialModule } from './modules/material.module';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { KlesNgPipeModule} from '@3kles/kles-ng-pipe';
 import localeFr from '@angular/common/locales/fr';
@@ -17,37 +17,28 @@ import { SelectOptionComponent } from './select/select-option.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { KlesMomentDateModule } from '@3kles/kles-material-datepicker';
 registerLocaleData(localeFr);
-@NgModule({
-  declarations: [
-    AppComponent,
-    SelectTriggerComponent,
-    SelectOptionComponent
-  ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    AppRoutingModule,
-    MaterialModule,
-    KlesNgPipeModule,
-    KlesMaterialDynamicformsModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatMomentDateModule,
-    KlesMomentDateModule,
-    TranslateModule.forRoot(
-      {
-        loader: {
-          provide: TranslateLoader,
-          useFactory: (HttpLoaderFactory),
-          deps: [HttpClient]
-        }
-      }
-    )
-  ],
-  exports: [KlesMaterialDynamicformsModule],
-  providers: [TranslateService, { provide: LOCALE_ID, useValue: 'fr-FR' }],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        SelectTriggerComponent,
+        SelectOptionComponent
+    ],
+    exports: [KlesMaterialDynamicformsModule],
+    bootstrap: [AppComponent], imports: [CommonModule,
+        BrowserModule,
+        AppRoutingModule,
+        MaterialModule,
+        KlesNgPipeModule,
+        KlesMaterialDynamicformsModule,
+        BrowserAnimationsModule,
+        MatMomentDateModule,
+        KlesMomentDateModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (HttpLoaderFactory),
+                deps: [HttpClient]
+            }
+        })], providers: [TranslateService, { provide: LOCALE_ID, useValue: 'fr-FR' }, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
 
 }
