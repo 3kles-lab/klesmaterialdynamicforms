@@ -16,8 +16,8 @@ export class KlesFormArray extends KlesFormControl {
         if (this.field.value && Array.isArray(this.field.value)) {
             if (this.field.collections && Array.isArray(this.field.collections)) {
                 this.field.value.forEach(val => {
-                    const group = new FormGroup({});
                     const line = { ...val, _id: val?._id || uuidv4() };
+                    const group = new FormGroup({ _id: new FormControl(line._id) });
                     this.field.collections?.forEach(subfield => {
                         const data = line[subfield.name] || null;
                         let control;

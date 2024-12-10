@@ -324,14 +324,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       component: KlesFormTextComponent,
       directive: PeekABooDirective
     });
-    this.fieldsText.push({
-      name: 'text',
-      placeholder: 'Text',
-      inputType: 'text',
-      tooltip: 'tooltip text',
-      value: 'text value',
-      component: KlesFormTextareaComponent,
-    });
 
     this.fieldsText.push({
       name: 'datetime',
