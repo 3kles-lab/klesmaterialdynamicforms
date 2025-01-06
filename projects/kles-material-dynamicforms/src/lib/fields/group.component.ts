@@ -10,6 +10,10 @@ import { KlesFieldAbstract } from './field.abstract';
     host: { '[formGroup]': 'group', '[formGroupName]': 'field.name' },
     selector: 'kles-group',
     template: `
+        @if(field.label){
+         <h4><span [matTooltip]="field.tooltip || ''" >{{field.label}}</span></h4>
+        }
+       
         @for (subfield of field.collections; track subfield.name) {
             @if (subfield.visible !== false) {
                 <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
