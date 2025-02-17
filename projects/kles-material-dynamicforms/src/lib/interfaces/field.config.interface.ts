@@ -1,6 +1,6 @@
 import { IKlesValidator } from './validator.interface';
 import { ValidatorFn, AsyncValidatorFn, UntypedFormGroup } from '@angular/forms';
-import { PipeTransform, Type, ViewContainerRef } from '@angular/core';
+import { PipeTransform, Provider, StaticProvider, Type, ViewContainerRef } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
@@ -88,4 +88,5 @@ export interface IKlesFieldConfig {
   },
   onFocus?: ((field: IKlesFieldConfig, group: UntypedFormGroup) => void);
   onBlur?: ((field: IKlesFieldConfig, group: UntypedFormGroup) => void);
+  providers?: Array<Provider | StaticProvider>;
 }

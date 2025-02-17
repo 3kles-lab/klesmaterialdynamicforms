@@ -1,5 +1,6 @@
 import {
-    Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider
+    Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider,
+    Provider
 } from '@angular/core';
 
 import { UntypedFormGroup } from '@angular/forms';
@@ -7,6 +8,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { componentMapper } from '../decorators/component.decorator';
 import { KlesFormClearComponent } from '../fields/clear.component';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+import { isDestroyable } from '../utils/destroyable.guard';
 
 @Directive({
     selector: '[klesDynamicField]'
@@ -49,19 +51,22 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         }
 
         const options: {
-            providers: StaticProvider[];
+            providers: Array<Provider | StaticProvider>;
             parent?: Injector;
             name?: string;
         } = {
-            providers: this.field.dateOptions ? [
-                ...(this.field.dateOptions.adapter ? [{
-                    provide: DateAdapter,
-                    useClass: this.field.dateOptions.adapter.class,
-                    deps: this.field.dateOptions.adapter.deps || [],
-                }] : []),
-                { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
-                { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
-            ] : [],
+            providers: [
+                ...(this.field.providers || []),
+                ...(this.field.dateOptions ? [
+                    ...(this.field.dateOptions.adapter ? [{
+                        provide: DateAdapter,
+                        useClass: this.field.dateOptions.adapter.class,
+                        deps: this.field.dateOptions.adapter.deps || [],
+                    }] : []),
+                    { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
+                    { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
+                ] : [])
+            ],
             parent: this.injector
         };
 
@@ -80,6 +85,12 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         this.componentRef.instance.field = this.field;
         this.componentRef.instance.group = this.group;
         this.componentRef.instance.siblingFields = this.siblingFields;
+
+        this.componentRef.onDestroy(() => {
+            if (isDestroyable(injector)) {
+                injector.destroy();
+            }
+        });
     }
 
     protected createComponentRef(injector: Injector) {

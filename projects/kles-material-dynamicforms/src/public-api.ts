@@ -100,3 +100,5 @@ export * from './lib/controls/control.abstract';
 /**SELECTION */
 export * from './lib/selection/selection-model';
 
+/**UTILS */
+export * from './lib/utils/destroyable.guard';
