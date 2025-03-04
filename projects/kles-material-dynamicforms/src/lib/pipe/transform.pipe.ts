@@ -7,14 +7,16 @@ export class KlesTransformPipe implements PipeTransform {
 
         if (pipes && pipes.length > 0) {
             return pipes.reduce((acc, p) => {
-                if (p.options) {
-                    p.options.forEach(opt => {
-                        acc = p.pipe.transform(acc, opt);
-                    });
-                } else {
-                    acc = p.pipe.transform(acc);
-                }
+                acc = p.pipe.transform(acc, ...(p.options || []));
                 return acc;
+                // if (p.options) {
+                //     p.options.forEach(opt => {
+                //         acc = p.pipe.transform(acc, opt);
+                //     });
+                // } else {
+                //     acc = p.pipe.transform(acc);
+                // }
+                // return acc;
             }, value)
         }
         return value;
