@@ -10,7 +10,17 @@ import { KlesFieldAbstract } from './field.abstract';
     <span matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
         {{((field.property && group.controls[field.name].value) ? group.controls[field.name].value[field.property] : group.controls[field.name].value) | klesTransform:field.pipeTransform}}
     </span>
-`
+    @if (field.subComponents || isPending()) {
+        <ng-content></ng-content>
+    }
+`,
+styles: [`:host{
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-between;
+        }`
+]
 })
 export class KlesFormTextComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
