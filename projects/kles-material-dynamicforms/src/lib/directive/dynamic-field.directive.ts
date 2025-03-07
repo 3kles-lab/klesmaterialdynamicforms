@@ -68,11 +68,11 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         const injector: Injector = Injector.create(options);
 
         if (this.field.clearable) {
-            const composant = this.createSubComponent(this.field.clearableComponent || KlesFormClearComponent);
+            const composant = this.createSubComponent(this.field.clearableComponent || KlesFormClearComponent, options);
             this.subComponents.push(composant);
         }
         if (this.field.subComponents) {
-            this.subComponents.push(...this.field.subComponents.map((subComponent) => this.createSubComponent(subComponent)));
+            this.subComponents.push(...this.field.subComponents.map((subComponent) => this.createSubComponent(subComponent, options)));
         }
 
         this.componentRef = this.createComponentRef(injector);
@@ -99,11 +99,23 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         return componentRef;
     }
 
-    private createSubComponent(componentType: Type<any>): ComponentRef<any> {
-        const component = this.container.createComponent(componentType);
+    private createSubComponent(componentType: Type<any>, options: {
+        providers: Array<Provider | StaticProvider>;
+        parent?: Injector;
+        name?: string;
+    }): ComponentRef<any> {
+        const injector: Injector = Injector.create(options);
+        const component = this.container.createComponent(componentType, { injector });
         component.instance.field = this.field;
         component.instance.group = this.group;
         component.instance.siblingFields = this.siblingFields;
+
+        component.onDestroy(() => {
+            if (isDestroyable(injector)) {
+                injector.destroy();
+            }
+        });
+
         return component;
     }
 }
