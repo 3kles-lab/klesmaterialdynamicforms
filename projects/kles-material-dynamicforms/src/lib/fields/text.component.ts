@@ -18,7 +18,6 @@ styles: [`:host{
             display: flex;
             align-items: center;
             flex-direction: row;
-            justify-content: space-between;
         }`
 ]
 })
