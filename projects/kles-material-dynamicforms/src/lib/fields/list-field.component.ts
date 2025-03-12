@@ -4,6 +4,8 @@ import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Va
 import { IKlesValidator } from '../interfaces/validator.interface';
 import { FieldMapper } from '../decorators/component.decorator';
 import { KlesFormArray } from '../controls/array.control';
+import { cloneDeep } from 'lodash';
+import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 
 @FieldMapper({ type: 'listfield', factory: (field) => (new KlesFormArray(field).create()) })
 @Component({
@@ -18,14 +20,14 @@ import { KlesFormArray } from '../controls/array.control';
         </div>
 
         <div class="dynamic-form" [formGroupName]="field.name">
-            @for (subGroup of formArray.controls; track subGroup.value._id) {
+            @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index) {
                 <div class="subfields">
-                    @for (subfield of field.collections; track subfield.name) {
-                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup">
+                    @for (subfield of collections[idx]; track subfield.name) {
+                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]">
                         </ng-container>
                     }
-                    @if(field.collections){
-                        <button mat-icon-button (click)="deleteField($index)" color="primary">
+                    @if(collections){
+                        <button mat-icon-button (click)="deleteField(idx)" color="primary">
                             <mat-icon>delete_outlined</mat-icon>
                         </button>
                     }
@@ -54,12 +56,18 @@ import { KlesFormArray } from '../controls/array.control';
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
     formArray: UntypedFormArray;
+    collections: IKlesFieldConfig[][] = [];
 
     constructor(private fb: UntypedFormBuilder, protected viewRef: ViewContainerRef) {
         super(viewRef);
     }
 
     ngOnInit(): void {
+        if (this.field.value && Array.isArray(this.field.value)) {
+            this.collections = this.field.value?.map(() => {
+                return this.field.collections ? cloneDeep(this.field.collections) : [];
+            });
+        }
         this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
         super.ngOnInit();
     }
@@ -73,18 +81,17 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
                 this.bindAsyncValidations(item.asyncValidations || [])
             );
             group.addControl(item.name, control);
-
         });
-
         return group;
-
     }
 
     deleteField(index: number) {
+        this.collections.splice(index, 1);
         this.formArray.removeAt(index);
     }
 
     addField() {
+        this.collections.push(this.field.collections ? cloneDeep(this.field.collections) : []);
         this.formArray.push(this.createFormGroup());
     }
 
