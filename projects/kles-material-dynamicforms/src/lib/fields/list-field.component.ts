@@ -20,13 +20,13 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
         </div>
 
         <div class="dynamic-form" [formGroupName]="field.name">
-            @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index) {
+            @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index;) {
                 <div class="subfields">
                     @for (subfield of collections[idx]; track subfield.name) {
                         <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]">
                         </ng-container>
                     }
-                    @if(collections){
+                    @if(collections[idx]){
                         <button mat-icon-button (click)="deleteField(idx)" color="primary">
                             <mat-icon>delete_outlined</mat-icon>
                         </button>
@@ -63,12 +63,12 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
     }
 
     ngOnInit(): void {
-        if (this.field.value && Array.isArray(this.field.value)) {
-            this.collections = this.field.value?.map(() => {
-                return this.field.collections ? cloneDeep(this.field.collections) : [];
-            });
-        }
         this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
+
+        this.collections = this.formArray?.controls?.map(() => {
+            return this.field.collections ? cloneDeep(this.field.collections) : [];
+        });
+
         super.ngOnInit();
     }
 
