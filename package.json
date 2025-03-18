@@ -13,7 +13,7 @@
   },
   "private": true,
   "dependencies": {
-    "@3kles/kles-material-datepicker": "^18.0.0",
+    "@3kles/kles-material-datepicker": "18.0.1",
     "@3kles/kles-ng-pipe": "^18.0.0",
     "@angular/animations": "^18.2.13",
     "@angular/cdk": "^18.2.14",
