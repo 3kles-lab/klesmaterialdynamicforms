@@ -2,6 +2,7 @@ export enum EnumType {
     input = 'input',
     select = 'select',
     text = 'text',
+    file = 'file',
     button = 'button',
     checkbox = 'checkbox',
     number = 'number',

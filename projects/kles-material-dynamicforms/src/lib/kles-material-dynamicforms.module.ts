@@ -57,6 +57,8 @@ import { MatErrorFormDirective } from './directive/mat-error-form.directive';
 import { KlesFormCheckboxIndeterminateComponent } from './fields/checkbox-indeterminate.component';
 import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkbox';
 import { KlesFormCopyComponent } from './fields/copy.component';
+import { KlesFormFileComponent } from './fields/file.component';
+import { KlesFileControlComponent } from './forms/file-control.component';
 
 const components = [
   KlesDynamicFormComponent,
@@ -64,6 +66,8 @@ const components = [
   KlesFormInputComponent,
   KlesFormInputClearableComponent,
   KlesFormBadgeComponent,
+  KlesFormFileComponent,
+  KlesFileControlComponent,
   KlesButtonComponent,
   KlesFormButtonComponent,
   KlesButtonCheckerComponent,
