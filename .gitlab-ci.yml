@@ -1,4 +1,64 @@
-include:
-  - project: '3kles/template/gitlab-ci'
-    ref: main
-    file: '/lib-npm-angular/.gitlab-ci.yml'
+stages:
+  - build
+  - publish
+
+image: node:lts-alpine
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+# For internal build & publish
+.repo-configuration: &configure-internal-npm-repo # Configure internal repo
+  - npm config set strict-ssl false
+  - npm config set registry $NPM_REGISTRY
+  - npm config set ca null
+  - npm config set _auth $NPM_TOKEN
+  - npm config fix
+
+build:
+  stage: build
+  variables:
+    NPM_REGISTRY: $NPM_PRIVATE_REGISTRY
+    NPM_TOKEN: $NPM_PRIVATE_TOKEN
+  before_script:
+    - npm -v
+    - node -v
+    - export LIBRARY_NG=$(ls projects | head -n 1)
+    - *configure-internal-npm-repo
+  script:
+    - npm i --legacy-peer-deps
+    - npm run build $LIBRARY_NG --configuration production
+  artifacts:
+    expire_in: 1 hour
+    paths:
+      - dist
+
+publish-internal:
+  stage: publish
+  variables:
+    NPM_REGISTRY: $NPM_PRIVATE_REGISTRY_3KLES
+    NPM_TOKEN: $NPM_PRIVATE_TOKEN
+  before_script:
+    # Get the project name
+    - export LIBRARY_NG=$(ls projects | head -n 1)
+    - *configure-internal-npm-repo
+  script:
+    - cd dist/$LIBRARY_NG
+    - npm publish --force
+
+publish-public:
+  stage: publish
+  dependencies:
+    - build
+  variables:
+    NPM_USER: $NPM_PUBLIC_USER
+    NPM_TOKEN: $NPM_PUBLIC_TOKEN
+  before_script:
+    # Get the project name
+    - export LIBRARY_NG=$(ls projects | head -n 1)
+    # Connect to public NPM registry
+    - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > dist/$LIBRARY_NG/.npmrc
+  script:
+    # Publish the library
+    - cd dist/$LIBRARY_NG
+    - npm publish --force --access public
