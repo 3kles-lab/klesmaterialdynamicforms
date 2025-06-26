@@ -27,7 +27,7 @@ build:
     - *configure-internal-npm-repo
   script:
     - npm i --legacy-peer-deps
-    - npm run build -- --project kles-material-dynamicforms --configuration production
+    - npm run build -- --project $LIBRARY_NG --configuration production
   artifacts:
     expire_in: 1 hour
     paths:
