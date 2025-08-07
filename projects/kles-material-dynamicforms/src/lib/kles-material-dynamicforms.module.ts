@@ -8,7 +8,6 @@ import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
 import { ColorPickerModule } from 'ngx-color-picker';
-import { TranslateModule } from '@ngx-translate/core';
 import { KlesFormLabelComponent } from './fields/label.component';
 import { KlesFormInputComponent } from './fields/input.component';
 import { KlesFormSelectComponent } from './fields/select.component';
@@ -57,6 +56,7 @@ import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkb
 import { KlesFormCopyComponent } from './fields/copy.component';
 import { KlesFormFileComponent } from './fields/file.component';
 import { KlesFileControlComponent } from './forms/file-control.component';
+import { KlesDynamicFormIntl } from './dynamic-form-intl';
 
 const components = [
   KlesDynamicFormComponent,
@@ -113,7 +113,6 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    TranslateModule,
     FormsModule,
     MaterialModule,
     ColorPickerModule,
@@ -124,7 +123,8 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
-    pipes
+    pipes,
+    KlesDynamicFormIntl
   ],
   exports: [
     components,

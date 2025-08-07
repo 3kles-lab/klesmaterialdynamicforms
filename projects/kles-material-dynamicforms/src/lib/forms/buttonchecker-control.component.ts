@@ -3,7 +3,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@a
 import { IButton, KlesButtonBase } from './button-control-base';
 import { CommonModule } from '@angular/common';
 import { KlesButtonComponent } from './button-control.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatBadge } from '@angular/material/badge';
 
@@ -29,7 +28,7 @@ export interface IButtonChecker extends IButton {
             </span>
             } @if (value.message) {
             <span style="margin-right: 10px">
-                {{ value.message | translate }}
+                {{ value.message }}
             </span>
             }
         </span>
@@ -42,7 +41,7 @@ export interface IButtonChecker extends IButton {
         },
     ],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, KlesButtonComponent, TranslateModule, MatProgressSpinner, MatBadge],
+    imports: [CommonModule, ReactiveFormsModule, KlesButtonComponent, MatProgressSpinner, MatBadge],
 })
 export class KlesButtonCheckerComponent extends KlesButtonBase implements ControlValueAccessor {
     value: IButtonChecker = {

@@ -4,7 +4,6 @@ import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFormSelectSearchComponent } from './select.search.component';
 import { CommonModule } from '@angular/common';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 
 @Component({
     selector: 'kles-form-select-lazy-search',
@@ -29,7 +29,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
                 (openedChange)="openChange($event)"
                 [compareWith]="compareFn"
                 [panelWidth]="field.panelWidth || 'auto'"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [formControlName]="field.name"
                 [multiple]="field.multiple"
             >
@@ -45,7 +45,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]="4 * 48">
                     @if (!isLoading()) { @if (field.multiple) {
                     <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
-                        {{ 'selectAll' | translate }}
+                        {{ intl.selectAll }}
                     </mat-checkbox>
                     } @if (!field.autocompleteComponent) {
                     <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
@@ -73,7 +73,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
                     </mat-option>
                     } } } } @else {
                     <mat-option class="hide-checkbox" disabled
-                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                        ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                     ></mat-option>
                     }
                 </cdk-virtual-scroll-viewport>
@@ -84,7 +84,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
                 @if (!isLoading()) { @if (field.multiple) {
                 <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
-                    {{ 'selectAll' | translate }}
+                    {{ intl.selectAll }}
                 </mat-checkbox>
                 } @if (!field.autocompleteComponent) { @for (item of optionsFiltered$ | async; track item) {
                 <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
@@ -94,7 +94,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
                 </mat-option>
                 } } } @else {
                 <mat-option class="hide-checkbox" disabled
-                    ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                    ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                 ></mat-option>
                 } }
             </mat-select>
@@ -122,11 +122,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ],
     styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-field-bottom.style.scss'],
     standalone: true,
-    imports: [CommonModule, KlesTransformPipe, TranslateModule, MatErrorMessageDirective, MatProgressSpinnerModule, MatSelectModule, KlesComponentDirective, ReactiveFormsModule, NgxMatSelectSearchModule, ScrollingModule, MatTooltipModule],
+    imports: [CommonModule, KlesTransformPipe, MatErrorMessageDirective, MatProgressSpinnerModule, MatSelectModule, KlesComponentDirective, ReactiveFormsModule, NgxMatSelectSearchModule, ScrollingModule, MatTooltipModule],
 })
 export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchComponent implements OnInit, OnDestroy {
-    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
-        super(viewRef, ref);
+    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef, public intl: KlesDynamicFormIntl) {
+        super(viewRef, ref, intl);
     }
 
     ngOnInit() {

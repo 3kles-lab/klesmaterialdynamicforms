@@ -1,16 +1,15 @@
-import { OnInit, Component, OnDestroy } from '@angular/core';
+import { OnInit, Component, OnDestroy, ViewContainerRef } from '@angular/core';
 import { KlesFormInputComponent } from './input.component';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatAutocomplete, MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatIcon } from '@angular/material/icon';
-import { FormControl, FormControlName, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
 import { KlesComponentDirective } from '../directive/dynamic-component.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
-import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
+import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 
 @Component({
     selector: 'kles-form-input-clearable',
@@ -25,7 +24,7 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
                 [attr.id]="field.id"
                 [ngClass]="field.ngClass"
                 [formControlName]="field.name"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [type]="field.inputType"
                 [maxLength]="field.maxLength"
                 [min]="field.min"
@@ -38,7 +37,7 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
                 @if(filteredOption$ | async; as filteredOption){ @if(filteredOption.loading){
                 <mat-option class="hide-checkbox" disabled>
                     <div class="loadingSelect">
-                        {{ 'loading' | translate }}...
+                        {{ intl.loading }}...
                         <mat-spinner class="spinner" diameter="20"></mat-spinner>
                     </div>
                 </mat-option>
@@ -59,7 +58,7 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
                 [attr.id]="field.id"
                 [ngClass]="field.ngClass"
                 [formControlName]="field.name"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [type]="field.inputType"
                 [maxLength]="field.maxLength"
                 [min]="field.min"
@@ -80,9 +79,14 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/loading-select.style.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, TranslateModule, MatAutocompleteModule, MatErrorMessageDirective, MatProgressSpinner, MatIcon, MatTooltip, KlesComponentDirective, MatOption, MatInput, MatLabel, MatFormField],
+    imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatErrorMessageDirective, MatProgressSpinner, MatIcon, MatTooltip, KlesComponentDirective, MatOption, MatInput, MatLabel, MatFormField],
 })
 export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit, OnDestroy {
+
+     constructor(protected viewRef: ViewContainerRef, public intl: KlesDynamicFormIntl) {
+        super(viewRef, intl);
+    }
+
     ngOnDestroy(): void {
         super.ngOnDestroy();
     }

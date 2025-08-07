@@ -5,7 +5,6 @@ import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { debounceTime, map, startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFieldAbstract } from './field.abstract';
-import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
@@ -16,6 +15,7 @@ import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 
 @Component({
     selector: 'kles-form-select-search',
@@ -33,7 +33,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
                 (openedChange)="openChange($event)"
                 [compareWith]="compareFn"
                 [panelWidth]="field.panelWidth || 'auto'"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [formControlName]="field.name"
                 [multiple]="field.multiple"
                 (selectionChange)="selectionChange($event)"
@@ -52,7 +52,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]="4 * 48">
                     @if (!isLoading()) { @if (field.multiple) {
                     <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
-                        {{ 'selectAll' | translate }}
+                        {{ intl.selectAll }}
                     </mat-checkbox>
                     } @if (!field.autocompleteComponent) {
                     <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
@@ -80,7 +80,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
                     </mat-option>
                     } } } } @else {
                     <mat-option class="hide-checkbox" disabled
-                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                        ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                     ></mat-option>
                     }
                 </cdk-virtual-scroll-viewport>
@@ -91,7 +91,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 
                 @if (!isLoading()) { @if (field.multiple) {
                 <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
-                    {{ 'selectAll' | translate }}
+                    {{ intl.selectAll }}
                 </mat-checkbox>
                 } @if (!field.autocompleteComponent) { @for (item of optionsFiltered$ | async; track item) {
                 <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
@@ -101,13 +101,13 @@ import { MatCheckbox } from '@angular/material/checkbox';
                 </mat-option>
                 } } } @else {
                 <mat-option class="hide-checkbox" disabled
-                    ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                    ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                 ></mat-option>
                 }
 
                 <ng-template #emptyOption>
                     <mat-option class="hide-checkbox" disabled
-                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                        ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                     ></mat-option>
                 </ng-template>
                 }
@@ -144,7 +144,6 @@ import { MatCheckbox } from '@angular/material/checkbox';
     standalone: true,
     imports: [
         CommonModule,
-        TranslateModule,
         ReactiveFormsModule,
         KlesTransformPipe,
         MatErrorMessageDirective,
@@ -179,7 +178,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
 
-    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
+    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef, public intl: KlesDynamicFormIntl) {
         super(viewRef);
     }
 

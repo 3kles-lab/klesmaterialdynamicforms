@@ -103,3 +103,7 @@ export * from './lib/selection/selection-model';
 
 /**UTILS */
 export * from './lib/utils/destroyable.guard';
+
+/**INTL */
+export * from './lib/dynamic-form-intl';
+

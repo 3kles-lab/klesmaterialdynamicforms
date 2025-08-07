@@ -7,7 +7,6 @@ import { KlesFormArray } from '../controls/array.control';
 import { cloneDeep } from 'lodash';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
@@ -18,7 +17,7 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
     template: `
         <div [formGroup]="group" class="form-element">
             <div class="label">
-                {{ field.label | translate }}
+                {{ field.label }}
                 <button mat-icon-button color="primary" (click)="addField()">
                     <mat-icon>add</mat-icon>
                 </button>
@@ -38,13 +37,13 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
                 } @for (validation of field.validations; track validation.name) {
                 <ng-container ngProjectAs="mat-error">
                     @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{ validation.message | translate }}</mat-error>
+                    <mat-error>{{ validation.message }}</mat-error>
                     }
                 </ng-container>
                 } @for (validation of field.asyncValidations; track validation.name) {
                 <ng-container ngProjectAs="mat-error">
                     @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{ validation.message | translate }}</mat-error>
+                    <mat-error>{{ validation.message }}</mat-error>
                     }
                 </ng-container>
                 }
@@ -63,7 +62,7 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
         `,
     ],
     standalone: true,
-    imports: [CommonModule, TranslateModule, MatError, MatIcon, KlesDynamicFieldDirective, ReactiveFormsModule],
+    imports: [CommonModule, MatError, MatIcon, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     formArray: UntypedFormArray;

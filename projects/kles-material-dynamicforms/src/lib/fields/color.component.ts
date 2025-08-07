@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component, OnDestroy } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +27,7 @@ import { MatInput } from '@angular/material/input';
                 matTooltip="{{ field.tooltip }}"
                 [attr.id]="field.id"
                 [ngClass]="field.ngClass"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [value]="group.get(field.name).value"
                 class="colorPicker"
                 [style.background]="group.get(field.name).value"
@@ -47,7 +46,7 @@ import { MatInput } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
-    imports: [CommonModule, TranslateModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerModule, MatInput],
+    imports: [CommonModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerModule, MatInput],
 })
 export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() {

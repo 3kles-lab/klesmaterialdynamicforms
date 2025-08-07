@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from "@angular/common";
-import { TranslateModule } from "@ngx-translate/core";
 import { MatError, MatFormField, MatHint, MatLabel } from "@angular/material/form-field";
 import { MatErrorMessageDirective } from "../directive/mat-error-message.directive";
-import { MatDatepicker, MatDatepickerModule } from "@angular/material/datepicker";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatInput } from "@angular/material/input";
@@ -16,7 +15,7 @@ import { MatInput } from "@angular/material/input";
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
         }
-        <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder | translate"
+        <input matInput matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="field.placeholder"
         [min]="field.min" [max]="field.max">
         <div matSuffix class="suffix">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
@@ -34,7 +33,7 @@ import { MatInput } from "@angular/material/input";
         '.suffix { display: flex; flex-direction: row}'
     ],
     standalone: true,
-    imports: [CommonModule, TranslateModule, MatErrorMessageDirective, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput],
+    imports: [CommonModule, MatErrorMessageDirective, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput],
 })
 export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

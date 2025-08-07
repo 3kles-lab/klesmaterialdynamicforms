@@ -7,7 +7,6 @@ import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { MatHint } from '@angular/material/form-field';
@@ -16,6 +15,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
+import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 
 @FieldMapper({ type: EnumType.select })
 @Component({
@@ -32,7 +32,7 @@ import { MatTooltip } from '@angular/material/tooltip';
                 [compareWith]="compareFn"
                 [panelWidth]="field.panelWidth || 'auto'"
                 [ngClass]="field.ngClass"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [formControlName]="field.name"
                 [multiple]="field.multiple"
                 (focus)="onFocus()"
@@ -46,7 +46,7 @@ import { MatTooltip } from '@angular/material/tooltip';
                 <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
                 } } @else {
                 <mat-option class="hide-checkbox" disabled
-                    ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                    ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                 ></mat-option>
                 } } @else { @if (!isLoading) { @for (item of options$ | async; track item) {
                 <mat-option [value]="item" [disabled]="item?.disabled">
@@ -54,7 +54,7 @@ import { MatTooltip } from '@angular/material/tooltip';
                 </mat-option>
                 } } @else {
                 <mat-option class="hide-checkbox" disabled
-                    ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                    ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                 ></mat-option>
                 } } } @else {
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]="5 * 48">
@@ -64,7 +64,7 @@ import { MatTooltip } from '@angular/material/tooltip';
                     </mat-option>
                     } @else {
                     <mat-option class="hide-checkbox" disabled
-                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                        ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                     ></mat-option>
                     } @if (field.multiple) { @for (item of group.controls[field.name].value | slice:0:30; track item) {
                     <mat-option [value]="item" style="display:none">
@@ -80,7 +80,7 @@ import { MatTooltip } from '@angular/material/tooltip';
                     </mat-option>
                     } @else {
                     <mat-option class="hide-checkbox" disabled
-                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                        ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
                     ></mat-option>
                     } @if (field.multiple) { @for (item of group.controls[field.name].value | slice:0:30; track item) {
                     <mat-option [value]="item" style="display:none">
@@ -116,7 +116,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     ],
     styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-field-bottom.style.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule, KlesTransformPipe, MatErrorMessageDirective, MatHint, KlesComponentDirective, MatOption, MatProgressSpinner, ScrollingModule, MatSelectModule, ReactiveFormsModule, MatTooltip],
+    imports: [CommonModule, KlesTransformPipe, MatErrorMessageDirective, MatHint, KlesComponentDirective, MatOption, MatProgressSpinner, ScrollingModule, MatSelectModule, ReactiveFormsModule, MatTooltip],
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
@@ -128,7 +128,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     openChange$ = new Subject<boolean>();
 
-    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef) {
+    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef, public intl: KlesDynamicFormIntl) {
         super(viewRef);
     }
 

@@ -5,7 +5,6 @@ import { EnumButtonAttribute } from '../enums/button-attribute.enum';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatButton } from '@angular/material/button';
 
 /*From angular material 
@@ -36,7 +35,7 @@ const HOST_SELECTOR_MDC_CLASS_PAIR: { attribute: string; mdcClasses: string[] }[
     template: `
             <button mat-button [type]="type" [ngClass]="classButton || mdcClasses()" [color]="(color)?color:'primary'" [disabled]="disabled"
             (click)="click($event)" [matTooltip]="tooltip">
-                {{label | translate}}
+                {{label}}
 
                 @if (icon) {
                     <mat-icon>{{icon}}</mat-icon>
@@ -55,7 +54,7 @@ const HOST_SELECTOR_MDC_CLASS_PAIR: { attribute: string; mdcClasses: string[] }[
         }
     ],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatIcon, MatTooltip, TranslateModule, MatButton]
+    imports: [CommonModule, ReactiveFormsModule, MatIcon, MatTooltip, MatButton]
 })
 export class KlesButtonComponent extends KlesButtonBase implements OnInit {
 

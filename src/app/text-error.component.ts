@@ -14,14 +14,14 @@ import { KlesFieldAbstract } from 'dist/kles-material-dynamicforms';
         @for (validation of field.validations; track validation.name) {
             <ng-container ngProjectAs="mat-error">
                 @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
+                    <mat-error>{{validation.message}}</mat-error>
                 }
             </ng-container>
         }
         @for (validation of field.asyncValidations; track validation.name) {
             <ng-container ngProjectAs="mat-error">
                 @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{validation.message | translate}}</mat-error>
+                    <mat-error>{{validation.message}}</mat-error>
                 }
             </ng-container>
         }

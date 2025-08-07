@@ -1,10 +1,9 @@
 import { KlesFieldAbstract } from './field.abstract';
-import { OnInit, Component, OnDestroy, signal } from '@angular/core';
+import { OnInit, Component, OnDestroy, signal, ViewContainerRef } from '@angular/core';
 import { combineLatest, concat, Observable, of, Subject } from 'rxjs';
 import { startWith, map, switchMap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { EnumType } from '../enums/type.enum';
 import { FieldMapper } from '../decorators/component.decorator';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,9 +12,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatOptionModule } from '@angular/material/core';
-import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { KlesComponentDirective } from '../directive/dynamic-component.directive';
+import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 
 @FieldMapper({ type: EnumType.input })
 @Component({
@@ -38,7 +37,7 @@ import { KlesComponentDirective } from '../directive/dynamic-component.directive
                 [attr.id]="field.id"
                 [ngClass]="field.ngClass"
                 [formControlName]="field.name"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [type]="field.inputType"
                 [maxLength]="field.maxLength"
                 [min]="field.min"
@@ -53,7 +52,7 @@ import { KlesComponentDirective } from '../directive/dynamic-component.directive
                 @if(filteredOption$ | async; as filteredOption){ @if(filteredOption.loading){
                 <mat-option disabled>
                     <div class="loadingSelect">
-                        {{ 'loading' | translate }}...
+                        {{ intl.loading }}...
                         <mat-spinner class="spinner" diameter="20"></mat-spinner>
                     </div>
                 </mat-option>
@@ -74,7 +73,7 @@ import { KlesComponentDirective } from '../directive/dynamic-component.directive
                 [attr.id]="field.id"
                 [ngClass]="field.ngClass"
                 [formControlName]="field.name"
-                [placeholder]="field.placeholder | translate"
+                [placeholder]="field.placeholder"
                 [type]="field.inputType"
                 [maxLength]="field.maxLength"
                 [min]="field.min"
@@ -110,7 +109,6 @@ import { KlesComponentDirective } from '../directive/dynamic-component.directive
         MatTooltipModule,
         MatProgressSpinnerModule,
         MatOptionModule,
-        TranslateModule,
         MatError,
         MatErrorMessageDirective,
         KlesComponentDirective
@@ -121,6 +119,10 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
     options$: Observable<{ loading: boolean; options: any[] }>;
     private isFocused = new Subject<boolean>();
     isLoading = signal(false);
+
+     constructor(protected viewRef: ViewContainerRef, public intl: KlesDynamicFormIntl) {
+        super(viewRef);
+    }
 
     ngOnInit(): void {
         if (this.field.lazy) {

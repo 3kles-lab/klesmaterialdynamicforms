@@ -5,19 +5,18 @@ import { IKlesValidator } from "../interfaces/validator.interface";
 import { AsyncValidator, Validators } from "@angular/forms";
 import { ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
     selector: '[matErrorMessage]',
     template: `
         @for (validation of validations; track validation.name) {
             @if (inputRef?.ngControl.hasError(validation.name) && validation.message) {
-                {{validation.message | translate}}
+                {{validation.message}}
             }
         }
         @for (validation of asyncValidations; track validation.name) {
             @if (inputRef?.ngControl.hasError(validation.name) && validation.message) {
-                {{validation.message | translate}}
+                {{validation.message}}
             }
         }
     `,
@@ -25,7 +24,6 @@ import { TranslateModule } from "@ngx-translate/core";
     imports: [
       CommonModule,
       ReactiveFormsModule,
-      TranslateModule,
   ],
 })
 export class MatErrorMessageDirective implements AfterViewInit {

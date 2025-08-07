@@ -4,7 +4,6 @@ import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,8 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
             <mat-label>{{ field.label }}</mat-label>
 
             <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass" [min]="field.min" [max]="field.max">
-                <input matStartDate formControlName="start" [placeholder]="(field.placeholder?.start ? field.placeholder?.start : '') | translate" />
-                <input matEndDate formControlName="end" [placeholder]="(field.placeholder?.end ? field.placeholder?.end : '') | translate" />
+                <input matStartDate formControlName="start" [placeholder]="(field.placeholder?.start ? field.placeholder?.start : '')" />
+                <input matEndDate formControlName="end" [placeholder]="(field.placeholder?.end ? field.placeholder?.end : '')" />
             </mat-date-range-input>
 
             <div matSuffix class="suffix">
@@ -40,7 +39,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss'],
     standalone: true,
-    imports: [CommonModule, TranslateModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTooltipModule, ReactiveFormsModule],
+    imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTooltipModule, ReactiveFormsModule],
 })
 export class KlesFormRangeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     // range = new FormGroup({
