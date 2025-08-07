@@ -9,6 +9,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
     EnumButtonAttribute,
     EnumType,
+    IButton,
+    IButtonChecker,
+    KlesDynamicFormIntl,
     KlesFormCheckboxComponent,
     KlesFormCheckboxIndeterminateComponent,
     KlesFormDateComponent,
@@ -32,9 +35,9 @@ import {
     KlesFormSelectionListComponent,
     KlesFormTextareaComponent,
     KlesFormTextComponent,
+    KlesFormCopyComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
-import { KlesFormCopyComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent } from 'projects/kles-material-dynamicforms/src/public-api';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, delay, map, shareReplay } from 'rxjs/operators';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
@@ -43,6 +46,7 @@ import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 import { MaterialModule } from './modules/material.module';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { TranslatedKlesLabelIntl } from './app-intl';
 
 @Component({
     selector: 'app-root',
@@ -133,18 +137,18 @@ export class AppComponent implements OnInit, AfterViewInit {
             // console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
         });
 
-        // this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
-        //   console.log('Button file changed=', s);
-        // });
-
-        this.formButton.form.valueChanges.subscribe((s) => {
-            console.log('Button changed=', s);
-            const val = Object.keys(s).find((f) => s[f]);
-            console.log(val);
-            if (val) {
-                this.formButton.form.reset();
-            }
+        this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
+          console.log('Button file changed=', s);
         });
+
+        // this.formButton.form.valueChanges.subscribe((s) => {
+        //     console.log('Button changed=', s);
+        //     const val = Object.keys(s).find((f) => s[f]);
+        //     console.log(val);
+        //     if (val) {
+        //         this.formButton.form.reset();
+        //     }
+        // });
 
         this.form.form.valueChanges.subscribe((s) => {
             console.log('Group changed=', this.form, ' with value=', s);
@@ -409,6 +413,12 @@ export class AppComponent implements OnInit, AfterViewInit {
                 virtualScroll: true,
                 value: [toto[0]],
                 options: new BehaviorSubject<any[]>(toto).pipe(delay(1000), shareReplay(1)),
+                // providers: [
+                //     {
+                //                 provide: KlesDynamicFormIntl,
+                //                 useClass: TranslatedKlesLabelIntl,
+                //             },
+                // ]
                 // options: of(['aaa', 'bbb'])
             },
             {

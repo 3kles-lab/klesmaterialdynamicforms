@@ -4,7 +4,7 @@ import { ApplicationConfig, LOCALE_ID, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { KlesMaterialDynamicformsModule } from 'kles-material-dynamicforms';
+import { KlesDynamicFormIntl, KlesMaterialDynamicformsModule } from 'kles-material-dynamicforms';
 import { MaterialModule } from './modules/material.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideTranslateService, TranslateService } from '@ngx-translate/core';
@@ -14,7 +14,8 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 import { SelectOptionComponent } from './select/select-option.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { ColorPickerComponent} from 'ngx-color-picker'
+import { ColorPickerComponent } from 'ngx-color-picker';
+import { TranslatedKlesLabelIntl } from './app-intl';
 
 // registerLocaleData(localeFr);
 // @NgModule({
@@ -59,13 +60,14 @@ registerLocaleData(localeFr);
 export const appConfig: ApplicationConfig = {
     providers: [
         provideHttpClient(withInterceptorsFromDi()),
-        TranslateService,
         { provide: LOCALE_ID, useValue: 'fr-FR' },
-        provideHttpClient(withInterceptorsFromDi()),
         provideTranslateService({
             fallbackLang: 'en',
             lang: 'en',
         }),
+        {
+            provide: KlesDynamicFormIntl,
+            useClass: TranslatedKlesLabelIntl,
+        },
     ],
 };
-
