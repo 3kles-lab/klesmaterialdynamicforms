@@ -1,21 +1,25 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormGroup } from "@angular/forms";
-import { MatTooltip } from "@angular/material/tooltip";
-import { Clipboard } from '@angular/cdk/clipboard';
-import { IKlesFieldConfig } from "../interfaces/field.config.interface";
-import { IKlesField } from "../interfaces/field.interface";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormGroup } from '@angular/forms';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
+import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+import { IKlesField } from '../interfaces/field.interface';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
     selector: 'kles-form-copy',
     template: `
-    <button #tooltip="matTooltip" mat-icon-button color="primary" type="button" (click)="copy($event)" [matTooltipDisabled]="true" [matTooltip]="tooltipText" matTooltipPosition="above">
-        <mat-icon>content_copy</mat-icon>
-    </button>
+        <button #tooltip="matTooltip" mat-icon-button color="primary" type="button" (click)="copy($event)" [matTooltipDisabled]="true" [matTooltip]="tooltipText" matTooltipPosition="above">
+            <mat-icon>content_copy</mat-icon>
+        </button>
     `,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
 export class KlesFormCopyComponent implements OnInit, IKlesField {
-    @ViewChild("tooltip") tooltip: MatTooltip;
+    @ViewChild('tooltip') tooltip: MatTooltip;
 
     field: IKlesFieldConfig;
     group: UntypedFormGroup;
@@ -23,7 +27,7 @@ export class KlesFormCopyComponent implements OnInit, IKlesField {
 
     tooltipText: string;
 
-    constructor(private clipBoard: Clipboard) { }
+    constructor(private clipBoard: Clipboard) {}
 
     ngOnInit(): void {
         this.tooltipText = this.field.copyTooltip || '';

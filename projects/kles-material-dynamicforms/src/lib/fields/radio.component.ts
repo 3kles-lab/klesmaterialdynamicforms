@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { Observable, of } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
     selector: 'kles-form-radiobutton',
@@ -15,7 +19,8 @@ import { Observable, of } from 'rxjs';
     </div>
 `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, MatRadioButton, MatRadioGroup, ReactiveFormsModule, MatTooltip],
 })
 export class KlesFormRadioComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     options$: Observable<any[]>;

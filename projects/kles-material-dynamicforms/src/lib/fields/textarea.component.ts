@@ -1,5 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { TextFieldModule } from '@angular/cdk/text-field';
+import { MatInput } from '@angular/material/input';
 
 @Component({
     selector: 'kles-form-textarea',
@@ -24,7 +33,8 @@ import { KlesFieldAbstract } from './field.abstract';
     </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, TranslateModule, MatErrorMessageDirective, ScrollingModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, TextFieldModule, MatInput]
 })
 export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit(): void {

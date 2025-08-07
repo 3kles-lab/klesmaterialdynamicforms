@@ -1,5 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from "./field.abstract";
+import { MatIcon } from "@angular/material/icon";
+import { KlesTransformPipe } from "../pipe/transform.pipe";
+import { CommonModule } from "@angular/common";
+import { MatChip, MatChipListbox, MatChipOption } from "@angular/material/chips";
+import { MatTooltip } from "@angular/material/tooltip";
+import { ReactiveFormsModule } from "@angular/forms";
 
 @Component({
     selector: "kles-form-chip",
@@ -16,7 +22,8 @@ import { KlesFieldAbstract } from "./field.abstract";
     </div>
 `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, MatIcon, KlesTransformPipe, MatChipOption, MatChipListbox, MatTooltip, ReactiveFormsModule]
 })
 export class KlesFormChipComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

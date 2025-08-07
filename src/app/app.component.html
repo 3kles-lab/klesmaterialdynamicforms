@@ -1,10 +1,6 @@
 <main class="content">
   <div class="container">
-    <!-- <input matInput [(colorPicker)]="color" [style.background]="color" /> -->
-    <mat-form-field class="example-full-width" [(colorPicker)]="color" [style.background]="color">
-      <mat-label>Favorite food</mat-label>
-      <input matInput>
-    </mat-form-field>
+  
     <div style="justify-content:center">
       <button mat-button (click)=" french()">Dynamically switch to French</button>
     </div>
@@ -27,9 +23,9 @@
       </div>
       <div class="block">
         <div style="align-self: center; font-size: x-large;">Input Form</div>
-        <app-kles-dynamic-form #formError direction="column" [fields]="fieldsError" [validators]="formValidatorsError"
+        <!-- <app-kles-dynamic-form #formError direction="column" [fields]="fieldsError" [validators]="formValidatorsError"
           [asyncValidators]="formAsyncValidatorsError">
-        </app-kles-dynamic-form>
+        </app-kles-dynamic-form> -->
         <app-kles-dynamic-form #formInput direction="column" [fields]="fieldsInput" [validators]="formValidatorsInput">
         </app-kles-dynamic-form>
       </div>

@@ -1,61 +1,71 @@
 import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
-import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
 import { FieldMapper } from '../decorators/component.decorator';
 import { KlesFormArray } from '../controls/array.control';
 import { cloneDeep } from 'lodash';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatError } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
+import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
 
-@FieldMapper({ type: 'listfield', factory: (field) => (new KlesFormArray(field).create()) })
+@FieldMapper({ type: 'listfield', factory: (field) => new KlesFormArray(field).create() })
 @Component({
     selector: 'kles-form-listfield',
     template: `
-    <div [formGroup]="group" class="form-element">
-        <div class="label">
-            {{field.label | translate}}
-            <button mat-icon-button color="primary" (click)="addField()">
-                <mat-icon>add</mat-icon>
-            </button>
-        </div>
+        <div [formGroup]="group" class="form-element">
+            <div class="label">
+                {{ field.label | translate }}
+                <button mat-icon-button color="primary" (click)="addField()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </div>
 
-        <div class="dynamic-form" [formGroupName]="field.name">
-            @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index;) {
+            <div class="dynamic-form" [formGroupName]="field.name">
+                @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index;) {
                 <div class="subfields">
                     @for (subfield of collections[idx]; track subfield.name) {
-                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]">
-                        </ng-container>
-                    }
-                    @if(collections[idx]){
-                        <button mat-icon-button (click)="deleteField(idx)" color="primary">
-                            <mat-icon>delete_outlined</mat-icon>
-                        </button>
+                    <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]"> </ng-container>
+                    } @if(collections[idx]){
+                    <button mat-icon-button (click)="deleteField(idx)" color="primary">
+                        <mat-icon>delete_outlined</mat-icon>
+                    </button>
                     }
                 </div>
-            }
-            @for (validation of field.validations; track validation.name) {
+                } @for (validation of field.validations; track validation.name) {
                 <ng-container ngProjectAs="mat-error">
                     @if (group.get(field.name).hasError(validation.name)) {
-                        <mat-error>{{validation.message | translate}}</mat-error>
+                    <mat-error>{{ validation.message | translate }}</mat-error>
                     }
                 </ng-container>
-            }
-            @for (validation of field.asyncValidations; track validation.name) {
+                } @for (validation of field.asyncValidations; track validation.name) {
                 <ng-container ngProjectAs="mat-error">
                     @if (group.get(field.name).hasError(validation.name)) {
-                        <mat-error>{{validation.message | translate}}</mat-error>
+                    <mat-error>{{ validation.message | translate }}</mat-error>
                     }
                 </ng-container>
-            }
+                }
+            </div>
         </div>
-    </div>
     `,
-    styles: ['.subfields {display: flex; flex-direction: row; gap:5px}',
-        `.label {display: flex; align-items: center; flex-direction: row; gap: 5px;}`],
-    standalone: false
+    styles: [
+        '.subfields {display: flex; flex-direction: row; gap:5px}',
+        `
+            .label {
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                gap: 5px;
+            }
+        `,
+    ],
+    standalone: true,
+    imports: [CommonModule, TranslateModule, MatError, MatIcon, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
     formArray: UntypedFormArray;
     collections: IKlesFieldConfig[][] = [];
 
@@ -75,12 +85,8 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
 
     private createFormGroup(): UntypedFormGroup {
         const group = this.fb.group({});
-        this.field.collections?.forEach(item => {
-            const control = this.fb.control(
-                null,
-                this.bindValidations(item.validations || []),
-                this.bindAsyncValidations(item.asyncValidations || [])
-            );
+        this.field.collections?.forEach((item) => {
+            const control = this.fb.control(null, this.bindValidations(item.validations || []), this.bindAsyncValidations(item.asyncValidations || []));
             group.addControl(item.name, control);
         });
         return group;
@@ -96,28 +102,24 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         this.formArray.push(this.createFormGroup());
     }
 
-
     private bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
         if (validations.length > 0) {
             const validList = [];
-            validations.forEach(valid => {
+            validations.forEach((valid) => {
                 validList.push(valid.validator);
             });
             return Validators.compose(validList);
-
         }
         return null;
     }
 
-
     private bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
         if (validations.length > 0) {
             const validList = [];
-            validations.forEach(valid => {
+            validations.forEach((valid) => {
                 validList.push(valid.validator);
             });
             return Validators.composeAsync(validList);
-
         }
         return null;
     }
@@ -126,4 +128,3 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         super.ngOnDestroy();
     }
 }
-

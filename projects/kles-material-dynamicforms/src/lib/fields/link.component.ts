@@ -1,17 +1,20 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { KlesFieldAbstract } from "./field.abstract";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'kles-form-link',
     template: `
-        <a [href]="group.controls[field.name].value" matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass">
-            {{field.label}}
+        <a [href]="group.controls[field.name].value" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass">
+            {{ field.label }}
         </a>
-`,
-    standalone: false
+    `,
+    standalone: true,
+    imports: [CommonModule,  MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormLinkComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
     ngOnInit() {
         super.ngOnInit();
     }

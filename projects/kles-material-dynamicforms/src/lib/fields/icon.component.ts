@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from "@angular/common";
+import { MatIcon } from "@angular/material/icon";
+import { MatTooltip } from "@angular/material/tooltip";
 
 @Component({
     selector: "kles-form-icon",
@@ -9,7 +12,8 @@ import { KlesFieldAbstract } from './field.abstract';
         </mat-icon>
 `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, MatIcon, MatTooltip]
 })
 export class KlesFormIconComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

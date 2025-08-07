@@ -29,7 +29,7 @@
     "zone.js": "~0.15.1",
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.19",
-    "ngx-color-picker": "^18.0.0",
+    "ngx-color-picker": "^19.0.0",
     "ngx-mat-select-search": "^8.0.2"
   },
   "dependencies": {

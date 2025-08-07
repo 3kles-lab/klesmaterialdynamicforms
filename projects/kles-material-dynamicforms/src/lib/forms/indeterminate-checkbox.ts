@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input, AfterViewInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
     selector: 'kles-checkbox-indeterminate',
@@ -9,6 +10,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
       #checkbox
       [indeterminate]="isIndeterminate"
       (change)="onCheckboxChange($event)"
+      (color)="color"
       (blur)="onTouched()">
       {{label}}
     </mat-checkbox>
@@ -20,10 +22,12 @@ import { MatCheckbox } from '@angular/material/checkbox';
             multi: true
         }
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, MatCheckboxModule, ReactiveFormsModule, FormsModule],
 })
 export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor, AfterViewInit {
   @Input() label: string;
+  @Input() color: string;
   @ViewChild('checkbox') checkbox: MatCheckbox;
 
   isIndeterminate = false;

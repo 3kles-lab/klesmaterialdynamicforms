@@ -19,7 +19,7 @@ export interface IUIButton {
 
 @Component({
     template: '',
-    standalone: false
+    standalone: true
 })
 export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     @Input() name = '';

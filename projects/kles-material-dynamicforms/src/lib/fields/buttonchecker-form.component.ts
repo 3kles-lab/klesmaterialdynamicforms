@@ -1,5 +1,8 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { KlesButtonCheckerComponent } from '../forms/buttonchecker-control.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'kles-form-button-checker',
@@ -19,7 +22,8 @@ import { KlesFieldAbstract } from './field.abstract';
     </div>
     `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, KlesButtonCheckerComponent, ReactiveFormsModule],
 })
 export class KlesFormButtonCheckerComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

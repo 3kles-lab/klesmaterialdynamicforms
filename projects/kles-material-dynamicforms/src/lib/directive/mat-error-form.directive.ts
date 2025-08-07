@@ -1,6 +1,8 @@
 import { Component, Input } from "@angular/core";
 import { IKlesValidator } from "../interfaces/validator.interface";
-import { AsyncValidator, UntypedFormGroup, Validators } from "@angular/forms";
+import { AsyncValidator, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from "@angular/forms";
+import { TranslateModule } from "@ngx-translate/core";
+import { CommonModule } from "@angular/common";
 
 @Component({
     selector: '[matErrorForm]',
@@ -18,7 +20,13 @@ import { AsyncValidator, UntypedFormGroup, Validators } from "@angular/forms";
         }
       }
     `,
-    standalone: false
+    standalone: true,
+    imports: [
+      CommonModule,
+      ReactiveFormsModule,
+      TranslateModule,
+      FormsModule
+    ],
 })
 export class MatErrorFormDirective {
   @Input({ required: false }) validations: IKlesValidator<Validators>[] = [];

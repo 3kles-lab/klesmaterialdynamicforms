@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormArray } from '@angular/forms';
 import { KlesFormArray } from '../controls/array.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
 
 @FieldMapper({ type: EnumType.array, factory: (field) => (new KlesFormArray(field).create()) })
 @Component({
@@ -32,7 +34,8 @@ import { KlesFieldAbstract } from './field.abstract';
         '.row { gap: 10px; flex-direction: row; align-items: baseline }',
         '.column { flex-direction: column; gap: 0px}'
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

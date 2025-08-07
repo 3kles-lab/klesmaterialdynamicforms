@@ -1,5 +1,6 @@
+import { CommonModule } from "@angular/common";
 import { Component, OnChanges, OnInit, SimpleChanges, Type } from "@angular/core";
-import { IKlesComponent } from "kles-material-dynamicforms";
+import { ArrayFormatPipe, IKlesComponent } from "kles-material-dynamicforms";
 
 @Component({
     selector: 'kles-select-trigger',
@@ -8,7 +9,8 @@ import { IKlesComponent } from "kles-material-dynamicforms";
         {{value | arrayFormat:'BUAR'}}
     </span> 
 `,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, ArrayFormatPipe]
 })
 export class SelectTriggerComponent implements IKlesComponent, OnInit, OnChanges {
 

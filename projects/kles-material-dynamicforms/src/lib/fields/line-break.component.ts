@@ -17,7 +17,7 @@ import { KlesFieldAbstract } from './field.abstract';
                      height:0;
                  }`
     ],
-    standalone: false
+    standalone: true
 })
 export class KlesFormLineBreakComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

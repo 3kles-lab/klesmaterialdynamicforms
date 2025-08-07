@@ -1,4 +1,4 @@
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
@@ -6,132 +6,119 @@ import { switchMap, take, takeUntil } from 'rxjs/operators';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { KlesTransformPipe } from '../pipe/transform.pipe';
+import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
+import { MatHint } from '@angular/material/form-field';
+import { KlesComponentDirective } from '../directive/dynamic-component.directive';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @FieldMapper({ type: EnumType.select })
 @Component({
     selector: 'kles-form-select',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance" class="field-bottom">
-        @if (field.label) {
-            <mat-label>{{field.label}}</mat-label>
-        }
-        <mat-select matTooltip="{{field.tooltip}}" [attr.id]="field.id"
-        (openedChange)="openChange($event)" [compareWith]="compareFn" [panelWidth]="field.panelWidth || 'auto'"
-        [ngClass]="field.ngClass" [placeholder]="field.placeholder | translate" [formControlName]="field.name" [multiple]="field.multiple"
-        (focus)="onFocus()" (blur)="onBlur()">
-
-        @if (field.triggerComponent) {
-            <mat-select-trigger>
-                <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
-            </mat-select-trigger>
-        }
-
-        @if (!field.virtualScroll) {
-            @if (!field.autocompleteComponent) {
-                @if (!isLoading) {
-                    @for (item of options$ | async; track item) {
-                        <mat-option [value]="item" [disabled]="item?.disabled">{{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}</mat-option>
-                    }
-                }
-                @else {
-                    <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
-                }
+        <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance" class="field-bottom">
+            @if (field.label) {
+            <mat-label>{{ field.label }}</mat-label>
             }
-            @else {
-                @if (!isLoading) {
-                    @for (item of options$ | async; track item) {
-                        <mat-option [value]="item" [disabled]="item?.disabled">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                        </mat-option>
-                    }
+            <mat-select
+                matTooltip="{{ field.tooltip }}"
+                [attr.id]="field.id"
+                (openedChange)="openChange($event)"
+                [compareWith]="compareFn"
+                [panelWidth]="field.panelWidth || 'auto'"
+                [ngClass]="field.ngClass"
+                [placeholder]="field.placeholder | translate"
+                [formControlName]="field.name"
+                [multiple]="field.multiple"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+            >
+                @if (field.triggerComponent) {
+                <mat-select-trigger>
+                    <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
+                </mat-select-trigger>
+                } @if (!field.virtualScroll) { @if (!field.autocompleteComponent) { @if (!isLoading) { @for (item of options$ | async; track item) {
+                <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
+                } } @else {
+                <mat-option class="hide-checkbox" disabled
+                    ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                ></mat-option>
+                } } @else { @if (!isLoading) { @for (item of options$ | async; track item) {
+                <mat-option [value]="item" [disabled]="item?.disabled">
+                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                </mat-option>
+                } } @else {
+                <mat-option class="hide-checkbox" disabled
+                    ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                ></mat-option>
+                } } } @else {
+                <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]="5 * 48">
+                    @if (!field.autocompleteComponent) { @if (!isLoading) {
+                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
+                        {{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}
+                    </mat-option>
+                    } @else {
+                    <mat-option class="hide-checkbox" disabled
+                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                    ></mat-option>
+                    } @if (field.multiple) { @for (item of group.controls[field.name].value | slice:0:30; track item) {
+                    <mat-option [value]="item" style="display:none">
+                        {{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}
+                    </mat-option>
+                    } } @if (!field.multiple && group.controls[field.name].value) { @for (item of [group?.controls[field.name]?.value]; track item) {
+                    <mat-option [value]="item" style="display:none">
+                        {{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}
+                    </mat-option>
+                    } } } @else { @if (!isLoading) {
+                    <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                    </mat-option>
+                    } @else {
+                    <mat-option class="hide-checkbox" disabled
+                        ><div class="loadingSelect">{{ 'loading' | translate }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                    ></mat-option>
+                    } @if (field.multiple) { @for (item of group.controls[field.name].value | slice:0:30; track item) {
+                    <mat-option [value]="item" style="display:none">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                    </mat-option>
+                    } } @if (!field.multiple && group.controls[field.name].value) { @for (item of [group?.controls[field.name]?.value]; track item) {
+                    <mat-option [value]="item" style="display:none">
+                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                    </mat-option>
+                    } } }
+                </cdk-virtual-scroll-viewport>
                 }
-                @else {
-                    <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
-                }
-            }
-        }
-        @else {
-            <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]=5*48>
-                @if (!field.autocompleteComponent) {
-                    @if (!isLoading) {
-                        <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item"  [disabled]="item?.disabled">
-                        {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                        </mat-option>
-                    }
-                    @else {
-                        <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
-                    }
+            </mat-select>
 
-                    @if (field.multiple) {
-                        @for (item of group.controls[field.name].value | slice:0:30; track item) {
-                            <mat-option [value]="item" style="display:none">
-                                {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                            </mat-option>
-                        }
-                    }
-
-                    @if (!field.multiple && group.controls[field.name].value) {
-                        @for (item of [group?.controls[field.name]?.value]; track item) {
-                            <mat-option [value]="item" style="display:none">
-                                {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
-                            </mat-option>
-                        }
-                    }
-                }
-                @else {
-                    @if (!isLoading) {
-                        <mat-option *cdkVirtualFor="let item of options$ | async" [value]="item" [disabled]="item?.disabled">
-                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                        </mat-option>
-                    }
-                    @else {
-                        <mat-option class="hide-checkbox" disabled><div class="loadingSelect">{{'loading' | translate}}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div></mat-option>
-                    }
-
-                    @if (field.multiple) {
-                        @for (item of group.controls[field.name].value | slice:0:30; track item) {
-                            <mat-option [value]="item" style="display:none">
-                                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                            </mat-option>
-                        }
-                    }
-
-                    @if (!field.multiple && group.controls[field.name].value) {
-                        @for (item of [group?.controls[field.name]?.value]; track item) {
-                            <mat-option [value]="item" style="display:none">
-                                <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                            </mat-option>
-                        }
-                    }
-                }
-            </cdk-virtual-scroll-viewport>
-        }
-
-        </mat-select>
-
-        @if (field.hint) {
-            <mat-hint>{{field.hint}}</mat-hint>
-        }
-
-        @if (field.subComponents || field.clearable) {
+            @if (field.hint) {
+            <mat-hint>{{ field.hint }}</mat-hint>
+            } @if (field.subComponents || field.clearable) {
             <div matSuffix>
                 <ng-content></ng-content>
             </div>
-        }
+            }
 
-        <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
-    </mat-form-field>
-`,
-    styles: ['mat-form-field {width: calc(100%)}',
-        `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
-    styleUrls: [
-        '../styles/loading-select.style.scss',
-        '../styles/mat-field-bottom.style.scss'
+            <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
+        </mat-form-field>
+    `,
+    styles: [
+        'mat-form-field {width: calc(100%)}',
+        `
+            ::ng-deep .hide-checkbox .mat-pseudo-checkbox {
+                display: none !important;
+            }
+        `,
     ],
-    standalone: false
+    styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-field-bottom.style.scss'],
+    standalone: true,
+    imports: [CommonModule, TranslateModule, KlesTransformPipe, MatErrorMessageDirective, MatHint, KlesComponentDirective, MatOption, MatProgressSpinner, ScrollingModule, MatSelectModule, ReactiveFormsModule, MatTooltip],
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
 
@@ -150,8 +137,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         if (this.field.lazy) {
             this.isLoading = true;
             if (this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null) {
-                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value
-                    : [this.group.controls[this.field.name].value]);
+                this.options$ = new BehaviorSubject<any[]>(Array.isArray(this.group.controls[this.field.name].value) ? this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]);
                 this.isLoading = false;
             } else {
                 this.options$ = new BehaviorSubject<any[]>([]);
@@ -165,36 +151,34 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                             if (this.field.options instanceof Observable) {
                                 this.isLoading = true;
                                 return this.field.options.pipe(take(1));
-                            }
-                            else if (this.field.options instanceof Function) {
+                            } else if (this.field.options instanceof Function) {
                                 this.isLoading = true;
                                 return this.field.options();
-                            }
-                            else {
+                            } else {
                                 return of(this.field.options);
                             }
                         } else {
-                            return of(this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
-                                ? (Array.isArray(this.group.controls[this.field.name].value) ?
-                                    this.group.controls[this.field.name].value : [this.group.controls[this.field.name].value]) : [])
+                            return of(
+                                this.group.controls[this.field.name].value !== undefined && this.group.controls[this.field.name].value !== null
+                                    ? Array.isArray(this.group.controls[this.field.name].value)
+                                        ? this.group.controls[this.field.name].value
+                                        : [this.group.controls[this.field.name].value]
+                                    : [],
+                            );
                         }
-                    })
+                    }),
                 )
                 .subscribe((options) => {
                     (this.options$ as BehaviorSubject<any[]>).next(options);
                     this.isLoading = false;
                     this.ref.markForCheck();
                 });
-
         } else {
-
             if (this.field.options instanceof Observable) {
                 this.options$ = this.field.options;
-            }
-            else if (this.field.options instanceof Function) {
+            } else if (this.field.options instanceof Function) {
                 this.options$ = this.field.options();
-            }
-            else {
+            } else {
                 this.options$ = of(this.field.options);
             }
         }
@@ -239,5 +223,5 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
             return o1[this.field.property] === o2[this.field.property];
         }
         return o1 === o2;
-    }
+    };
 }

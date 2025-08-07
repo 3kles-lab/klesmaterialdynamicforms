@@ -1,7 +1,12 @@
 import { Component, Input, OnInit, Signal, forwardRef, signal } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { KlesButtonBase } from './button-control-base';
 import { EnumButtonAttribute } from '../enums/button-attribute.enum';
+import { CommonModule } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButton } from '@angular/material/button';
 
 /*From angular material 
     https://github.com/angular/components/blob/17.0.x/src/material/button/button-base.ts#L40C1-L56C5
@@ -49,7 +54,8 @@ const HOST_SELECTOR_MDC_CLASS_PAIR: { attribute: string; mdcClasses: string[] }[
             multi: true
         }
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, MatIcon, MatTooltip, TranslateModule, MatButton]
 })
 export class KlesButtonComponent extends KlesButtonBase implements OnInit {
 

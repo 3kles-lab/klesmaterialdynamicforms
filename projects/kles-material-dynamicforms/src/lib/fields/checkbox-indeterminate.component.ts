@@ -1,28 +1,33 @@
-
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+import { KlesIndeterminateCheckboxComponent } from '../forms/indeterminate-checkbox';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @FieldMapper({ type: EnumType.checkbox })
 @Component({
     selector: 'kles-form-checkbox-indeterminate',
     template: `
-    <div [formGroup]="group" >
-        <kles-checkbox-indeterminate matTooltip="{{field.tooltip}}" [attr.id]="field.id"
-        [ngClass]="field.ngClass" [(indeterminate)]="field.indeterminate"
-        [color]="field.color" [formControlName]="field.name">{{field.label | translate}}</kles-checkbox-indeterminate>
-    </div>
-`,
+        <div [formGroup]="group">
+            <kles-checkbox-indeterminate matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass" [color]="field.color" [formControlName]="field.name">{{
+                field.label | translate
+            }}</kles-checkbox-indeterminate>
+        </div>
+    `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, KlesIndeterminateCheckboxComponent, TranslateModule, MatTooltipModule],
 })
 export class KlesFormCheckboxIndeterminateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-  ngOnInit() {
-    super.ngOnInit();
-  }
+    ngOnInit() {
+        super.ngOnInit();
+    }
 
-  ngOnDestroy(): void {
-    super.ngOnDestroy();
-  }
+    ngOnDestroy(): void {
+        super.ngOnDestroy();
+    }
 }

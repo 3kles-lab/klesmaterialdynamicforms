@@ -1,6 +1,11 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { KlesButtonBase } from './button-control-base';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -27,7 +32,8 @@ import { KlesButtonBase } from './button-control-base';
             multi: true
         }
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, TranslateModule, MatIconModule, MatTooltipModule, MatButtonModule]
 })
 export class KlesMiniFabComponent extends KlesButtonBase implements OnInit {
 

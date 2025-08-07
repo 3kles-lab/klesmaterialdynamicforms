@@ -1,8 +1,9 @@
+import { CommonModule } from "@angular/common";
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
     name: 'arrayFormat',
-    standalone: false
+    standalone: true,
 })
 export class ArrayFormatPipe implements PipeTransform {
 

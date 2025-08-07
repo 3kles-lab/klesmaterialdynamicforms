@@ -2,6 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { KlesTransformPipe } from '../pipe/transform.pipe';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @FieldMapper({ type: EnumType.text })
 @Component({
@@ -21,7 +24,8 @@ import { KlesFieldAbstract } from './field.abstract';
             justify-content: inherit;
         }`
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, KlesTransformPipe, MatTooltip]
 })
 export class KlesFormTextComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

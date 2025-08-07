@@ -1,5 +1,8 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
+import { KlesMiniFabComponent } from '../forms/mini-fab-control.component';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'kles-form-mini-fab',
@@ -19,7 +22,8 @@ import { KlesFieldAbstract } from './field.abstract';
     </div>
     `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [KlesMiniFabComponent, CommonModule, ReactiveFormsModule]
 })
 export class KlesFormMiniFabComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

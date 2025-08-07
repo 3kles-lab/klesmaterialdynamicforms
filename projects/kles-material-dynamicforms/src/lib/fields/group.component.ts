@@ -4,6 +4,11 @@ import { KlesFormGroup } from '../controls/group.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIcon } from '@angular/material/icon';
+import { KlesTransformPipe } from '../pipe/transform.pipe';
 
 @FieldMapper({ type: EnumType.group, factory: (field) => (new KlesFormGroup(field).create()) })
 @Component({
@@ -31,7 +36,8 @@ import { KlesFieldAbstract } from './field.abstract';
         ':host.group-container-grid { display: grid; }',
         ':host.group-container-inline-grid { display: inline-grid; }',
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, KlesDynamicFieldDirective, MatTooltip]
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

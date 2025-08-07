@@ -12,7 +12,7 @@ import { isDestroyable } from '../utils/destroyable.guard';
 
 @Directive({
     selector: '[klesDynamicField]',
-    standalone: false
+    standalone: true,
 })
 export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() field: IKlesFieldConfig;
@@ -22,7 +22,9 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     componentRef: ComponentRef<any>;
     subComponents: (ComponentRef<any>)[] = [];
 
-    constructor(protected container: ViewContainerRef, private injector: Injector) { }
+    constructor(protected container: ViewContainerRef, private injector: Injector) {
+
+     }
 
     ngOnDestroy(): void {
         if (this.componentRef) {

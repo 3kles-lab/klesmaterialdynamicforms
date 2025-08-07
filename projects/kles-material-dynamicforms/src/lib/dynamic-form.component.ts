@@ -1,10 +1,15 @@
 import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
 import { klesFieldControlFactory } from './factories/field.factory';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
+import { CommonModule, NgIf } from '@angular/common';
+
+import { MatError } from '@angular/material/form-field';
+import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
+import { MatErrorFormDirective } from './directive/mat-error-form.directive';
 
 const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
 FormControlDirective.prototype.ngOnChanges = function () {
@@ -22,7 +27,9 @@ FormControlName.prototype.ngOnChanges = function () {
 @Component({
     exportAs: 'klesDynamicForm',
     selector: 'app-kles-dynamic-form',
+    standalone: true,
     template: `
+    
     <form class="{{orientationClass}}" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
         @for (field of fields; track field.name) {
             @if (field.visible !== false) {
@@ -43,7 +50,8 @@ FormControlName.prototype.ngOnChanges = function () {
         '.dynamic-form-grid { display: grid; }',
         '.dynamic-form-inline-grid { display: inline-grid; }',
     ],
-    standalone: false
+
+    imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, FormsModule, ReactiveFormsModule, MatError]
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {
   @Input() fields: IKlesFieldConfig[] = [];
@@ -63,7 +71,9 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     return this.form.value;
   }
 
-  constructor(private fb: UntypedFormBuilder, private ref: ChangeDetectorRef) { }
+  constructor(private fb: UntypedFormBuilder, private ref: ChangeDetectorRef) {
+
+   }
 
 
   ngOnInit() {

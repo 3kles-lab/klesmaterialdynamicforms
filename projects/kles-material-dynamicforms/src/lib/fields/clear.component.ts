@@ -2,6 +2,9 @@ import { Component } from "@angular/core";
 import { UntypedFormGroup } from "@angular/forms";
 import { IKlesClearControl } from "../interfaces/clear-control.interface";
 import { IKlesFieldConfig } from "../interfaces/field.config.interface";
+import { CommonModule } from "@angular/common";
+import { MatIcon } from "@angular/material/icon";
+import { MatButton, MatIconButton } from "@angular/material/button";
 
 @Component({
     selector: 'kles-form-clear',
@@ -11,7 +14,8 @@ import { IKlesFieldConfig } from "../interfaces/field.config.interface";
         <mat-icon>close</mat-icon>
     </button>
     `,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, MatIcon, MatIconButton]
 })
 export class KlesFormClearComponent implements IKlesClearControl {
     field: IKlesFieldConfig;

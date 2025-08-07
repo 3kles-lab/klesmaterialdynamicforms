@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { KlesTransformPipe } from '../pipe/transform.pipe';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
     selector: 'kles-form-button-toogle-group',
@@ -15,7 +19,8 @@ import { KlesFieldAbstract } from './field.abstract';
             </mat-button-toggle-group>
         </div>
 `,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, KlesTransformPipe, MatButtonToggleModule],
 })
 export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

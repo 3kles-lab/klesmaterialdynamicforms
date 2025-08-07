@@ -105,14 +105,11 @@ const components = [
   KlesFormCopyComponent
 ];
 
+
+
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
-  declarations: [
-    components,
-    directives,
-    pipes
-  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -121,6 +118,9 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
     MaterialModule,
     ColorPickerModule,
     NgxMatSelectSearchModule,
+    components,
+    directives,
+    pipes
   ],
   providers: [
     { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },

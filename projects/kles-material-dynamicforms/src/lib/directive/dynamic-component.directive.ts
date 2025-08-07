@@ -4,7 +4,7 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 
 @Directive({
     selector: '[klesComponent]',
-    standalone: false
+    standalone: true,
 })
 export class KlesComponentDirective implements OnInit, OnChanges {
     @Input() component: Type<any>;

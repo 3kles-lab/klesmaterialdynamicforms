@@ -1,32 +1,31 @@
+import { CommonModule } from '@angular/common';
 import { Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
     selector: 'kles-file-control',
-    template: `
-        <input [accept]="accept" [multiple]="multiple" (change)="onFileSelected($event.target)" type="file">
-    `,
+    template: ` <input [accept]="accept" [multiple]="multiple" (change)="onFileSelected($event.target)" type="file" /> `,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
             useExisting: forwardRef(() => KlesFileControlComponent),
-            multi: true
-        }
+            multi: true,
+        },
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, FormsModule],
 })
 export class KlesFileControlComponent implements ControlValueAccessor {
     @Input() disabled = false;
     @Input() accept = '*.*';
     @Input() multiple = false;
 
-    value: { name: string; content: ArrayBuffer; }[];
+    value: { name: string; content: ArrayBuffer }[];
 
-    onChange: any = () => { };
-    onTouched: any = () => { };
+    onChange: any = () => {};
+    onTouched: any = () => {};
 
-    writeValue(obj: any): void {
-    }
+    writeValue(obj: any): void {}
 
     async onFileSelected(input: HTMLInputElement): Promise<void> {
         if (input.files.length > 0) {
@@ -41,8 +40,7 @@ export class KlesFileControlComponent implements ControlValueAccessor {
 
             this.value = files;
             this.onChange(this.value);
-        }
-        else {
+        } else {
             this.value = null;
             this.onChange(this.value);
         }

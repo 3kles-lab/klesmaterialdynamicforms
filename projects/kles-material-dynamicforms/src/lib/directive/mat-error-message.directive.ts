@@ -3,6 +3,9 @@ import { MatFormFieldControl, MatFormField } from "@angular/material/form-field"
 import { MatInput } from "@angular/material/input";
 import { IKlesValidator } from "../interfaces/validator.interface";
 import { AsyncValidator, Validators } from "@angular/forms";
+import { ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
+import { TranslateModule } from "@ngx-translate/core";
 
 @Component({
     selector: '[matErrorMessage]',
@@ -18,7 +21,12 @@ import { AsyncValidator, Validators } from "@angular/forms";
             }
         }
     `,
-    standalone: false
+    standalone: true,
+    imports: [
+      CommonModule,
+      ReactiveFormsModule,
+      TranslateModule,
+  ],
 })
 export class MatErrorMessageDirective implements AfterViewInit {
     @Input({ required: false }) validations: IKlesValidator<Validators>[] = [];

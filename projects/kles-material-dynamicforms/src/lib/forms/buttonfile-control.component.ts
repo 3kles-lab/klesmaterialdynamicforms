@@ -2,6 +2,8 @@ import { Input } from '@angular/core';
 import { Component, forwardRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
+import { KlesButtonComponent } from './button-control.component';
+import { CommonModule } from '@angular/common';
 
 export interface IButtonFile extends IButton {
     fileContent?: string | string[];
@@ -26,7 +28,8 @@ export interface IButtonFile extends IButton {
             multi: true
         }
     ],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, KlesButtonComponent],
 })
 export class KlesButtonFileComponent extends KlesButtonBase {
     @ViewChild('file') file;

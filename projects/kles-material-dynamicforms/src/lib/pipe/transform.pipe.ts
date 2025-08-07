@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
     name: 'klesTransform',
-    standalone: false
+    standalone: true
 })
 export class KlesTransformPipe implements PipeTransform {
 

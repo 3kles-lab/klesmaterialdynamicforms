@@ -1,6 +1,11 @@
 
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from "@angular/common";
+import { TranslateModule } from "@ngx-translate/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatTooltip } from "@angular/material/tooltip";
+import { MatIcon } from "@angular/material/icon";
 
 
 @Component({
@@ -12,7 +17,8 @@ import { KlesFieldAbstract } from './field.abstract';
         [ngStyle]="{'color':'inherit'}" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType">
     </div>
 `,
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, TranslateModule, ReactiveFormsModule, MatTooltip]
 })
 export class KlesFormLabelComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

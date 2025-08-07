@@ -1,5 +1,12 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
+import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { KlesFabComponent } from '../forms/fab-control.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'kles-form-fab',
@@ -19,7 +26,8 @@ import { KlesFieldAbstract } from './field.abstract';
     </div>
     `,
     styles: [],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, TranslateModule, MatIconModule, MatTooltipModule, MatButtonModule, KlesFabComponent, ReactiveFormsModule]
 })
 export class KlesFormFabComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
