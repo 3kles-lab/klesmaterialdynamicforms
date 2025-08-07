@@ -1,5 +1,5 @@
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, QueryList, signal, ViewChild, ViewChildren, ViewContainerRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, QueryList, signal, ViewChild, ViewChildren, ViewContainerRef, ViewEncapsulation } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, UntypedFormControl } from '@angular/forms';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, concat, Observable, of, ReplaySubject, Subject } from 'rxjs';
@@ -158,7 +158,7 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
         MatLabel,
         MatFormField,
         NgxMatSelectSearchModule,
-        MatCheckbox
+        MatCheckbox,
     ],
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
@@ -178,7 +178,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
     @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
     @ViewChildren(MatOption) options: QueryList<MatOption>;
 
-    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef, public intl: KlesDynamicFormIntl) {
+    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef,public intl: KlesDynamicFormIntl) {
         super(viewRef);
     }
 

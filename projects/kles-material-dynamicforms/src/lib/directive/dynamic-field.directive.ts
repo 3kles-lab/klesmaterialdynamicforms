@@ -1,7 +1,4 @@
-import {
-    Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider,
-    Provider
-} from '@angular/core';
+import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider } from '@angular/core';
 
 import { UntypedFormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -20,11 +17,9 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() siblingFields: IKlesFieldConfig[];
 
     componentRef: ComponentRef<any>;
-    subComponents: (ComponentRef<any>)[] = [];
+    subComponents: ComponentRef<any>[] = [];
 
-    constructor(protected container: ViewContainerRef, private injector: Injector) {
-
-     }
+    constructor(protected container: ViewContainerRef, private injector: Injector) {}
 
     ngOnDestroy(): void {
         if (this.componentRef) {
@@ -48,10 +43,11 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
     buildComponent() {
         if (this.componentRef) {
-            this.subComponents.forEach(c => c.destroy());
+            this.subComponents.forEach((c) => c.destroy());
             this.subComponents = [];
             this.componentRef.destroy();
         }
+
 
         const options: {
             providers: Array<Provider | StaticProvider>;
@@ -60,17 +56,23 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         } = {
             providers: [
                 ...(this.field.providers || []),
-                ...(this.field.dateOptions ? [
-                    ...(this.field.dateOptions.adapter ? [{
-                        provide: DateAdapter,
-                        useClass: this.field.dateOptions.adapter.class,
-                        deps: this.field.dateOptions.adapter.deps || [],
-                    }] : []),
-                    { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
-                    { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
-                ] : [])
+                ...(this.field.dateOptions
+                    ? [
+                          ...(this.field.dateOptions.adapter
+                              ? [
+                                    {
+                                        provide: DateAdapter,
+                                        useClass: this.field.dateOptions.adapter.class,
+                                        deps: this.field.dateOptions.adapter.deps || [],
+                                    },
+                                ]
+                              : []),
+                          { provide: MAT_DATE_LOCALE, useValue: this.field.dateOptions.language },
+                          { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
+                      ]
+                    : []),
             ],
-            parent: this.injector
+            parent: this.injector,
         };
 
         const injector: Injector = Injector.create(options);
@@ -97,9 +99,10 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     }
 
     protected createComponentRef(injector: Injector) {
-        const componentRef = this.container.createComponent(
-            componentMapper.find(element => element.type === this.field.type)?.component || this.field.component,
-            { injector, projectableNodes: [this.subComponents.map(sub => sub.location.nativeElement)] });
+        const componentRef = this.container.createComponent(componentMapper.find((element) => element.type === this.field.type)?.component || this.field.component, {
+            injector,
+            projectableNodes: [this.subComponents.map((sub) => sub.location.nativeElement)],
+        });
 
         if (this.field.hostClass) {
             if (Array.isArray(this.field.hostClass)) {
@@ -107,17 +110,19 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
             } else {
                 componentRef.location.nativeElement.classList.add(this.field.hostClass);
             }
-
         }
 
         return componentRef;
     }
 
-    private createSubComponent(componentType: Type<any>, options: {
-        providers: Array<Provider | StaticProvider>;
-        parent?: Injector;
-        name?: string;
-    }): ComponentRef<any> {
+    private createSubComponent(
+        componentType: Type<any>,
+        options: {
+            providers: Array<Provider | StaticProvider>;
+            parent?: Injector;
+            name?: string;
+        },
+    ): ComponentRef<any> {
         const injector: Injector = Injector.create(options);
         const component = this.container.createComponent(componentType, { injector });
         component.instance.field = this.field;

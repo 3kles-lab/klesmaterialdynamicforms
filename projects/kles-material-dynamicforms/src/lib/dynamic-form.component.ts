@@ -5,7 +5,7 @@ import { EnumType } from './enums/type.enum';
 import { klesFieldControlFactory } from './factories/field.factory';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 import { MatError } from '@angular/material/form-field';
 import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
