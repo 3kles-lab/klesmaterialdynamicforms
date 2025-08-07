@@ -18,7 +18,8 @@ import { KlesFieldAbstract } from './field.abstract';
         </kles-button-checker>
     </div>
     `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormButtonCheckerComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

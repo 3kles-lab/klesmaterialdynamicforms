@@ -31,6 +31,7 @@ import { KlesFieldAbstract } from './field.abstract';
         ':host.group-container-grid { display: grid; }',
         ':host.group-container-inline-grid { display: inline-grid; }',
     ],
+    standalone: false
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

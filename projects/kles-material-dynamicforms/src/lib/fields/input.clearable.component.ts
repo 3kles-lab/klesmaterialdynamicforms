@@ -63,7 +63,8 @@ import { KlesFormInputComponent } from './input.component';
     </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
-    styleUrls: ['../styles/loading-select.style.scss',]
+    styleUrls: ['../styles/loading-select.style.scss',],
+    standalone: false
 })
 export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit, OnDestroy {
 

@@ -53,7 +53,6 @@ export * from './lib/fields/array.component';
 export * from './lib/fields/range.component';
 export * from './lib/fields/clear.component';
 export * from './lib/fields/select.lazy-search.component';
-export * from './lib/fields/date-time.component';
 export * from './lib/fields/button-fab.component';
 export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';

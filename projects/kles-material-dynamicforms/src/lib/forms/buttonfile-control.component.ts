@@ -25,7 +25,8 @@ export interface IButtonFile extends IButton {
             useExisting: forwardRef(() => KlesButtonFileComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 export class KlesButtonFileComponent extends KlesButtonBase {
     @ViewChild('file') file;

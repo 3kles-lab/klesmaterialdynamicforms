@@ -7,7 +7,8 @@ import { IKlesComponent } from "projects/kles-material-dynamicforms/src/public-a
     <span>
         {{value.test}} - {{value.val}}
     </span> 
-`
+`,
+    standalone: false
 })
 export class AutocompleteComponent implements IKlesComponent, OnInit {
     component: Type<any>;

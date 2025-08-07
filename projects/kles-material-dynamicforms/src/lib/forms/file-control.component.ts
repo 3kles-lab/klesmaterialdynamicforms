@@ -12,7 +12,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
             useExisting: forwardRef(() => KlesFileControlComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 export class KlesFileControlComponent implements ControlValueAccessor {
     @Input() disabled = false;

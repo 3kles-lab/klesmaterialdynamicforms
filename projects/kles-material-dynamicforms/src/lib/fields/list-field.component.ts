@@ -51,7 +51,8 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
     </div>
     `,
     styles: ['.subfields {display: flex; flex-direction: row; gap:5px}',
-        `.label {display: flex; align-items: center; flex-direction: row; gap: 5px;}`]
+        `.label {display: flex; align-items: center; flex-direction: row; gap: 5px;}`],
+    standalone: false
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

@@ -53,6 +53,7 @@ import { KlesSelectionModel } from '../selection/selection-model';
     styles: [`
         mat-selection-list {width: 100%;height: 250px; overflow:auto}`
     ],
+    standalone: false
 })
 export class KlesFormSelectionListComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

@@ -15,7 +15,8 @@ import { KlesFieldAbstract } from "./field.abstract";
         </mat-chip-listbox>
     </div>
 `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormChipComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

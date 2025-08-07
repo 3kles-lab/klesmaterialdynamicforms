@@ -3,7 +3,8 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 
 
 @Directive({
-    selector: '[klesComponent]'
+    selector: '[klesComponent]',
+    standalone: false
 })
 export class KlesComponentDirective implements OnInit, OnChanges {
     @Input() component: Type<any>;

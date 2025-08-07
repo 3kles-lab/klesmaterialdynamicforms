@@ -31,7 +31,8 @@ import { KlesFieldAbstract } from './field.abstract';
         '.group-container {display:flex; flex-direction: inherit}',
         '.row { gap: 10px; flex-direction: row; align-items: baseline }',
         '.column { flex-direction: column; gap: 0px}'
-    ]
+    ],
+    standalone: false
 })
 export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

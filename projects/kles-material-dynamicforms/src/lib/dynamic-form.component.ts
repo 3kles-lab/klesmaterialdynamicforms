@@ -20,9 +20,9 @@ FormControlName.prototype.ngOnChanges = function () {
 };
 
 @Component({
-  exportAs: 'klesDynamicForm',
-  selector: 'app-kles-dynamic-form',
-  template: `
+    exportAs: 'klesDynamicForm',
+    selector: 'app-kles-dynamic-form',
+    template: `
     <form class="{{orientationClass}}" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
         @for (field of fields; track field.name) {
             @if (field.visible !== false) {
@@ -35,15 +35,15 @@ FormControlName.prototype.ngOnChanges = function () {
         }
     </form>
     `,
-  styles: [
-    '.dynamic-form-column { display: flex;flex-direction: column; }',
-    '.dynamic-form-column > * { width: 100%; }',
-    '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline}',
-    '.dynamic-form-row > * { width: 100%; }',
-    '.dynamic-form-grid { display: grid; }',
-    '.dynamic-form-inline-grid { display: inline-grid; }',
-  ]
-
+    styles: [
+        '.dynamic-form-column { display: flex;flex-direction: column; }',
+        '.dynamic-form-column > * { width: 100%; }',
+        '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline}',
+        '.dynamic-form-row > * { width: 100%; }',
+        '.dynamic-form-grid { display: grid; }',
+        '.dynamic-form-inline-grid { display: inline-grid; }',
+    ],
+    standalone: false
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {
   @Input() fields: IKlesFieldConfig[] = [];

@@ -11,7 +11,8 @@ import { KlesFieldAbstract } from './field.abstract';
         [ngClass]="field.ngClass" 
         [ngStyle]="{'color':'inherit'}" [formControlName]="field.name" [placeholder]="field.placeholder | translate" [type]="field.inputType">
     </div>
-`
+`,
+    standalone: false
 })
 export class KlesFormLabelComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

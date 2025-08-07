@@ -32,7 +32,8 @@ import { KlesFieldAbstract } from './field.abstract';
         </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
-    styleUrls:['../styles/mat-suffix.style.scss']
+    styleUrls: ['../styles/mat-suffix.style.scss'],
+    standalone: false
 })
 export class KlesFormRangeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

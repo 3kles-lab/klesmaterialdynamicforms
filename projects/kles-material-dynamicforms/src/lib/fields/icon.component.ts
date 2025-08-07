@@ -8,7 +8,8 @@ import { KlesFieldAbstract } from './field.abstract';
             {{group.controls[field.name].value}}
         </mat-icon>
 `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormIconComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

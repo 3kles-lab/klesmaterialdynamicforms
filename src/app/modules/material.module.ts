@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -32,12 +31,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ColorPickerModule } from 'ngx-color-picker';
+
 
 
 @NgModule({
     imports: [
-        CommonModule,
         MatSliderModule,
         MatButtonModule,
         MatToolbarModule,
@@ -69,10 +67,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
         MatNativeDateModule,
         MatSnackBarModule,
         MatTreeModule,
-        MatSliderModule,
-        MatButtonModule,
-        MatSlideToggleModule,
-        ColorPickerModule
+        MatSlideToggleModule
     ],
 
     exports: [
@@ -109,7 +104,6 @@ import { ColorPickerModule } from 'ngx-color-picker';
         MatSliderModule,
         MatButtonModule,
         MatSlideToggleModule,
-        ColorPickerModule
     ],
     providers: [
         MatDatepickerModule,

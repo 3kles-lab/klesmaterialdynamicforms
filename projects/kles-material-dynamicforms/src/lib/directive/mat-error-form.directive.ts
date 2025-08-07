@@ -3,8 +3,8 @@ import { IKlesValidator } from "../interfaces/validator.interface";
 import { AsyncValidator, UntypedFormGroup, Validators } from "@angular/forms";
 
 @Component({
-  selector: '[matErrorForm]',
-  template: `
+    selector: '[matErrorForm]',
+    template: `
       @if(form && form.errors){
         @for (validation of validations; track validation.name) {
             @if (form?.hasError(validation.name) && validation.message) {
@@ -17,7 +17,8 @@ import { AsyncValidator, UntypedFormGroup, Validators } from "@angular/forms";
             }
         }
       }
-    `
+    `,
+    standalone: false
 })
 export class MatErrorFormDirective {
   @Input({ required: false }) validations: IKlesValidator<Validators>[] = [];

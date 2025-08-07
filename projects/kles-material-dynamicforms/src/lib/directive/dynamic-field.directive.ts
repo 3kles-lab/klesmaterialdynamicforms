@@ -11,7 +11,8 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { isDestroyable } from '../utils/destroyable.guard';
 
 @Directive({
-    selector: '[klesDynamicField]'
+    selector: '[klesDynamicField]',
+    standalone: false
 })
 export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() field: IKlesFieldConfig;

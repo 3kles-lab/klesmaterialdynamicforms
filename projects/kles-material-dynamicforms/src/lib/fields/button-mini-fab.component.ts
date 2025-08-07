@@ -18,7 +18,8 @@ import { KlesFieldAbstract } from './field.abstract';
         </kles-mini-fab>
     </div>
     `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormMiniFabComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

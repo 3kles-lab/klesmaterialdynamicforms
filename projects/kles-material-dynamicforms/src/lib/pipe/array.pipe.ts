@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({ name: 'arrayFormat' })
+@Pipe({
+    name: 'arrayFormat',
+    standalone: false
+})
 export class ArrayFormatPipe implements PipeTransform {
 
     transform(values: any[], property?: string): string {

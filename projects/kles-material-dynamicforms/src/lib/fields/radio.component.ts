@@ -14,7 +14,8 @@ import { Observable, of } from 'rxjs';
         </mat-radio-group>
     </div>
 `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormRadioComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     options$: Observable<any[]>;

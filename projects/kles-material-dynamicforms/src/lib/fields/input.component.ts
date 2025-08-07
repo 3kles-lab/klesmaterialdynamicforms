@@ -80,7 +80,8 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
         '../styles/mat-suffix.style.scss',
         '../styles/mat-field-bottom.style.scss',
         '../styles/loading-select.style.scss',
-    ]
+    ],
+    standalone: false
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

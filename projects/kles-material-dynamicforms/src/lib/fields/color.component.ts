@@ -1,8 +1,8 @@
 import { KlesFieldAbstract } from './field.abstract';
 import { OnInit, Component, OnDestroy } from '@angular/core';
 @Component({
-  selector: 'kles-form-color',
-  template: `
+    selector: 'kles-form-color',
+    template: `
     <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" class="form-element"
     [colorPicker]="group.get(field.name).value"
     (colorPickerChange)="group.get(field.name).setValue($event)"
@@ -28,7 +28,8 @@ import { OnInit, Component, OnDestroy } from '@angular/core';
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
     </mat-form-field>
     `,
-  styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}'],
+    standalone: false
 })
 export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

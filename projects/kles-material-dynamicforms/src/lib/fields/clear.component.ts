@@ -11,7 +11,7 @@ import { IKlesFieldConfig } from "../interfaces/field.config.interface";
         <mat-icon>close</mat-icon>
     </button>
     `,
-
+    standalone: false
 })
 export class KlesFormClearComponent implements IKlesClearControl {
     field: IKlesFieldConfig;

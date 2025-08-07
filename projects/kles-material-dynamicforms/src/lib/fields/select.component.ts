@@ -127,7 +127,8 @@ import { KlesFieldAbstract } from './field.abstract';
     styleUrls: [
         '../styles/loading-select.style.scss',
         '../styles/mat-field-bottom.style.scss'
-    ]
+    ],
+    standalone: false
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

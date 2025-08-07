@@ -128,7 +128,8 @@ import { KlesFormSelectSearchComponent } from './select.search.component';
         '.selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
         '.selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
         `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
-    styleUrls: ['../styles/loading-select.style.scss','../styles/mat-field-bottom.style.scss']
+    styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-field-bottom.style.scss'],
+    standalone: false
 })
 export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchComponent implements OnInit, OnDestroy {
 

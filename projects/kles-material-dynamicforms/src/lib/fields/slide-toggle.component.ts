@@ -10,7 +10,8 @@ import { KlesFieldAbstract } from './field.abstract';
         <mat-slide-toggle matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [color]="field.color" [formControlName]="field.name">{{field.label | translate}}</mat-slide-toggle>
     </div>
 `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormSlideToggleComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

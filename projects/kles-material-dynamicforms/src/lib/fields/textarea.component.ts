@@ -23,7 +23,8 @@ import { KlesFieldAbstract } from './field.abstract';
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
     </mat-form-field>
     `,
-    styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}'],
+    standalone: false
 })
 export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit(): void {

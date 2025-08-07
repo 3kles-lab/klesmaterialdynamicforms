@@ -45,7 +45,8 @@ export interface IButtonChecker extends IButton {
             useExisting: forwardRef(() => KlesButtonCheckerComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 export class KlesButtonCheckerComponent extends KlesButtonBase implements ControlValueAccessor {
     value: IButtonChecker = {

@@ -17,7 +17,8 @@ import { FieldMapper } from '../decorators/component.decorator';
         ></kles-file-control>
     </div>
     `,
-    styles: ['mat-form-field {width: calc(100%)}']
+    styles: ['mat-form-field {width: calc(100%)}'],
+    standalone: false
 })
 export class KlesFormFileComponent extends KlesFieldAbstract {
 }

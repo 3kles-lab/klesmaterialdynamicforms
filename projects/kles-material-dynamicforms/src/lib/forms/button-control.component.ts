@@ -48,7 +48,8 @@ const HOST_SELECTOR_MDC_CLASS_PAIR: { attribute: string; mdcClasses: string[] }[
             useExisting: forwardRef(() => KlesButtonComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 export class KlesButtonComponent extends KlesButtonBase implements OnInit {
 

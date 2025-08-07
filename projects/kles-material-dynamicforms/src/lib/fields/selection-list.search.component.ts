@@ -6,8 +6,8 @@ import { debounceTime, distinctUntilChanged, map, shareReplay, startWith, switch
 import { KlesSelectionModel } from '../selection/selection-model';
 import { FormControl } from '@angular/forms';
 @Component({
-  selector: 'kles-form-selection-list-search',
-  template: `
+    selector: 'kles-form-selection-list-search',
+    template: `
     <div class="selection-list" [formGroup]="group">
         <mat-form-field [subscriptSizing]="field.subscriptSizing" [appearance]="field.appearance">
             @if (field.label) {
@@ -61,10 +61,11 @@ import { FormControl } from '@angular/forms';
         </mat-selection-list>
     </div>
 `,
-  styles: [
-    `.selection-list {display:flex; flex-direction:column; gap:5px}`,
-    `mat-selection-list {width: 100%;height: 250px; overflow:auto; flex-grow: 1;}`
-  ],
+    styles: [
+        `.selection-list {display:flex; flex-direction:column; gap:5px}`,
+        `mat-selection-list {width: 100%;height: 250px; overflow:auto; flex-grow: 1;}`
+    ],
+    standalone: false
 })
 export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

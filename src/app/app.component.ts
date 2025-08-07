@@ -22,13 +22,12 @@ import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
-import { KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS, KLES_MAT_MOMENT_FORMATS, KlesMatMomentAdapter } from '@3kles/kles-material-datepicker';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [
     // { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
     // {
     //   provide: DateAdapter,
@@ -36,8 +35,9 @@ import { KLES_MAT_MOMENT_DATE_ADAPTER_OPTIONS, KLES_MAT_MOMENT_FORMATS, KlesMatM
     //   deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     // },
     // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'KlesMaterialDynamicForms';

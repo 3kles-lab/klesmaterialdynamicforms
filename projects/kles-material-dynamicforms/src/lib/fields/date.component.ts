@@ -24,7 +24,8 @@ import { KlesFieldAbstract } from './field.abstract';
     `,
     styles: ['mat-form-field {width: calc(100%)}',
         '.suffix { display: flex; flex-direction: row}'
-    ]
+    ],
+    standalone: false
 })
 export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }

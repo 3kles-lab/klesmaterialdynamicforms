@@ -14,13 +14,14 @@ import { KlesFieldAbstract } from './field.abstract';
            <ng-content></ng-content>
         }
 `,
-styles: [`:host{
+    styles: [`:host{
             display: flex;
             align-items: center;
             flex-direction: row;
             justify-content: inherit;
         }`
-]
+    ],
+    standalone: false
 })
 export class KlesFormTextComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

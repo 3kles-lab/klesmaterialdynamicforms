@@ -11,7 +11,8 @@ import { IKlesField } from "../interfaces/field.interface";
     <button #tooltip="matTooltip" mat-icon-button color="primary" type="button" (click)="copy($event)" [matTooltipDisabled]="true" [matTooltip]="tooltipText" matTooltipPosition="above">
         <mat-icon>content_copy</mat-icon>
     </button>
-    `
+    `,
+    standalone: false
 })
 export class KlesFormCopyComponent implements OnInit, IKlesField {
     @ViewChild("tooltip") tooltip: MatTooltip;

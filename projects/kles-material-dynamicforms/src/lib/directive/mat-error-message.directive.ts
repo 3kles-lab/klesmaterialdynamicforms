@@ -17,7 +17,8 @@ import { AsyncValidator, Validators } from "@angular/forms";
                 {{validation.message | translate}}
             }
         }
-    `
+    `,
+    standalone: false
 })
 export class MatErrorMessageDirective implements AfterViewInit {
     @Input({ required: false }) validations: IKlesValidator<Validators>[] = [];

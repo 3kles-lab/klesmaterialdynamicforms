@@ -10,7 +10,8 @@ import { KlesFieldAbstract } from './field.abstract';
     <span matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" 
         matBadge="{{group.controls[field.name].value}}" matBadgeOverlap="false" matBadgeColor="{{field.color}}">
     </span>
-`
+`,
+    standalone: false
 })
 export class KlesFormBadgeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

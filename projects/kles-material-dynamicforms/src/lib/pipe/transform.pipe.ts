@@ -1,6 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
-@Pipe({ name: 'klesTransform' })
+@Pipe({
+    name: 'klesTransform',
+    standalone: false
+})
 export class KlesTransformPipe implements PipeTransform {
 
     transform(value: any, pipes: { pipe: PipeTransform, options?: any[] }[]): any {

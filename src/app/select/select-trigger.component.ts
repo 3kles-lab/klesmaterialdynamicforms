@@ -7,7 +7,8 @@ import { IKlesComponent } from "kles-material-dynamicforms";
     <span>
         {{value | arrayFormat:'BUAR'}}
     </span> 
-`
+`,
+    standalone: false
 })
 export class SelectTriggerComponent implements IKlesComponent, OnInit, OnChanges {
 

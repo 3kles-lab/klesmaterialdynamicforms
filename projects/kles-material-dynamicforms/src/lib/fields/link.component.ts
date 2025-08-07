@@ -7,7 +7,8 @@ import { KlesFieldAbstract } from "./field.abstract";
         <a [href]="group.controls[field.name].value" matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass">
             {{field.label}}
         </a>
-`
+`,
+    standalone: false
 })
 export class KlesFormLinkComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

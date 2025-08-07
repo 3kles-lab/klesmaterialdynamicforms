@@ -3,8 +3,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'kles-checkbox-indeterminate',
-  template: `
+    selector: 'kles-checkbox-indeterminate',
+    template: `
     <mat-checkbox
       #checkbox
       [indeterminate]="isIndeterminate"
@@ -13,13 +13,14 @@ import { MatCheckbox } from '@angular/material/checkbox';
       {{label}}
     </mat-checkbox>
   `,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => KlesIndeterminateCheckboxComponent),
-      multi: true
-    }
-  ]
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => KlesIndeterminateCheckboxComponent),
+            multi: true
+        }
+    ],
+    standalone: false
 })
 export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor, AfterViewInit {
   @Input() label: string;

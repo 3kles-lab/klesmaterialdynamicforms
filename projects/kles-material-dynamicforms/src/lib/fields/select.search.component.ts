@@ -7,9 +7,9 @@ import { debounceTime, map, startWith, switchMap, take, takeUntil } from 'rxjs/o
 import { KlesFieldAbstract } from './field.abstract';
 
 @Component({
-  selector: 'kles-form-select-search',
-  // encapsulation: ViewEncapsulation.None,
-  template: `
+    selector: 'kles-form-select-search',
+    // encapsulation: ViewEncapsulation.None,
+    template: `
     <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance" class="field-bottom">
         @if (field.label) {
             <mat-label>{{field.label}}</mat-label>
@@ -140,13 +140,14 @@ import { KlesFieldAbstract } from './field.abstract';
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
     </mat-form-field>
 `,
-  styles: ['mat-form-field {width: calc(100%)}',
-    '::ng-deep .selectAll {padding: 0 16px 0 5px !important; display: flex !important;}',
-    '::ng-deep .selectAll .mdc-form-field {width: 100%;}',
-    '::ng-deep .selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
-    '::ng-deep .selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
-    `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
-  styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss']
+    styles: ['mat-form-field {width: calc(100%)}',
+        '::ng-deep .selectAll {padding: 0 16px 0 5px !important; display: flex !important;}',
+        '::ng-deep .selectAll .mdc-form-field {width: 100%;}',
+        '::ng-deep .selectAll .mdc-form-field .mdc-label {width: 100%;  min-height: 48px; align-items: center; display: flex;}',
+        '::ng-deep .selectAll .mdc-form-field .mdc-checkbox__ripple {display: none !important;}',
+        `::ng-deep .hide-checkbox .mat-pseudo-checkbox { display: none !important;  }`],
+    styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss'],
+    standalone: false
 })
 export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

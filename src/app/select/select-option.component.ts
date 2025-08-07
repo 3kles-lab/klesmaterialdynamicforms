@@ -7,7 +7,8 @@ import { IKlesComponent } from "dist/kles-material-dynamicforms/public-api";
     <span>
         {{value.BUAR}} - {{value.TX40}}
     </span> 
-`
+`,
+    standalone: false
 })
 export class SelectOptionComponent implements IKlesComponent, OnInit {
 

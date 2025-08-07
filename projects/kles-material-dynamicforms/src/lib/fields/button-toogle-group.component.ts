@@ -14,7 +14,8 @@ import { KlesFieldAbstract } from './field.abstract';
                 }
             </mat-button-toggle-group>
         </div>
-`
+`,
+    standalone: false
 })
 export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

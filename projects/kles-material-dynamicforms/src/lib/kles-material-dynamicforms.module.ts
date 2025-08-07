@@ -129,8 +129,7 @@ const pipes = [KlesTransformPipe, ArrayFormatPipe];
   exports: [
     components,
     pipes,
-    directives,
-    ColorPickerModule,
+    directives
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })

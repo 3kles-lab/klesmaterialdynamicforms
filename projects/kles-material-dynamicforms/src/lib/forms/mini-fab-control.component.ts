@@ -26,7 +26,8 @@ import { KlesButtonBase } from './button-control-base';
             useExisting: forwardRef(() => KlesMiniFabComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 export class KlesMiniFabComponent extends KlesButtonBase implements OnInit {
 

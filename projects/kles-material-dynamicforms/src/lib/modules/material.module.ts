@@ -32,7 +32,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { ColorPickerModule } from 'ngx-color-picker';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CdkScrollable } from '@angular/cdk/scrolling';
@@ -75,7 +74,6 @@ import { PortalModule } from '@angular/cdk/portal';
         MatTreeModule,
         MatSliderModule,
         MatSlideToggleModule,
-        ColorPickerModule,
         MatButtonToggleModule,
         PortalModule
     ],
@@ -113,7 +111,6 @@ import { PortalModule } from '@angular/cdk/portal';
         MatTreeModule,
         MatSliderModule,
         MatSlideToggleModule,
-        ColorPickerModule,
         ScrollingModule,
         CdkScrollable,
         MatButtonToggleModule,

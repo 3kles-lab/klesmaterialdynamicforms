@@ -24,7 +24,8 @@ import { KlesButtonBase } from './button-control-base';
             useExisting: forwardRef(() => KlesIconButtonComponent),
             multi: true
         }
-    ]
+    ],
+    standalone: false
 })
 export class KlesIconButtonComponent extends KlesButtonBase implements OnInit {
 

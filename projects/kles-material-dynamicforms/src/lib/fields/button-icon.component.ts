@@ -18,7 +18,8 @@ import { KlesFieldAbstract } from './field.abstract';
         </kles-icon-button>
     </div>
     `,
-    styles: []
+    styles: [],
+    standalone: false
 })
 export class KlesFormIconButtonComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
