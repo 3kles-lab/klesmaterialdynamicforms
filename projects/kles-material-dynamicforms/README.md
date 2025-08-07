@@ -104,7 +104,6 @@ Interface field model
 - <b>KlesFormChipComponent</b> component to display a chip
 - <b>KlesFormClearComponent</b> component to clear a form
 - <b>KlesFormColorComponent</b> component to select a color
-- <b>KlesFormDateTimeComponent</b> component to select a date with a time
 - <b>KlesFormDateComponent</b> component to select a date
 - <b>KlesFieldAbstract</b> abstract class to build field component
 - <b>KlesFormGroupComponent</b> component that creates a form group of other components
