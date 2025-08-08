@@ -7,7 +7,6 @@ import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
-import { ColorPickerModule } from 'ngx-color-picker';
 import { KlesFormLabelComponent } from './fields/label.component';
 import { KlesFormInputComponent } from './fields/input.component';
 import { KlesFormSelectComponent } from './fields/select.component';
@@ -56,6 +55,7 @@ import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkb
 import { KlesFormCopyComponent } from './fields/copy.component';
 import { KlesFormFileComponent } from './fields/file.component';
 import { KlesFileControlComponent } from './forms/file-control.component';
+import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
 
 const components = [
     KlesDynamicFormComponent,
@@ -104,10 +104,12 @@ const components = [
     KlesFormCopyComponent,
 ];
 
+const colorPicker = [ColorPickerComponent, ColorPickerDirective];
+
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, ColorPickerModule, NgxMatSelectSearchModule, components, directives, pipes],
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, NgxMatSelectSearchModule, components, directives, pipes, colorPicker],
     providers: [
         { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
         pipes,

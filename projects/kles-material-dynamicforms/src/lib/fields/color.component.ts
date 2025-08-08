@@ -5,8 +5,8 @@ import { MatErrorMessageDirective } from '../directive/mat-error-message.directi
 import { MatTooltip } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
-import { ColorPickerModule } from 'ngx-color-picker';
 import { MatInput } from '@angular/material/input';
+import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
 @Component({
     selector: 'kles-form-color',
     template: `
@@ -46,7 +46,7 @@ import { MatInput } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerModule, MatInput],
+    imports: [CommonModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerComponent, ColorPickerDirective, MatInput],
 })
 export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() {
