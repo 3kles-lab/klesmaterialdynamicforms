@@ -15,22 +15,21 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { KlesComponentDirective } from '../directive/dynamic-component.directive';
 import { KlesDynamicFormIntl } from '../dynamic-form-intl';
+import { MatIconModule } from '@angular/material/icon';
 
 @FieldMapper({ type: EnumType.input })
 @Component({
     selector: 'kles-form-input',
     template: `
-        <mat-form-field
-            [formGroup]="group"
-            [color]="field.color"
-            [subscriptSizing]="field.subscriptSizing"
-            class="form-element"
-            [appearance]="field.appearance"
-            class="field-bottom"
-        >
+        <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="field.appearance" class="field-bottom">
             @if (field.label) {
-            <mat-label>{{ field.label }}</mat-label>
-            } @if (field.autocomplete) {
+                <mat-label>{{ field.label }}</mat-label>
+            }
+            @if(field.icon){
+                <mat-icon matPrefix>{{ field.icon }}</mat-icon>
+            }
+            
+            @if (field.autocomplete) {
             <input
                 matInput
                 matTooltip="{{ field.tooltip }}"
@@ -100,19 +99,7 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
     standalone: true,
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatAutocompleteModule,
-        MatTooltipModule,
-        MatProgressSpinnerModule,
-        MatOptionModule,
-        MatError,
-        MatErrorMessageDirective,
-        KlesComponentDirective
-    ],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatTooltipModule, MatProgressSpinnerModule, MatOptionModule, MatError, MatErrorMessageDirective, KlesComponentDirective, MatIconModule],
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     filteredOption$: Observable<{ loading: boolean; options: any[] }>;
@@ -120,7 +107,7 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
     private isFocused = new Subject<boolean>();
     isLoading = signal(false);
 
-     constructor(protected viewRef: ViewContainerRef, public intl: KlesDynamicFormIntl) {
+    constructor(protected viewRef: ViewContainerRef, public intl: KlesDynamicFormIntl) {
         super(viewRef);
     }
 
