@@ -1,34 +1,49 @@
+<!-- <mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>My App</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+        <mat-icon>share</mat-icon>
+    </button>
+</mat-toolbar> -->
+
+ <button mat-raised-button>Basic</button>
+
+
 <main class="content">
-  <div class="container">
-  
-    <div style="justify-content:center">
-      <button mat-button (click)=" french()">Dynamically switch to French</button>
+    <div style="display: flex; flex-direction: row; align-items: center">
+        <mat-icon>light_mode</mat-icon>
+        <mat-slide-toggle (change)="toggleThemeMode($event)"></mat-slide-toggle>
+        <mat-icon>dark_mode</mat-icon>
     </div>
-    <div class="example">
-      <div class="block">
-        <div style="align-self: center; font-size: x-large;">Button Form</div>
-        <app-kles-dynamic-form #formButton direction="column" [fields]="fieldsButton"
-          [validators]="formValidatorsButton" style="align-self: center;">
-        </app-kles-dynamic-form>
-      </div>
-      <div class="block">
-        <div style="align-self: center; font-size: x-large;">Form</div>
-        <app-kles-dynamic-form #form direction="column" [fields]="fields" [validators]="formValidators">
-        </app-kles-dynamic-form>
-      </div>
-       <div class="block">
-        <div style="align-self: center; font-size: x-large;">Text Form</div>
-        <app-kles-dynamic-form #formText direction="column" [fields]="fieldsText" [validators]="formValidatorsText">
-        </app-kles-dynamic-form>
-      </div>
-      <div class="block">
-        <div style="align-self: center; font-size: x-large;">Input Form</div>
-        <app-kles-dynamic-form #formError direction="column" [fields]="fieldsError" [validators]="formValidatorsError"
-          [asyncValidators]="formAsyncValidatorsError">
-        </app-kles-dynamic-form>
-        <app-kles-dynamic-form #formInput direction="column" [fields]="fieldsInput" [validators]="formValidatorsInput">
-        </app-kles-dynamic-form>
-      </div>
+
+    <div class="container">
+        <div style="justify-content: center">
+            <button mat-button (click)="french()">Dynamically switch to French</button>
+        </div>
+        <div class="example">
+            <div class="block">
+                <div style="align-self: center; font-size: x-large">Button Form</div>
+                <app-kles-dynamic-form #formButton direction="column" [fields]="fieldsButton" [validators]="formValidatorsButton" style="align-self: center"> </app-kles-dynamic-form>
+            </div>
+            <div class="block">
+                <div style="align-self: center; font-size: x-large">Form</div>
+                <app-kles-dynamic-form #form direction="column" [fields]="fields" [validators]="formValidators"> </app-kles-dynamic-form>
+            </div>
+            <div class="block">
+                <div style="align-self: center; font-size: x-large">Text Form</div>
+                <app-kles-dynamic-form #formText direction="column" [fields]="fieldsText" [validators]="formValidatorsText"> </app-kles-dynamic-form>
+            </div>
+            <div class="block">
+                <div style="align-self: center; font-size: x-large">Input Form</div>
+                <app-kles-dynamic-form #formError direction="column" [fields]="fieldsError" [validators]="formValidatorsError" [asyncValidators]="formAsyncValidatorsError"> </app-kles-dynamic-form>
+                <app-kles-dynamic-form #formInput direction="column" [fields]="fieldsInput" [validators]="formValidatorsInput"> </app-kles-dynamic-form>
+            </div>
+        </div>
     </div>
-  </div>
 </main>

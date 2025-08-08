@@ -1,57 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
+@use "./assets/theme/_theme-color.scss" as theme-colors;
 
-// @import "@angular/material/prebuilt-themes/indigo-pink.css";
-// @import "./assets/theme/theme-hermes/processed.scss";
-// @import "./assets/theme/theme-hermes/comon";
+html {
+  @include mat.theme(
+    (
+      color: (
+        theme-type: light,
+        primary: theme-colors.$primary-palette,
+        tertiary: theme-colors.$tertiary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
+}
 
 html,
 body {
-    height: 100%;
-
+  height: 100%;
 }
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+body {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
 }
 
-.content {
-    flex: 1;
-    padding-left: 25px;
-    padding-right: 25px;
-    margin-top: 15px;
-    // overflow-y: auto;
-}
-
-.all-wrap {
-    // min-height: 100vh;
-    min-height: 100%;
-}
-
-.page-wrap {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-//   .mat-tooltip{
-//   color: white;
-//   background-color: #f02f00;
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+// :root {
+//  @include mat.fab-overrides((
+//    small-container-color: orange,
+//   ));
+  
 // }
-
-/*
-   * Make the Component injected by Router Outlet full height:
-   */
-main {
-    display: flex;
-    flex-direction: column;
-    // align-items: center;
-    > *:not(router-outlet) {
-        flex: 1;
-        display: block;
-    }
-}
-
-.allow-cr {
-    white-space: pre-line;
-}
-

@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 .button-center {
     background-color: red;
 }
@@ -22,3 +24,25 @@
     flex: 1 1 100%;
     flex-direction: column;
 }
+
+.orange {
+  @include mat.button-overrides((
+   filled-container-color: orange,
+  ));
+  
+}
+.green {
+  @include mat.button-overrides((
+   filled-container-color: green,
+  ));
+  
+}
+
+.blue {
+  @include mat.button-overrides((
+   filled-container-color: blue,
+  ));
+  
+}
+
+

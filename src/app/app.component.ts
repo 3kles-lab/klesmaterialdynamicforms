@@ -1,6 +1,6 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
-import { CommonModule, DecimalPipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule, DecimalPipe, DOCUMENT } from '@angular/common';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -64,10 +64,15 @@ import { TranslatedKlesLabelIntl } from './app-intl';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [CommonModule, KlesDynamicFormComponent, MaterialModule, ColorPickerModule],
+    encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, AfterViewInit {
     title = 'KlesMaterialDynamicForms';
     color = '';
+
+
+    private document = inject(DOCUMENT);
+
 
     @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
     fields: IKlesFieldConfig[];
@@ -627,12 +632,30 @@ export class AppComponent implements OnInit, AfterViewInit {
             },
 
             {
-                name: 'buttonflat',
+                name: 'buttonflat1',
                 label: 'mat flat button',
-                color: 'accent',
                 icon: 'clear',
                 attribute: EnumButtonAttribute['mat-flat-button'],
                 tooltip: 'tooltip button',
+                hostClass: 'orange',
+                component: KlesFormButtonComponent,
+            },
+            {
+                name: 'buttonflat2',
+                label: 'mat flat button',
+                icon: 'clear',
+                attribute: EnumButtonAttribute['mat-flat-button'],
+                tooltip: 'tooltip button',
+                hostClass: 'green',
+                component: KlesFormButtonComponent,
+            },
+            {
+                name: 'buttonflat3',
+                label: 'mat flat button',
+                icon: 'clear',
+                attribute: EnumButtonAttribute['mat-flat-button'],
+                tooltip: 'tooltip button',
+                hostClass: 'blue',
                 component: KlesFormButtonComponent,
             },
 
@@ -833,5 +856,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         this._adapter.setLocale('fr');
         // Set checkbox to indeterminate
         this.form.form.controls.checkbox.patchValue(-1, { emitEvent: false, onlySelf: true });
+    }
+
+    public toggleThemeMode(event){
+        this.document.body.classList.toggle('dark');
     }
 }
