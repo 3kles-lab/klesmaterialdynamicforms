@@ -45,7 +45,7 @@ import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 import { MaterialModule } from './modules/material.module';
-import { ColorPickerModule } from 'ngx-color-picker';
+
 import { TranslatedKlesLabelIntl } from './app-intl';
 
 @Component({
@@ -63,7 +63,7 @@ import { TranslatedKlesLabelIntl } from './app-intl';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CommonModule, KlesDynamicFormComponent, MaterialModule, ColorPickerModule],
+    imports: [CommonModule, KlesDynamicFormComponent, MaterialModule],
     encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit, AfterViewInit {
