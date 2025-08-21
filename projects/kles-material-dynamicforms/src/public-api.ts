@@ -58,6 +58,8 @@ export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';
 export * from './lib/fields/selection-list.search.component';
 export * from './lib/fields/copy.component';
+export * from './lib/fields/password-visibility.component';
+
 
 /**ENUMS */
 export * from './lib/enums/type.enum';

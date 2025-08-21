@@ -46,7 +46,7 @@ import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerComponent, ColorPickerDirective, MatInput],
+    imports: [CommonModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerDirective, MatInput],
 })
 export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() {
