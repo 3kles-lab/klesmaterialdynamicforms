@@ -3,7 +3,7 @@ import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, Si
 import { UntypedFormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
-import { KlesFormClearComponent } from '../fields/clear.component';
+import { KlesFormClearComponent } from '../fields/subfields/clear.component';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { isDestroyable } from '../utils/destroyable.guard';
 
@@ -48,7 +48,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
             this.componentRef.destroy();
         }
 
-
         const options: {
             providers: Array<Provider | StaticProvider>;
             parent?: Injector;
@@ -87,9 +86,13 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
 
         this.componentRef = this.createComponentRef(injector);
 
-        this.componentRef.instance.field = this.field;
-        this.componentRef.instance.group = this.group;
-        this.componentRef.instance.siblingFields = this.siblingFields;
+        this.componentRef.setInput('field', this.field);
+        this.componentRef.setInput('group', this.group);
+        this.componentRef.setInput('siblingFields', this.siblingFields);
+
+        // this.componentRef.instance.field = this.field;
+        // this.componentRef.instance.group = this.group;
+        // this.componentRef.instance.siblingFields = this.siblingFields;
 
         this.componentRef.onDestroy(() => {
             if (isDestroyable(injector)) {
@@ -125,9 +128,9 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     ): ComponentRef<any> {
         const injector: Injector = Injector.create(options);
         const component = this.container.createComponent(componentType, { injector });
-        component.instance.field = this.field;
-        component.instance.group = this.group;
-        component.instance.siblingFields = this.siblingFields;
+        component.setInput('field', this.field);
+        component.setInput('group', this.group);
+        component.setInput('siblingFields', this.siblingFields);
 
         component.onDestroy(() => {
             if (isDestroyable(injector)) {

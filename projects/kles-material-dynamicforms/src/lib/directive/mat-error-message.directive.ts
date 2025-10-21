@@ -30,7 +30,7 @@ export class MatErrorMessageDirective implements AfterViewInit {
     @Input({ required: false }) validations: IKlesValidator<Validators>[] = [];
     @Input({ required: false }) asyncValidations: IKlesValidator<AsyncValidator>[] = [];
 
-    inputRef: MatFormFieldControl<MatInput>;
+    inputRef: MatFormFieldControl<MatFormFieldControl<any>>;
 
     constructor(private _inj: Injector) {
 

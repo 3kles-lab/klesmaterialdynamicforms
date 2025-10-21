@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { IKlesFieldConfig } from '../interfaces/field.config.interface';
+import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-import { IKlesField } from '../interfaces/field.interface';
+import { IKlesField } from '../../interfaces/field.interface';
 
 @Component({
     selector: 'kles-form-password-visibility',
@@ -17,9 +17,9 @@ import { IKlesField } from '../interfaces/field.interface';
     imports: [CommonModule, MatIcon, MatIconButton],
 })
 export class KlesFormPasswordVisibilityComponent implements IKlesField {
-    field: IKlesFieldConfig;
-    group: UntypedFormGroup;
-    siblingFields: IKlesFieldConfig[];
+    @Input() field: IKlesFieldConfig;
+    @Input() group: UntypedFormGroup;
+    @Input() siblingFields: IKlesFieldConfig[];
 
     hide = true;
 

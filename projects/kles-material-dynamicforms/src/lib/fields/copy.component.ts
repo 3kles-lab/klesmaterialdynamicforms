@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
@@ -21,9 +21,9 @@ import { MatButtonModule } from '@angular/material/button';
 export class KlesFormCopyComponent implements OnInit, IKlesField {
     @ViewChild('tooltip') tooltip: MatTooltip;
 
-    field: IKlesFieldConfig;
-    group: UntypedFormGroup;
-    siblingFields: IKlesFieldConfig[];
+    @Input() field: IKlesFieldConfig;
+    @Input() group: UntypedFormGroup;
+    @Input() siblingFields: IKlesFieldConfig[];
 
     tooltipText: string;
 

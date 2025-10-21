@@ -51,14 +51,14 @@ export * from './lib/fields/selection-list.component';
 export * from './lib/fields/button-toogle-group.component';
 export * from './lib/fields/array.component';
 export * from './lib/fields/range.component';
-export * from './lib/fields/clear.component';
+export * from './lib/fields/subfields/clear.component';
 export * from './lib/fields/select.lazy-search.component';
 export * from './lib/fields/button-fab.component';
 export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';
 export * from './lib/fields/selection-list.search.component';
 export * from './lib/fields/copy.component';
-export * from './lib/fields/password-visibility.component';
+export * from './lib/fields/subfields/password-visibility.component';
 
 
 /**ENUMS */

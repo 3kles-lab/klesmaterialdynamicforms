@@ -106,7 +106,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     if (this.form.valid) {
-      this.submit.emit(this.form.value);
+      this.submit.emit(this.form.getRawValue());
     } else {
       this.validateAllFormFields(this.form);
     }

@@ -1,7 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { UntypedFormGroup } from "@angular/forms";
-import { IKlesClearControl } from "../interfaces/clear-control.interface";
-import { IKlesFieldConfig } from "../interfaces/field.config.interface";
+import { IKlesClearControl } from "../../interfaces/clear-control.interface";
+import { IKlesFieldConfig } from "../../interfaces/field.config.interface";
 import { CommonModule } from "@angular/common";
 import { MatIcon } from "@angular/material/icon";
 import { MatButton, MatIconButton } from "@angular/material/button";
@@ -18,9 +18,9 @@ import { MatButton, MatIconButton } from "@angular/material/button";
     imports: [CommonModule, MatIcon, MatIconButton]
 })
 export class KlesFormClearComponent implements IKlesClearControl {
-    field: IKlesFieldConfig;
-    group: UntypedFormGroup;
-    siblingFields: IKlesFieldConfig[];
+    @Input() field: IKlesFieldConfig;
+    @Input() group: UntypedFormGroup;
+    @Input() siblingFields: IKlesFieldConfig[];
 
     clear(event): void {
         event.stopPropagation();

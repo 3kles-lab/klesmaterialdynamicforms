@@ -1,15 +1,15 @@
 import { IKlesField } from '../interfaces/field.interface';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { UntypedFormGroup } from '@angular/forms';
-import { AfterViewInit, OnDestroy, OnInit, Directive, ViewContainerRef, HostBinding } from '@angular/core';
+import { AfterViewInit, OnDestroy, OnInit, Directive, ViewContainerRef, HostBinding, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive()
 export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit, OnDestroy {
-  field: IKlesFieldConfig;
-  group: UntypedFormGroup;
-  siblingFields: IKlesFieldConfig[];
+  @Input() field: IKlesFieldConfig;
+  @Input() group: UntypedFormGroup;
+  @Input() siblingFields: IKlesFieldConfig[];
 
   @HostBinding('attr.klesDirective') directive;
 

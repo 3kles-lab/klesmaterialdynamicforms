@@ -39,7 +39,7 @@ import { KlesFormBadgeComponent } from './fields/badge.component';
 import { KlesFormButtonToogleGroupComponent } from './fields/button-toogle-group.component';
 import { KlesFormArrayComponent } from './fields/array.component';
 import { KlesFormRangeComponent } from './fields/range.component';
-import { KlesFormClearComponent } from './fields/clear.component';
+import { KlesFormClearComponent } from './fields/subfields/clear.component';
 import { KlesFormSelectLazySearchComponent } from './fields/select.lazy-search.component';
 import { KlesFormFabComponent } from './fields/button-fab.component';
 import { KlesFabComponent } from './forms/fab-control.component';
