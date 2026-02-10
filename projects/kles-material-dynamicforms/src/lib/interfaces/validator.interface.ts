@@ -1,7 +1,13 @@
+type Exclusive<T, U> = (T & { [K in keyof U]?: never }) | (U & { [K in keyof T]?: never });
 
-export interface IKlesValidator<T> {
+export type KlesValidationKey = {
     name: string;
-    validator: T;
     message?: string;
-    messageKey?:string;
-}
+    messageKey?: string;
+};
+
+type KlesValidatorMultiple = {
+    keys: KlesValidationKey[];
+};
+
+export type IKlesValidator<T> = { validator: T } & Exclusive<KlesValidationKey, KlesValidatorMultiple>;
