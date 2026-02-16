@@ -57,7 +57,7 @@ export * from './lib/fields/button-fab.component';
 export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';
 export * from './lib/fields/selection-list.search.component';
-export * from './lib/fields/subfields/clear.component';
+export * from './lib/fields/subfields/copy.component';
 export * from './lib/fields/subfields/password-visibility.component';
 
 
