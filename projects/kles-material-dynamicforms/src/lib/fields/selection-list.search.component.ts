@@ -19,7 +19,7 @@ import { MatOption } from '@angular/material/core';
     selector: 'kles-form-selection-list-search',
     template: `
         <div class="selection-list" [formGroup]="group">
-            <mat-form-field [subscriptSizing]="field.subscriptSizing" [appearance]="field.appearance">
+            <mat-form-field [subscriptSizing]="field.subscriptSizing" [appearance]="appearance()">
                 @if (field.label) {
                 <mat-label>{{ field.label }}</mat-label>
                 }
@@ -29,7 +29,7 @@ import { MatOption } from '@angular/material/core';
                 </button>
             </mat-form-field>
 
-            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="field.ngClass" (selectionChange)="onSelectionChange($event)">
+            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="ngClass()" (selectionChange)="onSelectionChange($event)">
                 @if(optionFiltered$ | async; as options){ @if(field.virtualScroll){
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 20" style="height:100%">
                     @if (!field.autocompleteComponent) {

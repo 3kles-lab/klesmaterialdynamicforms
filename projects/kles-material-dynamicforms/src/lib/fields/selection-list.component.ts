@@ -14,7 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     selector: 'kles-form-selection-list',
     template: `
         <div class="margin-top" [formGroup]="group">
-            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="field.ngClass" (selectionChange)="onSelectionChange($event)">
+            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="ngClass()" (selectionChange)="onSelectionChange($event)">
                 @if(options$ | async; as options){ @if(field.virtualScroll){
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 20" style="height:100%">
                     @if (!field.autocompleteComponent) {

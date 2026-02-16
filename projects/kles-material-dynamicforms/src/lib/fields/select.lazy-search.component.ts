@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { KlesFormSelectSearchComponent } from './select.search.component';
@@ -12,20 +12,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { KlesDynamicFormIntl } from '../dynamic-form-intl';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
     selector: 'kles-form-select-lazy-search',
     template: `
-        <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance" class="field-bottom">
+        <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()" class="field-bottom">
             @if (field.label) {
-            <mat-label>{{ field.label }}</mat-label>
+                <mat-label>{{ field.label }}</mat-label>
             }
 
             <mat-select
                 matTooltip="{{ field.tooltip }}"
                 [attr.id]="field.id"
-                [ngClass]="field.ngClass"
+                [ngClass]="ngClass()"
                 (openedChange)="openChange($event)"
                 [compareWith]="compareFn"
                 [panelWidth]="field.panelWidth || 'auto'"
@@ -34,75 +34,99 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
                 [multiple]="field.multiple"
             >
                 @if (field.triggerComponent) {
-                <mat-select-trigger>
-                    <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
-                </mat-select-trigger>
-                } @if (field.virtualScroll) {
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false" placeholderLabel="" noEntriesFoundLabel=""></ngx-mat-select-search>
-                </mat-option>
-
-                <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]="4 * 48">
-                    @if (!isLoading()) { @if (field.multiple) {
-                    <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
-                        {{ intl.selectAll }}
-                    </mat-checkbox>
-                    } @if (!field.autocompleteComponent) {
-                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
-
-                    @if (field.multiple) { @for (item of group.controls[field.name].value | slice:0:30; track item) {
-                    <mat-option [value]="item" style="display:none">
-                        {{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}
-                    </mat-option>
-                    } } @if (!field.multiple && group.controls[field.name].value) { @for (item of [group?.controls[field.name]?.value]; track item) {
-                    <mat-option [value]="item" style="display:none">
-                        {{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}
-                    </mat-option>
-                    } } } @else {
-                    <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                    <mat-select-trigger>
+                        <ng-container klesComponent [component]="field.triggerComponent" [value]="group.controls[field.name].value" [field]="field"></ng-container>
+                    </mat-select-trigger>
+                }
+                @if (field.virtualScroll) {
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false" placeholderLabel="" noEntriesFoundLabel=""></ngx-mat-select-search>
                     </mat-option>
 
-                    @if (field.multiple) { @for (item of group.controls[field.name].value | slice:0:30; track item) {
-                    <mat-option [value]="item" style="display:none">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                    </mat-option>
-                    } } @if (!field.multiple && group.controls[field.name].value) { @for (item of [group?.controls[field.name]?.value]; track item) {
-                    <mat-option [value]="item" style="display:none">
-                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                    </mat-option>
-                    } } } } @else {
-                    <mat-option class="hide-checkbox" disabled
-                        ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
-                    ></mat-option>
-                    }
-                </cdk-virtual-scroll-viewport>
+                    <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 50" [style.height.px]="4 * 48">
+                        @if (!isLoading()) {
+                            @if (field.multiple) {
+                                <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
+                                    {{ intl.selectAll }}
+                                </mat-checkbox>
+                            }
+                            @if (!field.autocompleteComponent) {
+                                <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}</mat-option>
+
+                                @if (field.multiple) {
+                                    @for (item of group.controls[field.name].value | slice: 0 : 30; track item) {
+                                        <mat-option [value]="item" style="display:none">
+                                            {{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}
+                                        </mat-option>
+                                    }
+                                }
+                                @if (!field.multiple && group.controls[field.name].value) {
+                                    @for (item of [group?.controls[field.name]?.value]; track item) {
+                                        <mat-option [value]="item" style="display:none">
+                                            {{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}
+                                        </mat-option>
+                                    }
+                                }
+                            } @else {
+                                <mat-option *cdkVirtualFor="let item of optionsFiltered$ | async" [value]="item" [disabled]="item?.disabled">
+                                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                                </mat-option>
+
+                                @if (field.multiple) {
+                                    @for (item of group.controls[field.name].value | slice: 0 : 30; track item) {
+                                        <mat-option [value]="item" style="display:none">
+                                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                                        </mat-option>
+                                    }
+                                }
+                                @if (!field.multiple && group.controls[field.name].value) {
+                                    @for (item of [group?.controls[field.name]?.value]; track item) {
+                                        <mat-option [value]="item" style="display:none">
+                                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                                        </mat-option>
+                                    }
+                                }
+                            }
+                        } @else {
+                            <mat-option class="hide-checkbox" disabled
+                                ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                            ></mat-option>
+                        }
+                    </cdk-virtual-scroll-viewport>
                 } @else {
-                <mat-option>
-                    <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false" placeholderLabel="" noEntriesFoundLabel=""></ngx-mat-select-search>
-                </mat-option>
+                    <mat-option>
+                        <ngx-mat-select-search [formControl]="searchControl" [clearSearchInput]="false" placeholderLabel="" noEntriesFoundLabel=""></ngx-mat-select-search>
+                    </mat-option>
 
-                @if (!isLoading()) { @if (field.multiple) {
-                <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
-                    {{ intl.selectAll }}
-                </mat-checkbox>
-                } @if (!field.autocompleteComponent) { @for (item of optionsFiltered$ | async; track item) {
-                <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform : field.pipeTransform }}</mat-option>
-                } } @else { @for (item of optionsFiltered$ | async; track item) {
-                <mat-option [value]="item" [disabled]="item?.disabled">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
-                </mat-option>
-                } } } @else {
-                <mat-option class="hide-checkbox" disabled
-                    ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
-                ></mat-option>
-                } }
+                    @if (!isLoading()) {
+                        @if (field.multiple) {
+                            <mat-checkbox class="selectAll mat-mdc-option mdc-list-item" [formControl]="selectAllControl" (change)="toggleAllSelection($event)">
+                                {{ intl.selectAll }}
+                            </mat-checkbox>
+                        }
+                        @if (!field.autocompleteComponent) {
+                            @for (item of optionsFiltered$ | async; track item) {
+                                <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}</mat-option>
+                            }
+                        } @else {
+                            @for (item of optionsFiltered$ | async; track item) {
+                                <mat-option [value]="item" [disabled]="item?.disabled">
+                                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field"></ng-container>
+                                </mat-option>
+                            }
+                        }
+                    } @else {
+                        <mat-option class="hide-checkbox" disabled
+                            ><div class="loadingSelect">{{ intl.loading }}... <mat-spinner class="spinner" diameter="20"></mat-spinner></div
+                        ></mat-option>
+                    }
+                }
             </mat-select>
 
             @if (field.subComponents || field.clearable) {
-            <div matSuffix>
-                <ng-content></ng-content>
-            </div>
+                <div matSuffix>
+                    <ng-content></ng-content>
+                </div>
             }
 
             <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
@@ -122,13 +146,9 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
     ],
     styleUrls: ['../styles/loading-select.style.scss', '../styles/mat-field-bottom.style.scss'],
     standalone: true,
-    imports: [CommonModule, KlesTransformPipe, MatErrorMessageDirective, MatProgressSpinnerModule, MatSelectModule, KlesComponentDirective, ReactiveFormsModule, NgxMatSelectSearchModule, ScrollingModule, MatTooltipModule],
+    imports: [CommonModule, KlesTransformPipe, MatErrorMessageDirective, MatFormFieldModule, MatProgressSpinnerModule, MatSelectModule, KlesComponentDirective, ReactiveFormsModule, NgxMatSelectSearchModule, ScrollingModule, MatTooltipModule],
 })
 export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchComponent implements OnInit, OnDestroy {
-    constructor(protected viewRef: ViewContainerRef, protected ref: ChangeDetectorRef, public intl: KlesDynamicFormIntl) {
-        super(viewRef, ref, intl);
-    }
-
     ngOnInit() {
         this.field.lazy = true;
         this.field.debounceTime = this.field.debounceTime ? this.field.debounceTime : 500;

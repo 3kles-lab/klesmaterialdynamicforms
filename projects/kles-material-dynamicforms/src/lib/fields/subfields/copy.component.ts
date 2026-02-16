@@ -1,12 +1,13 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { Component, inject, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
-import { IKlesFieldConfig } from '../interfaces/field.config.interface';
-import { IKlesField } from '../interfaces/field.interface';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { IKlesField } from '../../interfaces/field.interface';
+import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
+import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
 
 @Component({
     selector: 'kles-form-copy',
@@ -18,18 +19,16 @@ import { MatButtonModule } from '@angular/material/button';
     standalone: true,
     imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
-export class KlesFormCopyComponent implements OnInit, IKlesField {
+export class KlesFormCopyComponent implements IKlesField {
     @ViewChild('tooltip') tooltip: MatTooltip;
 
-    @Input() field: IKlesFieldConfig;
-    @Input() group: UntypedFormGroup;
-    @Input() siblingFields: IKlesFieldConfig[];
+    readonly field = inject<IKlesFieldConfig>(FIELD);
+    readonly group = inject<FormGroup<any>>(GROUP);
+    readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
 
     tooltipText: string;
 
-    constructor(private clipBoard: Clipboard) {}
-
-    ngOnInit(): void {
+    constructor(private clipBoard: Clipboard) {
         this.tooltipText = this.field.copyTooltip || '';
     }
 
@@ -42,6 +41,6 @@ export class KlesFormCopyComponent implements OnInit, IKlesField {
         this.tooltip.show();
         setTimeout(() => {
             this.tooltip.disabled = true;
-        }, 200);
+        }, 1000);
     }
 }

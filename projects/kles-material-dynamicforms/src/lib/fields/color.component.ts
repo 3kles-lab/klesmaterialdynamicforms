@@ -20,13 +20,13 @@ import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
             [cpColorMode]="field.colorOption.mode"
             [cpOutputFormat]="field.colorOption.format"
             [cpPositionOffset]="field.colorOption.positionOffset"
-            [appearance]="field.appearance"
+            [appearance]="appearance()"
         >
             <input
                 matInput
                 matTooltip="{{ field.tooltip }}"
                 [attr.id]="field.id"
-                [ngClass]="field.ngClass"
+                [ngClass]="ngClass()"
                 [placeholder]="field.placeholder"
                 [value]="group.get(field.name).value"
                 class="colorPicker"

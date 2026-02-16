@@ -10,13 +10,13 @@ import { ReactiveFormsModule } from '@angular/forms';
         <div [formGroup]="group">
             <kles-button
                 [attr.id]="field.id"
-                [classButton]="field.ngClass"
+                [classButton]="ngClass()"
                 [name]="field.name"
                 [label]="field.label"
-                [color]="field.color"
+                [color]="color()"
                 [attribute]="field.attribute"
-                [icon]="field.icon"
-                [iconSvg]="field.iconSvg"
+                [icon]="icon()"
+                [iconSvg]="iconSvg()"
                 [value]="field.value"
                 [formControlName]="field.name"
                 [tooltip]="field.tooltip"

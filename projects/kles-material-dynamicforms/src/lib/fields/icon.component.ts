@@ -1,22 +1,25 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
-import { CommonModule } from "@angular/common";
-import { MatIcon } from "@angular/material/icon";
-import { MatTooltip } from "@angular/material/tooltip";
+import { CommonModule } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-    selector: "kles-form-icon",
+    selector: 'kles-form-icon',
     template: `
-        <mat-icon [color]="field.color" matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
-            {{group.controls[field.name].value}}
+        <mat-icon [color]="color()" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="ngStyle()">
+            {{ group.controls[field.name].value }}
         </mat-icon>
-`,
+    `,
     styles: [],
     standalone: true,
-    imports: [CommonModule, MatIcon, MatTooltip]
+    imports: [CommonModule, MatIcon, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormIconComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    ngOnInit() { super.ngOnInit(); }
+    ngOnInit() {
+        super.ngOnInit();
+    }
     ngOnDestroy(): void {
         super.ngOnDestroy();
     }

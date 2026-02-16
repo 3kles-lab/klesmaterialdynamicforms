@@ -9,7 +9,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     selector: 'kles-form-slide-toggle',
     template: `
         <div [formGroup]="group">
-            <mat-slide-toggle matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass" [color]="field.color" [formControlName]="field.name">{{ field.label }}</mat-slide-toggle>
+            <mat-slide-toggle matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [color]="color()" [formControlName]="field.name">{{ field.label }}</mat-slide-toggle>
         </div>
     `,
     styles: [],

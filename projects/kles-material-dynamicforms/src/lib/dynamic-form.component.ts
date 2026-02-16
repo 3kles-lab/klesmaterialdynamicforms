@@ -1,8 +1,8 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Inject } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
-import { klesFieldControlFactory } from './factories/field.factory';
+import { klesFieldControlFactory, klesFieldUiFactory } from './factories/field.factory';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import { IKlesValidator } from './interfaces/validator.interface';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,8 @@ import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
 import { MatErrorFormDirective } from './directive/mat-error-form.directive';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
+import { AbstractUiState } from './ui/ui-state/ui-state.abstract';
+import { GroupUiState } from './ui/ui-state/group-ui-state';
 
 const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
 FormControlDirective.prototype.ngOnChanges = function () {
@@ -34,7 +36,7 @@ FormControlName.prototype.ngOnChanges = function () {
         <form class="{{ orientationClass }}" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
             @for (field of fields; track field.name) {
                 @if (field.visible !== false) {
-                    <ng-container klesDynamicField [field]="field" [group]="form" [siblingFields]="fields"> </ng-container>
+                    <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="fields"> </ng-container>
                 }
             }
             @if (form && form.errors) {
@@ -65,6 +67,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     @Input() formClass: string | string[] | Set<string> | { [klass: string]: any };
 
     form: UntypedFormGroup;
+    ui: GroupUiState;
     orientationClass: 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' = 'dynamic-form-column';
 
     get value() {
@@ -78,6 +81,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     ngOnInit() {
         this.form = this.createForm();
+        this.ui = this.createUi();
         this.setOrientationClass();
         this._onLoaded.emit();
     }
@@ -194,6 +198,14 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
+    private createUiState(field: IKlesFieldConfig): AbstractUiState {
+        if (field.type) {
+            return componentMapper.find((c) => c.type === field.type)?.ui ? componentMapper.find((c) => c.type === field.type)?.ui(field) : klesFieldUiFactory(field);
+        } else {
+            return componentMapper.find((c) => c.component === field.component)?.ui ? componentMapper.find((c) => c.component === field.component)?.ui(field) : klesFieldUiFactory(field);
+        }
+    }
+
     private createForm() {
         const group = this.fb.group({});
 
@@ -215,5 +227,18 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             const control = formGroup.get(field);
             control.markAsTouched({ onlySelf: true });
         });
+    }
+
+    private createUi() {
+        const uiGroup = new GroupUiState();
+
+        this.fields.forEach((field) => {
+            const uiState = this.createUiState(field);
+            if (uiState) {
+                uiGroup.addUiState(field.name, uiState);
+            }
+        });
+
+        return uiGroup;
     }
 }

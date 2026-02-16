@@ -10,7 +10,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     selector: 'kles-form-button-toogle-group',
     template: `
         <div [formGroup]="group" class="form-element">
-            <mat-button-toggle-group [formControlName]="field.name" [multiple]="field.multiple" [attr.id]="field.id" [ngClass]="field.ngClass">
+            <mat-button-toggle-group [formControlName]="field.name" [multiple]="field.multiple" [attr.id]="field.id" [ngClass]="ngClass()">
                 @for (item of options$ | async; track item) {
                     <mat-button-toggle [value]="item">
                         {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}

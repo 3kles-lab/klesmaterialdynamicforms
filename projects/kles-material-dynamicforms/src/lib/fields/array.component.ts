@@ -6,47 +6,54 @@ import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
+import { KlesFormUiArray } from '../ui/array.ui';
+import { GroupUiState } from '../ui/ui-state/group-ui-state';
+import { ArrayUiState } from '../ui/ui-state/array-ui-state';
 
-@FieldMapper({ type: EnumType.array, factory: (field) => (new KlesFormArray(field).create()) })
+@FieldMapper({ type: EnumType.array, factory: (field) => new KlesFormArray(field).create(), ui: (field) => new KlesFormUiArray(field).create() })
 @Component({
     selector: 'kles-array',
     template: `
-    <div [formGroup]="group" class="container" [ngClass]="{'container-column': field.direction ==='column'}">
-        <ng-container [formArrayName]="field.name">
-            @for (subGroup of formArray.controls; track subGroup.value._id) {
-                <div class="group-container" [ngClass]="field.direction === 'column' ? 'column': 'row'">
-                    @for (subfield of field.collections; track subfield.name) {
-                        @if (subfield.visible !== false) {
-                            <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
-                            </ng-container>
+        <div [formGroup]="group" class="container" [ngClass]="{ 'container-column': field.direction === 'column' }">
+            <ng-container [formArrayName]="field.name">
+                @for (subGroup of formArray.controls; track subGroup.value._id; let index = $index;) {
+                    <div class="group-container" [ngClass]="field.direction === 'column' ? 'column' : 'row'">
+                        @for (subfield of field.collections; track subfield.name) {
+                            @if (subfield.visible !== false) {
+                                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [ui]="subUi?.at(index)" [siblingFields]="field.collections"> </ng-container>
+                            }
                         }
-                    }
-                </div>
-            }
-        </ng-container>
-    </div>
-`,
-    styles: ['mat-form-field {width: calc(100%)}',
+                    </div>
+                }
+            </ng-container>
+        </div>
+    `,
+    styles: [
+        'mat-form-field {width: calc(100%)}',
         ':host { display:flex; flex-direction: inherit}',
         '.container { display: flex; flex-direction: inherit}',
         '.container-column {gap: 10px}',
         '.group-container {display:flex; flex-direction: inherit}',
         '.row { gap: 10px; flex-direction: row; align-items: baseline }',
-        '.column { flex-direction: column; gap: 0px}'
+        '.column { flex-direction: column; gap: 0px}',
     ],
     standalone: true,
     imports: [CommonModule, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
     // subGroup: FormGroup
 
     formArray: UntypedFormArray;
+    subUi: ArrayUiState;
+
+    constructor() {
+        super();
+        this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
+        this.subUi = this.ui?.get(this.field.name) as ArrayUiState;
+    }
 
     ngOnInit() {
-        // this.subGroup = this.group.controls[this.field.name] as FormGroup;
         super.ngOnInit();
-        this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
     }
 
     ngOnDestroy(): void {

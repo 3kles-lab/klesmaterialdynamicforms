@@ -1,6 +1,6 @@
-import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges } from '@angular/core';
+import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, Type, OnChanges, SimpleChanges, Injector } from '@angular/core';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
-
+import { FIELD } from '../token';
 
 @Directive({
     selector: '[klesComponent]',
@@ -13,7 +13,7 @@ export class KlesComponentDirective implements OnInit, OnChanges {
 
     componentRef: ComponentRef<any>;
 
-    constructor(private container: ViewContainerRef) { }
+    constructor(private container: ViewContainerRef) {}
 
     ngOnInit() {
         this.buildComponent();
@@ -34,9 +34,19 @@ export class KlesComponentDirective implements OnInit, OnChanges {
         if (this.componentRef) {
             this.componentRef.destroy();
         }
-        this.componentRef = this.container.createComponent(this.component);
+        const options = {
+            providers: [
+                {
+                    provide: FIELD,
+                    useValue: this.field,
+                },
+            ],
+        };
+
+        const injector: Injector = Injector.create(options);
+
+        this.componentRef = this.container.createComponent(this.component, { injector });
         this.componentRef.instance.component = this.component;
         this.componentRef.instance.value = this.value;
-        this.componentRef.instance.field = this.field;
     }
 }

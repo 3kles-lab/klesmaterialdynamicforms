@@ -10,12 +10,12 @@ import { KlesButtonFileComponent } from '../forms/buttonfile-control.component';
         <div [formGroup]="group">
             <kles-button-file
                 [attr.id]="field.id"
-                [classButton]="field.ngClass"
+                [classButton]="ngClass()"
                 [name]="field.name"
                 [label]="field.label"
-                [color]="field.color"
-                [icon]="field.icon"
-                [iconSvg]="field.iconSvg"
+                [color]="color()"
+                [icon]="icon()"
+                [iconSvg]="iconSvg()"
                 [value]="field.value"
                 [formControlName]="field.name"
                 [type]="field.buttonType"

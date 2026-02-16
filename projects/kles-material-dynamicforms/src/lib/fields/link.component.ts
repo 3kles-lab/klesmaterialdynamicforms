@@ -7,12 +7,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'kles-form-link',
     template: `
-        <a [href]="group.controls[field.name].value" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass">
+        <a [href]="group.controls[field.name].value" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()">
             {{ field.label }}
         </a>
     `,
     standalone: true,
-    imports: [CommonModule,  MatTooltip, ReactiveFormsModule],
+    imports: [CommonModule, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormLinkComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() {

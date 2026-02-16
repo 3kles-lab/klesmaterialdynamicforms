@@ -52,10 +52,11 @@ import { MatErrorMessageDirective } from './directive/mat-error-message.directiv
 import { MatErrorFormDirective } from './directive/mat-error-form.directive';
 import { KlesFormCheckboxIndeterminateComponent } from './fields/checkbox-indeterminate.component';
 import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkbox';
-import { KlesFormCopyComponent } from './fields/copy.component';
+
 import { KlesFormFileComponent } from './fields/file.component';
 import { KlesFileControlComponent } from './forms/file-control.component';
 import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
+import { KlesFormCopyComponent } from './fields/subfields/copy.component';
 
 const components = [
     KlesDynamicFormComponent,
@@ -105,15 +106,11 @@ const components = [
 ];
 
 const colorPicker = [ColorPickerComponent, ColorPickerDirective];
-
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
     imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, NgxMatSelectSearchModule, components, directives, pipes, colorPicker],
-    providers: [
-        { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
-        pipes,
-    ],
+    providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }, pipes],
     exports: [components, pipes, directives],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })

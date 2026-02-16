@@ -1,5 +1,5 @@
 import { KlesFieldAbstract } from './field.abstract';
-import { OnInit, Component, OnDestroy, signal, ViewContainerRef } from '@angular/core';
+import { OnInit, Component, OnDestroy, signal, ViewContainerRef, computed, inject } from '@angular/core';
 import { combineLatest, concat, Observable, of, Subject } from 'rxjs';
 import { startWith, map, switchMap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { EnumType } from '../enums/type.enum';
@@ -21,76 +21,87 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
     selector: 'kles-form-input',
     template: `
-        <mat-form-field [formGroup]="group" [color]="field.color" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="field.appearance" class="field-bottom">
+        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="appearance()" class="field-bottom">
             @if (field.label) {
                 <mat-label>{{ field.label }}</mat-label>
             }
-            @if(field.icon){
-                <mat-icon matPrefix>{{ field.icon }}</mat-icon>
+            @if (icon()) {
+                <mat-icon matPrefix>{{ icon() }}</mat-icon>
             }
-            
-            @if (field.autocomplete) {
-            <input
-                matInput
-                matTooltip="{{ field.tooltip }}"
-                [attr.id]="field.id"
-                [ngClass]="field.ngClass"
-                [formControlName]="field.name"
-                [placeholder]="field.placeholder"
-                [type]="field.inputType"
-                [maxLength]="field.maxLength"
-                [min]="field.min"
-                [max]="field.max"
-                [step]="field.step"
-                [matAutocomplete]="auto"
-                (focus)="onFocus()"
-                (blur)="onBlur()"
-            />
 
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
-                @if(filteredOption$ | async; as filteredOption){ @if(filteredOption.loading){
-                <mat-option disabled>
-                    <div class="loadingSelect">
-                        {{ intl.loading }}...
-                        <mat-spinner class="spinner" diameter="20"></mat-spinner>
-                    </div>
-                </mat-option>
-                }@else{ @if (!field.autocompleteComponent) { @for (option of filteredOption.options; track option) {
-                <mat-option [value]="option">
-                    {{ field.property ? option[field.property] : option }}
-                </mat-option>
-                } } @else { @for (option of filteredOption.options; track option) {
-                <mat-option [value]="option">
-                    <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field"> </ng-container>
-                </mat-option>
-                } } } }
-            </mat-autocomplete>
+            @if (field.autocomplete) {
+                <input
+                    matInput
+                    matTooltip="{{ field.tooltip }}"
+                    [attr.id]="field.id"
+                    [ngClass]="ngClass()"
+                    [formControlName]="field.name"
+                    [placeholder]="field.placeholder"
+                    [type]="inputType()"
+                    [maxLength]="maxLength()"
+                    [min]="min()"
+                    [max]="max()"
+                    [step]="step()"
+                    [matAutocomplete]="auto"
+                    (focus)="onFocus()"
+                    (blur)="onBlur()"
+                />
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
+                    @if (filteredOption$ | async; as filteredOption) {
+                        @if (filteredOption.loading) {
+                            <mat-option disabled>
+                                <div class="loadingSelect">
+                                    {{ intl.loading }}...
+                                    <mat-spinner class="spinner" diameter="20"></mat-spinner>
+                                </div>
+                            </mat-option>
+                        } @else {
+                            @if (!field.autocompleteComponent) {
+                                @for (option of filteredOption.options; track option) {
+                                    <mat-option [value]="option">
+                                        {{ field.property ? option[field.property] : option }}
+                                    </mat-option>
+                                }
+                            } @else {
+                                @for (option of filteredOption.options; track option) {
+                                    <mat-option [value]="option">
+                                        <ng-container klesComponent [component]="field.autocompleteComponent" [value]="option" [field]="field"> </ng-container>
+                                    </mat-option>
+                                }
+                            }
+                        }
+                    }
+                </mat-autocomplete>
             } @else {
-            <input
-                matInput
-                matTooltip="{{ field.tooltip }}"
-                [attr.id]="field.id"
-                [ngClass]="field.ngClass"
-                [formControlName]="field.name"
-                [placeholder]="field.placeholder"
-                [type]="field.inputType"
-                [maxLength]="field.maxLength"
-                [min]="field.min"
-                [max]="field.max"
-                [step]="field.step"
-                (focus)="onFocus()"
-                (blur)="onBlur()"
-            />
-            } @if (field.hint) {
-            <mat-hint>{{ field.hint }}</mat-hint>
-            } @if (field.subComponents || field.clearable || isPending()) {
-            <div matSuffix class="suffix">
-                @if(isPending()){
-                <mat-spinner mode="indeterminate" diameter="21"></mat-spinner>
-                } @if(field.subComponents || field.clearable){
-                <ng-content></ng-content>
-                }
-            </div>
+                <input
+                    matInput
+                    matTooltip="{{ field.tooltip }}"
+                    [attr.id]="field.id"
+                    [ngClass]="ngClass()"
+                    [formControlName]="field.name"
+                    [placeholder]="field.placeholder"
+                    [type]="inputType()"
+                    [maxLength]="maxLength()"
+                    [min]="min()"
+                    [max]="max()"
+                    [step]="step()"
+                    (focus)="onFocus()"
+                    (blur)="onBlur()"
+                />
+            }
+            @if (field.hint) {
+                <mat-hint>{{ field.hint }}</mat-hint>
+            }
+            @if (field.subComponents || field.clearable || isPending()) {
+                <div matSuffix class="suffix">
+                    @if (isPending()) {
+                        <mat-spinner mode="indeterminate" diameter="21"></mat-spinner>
+                    }
+                    @if (field.subComponents || field.clearable) {
+                        <ng-content></ng-content>
+                    }
+                </div>
             }
 
             <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
@@ -107,8 +118,13 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
     private isFocused = new Subject<boolean>();
     isLoading = signal(false);
 
-    constructor(protected viewRef: ViewContainerRef, public intl: KlesDynamicFormIntl) {
-        super(viewRef);
+    public intl = inject(KlesDynamicFormIntl);
+
+    constructor() {
+        super();
+        if (this.maxLength() === undefined) {
+            this.ui?.get(this.field.name)?.patchValue({ maxLength: 524288 }); // Max default input W3C
+        }
     }
 
     ngOnInit(): void {
@@ -175,9 +191,6 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
             ),
         );
 
-        if (!this.field.maxLength) {
-            this.field.maxLength = 524288; // Max default input W3C
-        }
         super.ngOnInit();
     }
 

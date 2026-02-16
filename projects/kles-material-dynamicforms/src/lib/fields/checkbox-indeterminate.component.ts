@@ -12,7 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'kles-form-checkbox-indeterminate',
     template: `
         <div [formGroup]="group">
-            <kles-checkbox-indeterminate matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass" [color]="field.color" [formControlName]="field.name">{{
+            <kles-checkbox-indeterminate matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [color]="color()" [formControlName]="field.name">{{
                 field.label
             }}</kles-checkbox-indeterminate>
         </div>

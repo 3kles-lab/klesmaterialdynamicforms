@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
@@ -24,28 +24,31 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
             </div>
 
             <div class="dynamic-form" [formGroupName]="field.name">
-                @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index;) {
-                <div class="subfields">
-                    @for (subfield of collections[idx]; track subfield.name) {
-                    <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]"> </ng-container>
-                    } @if(collections[idx]){
-                    <button mat-icon-button (click)="deleteField(idx)" color="primary">
-                        <mat-icon>delete_outlined</mat-icon>
-                    </button>
-                    }
-                </div>
-                } @for (validation of field.validations; track validation.name) {
-                <ng-container ngProjectAs="mat-error">
-                    @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{ validation.message }}</mat-error>
-                    }
-                </ng-container>
-                } @for (validation of field.asyncValidations; track validation.name) {
-                <ng-container ngProjectAs="mat-error">
-                    @if (group.get(field.name).hasError(validation.name)) {
-                    <mat-error>{{ validation.message }}</mat-error>
-                    }
-                </ng-container>
+                @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index) {
+                    <div class="subfields">
+                        @for (subfield of collections[idx]; track subfield.name) {
+                            <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]"> </ng-container>
+                        }
+                        @if (collections[idx]) {
+                            <button mat-icon-button (click)="deleteField(idx)" color="primary">
+                                <mat-icon>delete_outlined</mat-icon>
+                            </button>
+                        }
+                    </div>
+                }
+                @for (validation of field.validations; track validation.name) {
+                    <ng-container ngProjectAs="mat-error">
+                        @if (group.get(field.name).hasError(validation.name)) {
+                            <mat-error>{{ validation.message }}</mat-error>
+                        }
+                    </ng-container>
+                }
+                @for (validation of field.asyncValidations; track validation.name) {
+                    <ng-container ngProjectAs="mat-error">
+                        @if (group.get(field.name).hasError(validation.name)) {
+                            <mat-error>{{ validation.message }}</mat-error>
+                        }
+                    </ng-container>
                 }
             </div>
         </div>
@@ -68,9 +71,7 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
     formArray: UntypedFormArray;
     collections: IKlesFieldConfig[][] = [];
 
-    constructor(private fb: UntypedFormBuilder, protected viewRef: ViewContainerRef) {
-        super(viewRef);
-    }
+    private fb = inject(UntypedFormBuilder);
 
     ngOnInit(): void {
         this.formArray = this.group.controls[this.field.name] as UntypedFormArray;

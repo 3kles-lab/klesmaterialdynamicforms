@@ -1,5 +1,5 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { KlesFormGroup } from '../controls/group.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
@@ -7,25 +7,26 @@ import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatIcon } from '@angular/material/icon';
-import { KlesTransformPipe } from '../pipe/transform.pipe';
+import { GroupUiState } from '../ui/ui-state/group-ui-state';
+import { KlesFormUiGroup } from '../ui/group.ui';
 
-@FieldMapper({ type: EnumType.group, factory: (field) => (new KlesFormGroup(field).create()) })
+@FieldMapper({ type: EnumType.group, factory: (field) => new KlesFormGroup(field).create(), ui: (field) => new KlesFormUiGroup(field).create() })
 @Component({
     host: { '[formGroup]': 'group', '[formGroupName]': 'field.name' },
     selector: 'kles-group',
     template: `
-        @if(field.label){
-         <h4><span [matTooltip]="field.tooltip || ''" >{{field.label}}</span></h4>
+        @if (field.label) {
+            <h4>
+                <span [matTooltip]="field.tooltip || ''">{{ field.label }}</span>
+            </h4>
         }
-       
+
         @for (subfield of field.collections; track subfield.name) {
             @if (subfield.visible !== false) {
-                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections">
-                </ng-container>
+                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections" [ui]="subUi"> </ng-container>
             }
         }
-`,
+    `,
     styles: [
         ' mat-form-field {width: calc(100%)}',
         ':host.group-container {display:flex; flex-direction: inherit; width: inherit; justify-content:inherit; }',
@@ -37,24 +38,21 @@ import { KlesTransformPipe } from '../pipe/transform.pipe';
         ':host.group-container-inline-grid { display: inline-grid; }',
     ],
     standalone: true,
-    imports: [CommonModule, KlesDynamicFieldDirective, MatTooltip]
+    imports: [CommonModule, KlesDynamicFieldDirective, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
-    orientationClass: 'group-container'
-        | 'group-container-column'
-        | 'group-container-row'
-        | 'group-container-grid'
-        | 'group-container-inline-grid' = 'group-container';
+    orientationClass: 'group-container' | 'group-container-column' | 'group-container-row' | 'group-container-grid' | 'group-container-inline-grid' = 'group-container';
 
     @HostBinding('class') get className() {
         return this.orientationClass;
     }
 
     subGroup: UntypedFormGroup;
+    subUi: GroupUiState;
 
     ngOnInit() {
         this.subGroup = this.group.controls[this.field.name] as UntypedFormGroup;
+        this.subUi = this.ui?.get(this.field.name) as GroupUiState;
         super.ngOnInit();
         this.setOrientationClass();
     }
@@ -80,6 +78,5 @@ export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit,
                     break;
             }
         }
-
     }
 }

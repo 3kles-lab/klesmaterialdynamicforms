@@ -12,9 +12,9 @@ import { ReactiveFormsModule } from "@angular/forms";
     template: `
     <div [formGroup]="group">  
         <mat-chip-listbox>
-            <mat-chip-option [color]="field.color" matTooltip="{{field.tooltip}}" [attr.id]="field.id" selected [ngClass]="field.ngClass" [ngStyle]="field.ngStyle">
-                @if (field.icon) {
-                    <mat-icon>{{field.icon}}</mat-icon>
+            <mat-chip-option [color]="color()" matTooltip="{{field.tooltip}}" [attr.id]="field.id" selected [ngClass]="ngClass()" [ngStyle]="ngStyle()">
+                @if (icon()) {
+                    <mat-icon>{{icon()}}</mat-icon>
                 }
                 {{group.controls[field.name].value | klesTransform:field.pipeTransform}}
             </mat-chip-option>

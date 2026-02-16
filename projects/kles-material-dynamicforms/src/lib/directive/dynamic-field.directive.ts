@@ -1,11 +1,13 @@
 import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider } from '@angular/core';
-
 import { UntypedFormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
 import { KlesFormClearComponent } from '../fields/subfields/clear.component';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { isDestroyable } from '../utils/destroyable.guard';
+import { FIELD, FIELD_NAME, GROUP, SIBLING_FIELDS, GROUP_UI } from '../token';
+import { GroupUiState } from '../ui/ui-state/group-ui-state';
+
 
 @Directive({
     selector: '[klesDynamicField]',
@@ -14,12 +16,16 @@ import { isDestroyable } from '../utils/destroyable.guard';
 export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     @Input() field: IKlesFieldConfig;
     @Input() group: UntypedFormGroup;
+    @Input() ui: GroupUiState;
     @Input() siblingFields: IKlesFieldConfig[];
 
     componentRef: ComponentRef<any>;
     subComponents: ComponentRef<any>[] = [];
 
-    constructor(protected container: ViewContainerRef, private injector: Injector) {}
+    constructor(
+        protected container: ViewContainerRef,
+        private injector: Injector,
+    ) {}
 
     ngOnDestroy(): void {
         if (this.componentRef) {
@@ -70,6 +76,26 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
                           { provide: MAT_DATE_FORMATS, useValue: this.field.dateOptions.dateFormat },
                       ]
                     : []),
+                {
+                    provide: FIELD_NAME,
+                    useValue: this.field.name,
+                },
+                {
+                    provide: FIELD,
+                    useValue: this.field,
+                },
+                {
+                    provide: GROUP,
+                    useValue: this.group,
+                },
+                {
+                    provide: SIBLING_FIELDS,
+                    useValue: this.siblingFields,
+                },
+                {
+                    provide: GROUP_UI,
+                    useValue: this.ui,
+                },
             ],
             parent: this.injector,
         };
@@ -85,14 +111,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
         }
 
         this.componentRef = this.createComponentRef(injector);
-
-        this.componentRef.setInput('field', this.field);
-        this.componentRef.setInput('group', this.group);
-        this.componentRef.setInput('siblingFields', this.siblingFields);
-
-        // this.componentRef.instance.field = this.field;
-        // this.componentRef.instance.group = this.group;
-        // this.componentRef.instance.siblingFields = this.siblingFields;
 
         this.componentRef.onDestroy(() => {
             if (isDestroyable(injector)) {
@@ -128,9 +146,6 @@ export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
     ): ComponentRef<any> {
         const injector: Injector = Injector.create(options);
         const component = this.container.createComponent(componentType, { injector });
-        component.setInput('field', this.field);
-        component.setInput('group', this.group);
-        component.setInput('siblingFields', this.siblingFields);
 
         component.onDestroy(() => {
             if (isDestroyable(injector)) {

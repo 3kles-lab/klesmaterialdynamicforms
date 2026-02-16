@@ -11,7 +11,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     template: `
     <div [formGroup]="group">
         <label class="radio-label-padding">{{field.label}}</label>
-        <mat-radio-group matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [formControlName]="field.name">
+        <mat-radio-group matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="ngClass()" [formControlName]="field.name">
             @for (item of options$ | async; track item) {
                 <mat-radio-button [value]="item">{{item}}</mat-radio-button>
             }

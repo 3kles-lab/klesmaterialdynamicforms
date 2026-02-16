@@ -9,10 +9,10 @@ import { KlesIconButtonComponent } from '../forms/icon-button-control.component'
     template: `
     <div [formGroup]="group">
         <kles-icon-button
-            [attr.id]="field.id" [classButton]="field.ngClass" 
-            [name]="field.name" [color]="field.color" 
-            [icon]="field.icon"
-            [iconSvg]="field.iconSvg"
+            [attr.id]="field.id" [classButton]="ngClass()" 
+            [name]="field.name" [color]="color()" 
+            [icon]="icon()"
+            [iconSvg]="iconSvg()"
             [value]="field.value"
             [formControlName]="field.name"
             [tooltip]="field.tooltip"
