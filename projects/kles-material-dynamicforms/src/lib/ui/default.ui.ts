@@ -1,5 +1,5 @@
-import { ControlUiState } from './ui-state/control-ui-state';
 import { AbstractUiState } from './ui-state/ui-state.abstract';
+import { ControlUiState } from './ui-state/control-ui-state';
 import { KlesAbstractFormUiControl } from './ui.abstract';
 
 export class KlesFormUiControl extends KlesAbstractFormUiControl {
