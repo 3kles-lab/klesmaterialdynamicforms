@@ -57,7 +57,7 @@ export * from './lib/fields/button-fab.component';
 export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';
 export * from './lib/fields/selection-list.search.component';
-export * from './lib/fields/copy.component';
+export * from './lib/fields/subfields/clear.component';
 export * from './lib/fields/subfields/password-visibility.component';
 
 
@@ -109,3 +109,13 @@ export * from './lib/utils/destroyable.guard';
 /**INTL */
 export * from './lib/dynamic-form-intl';
 
+/**UI */
+export * from './lib/ui/array.ui';
+export * from './lib/ui/default.ui';
+export * from './lib/ui/group.ui';
+export * from './lib/ui/ui.abstract';
+export * from './lib/ui/ui.interface';
+export * from './lib/ui/ui-state/array-ui-state';
+export * from './lib/ui/ui-state/control-ui-state';
+export * from './lib/ui/ui-state/group-ui-state';
+export * from './lib/ui/ui-state/ui-state.abstract';
