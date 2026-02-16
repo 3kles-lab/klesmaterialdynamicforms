@@ -4,6 +4,11 @@ import { AbstractUiState } from './ui-state.abstract';
 export class GroupUiState<TUiState extends { [K in keyof TUiState]: AbstractUiState<any> } = any> extends AbstractUiState<any, any> {
     public states: ɵTypedOrUntyped<TUiState, TUiState, { [key: string]: AbstractUiState<any> }> = {} as TUiState;
 
+    constructor(states?: TUiState) {
+        super();
+        this.states = states;
+    }
+
     override setValue(value: any): void {
         (Object.keys(value) as Array<keyof TUiState>).forEach((name) => {
             (this.states as any)[name]?.setValue((value as any)[name]);

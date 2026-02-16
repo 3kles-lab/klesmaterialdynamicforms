@@ -3,6 +3,11 @@ import { AbstractUiState } from './ui-state.abstract';
 export class ArrayUiState extends AbstractUiState<any, any> {
     public states: AbstractUiState[] = [];
 
+    constructor(states?: any[]) {
+        super();
+        this.states = states;
+    }
+
     override setValue(value: any): void {
         value.forEach((newValue: any, index: number) => {
             this.at(index).setValue(newValue);
