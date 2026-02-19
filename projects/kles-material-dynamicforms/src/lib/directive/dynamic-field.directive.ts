@@ -8,23 +8,22 @@ import { isDestroyable } from '../utils/destroyable.guard';
 import { FIELD, FIELD_NAME, GROUP, SIBLING_FIELDS, GROUP_UI } from '../token';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
 
-
 @Directive({
     selector: '[klesDynamicField]',
     standalone: true,
 })
-export class KlesDynamicFieldDirective implements OnInit, OnChanges, OnDestroy {
-    @Input() field: IKlesFieldConfig;
+export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldConfig> implements OnInit, OnChanges, OnDestroy {
+    @Input() field: T;
     @Input() group: UntypedFormGroup;
     @Input() ui: GroupUiState;
-    @Input() siblingFields: IKlesFieldConfig[];
+    @Input() siblingFields: T[];
 
     componentRef: ComponentRef<any>;
     subComponents: ComponentRef<any>[] = [];
 
     constructor(
         protected container: ViewContainerRef,
-        private injector: Injector,
+        protected injector: Injector,
     ) {}
 
     ngOnDestroy(): void {

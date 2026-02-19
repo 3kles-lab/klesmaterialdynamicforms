@@ -60,7 +60,6 @@ export * from './lib/fields/selection-list.search.component';
 export * from './lib/fields/subfields/copy.component';
 export * from './lib/fields/subfields/password-visibility.component';
 
-
 /**ENUMS */
 export * from './lib/enums/type.enum';
 export * from './lib/enums/button-attribute.enum';
@@ -119,3 +118,6 @@ export * from './lib/ui/ui-state/array-ui-state';
 export * from './lib/ui/ui-state/control-ui-state';
 export * from './lib/ui/ui-state/group-ui-state';
 export * from './lib/ui/ui-state/ui-state.abstract';
+
+/**TOKEN */
+export * from './lib/token';
