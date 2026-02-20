@@ -19,7 +19,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     public inputType = computed(() => this.ui?.get(this.field.name)?.value()?.inputType);
     public min = computed(() => this.ui?.get(this.field.name)?.value()?.min);
     public max = computed(() => this.ui?.get(this.field.name)?.value()?.max);
-    public maxLength = computed(() => this.ui?.get(this.field.name)?.value()?.maxLength);
+    public maxLength = computed(() => this.ui?.get(this.field.name)?.value()?.maxLength ?? 524288);
     public step = computed(() => this.ui?.get(this.field.name)?.value()?.step);
     public ngClass = computed(() => this.ui?.get(this.field.name)?.value()?.ngClass);
     public ngStyle = computed(() => this.ui?.get(this.field.name)?.value()?.ngStyle);

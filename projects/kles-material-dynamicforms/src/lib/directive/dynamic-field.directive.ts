@@ -119,7 +119,7 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
     }
 
     protected createComponentRef(injector: Injector) {
-        const componentRef = this.container.createComponent(componentMapper.find((element) => element.type === this.field.type)?.component || this.field.component, {
+        const componentRef = this.container.createComponent(this.findComponent(), {
             injector,
             projectableNodes: [this.subComponents.map((sub) => sub.location.nativeElement)],
         });
@@ -133,6 +133,10 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
         }
 
         return componentRef;
+    }
+
+    protected findComponent(): Type<any> {
+        return componentMapper.find((element) => element.type === this.field.type)?.component || this.field.component;
     }
 
     private createSubComponent(
