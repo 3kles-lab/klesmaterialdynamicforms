@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { MatError } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
+import { MatIconButton } from '@angular/material/button';
 
 @FieldMapper({ type: 'listfield', factory: (field) => new KlesFormArray(field).create() })
 @Component({
@@ -65,7 +66,7 @@ import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive'
         `,
     ],
     standalone: true,
-    imports: [CommonModule, MatError, MatIcon, KlesDynamicFieldDirective, ReactiveFormsModule],
+    imports: [CommonModule, MatError, MatIcon, MatIconButton, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     formArray: UntypedFormArray;
