@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from "@angular/common";
-import { MatError, MatFormField, MatHint, MatLabel } from "@angular/material/form-field";
+import { MatError, MatFormField, MatHint, MatLabel, MatSuffix } from "@angular/material/form-field";
 import { MatErrorMessageDirective } from "../directive/mat-error-message.directive";
 import { MatDatepickerModule } from "@angular/material/datepicker";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -33,7 +33,7 @@ import { MatInput } from "@angular/material/input";
         '.suffix { display: flex; flex-direction: row}'
     ],
     standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput],
+    imports: [CommonModule, MatErrorMessageDirective, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput, MatSuffix],
 })
 export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() { super.ngOnInit(); }
