@@ -56,6 +56,7 @@ import { KlesFormCopyComponent } from './fields/copy.component';
 import { KlesFormFileComponent } from './fields/file.component';
 import { KlesFileControlComponent } from './forms/file-control.component';
 import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
+import { KlesFormDateTimeComponent } from './fields/date-time.component';
 
 const components = [
     KlesDynamicFormComponent,
@@ -73,6 +74,7 @@ const components = [
     KlesFormButtonFileComponent,
     KlesFormSelectComponent,
     KlesFormDateComponent,
+    KlesFormDateTimeComponent,
     KlesFormRadioComponent,
     KlesFormCheckboxComponent,
     KlesIndeterminateCheckboxComponent,

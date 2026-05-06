@@ -3,7 +3,7 @@ import { CommonModule, DecimalPipe, DOCUMENT } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
@@ -35,7 +35,7 @@ import {
     KlesFormSelectionListComponent,
     KlesFormTextareaComponent,
     KlesFormTextComponent,
-    KlesFormCopyComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent
+    KlesFormCopyComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent, KlesFormDateTimeComponent
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
@@ -47,6 +47,11 @@ import { SelectTriggerComponent } from './select/select-trigger.component';
 import { MaterialModule } from './modules/material.module';
 
 import { TranslatedKlesLabelIntl } from './app-intl';
+import { KlesMatDateAdapter, KlesMatDatepickerIntl } from '@3kles/kles-material-datepicker';
+import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
+import { KLES_MAT_LUXON_FORMATS, KlesMatLuxonAdapter } from '@3kles/kles-material-luxon-adapter';
+import { KLES_MAT_MOMENT_FORMATS, KlesMatMomentAdapter } from '@3kles/kles-material-moment-adapter';
+import { DatePickerIntl } from './date-picker.i18n';
 
 @Component({
     selector: 'app-root',
@@ -60,6 +65,15 @@ import { TranslatedKlesLabelIntl } from './app-intl';
         //   deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
         // },
         // { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+        { provide: KlesMatDateAdapter, useClass: KlesMatLuxonAdapter },
+        { provide: DateAdapter, useClass: LuxonDateAdapter },
+        { provide: MAT_DATE_FORMATS, useValue: KLES_MAT_LUXON_FORMATS },
+        // { provide: KlesMatDateAdapter, useClass: KlesMatMomentAdapter },
+        // { provide: DateAdapter, useClass: MomentDateAdapter },
+        // { provide: MAT_DATE_FORMATS, useValue: KLES_MAT_MOMENT_FORMATS },
+        {
+            provide: KlesMatDatepickerIntl, useClass: DatePickerIntl
+        }
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
@@ -450,6 +464,13 @@ export class AppComponent implements OnInit, AfterViewInit {
                         },
                     },
                 },
+            },
+            {
+                name: 'datetime',
+                placeholder: 'datetime',
+                hint: 'test',
+                component: KlesFormDateTimeComponent,
+                clearable: true
             },
             {
                 name: 'range',

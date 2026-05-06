@@ -30,6 +30,7 @@ export * from './lib/fields/checkbox.component';
 export * from './lib/fields/checkbox-indeterminate.component';
 export * from './lib/fields/color.component';
 export * from './lib/fields/date.component';
+export * from './lib/fields/date-time.component';
 export * from './lib/fields/field.abstract';
 export * from './lib/fields/input.component';
 export * from './lib/fields/input.clearable.component';
