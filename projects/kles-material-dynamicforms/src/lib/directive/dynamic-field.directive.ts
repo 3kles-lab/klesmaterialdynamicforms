@@ -13,12 +13,12 @@ import { GroupUiState } from '../ui/ui-state/group-ui-state';
     standalone: true,
 })
 export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldConfig> implements OnInit, OnChanges, OnDestroy {
-    @Input() field: T;
-    @Input() group: UntypedFormGroup;
-    @Input() ui: GroupUiState;
-    @Input() siblingFields: T[];
+    @Input() field!: T;
+    @Input() group!: UntypedFormGroup;
+    @Input() ui!: GroupUiState;
+    @Input() siblingFields!: T[];
 
-    componentRef: ComponentRef<any>;
+    componentRef: ComponentRef<any> | undefined;
     subComponents: ComponentRef<any>[] = [];
 
     constructor(
@@ -111,32 +111,41 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
 
         this.componentRef = this.createComponentRef(injector);
 
-        this.componentRef.onDestroy(() => {
+        this.componentRef?.onDestroy(() => {
             if (isDestroyable(injector)) {
                 injector.destroy();
             }
         });
     }
 
-    protected createComponentRef(injector: Injector) {
-        const componentRef = this.container.createComponent(this.findComponent(), {
-            injector,
-            projectableNodes: [this.subComponents.map((sub) => sub.location.nativeElement)],
-        });
+    protected createComponentRef(injector: Injector): ComponentRef<any> | undefined {
+        const component = this.findComponent();
 
-        if (this.field.hostClass) {
-            if (Array.isArray(this.field.hostClass)) {
-                componentRef.location.nativeElement.classList.add(...this.field.hostClass);
-            } else {
-                componentRef.location.nativeElement.classList.add(this.field.hostClass);
+        if (component) {
+            const componentRef = this.container.createComponent(component, {
+                injector,
+                projectableNodes: [this.subComponents.map((sub) => sub.location.nativeElement)],
+            });
+
+            if (this.field.hostClass) {
+                if (Array.isArray(this.field.hostClass)) {
+                    componentRef.location.nativeElement.classList.add(...this.field.hostClass);
+                } else {
+                    componentRef.location.nativeElement.classList.add(this.field.hostClass);
+                }
             }
+
+            return componentRef;
         }
 
-        return componentRef;
+        return undefined;
     }
 
-    protected findComponent(): Type<any> {
-        return componentMapper.find((element) => element.type === this.field.type)?.component || this.field.component;
+    protected findComponent(): Type<any> | undefined {
+        if (this.field.type || this.field.component) {
+            return componentMapper.find((element) => element.type === this.field.type)?.component || this.field.component;
+        }
+        return undefined;
     }
 
     private createSubComponent(
