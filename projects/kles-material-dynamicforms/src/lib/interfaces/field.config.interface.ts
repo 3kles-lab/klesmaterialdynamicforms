@@ -23,7 +23,7 @@ export interface IKlesFieldConfig {
   max?: number | Date;
   maxLength?: number;
   step?: number;
-  options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string) => Observable<any[]>); // List options for list component
+  options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string, group?:any) => Observable<any[]>); // List options for list component
   hostClass?: string | string[] | Set<string> | { [klass: string]: any; } // ngclass for host field
   ngClass?: any; // ngclass for field
   ngStyle?: any; // ngStyle for field

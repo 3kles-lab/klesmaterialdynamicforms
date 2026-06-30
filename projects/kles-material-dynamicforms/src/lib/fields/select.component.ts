@@ -167,7 +167,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                             }
                             else if (this.field.options instanceof Function) {
                                 this.isLoading = true;
-                                return this.field.options();
+                                return this.field.options(undefined, this.group.getRawValue());
                             }
                             else {
                                 return of(this.field.options);
@@ -191,7 +191,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                 this.options$ = this.field.options;
             }
             else if (this.field.options instanceof Function) {
-                this.options$ = this.field.options();
+                this.options$ = this.field.options(undefined, this.group.getRawValue());
             }
             else {
                 this.options$ = of(this.field.options);

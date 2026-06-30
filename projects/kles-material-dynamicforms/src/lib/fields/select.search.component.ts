@@ -188,7 +188,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         this.options$ = this.field.options;
       }
       else if (this.field.options instanceof Function) {
-        this.options$ = this.field.options();
+        this.options$ = this.field.options(undefined, this.group.getRawValue());
       }
       else {
         this.options$ = of(this.field.options);
@@ -277,7 +277,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
       }
       else if (this.field.options instanceof Function) {
         this.isLoading.set(true);
-        return this.field.options().pipe(takeUntil(this.openClosed$));
+        return this.field.options(undefined, this.group.getRawValue()).pipe(takeUntil(this.openClosed$));
       }
       else {
         return of(this.field.options);
