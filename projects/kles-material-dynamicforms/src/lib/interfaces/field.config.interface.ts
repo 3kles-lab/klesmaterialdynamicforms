@@ -48,7 +48,7 @@ export interface IKlesFormField {
     placeholder?: any; // Placeholder field
     tooltip?: string; // Tooltip field
     copyTooltip?: string; // Copy component tooltip
-    options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string) => Observable<any[]>); // List options for list component
+    options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string, group?: { [key: string]: any }) => Observable<any[]>); // List options for list component
     property?: string; // Property for field
     collections?: any; // Collections for subfield
     value?: any; // Value field

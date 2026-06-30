@@ -54,8 +54,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     imports: [CommonModule, KlesTransformPipe, MatProgressSpinnerModule, KlesComponentDirective, MatListModule, ScrollingModule, ReactiveFormsModule],
 })
 export class KlesFormSelectionListComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    selection: KlesSelectionModel<any>;
-    options$: Observable<any[]>;
+    selection!: KlesSelectionModel<any>;
+    options$!: Observable<any[]>;
 
     ngOnInit() {
         super.ngOnInit();
@@ -77,7 +77,7 @@ export class KlesFormSelectionListComponent extends KlesFieldAbstract implements
         } else if (this.field.options instanceof Function) {
             this.options$ = this.field.options();
         } else {
-            this.options$ = of(this.field.options);
+            this.options$ = of(this.field.options ?? []);
         }
 
         this.group.controls[this.field.name].valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((value) => {

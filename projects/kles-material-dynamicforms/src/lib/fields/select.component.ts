@@ -2,7 +2,7 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatOption } from '@angular/material/core';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { switchMap, take, takeUntil } from 'rxjs/operators';
+import { startWith, switchMap, take, takeUntil } from 'rxjs/operators';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -147,10 +147,10 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
     imports: [CommonModule, KlesTransformPipe, MatErrorMessageDirective, MatFormFieldModule, MatHint, KlesComponentDirective, MatOption, MatProgressSpinner, ScrollingModule, MatSelectModule, ReactiveFormsModule, MatTooltip],
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-    @ViewChildren(MatOption) options: QueryList<MatOption>;
+    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
+    @ViewChildren(MatOption) options!: QueryList<MatOption>;
 
-    options$: Observable<any[]>;
+    options$: Observable<any[]> = new BehaviorSubject<any[]>([]);
 
     isLoading = false;
 
@@ -180,7 +180,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                                 return this.field.options.pipe(take(1));
                             } else if (this.field.options instanceof Function) {
                                 this.isLoading = true;
-                                return this.field.options();
+                                return this.field.options(undefined, this.group.getRawValue());
                             } else {
                                 return of(this.field.options);
                             }
@@ -204,9 +204,9 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
             if (this.field.options instanceof Observable) {
                 this.options$ = this.field.options;
             } else if (this.field.options instanceof Function) {
-                this.options$ = this.field.options();
+                this.options$ = this.field.options(undefined, this.group.getRawValue());
             } else {
-                this.options$ = of(this.field.options);
+                this.options$ = of(this.field.options ?? []);
             }
         }
     }

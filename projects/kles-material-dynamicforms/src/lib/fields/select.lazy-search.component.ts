@@ -163,9 +163,9 @@ export class KlesFormSelectLazySearchComponent extends KlesFormSelectSearchCompo
         if (this.field.options instanceof Function) {
             if (this.openChange$.getValue() && this.field.options instanceof Function) {
                 if (value) {
-                    return this.field.options(value).pipe(take(1));
+                    return this.field.options(value, this.group.getRawValue()).pipe(take(1));
                 } else {
-                    return this.field.options().pipe(take(1));
+                    return this.field.options(undefined, this.group.getRawValue()).pipe(take(1));
                 }
             }
             return of(this.group.controls[this.field.name].value ? [this.group.controls[this.field.name].value] : []);

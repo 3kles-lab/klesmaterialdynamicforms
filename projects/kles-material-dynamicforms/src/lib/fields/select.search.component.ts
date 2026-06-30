@@ -193,7 +193,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
     isLoading = signal(false);
 
-    options$: Observable<any[]>;
+    options$: Observable<any[]> = new BehaviorSubject<any[]>([]);
     optionsFiltered$ = new ReplaySubject<any[]>(1);
 
     openChange$ = new BehaviorSubject<boolean>(false);
@@ -201,8 +201,8 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
 
     // private _onDestroy = new Subject<void>();
 
-    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-    @ViewChildren(MatOption) options: QueryList<MatOption>;
+    @ViewChild(CdkVirtualScrollViewport) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
+    @ViewChildren(MatOption) options!: QueryList<MatOption>;
 
     public intl = inject(KlesDynamicFormIntl);
     protected ref = inject(ChangeDetectorRef);
@@ -224,9 +224,9 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
             if (this.field.options instanceof Observable) {
                 this.options$ = this.field.options;
             } else if (this.field.options instanceof Function) {
-                this.options$ = this.field.options();
+                this.options$ = this.field.options(undefined, this.group.getRawValue());
             } else {
-                this.options$ = of(this.field.options);
+                this.options$ = of(this.field.options ?? []);
             }
         }
 
@@ -259,7 +259,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         if (this.field.multiple) {
             // this.updateSelectAllControl(this.group.controls[this.field.name].value);
 
-            (this.group.controls[this.field.name] as FormControl).registerOnChange((values, emitViewToModelChange) => {
+            (this.group.controls[this.field.name] as FormControl).registerOnChange((values: any, emitViewToModelChange: any) => {
                 if (emitViewToModelChange) {
                     this.updateSelectAllControl(values);
                 }
@@ -274,7 +274,7 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         super.ngOnDestroy();
     }
 
-    toggleAllSelection(state) {
+    toggleAllSelection(state: { checked: any }) {
         if (state.checked) {
             this.optionsFiltered$
                 .pipe(
@@ -317,9 +317,9 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
                 return this.field.options.pipe(takeUntil(this.openClosed$));
             } else if (this.field.options instanceof Function) {
                 this.isLoading.set(true);
-                return this.field.options().pipe(takeUntil(this.openClosed$));
+                return this.field.options(undefined, this.group.getRawValue()).pipe(takeUntil(this.openClosed$));
             } else {
-                return of(this.field.options);
+                return of(this.field.options ?? []);
             }
         } else {
             return of(
@@ -384,14 +384,15 @@ export class KlesFormSelectSearchComponent extends KlesFieldAbstract implements 
         return o1 === o2;
     };
 
-    selectionChange(selection) {
+    selectionChange(selection: { value: any }) {
         this.updateSelectAllControl(selection.value);
     }
 
-    updateSelectAllControl(values): void {
+    updateSelectAllControl(values: any[]): void {
         if (this.field.multiple) {
             if (values) {
-                const selected = this.field.property && values ? values?.map((s) => s[this.field.property]) : values;
+                const selected = this.field.property && values ? values.map((s) => s[this.field.property as string]) : values;
+
                 this.optionsFiltered$
                     .pipe(
                         take(1),
