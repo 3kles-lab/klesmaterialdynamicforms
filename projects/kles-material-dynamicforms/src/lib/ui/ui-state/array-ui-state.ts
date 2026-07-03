@@ -4,18 +4,15 @@ import { AbstractUiState } from './ui-state.abstract';
 export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiState<any, any>, TValue extends any[] = any[], TRawValue extends TValue = TValue> extends AbstractUiState<TValue, TRawValue> {
     public states: TItem[] = [];
 
-    private readonly _computedValue = computed(() => {
-        return this.states.map((s) => s.value());
-    });
-
     constructor(states?: TItem[]) {
         super();
         this.states = states ?? [];
-        this._value.set(this.states.map((s) => s.value()) as any);
-    }
 
-    public override get value(): Signal<any> {
-        return this._computedValue;
+        this.states.forEach((state, index) => {
+            state.setParent(this, index);
+        });
+
+        this._value.set(this.states.map((state) => state.value()) as TValue);
     }
 
     public override setValue(value: TRawValue): void {
@@ -25,7 +22,9 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
         value.forEach((newValue: any, index: number) => {
             this.at(index)?.setValue(newValue);
         });
+
         this._value.set(value);
+        this.notifyParent();
     }
 
     public override patchValue(value: Partial<TRawValue>): void {
@@ -40,10 +39,32 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
             }
         });
 
-        const curr = this._value() ?? [];
+        const curr = this._value() ?? [] as TValue[];
         const next = [...curr];
-        value.forEach((v, i) => (next[i] = v));
-        this._value.set(next as any);
+
+        value.forEach((newValue, index) => {
+            next[index] = {
+                ...(next[index] ?? {}),
+                ...(newValue as any),
+            };
+        });
+
+        this._value.set(next as TValue);
+        this.notifyParent();
+    }
+
+    override childValueChanged(key: string | number, value: any): void {
+        const index = typeof key === 'number' ? key : Number(key);
+
+        if (!Number.isInteger(index) || index < 0) return;
+
+        const curr = this._value() ?? [] as TValue[];
+        const next = [...curr];
+
+        next[index] = value;
+
+        this._value.set(next as TValue);
+        this.notifyParent();
     }
 
     public at(index: number): AbstractUiState {
@@ -56,13 +77,40 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
     }
 
     public push(control: TItem | TItem[]): void {
-        if (Array.isArray(control)) {
-            control.forEach((ctrl) => {
-                this.states.push(ctrl);
-            });
-        } else {
-            this.states.push(control);
+        const items = Array.isArray(control) ? control : [control];
+
+        for (const item of items) {
+            const index = this.states.length;
+
+            this.states.push(item);
+            item.setParent(this, index);
         }
-        this._value.set(this.states.map((s) => s.value()) as any);
+
+        this._value.set(this.states.map((s) => s.value()) as TValue);
+        this.notifyParent();
     }
+
+    removeAt(index: number): void {
+        if (index < 0 || index >= this.states.length) return;
+        this.states.splice(index, 1);
+
+        this.states.forEach((state, i) => {
+            state.setParent(this, i);
+        });
+
+        const curr = this._value() ?? [] as TValue[];
+        const next = [...curr];
+
+        next.splice(index, 1);
+
+        this._value.set(next as TValue);
+        this.notifyParent();
+    }
+
+    clear(): void {
+        this.states.length = 0;
+        this._value.set([] as unknown as TValue);
+        this.notifyParent();
+    }
+
 }
