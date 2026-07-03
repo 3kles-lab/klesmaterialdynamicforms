@@ -1,3 +1,4 @@
+import { Signal, signal } from '@angular/core';
 import { IKlesFieldUi } from '../../interfaces/field.config.interface';
 import { AbstractUiState } from './ui-state.abstract';
 
@@ -9,8 +10,13 @@ export class ControlUiState<TValue extends IKlesFieldUi> extends AbstractUiState
         }
     }
 
+    get value(): Signal<TValue | undefined> {
+        return this._value.asReadonly();
+    }
+
     override setValue(value: TValue): void {
         this._value.set(value);
+        this.notifyParent();
     }
 
     override patchValue(value: Partial<TValue> | TValue): void {
@@ -25,5 +31,7 @@ export class ControlUiState<TValue extends IKlesFieldUi> extends AbstractUiState
         }
 
         this._value.set({ ...(curr as any), ...(value as any) } as TValue);
+        this.notifyParent();
     }
+
 }
