@@ -39,7 +39,7 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
             }
         });
 
-        const curr = this._value() ?? [] as TValue[];
+        const curr = this._value() ?? ([] as TValue[]);
         const next = [...curr];
 
         value.forEach((newValue, index) => {
@@ -58,7 +58,7 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
 
         if (!Number.isInteger(index) || index < 0) return;
 
-        const curr = this._value() ?? [] as TValue[];
+        const curr = this._value() ?? ([] as TValue[]);
         const next = [...curr];
 
         next[index] = value;
@@ -79,6 +79,10 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
     public push(control: TItem | TItem[]): void {
         const items = Array.isArray(control) ? control : [control];
 
+        if (items.length === 0) {
+            return;
+        }
+
         for (const item of items) {
             const index = this.states.length;
 
@@ -90,6 +94,30 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
         this.notifyParent();
     }
 
+    public insert(index: number, state: TItem | TItem[]): void {
+        const items = Array.isArray(state) ? state : [state];
+
+        if (items.length === 0) {
+            return;
+        }
+
+        const safeIndex = Math.max(0, Math.min(index, this.states.length));
+
+        this.states.splice(safeIndex, 0, ...items);
+
+        for (let i = safeIndex; i < this.states.length; i++) {
+            this.states[i]?.setParent(this, i);
+        }
+
+        const curr = this._value() as any;
+        const next = [...curr];
+
+        next.splice(safeIndex, 0, ...items.map((item) => item.value()));
+
+        this._value.set(next as TValue);
+        this.notifyParent();
+    }
+
     removeAt(index: number): void {
         if (index < 0 || index >= this.states.length) return;
         this.states.splice(index, 1);
@@ -98,7 +126,7 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
             state.setParent(this, i);
         });
 
-        const curr = this._value() ?? [] as TValue[];
+        const curr = this._value() ?? ([] as TValue[]);
         const next = [...curr];
 
         next.splice(index, 1);
@@ -112,5 +140,4 @@ export class ArrayUiState<TItem extends AbstractUiState<any, any> = AbstractUiSt
         this._value.set([] as unknown as TValue);
         this.notifyParent();
     }
-
 }
