@@ -12,20 +12,24 @@ import { KlesFormUiGroup } from '../ui/group.ui';
 
 @FieldMapper({ type: EnumType.group, factory: (field) => new KlesFormGroup(field).create(), ui: (field) => new KlesFormUiGroup(field).create() })
 @Component({
-    host: { '[formGroup]': 'group', '[formGroupName]': 'field.name' },
+    // host: { '[formGroup]': 'group', '[formGroupName]': 'field.name' },
     selector: 'kles-group',
     template: `
-        @if (field.label) {
-            <h4>
-                <span [matTooltip]="field.tooltip || ''">{{ field.label }}</span>
-            </h4>
-        }
+        <ng-container [formGroup]="group">
+            <ng-container [formGroupName]="field.name">
+                @if (field.label) {
+                    <h4>
+                        <span [matTooltip]="field.tooltip || ''">{{ field.label }}</span>
+                    </h4>
+                }
 
-        @for (subfield of field.collections; track subfield.name) {
-            @if (subfield.visible !== false) {
-                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections" [ui]="subUi"> </ng-container>
-            }
-        }
+                @for (subfield of field.collections; track subfield.name) {
+                    @if (subfield.visible !== false) {
+                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections" [ui]="subUi"> </ng-container>
+                    }
+                }
+            </ng-container>
+        </ng-container>
     `,
     styles: [
         ' mat-form-field {width: calc(100%)}',

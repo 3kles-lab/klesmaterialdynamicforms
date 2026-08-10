@@ -5,7 +5,7 @@ import { provideZoneChangeDetection } from '@angular/core';
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [provideZoneChangeDetection({ ignoreChangesOutsideZone: true })],
+      providers: [provideZoneChangeDetection()],
       declarations: [
         AppComponent
       ],
