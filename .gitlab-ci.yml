@@ -53,7 +53,7 @@ include:
       npm_install_args: "--legacy-peer-deps"
       build_command: >-
         echo "Building Angular library: $LIBRARY_NG";
-        npm run build -- --project "$LIBRARY_NG" --configuration production
+        npm run build -- "$LIBRARY_NG" --configuration production
       needs:
         - job: nexus_creds
         - job: lint
