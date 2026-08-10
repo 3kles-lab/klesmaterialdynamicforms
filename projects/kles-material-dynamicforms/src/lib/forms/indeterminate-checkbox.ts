@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, forwardRef, Input, AfterViewInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
@@ -23,7 +23,7 @@ import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
         }
     ],
     standalone: true,
-    imports: [CommonModule, MatCheckboxModule, ReactiveFormsModule, FormsModule],
+    imports: [MatCheckboxModule, ReactiveFormsModule, FormsModule],
 })
 export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor, AfterViewInit {
   @Input() label: string;

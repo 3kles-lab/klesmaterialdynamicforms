@@ -1,7 +1,7 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { KlesIconButtonComponent } from '../forms/icon-button-control.component';
 
 @Component({
@@ -23,7 +23,7 @@ import { KlesIconButtonComponent } from '../forms/icon-button-control.component'
     `,
     styles: [],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, KlesIconButtonComponent],
+    imports: [ReactiveFormsModule, KlesIconButtonComponent],
 })
 export class KlesFormIconButtonComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

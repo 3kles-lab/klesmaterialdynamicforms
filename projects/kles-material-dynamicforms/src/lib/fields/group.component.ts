@@ -4,7 +4,7 @@ import { KlesFormGroup } from '../controls/group.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
-import { CommonModule } from '@angular/common';
+
 import { KlesDynamicFieldDirective } from '../directive/dynamic-field.directive';
 import { MatTooltip } from '@angular/material/tooltip';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
@@ -38,7 +38,7 @@ import { KlesFormUiGroup } from '../ui/group.ui';
         ':host.group-container-inline-grid { display: inline-grid; }',
     ],
     standalone: true,
-    imports: [CommonModule, KlesDynamicFieldDirective, MatTooltip, ReactiveFormsModule],
+    imports: [KlesDynamicFieldDirective, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     orientationClass: 'group-container' | 'group-container-column' | 'group-container-row' | 'group-container-grid' | 'group-container-inline-grid' = 'group-container';

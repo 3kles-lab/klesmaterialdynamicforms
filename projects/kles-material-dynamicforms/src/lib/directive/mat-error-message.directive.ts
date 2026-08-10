@@ -3,7 +3,7 @@ import { MatFormFieldControl, MatFormField } from '@angular/material/form-field'
 import { IKlesValidator, KlesValidationKey } from '../interfaces/validator.interface';
 import { AsyncValidator, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { flattenValidators } from '../utils/validation.util';
 
 @Component({
@@ -21,7 +21,7 @@ import { flattenValidators } from '../utils/validation.util';
         }
     `,
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule],
+    imports: [ReactiveFormsModule],
 })
 export class MatErrorMessageDirective implements AfterViewInit {
     validationsKeys: KlesValidationKey[] = [];

@@ -1,7 +1,7 @@
 import { Component, inject, Input, signal } from '@angular/core';
 import { FormGroup, UntypedFormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
-import { CommonModule } from '@angular/common';
+
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { IKlesField } from '../../interfaces/field.interface';
@@ -16,7 +16,7 @@ import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
         </button>
     `,
     standalone: true,
-    imports: [CommonModule, MatIcon, MatIconButton],
+    imports: [MatIcon, MatIconButton],
 })
 export class KlesFormPasswordVisibilityComponent implements IKlesField {
     readonly field = inject<IKlesFieldConfig>(FIELD);

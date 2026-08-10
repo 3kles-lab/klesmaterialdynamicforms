@@ -2,7 +2,7 @@ import { Component, inject, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { IKlesField } from '../../interfaces/field.interface';
@@ -17,7 +17,7 @@ import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
         </button>
     `,
     standalone: true,
-    imports: [CommonModule, MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
+    imports: [MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
 export class KlesFormCopyComponent implements IKlesField {
     @ViewChild('tooltip') tooltip: MatTooltip;

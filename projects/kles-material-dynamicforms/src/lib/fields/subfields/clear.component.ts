@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, Signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IKlesClearControl } from '../../interfaces/clear-control.interface';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
-import { CommonModule } from '@angular/common';
+
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
@@ -17,7 +17,7 @@ import { combineLatest, map, startWith, Subject, takeUntil } from 'rxjs';
         </button>
     `,
     standalone: true,
-    imports: [CommonModule, MatIcon, MatIconButton],
+    imports: [MatIcon, MatIconButton],
 })
 export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {
     readonly field = inject<IKlesFieldConfig>(FIELD);

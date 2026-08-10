@@ -1,6 +1,6 @@
 import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,7 +26,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     `,
     styles: [],
     standalone: true,
-    imports: [CommonModule, MatIconModule, MatTooltipModule, MatButtonModule, KlesFabComponent, ReactiveFormsModule]
+    imports: [MatIconModule, MatTooltipModule, MatButtonModule, KlesFabComponent, ReactiveFormsModule]
 })
 export class KlesFormFabComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 

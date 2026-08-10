@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
-import { CommonModule } from '@angular/common';
+
 import { KlesButtonComponent } from './button-control.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatBadge } from '@angular/material/badge';
@@ -41,7 +41,7 @@ export interface IButtonChecker extends IButton {
         },
     ],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, KlesButtonComponent, MatProgressSpinner, MatBadge],
+    imports: [ReactiveFormsModule, KlesButtonComponent, MatProgressSpinner, MatBadge],
 })
 export class KlesButtonCheckerComponent extends KlesButtonBase implements ControlValueAccessor {
     value: IButtonChecker = {

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IKlesValidator, KlesValidationKey } from '../interfaces/validator.interface';
 import { AsyncValidator, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { flattenValidators } from '../utils/validation.util';
 
 @Component({
@@ -21,7 +21,7 @@ import { flattenValidators } from '../utils/validation.util';
         }
     `,
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, FormsModule],
+    imports: [ReactiveFormsModule, FormsModule],
 })
 export class MatErrorFormDirective {
     validationsKeys: KlesValidationKey[] = [];
