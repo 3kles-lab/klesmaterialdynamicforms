@@ -1,5 +1,5 @@
 import { Component, OnInit, Type } from "@angular/core";
-import { IKlesComponent } from "dist/kles-material-dynamicforms/public-api";
+import { IKlesComponent } from "dist/kles-material-dynamicforms";
 
 @Component({
     selector: 'kles-select-option',
