@@ -31,7 +31,8 @@
         "ngx-color-picker": "^19.0.0",
         "ngx-mat-select-search": "^8.0.2",
         "rxjs": "^6.5.3 || ^7.4.0",
-        "zone.js": "~0.15.1"
+        "zone.js": "~0.15.1",
+        "uuid": "^8.3.0"
     },
     "dependencies": {
         "tslib": "^2.0.0"
