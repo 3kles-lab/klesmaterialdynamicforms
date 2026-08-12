@@ -1,37 +1,39 @@
 {
-  "name": "@3kles/kles-material-dynamicforms",
-  "version": "19.5.1",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/3kles-lab/klesmaterialdynamicforms"
-  },
-  "keywords": [
-    "3KLES"
-  ],
-  "bugs": {
-    "url": "https://github.com/3kles-lab/klesmaterialdynamicforms/issues"
-  },
-  "homepage": "https://github.com/3kles-lab/klesmaterialdynamicforms",
-  "author": "3Kles Lab",
-  "license": "ISC",
-  "peerDependencies": {
-    "@3kles/kles-material-datepicker": "^19.0.6",
-    "@angular/animations": "^19.2.0",
-    "@angular/cdk": "^19.2.0",
-    "@angular/common": "^19.2.0",
-    "@angular/core": "^19.2.0",
-    "@angular/forms": "^19.2.0",
-    "@angular/material": "^19.2.0",
-    "@angular/platform-browser": "^19.2.0",
-    "@angular/router": "^19.2.0",
-    "rxjs": "^7.8.0",
-    "zone.js": "~0.15.1",
-    "hammerjs": "^2.0.8",
-    "lodash": "^4.17.19",
-    "ngx-color-picker": "^19.0.0",
-    "ngx-mat-select-search": "^8.0.2"
-  },
-  "dependencies": {
-    "tslib": "^2.0.0"
-  }
+    "name": "@3kles/kles-material-dynamicforms",
+    "version": "19.5.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/3kles-lab/klesmaterialdynamicforms"
+    },
+    "keywords": [
+        "3KLES"
+    ],
+    "bugs": {
+        "url": "https://github.com/3kles-lab/klesmaterialdynamicforms/issues"
+    },
+    "homepage": "https://github.com/3kles-lab/klesmaterialdynamicforms",
+    "author": "3Kles Lab",
+    "license": "ISC",
+    "peerDependencies": {
+        "@3kles/kles-material-datepicker": "^19.0.6",
+        "@3kles/kles-material-luxon-adapter": "^19.0.0",
+        "@3kles/kles-material-moment-adapter": "^19.0.0",
+        "@angular/animations": "^19.2.0",
+        "@angular/cdk": "^19.2.0",
+        "@angular/common": "^19.2.0",
+        "@angular/core": "^19.2.0",
+        "@angular/forms": "^19.2.0",
+        "@angular/material": "^19.2.0",
+        "@angular/platform-browser": "^19.2.0",
+        "@angular/router": "^19.2.0",
+        "rxjs": "^7.8.0",
+        "zone.js": "~0.15.1",
+        "hammerjs": "^2.0.8",
+        "lodash": "^4.17.19",
+        "ngx-color-picker": "^19.0.0",
+        "ngx-mat-select-search": "^8.0.2"
+    },
+    "dependencies": {
+        "tslib": "^2.0.0"
+    }
 }
