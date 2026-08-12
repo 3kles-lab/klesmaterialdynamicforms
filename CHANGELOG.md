@@ -1,3 +1,10 @@
+## [20.0.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v20.0.0...v20.0.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* recreate component when field, ui, sibling or group change ([5de3114](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/5de31142c6a864a1d0b7d0fa84f0bde7850b3608))
+
 # [20.0.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v19.5.1...v20.0.0) (2026-08-10)
 
 
