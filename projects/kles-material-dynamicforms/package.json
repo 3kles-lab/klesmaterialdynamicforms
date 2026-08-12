@@ -1,37 +1,38 @@
 {
-  "name": "@3kles/kles-material-dynamicforms",
-  "version": "21.0.1",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/3kles-lab/klesmaterialdynamicforms"
-  },
-  "keywords": [
-    "3KLES"
-  ],
-  "bugs": {
-    "url": "https://github.com/3kles-lab/klesmaterialdynamicforms/issues"
-  },
-  "homepage": "https://github.com/3kles-lab/klesmaterialdynamicforms",
-  "author": "3Kles Lab",
-  "license": "ISC",
-  "peerDependencies": {
-    "@3kles/kles-material-datepicker": "^21.0.0",
-    "@angular/animations": "^21.2.19",
-    "@angular/cdk": "^21.2.14",
-    "@angular/common": "^21.2.19",
-    "@angular/core": "^21.2.19",
-    "@angular/forms": "^21.2.19",
-    "@angular/material": "^21.2.14",
-    "@angular/platform-browser": "^21.2.19",
-    "@angular/router": "^21.2.19",
-    "hammerjs": "^2.0.8",
-    "lodash": "^4.17.19",
-    "ngx-color-picker": "^19.0.0",
-    "ngx-mat-select-search": "^8.0.2",
-    "rxjs": "^7.8.0",
-    "zone.js": "~0.15.1"
-  },
-  "dependencies": {
-    "tslib": "^2.0.0"
-  }
+    "name": "@3kles/kles-material-dynamicforms",
+    "version": "21.0.1",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/3kles-lab/klesmaterialdynamicforms"
+    },
+    "keywords": [
+        "3KLES"
+    ],
+    "bugs": {
+        "url": "https://github.com/3kles-lab/klesmaterialdynamicforms/issues"
+    },
+    "homepage": "https://github.com/3kles-lab/klesmaterialdynamicforms",
+    "author": "3Kles Lab",
+    "license": "ISC",
+    "peerDependencies": {
+        "@3kles/kles-material-datepicker": "^21.0.0",
+        "@angular/animations": "^21.2.19",
+        "@angular/cdk": "^21.2.14",
+        "@angular/common": "^21.2.19",
+        "@angular/core": "^21.2.19",
+        "@angular/forms": "^21.2.19",
+        "@angular/material": "^21.2.14",
+        "@angular/platform-browser": "^21.2.19",
+        "@angular/router": "^21.2.19",
+        "hammerjs": "^2.0.8",
+        "lodash": "^4.17.19",
+        "ngx-color-picker": "^19.0.0",
+        "ngx-mat-select-search": "^8.0.2",
+        "rxjs": "^7.8.0",
+        "zone.js": "~0.15.1",
+        "uuid": "^8.3.0"
+    },
+    "dependencies": {
+        "tslib": "^2.0.0"
+    }
 }
