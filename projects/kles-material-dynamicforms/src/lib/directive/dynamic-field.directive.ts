@@ -37,11 +37,28 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.group && !changes.group.isFirstChange()) {
-            this.group = changes.group.currentValue;
+        const groupChanged = !!changes['group'] && !changes['group'].isFirstChange();
+        const fieldChanged = !!changes['field'] && !changes['field'].isFirstChange();
+        const uiChanged = !!changes['ui'] && !changes['ui'].isFirstChange();
+        const siblingFieldsChanged = !!changes['siblingFields'] && !changes['siblingFields'].isFirstChange();
+
+        if (groupChanged) {
+            this.group = changes['group'].currentValue;
         }
-        if (changes.field && !changes.field?.isFirstChange()) {
-            this.field = changes.field.currentValue;
+
+        if (fieldChanged) {
+            this.field = changes['field'].currentValue;
+        }
+
+        if (uiChanged) {
+            this.ui = changes['ui'].currentValue;
+        }
+
+        if (siblingFieldsChanged) {
+            this.siblingFields = changes['siblingFields'].currentValue;
+        }
+
+        if (groupChanged || fieldChanged || uiChanged || siblingFieldsChanged) {
             this.buildComponent();
         }
     }
