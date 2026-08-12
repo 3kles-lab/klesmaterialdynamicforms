@@ -1,3 +1,10 @@
+## [21.0.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.0.1...v21.0.2) (2026-08-12)
+
+
+### Bug Fixes
+
+* peer dependencies ([6aedef4](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/6aedef4ae6777517085c2fd861879c59f78f6829))
+
 ## [21.0.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.0.0...v21.0.1) (2026-08-12)
 
 

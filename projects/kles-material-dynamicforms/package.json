@@ -1,6 +1,6 @@
 {
     "name": "@3kles/kles-material-dynamicforms",
-    "version": "21.0.1",
+    "version": "21.0.2",
     "repository": {
         "type": "git",
         "url": "https://github.com/3kles-lab/klesmaterialdynamicforms"
@@ -29,8 +29,8 @@
         "ngx-color-picker": "^19.0.0",
         "ngx-mat-select-search": "^8.0.2",
         "rxjs": "^7.8.0",
-        "zone.js": "~0.15.1",
-        "uuid": "^8.3.0"
+        "uuid": "^8.3.0",
+        "zone.js": "~0.15.1"
     },
     "dependencies": {
         "tslib": "^2.0.0"
