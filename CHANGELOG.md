@@ -1,3 +1,10 @@
+## [19.5.4](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v19.5.3...v19.5.4) (2026-08-13)
+
+
+### Bug Fixes
+
+* Clean date time component ([09e1a5a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/09e1a5a05c87671b96aec21d14efa9cf49492eb4))
+
 ## [19.5.3](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v19.5.2...v19.5.3) (2026-08-12)
 
 
