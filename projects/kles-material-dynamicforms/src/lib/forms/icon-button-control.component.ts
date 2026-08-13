@@ -9,7 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
     selector: 'kles-icon-button',
     template: `
-        <button mat-icon-button [type]="type" [ngClass]="classButton" [color]="color ? color : 'primary'" [disabled]="disabled" (click)="click($event)" [matTooltip]="tooltip">
+        <button matIconButton [type]="type" [ngClass]="classButton" [color]="color ? color : 'primary'" [disabled]="disabled" (click)="click($event)" [matTooltip]="tooltip">
             @if (icon) {
             <mat-icon>{{ icon }}</mat-icon>
             } @if (iconSvg) {

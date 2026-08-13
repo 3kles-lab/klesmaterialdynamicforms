@@ -12,7 +12,7 @@ import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
 @Component({
     selector: 'kles-form-copy',
     template: `
-        <button #tooltip="matTooltip" mat-icon-button color="primary" type="button" (click)="copy($event)" [matTooltipDisabled]="true" [matTooltip]="tooltipText" matTooltipPosition="above">
+        <button #tooltip="matTooltip" matIconButton color="primary" type="button" (click)="copy($event)" [matTooltipDisabled]="true" [matTooltip]="tooltipText" matTooltipPosition="above">
             <mat-icon>content_copy</mat-icon>
         </button>
     `,

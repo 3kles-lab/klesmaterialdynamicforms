@@ -18,6 +18,7 @@ export class KlesFormUiControl extends KlesAbstractFormUiControl {
             icon: this.field.icon,
             iconSvg: this.field.iconSvg,
             appearance: this.field.appearance ?? 'fill',
+            buttonAppearance: this.field.buttonAppearance ?? 'text'
         });
     }
 }

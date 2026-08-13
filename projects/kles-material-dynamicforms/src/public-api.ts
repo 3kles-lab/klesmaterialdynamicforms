@@ -63,7 +63,6 @@ export * from './lib/fields/subfields/password-visibility.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';
-export * from './lib/enums/button-attribute.enum';
 
 /**INTERFACES */
 export * from './lib/interfaces/component.interface';

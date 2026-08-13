@@ -1,5 +1,6 @@
 import { OnInit, Input, Injectable, Component } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+import { MatButtonAppearance } from '@angular/material/button';
 
 export interface IButton {
     event?: any;
@@ -15,6 +16,7 @@ export interface IUIButton {
     class?: string;
     type?: string;
     accept?: string;
+    buttonAppearance?: MatButtonAppearance;
 }
 
 @Component({
@@ -37,6 +39,7 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     @Input() classButton = '';
     @Input() value: IButton = {};
     @Input() tooltip?: string;
+    @Input() buttonAppearance: MatButtonAppearance = 'text';
 
     protected _type = 'button';
 
@@ -69,6 +72,7 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
             this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
             this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
             this.type = (uiButton.type) ? uiButton.type : 'submit';
+            this.buttonAppearance = (uiButton.buttonAppearance) ? uiButton.buttonAppearance : this.buttonAppearance;
         }
         this.value = value;
     }

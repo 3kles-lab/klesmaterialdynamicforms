@@ -24,7 +24,7 @@ import { MatOption } from '@angular/material/core';
                 <mat-label>{{ field.label }}</mat-label>
                 }
                 <input matInput [placeholder]="field.placeholder" [formControl]="searchControl" />
-                <button matSuffix mat-icon-button aria-label="Clear" (click)="searchControl.reset(); $event.stopPropagation()">
+                <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.reset(); $event.stopPropagation()">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
