@@ -6,20 +6,19 @@ import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatFormField, MatLabel, MatHint, MatError, MatSuffix } from "@angular/material/form-field";
 import { MatInput } from "@angular/material/input";
 import { MatTooltip } from "@angular/material/tooltip";
-import { TranslateModule } from "@ngx-translate/core";
 import { MatErrorMessageDirective } from "../directive/mat-error-message.directive";
 import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
 
 @Component({
     selector: 'kles-form-datetimepicker',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="field.color" [formGroup]="group" [appearance]="field.appearance">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
         @if (field.label) {
             <mat-label>{{ field.label }}</mat-label>
         }
 
         <input matInput matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name"
-            [placeholder]="field.placeholder | translate" [min]="field.min" [max]="field.max">
+            [placeholder]="field.placeholder" [min]="field.min" [max]="field.max">
         <div matSuffix class="suffix">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <ng-content></ng-content>
@@ -50,7 +49,6 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
         MatInput,
         MatTooltip,
         MatDatepickerModule,
-        TranslateModule,
         MatErrorMessageDirective,
         KlesMaterialDatepickerModule
     ]
