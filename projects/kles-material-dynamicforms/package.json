@@ -15,22 +15,17 @@
     "author": "3Kles Lab",
     "license": "ISC",
     "peerDependencies": {
-        "@3kles/kles-material-datepicker": "^20.0.0",
-        "@angular/animations": "^20.3.27",
+        "@3kles/kles-material-datepicker": "^20.1.0",
         "@angular/cdk": "^20.2.14",
         "@angular/common": "^20.3.27",
         "@angular/core": "^20.3.27",
         "@angular/forms": "^20.3.27",
         "@angular/material": "^20.2.14",
-        "@angular/platform-browser": "^20.3.27",
-        "@angular/router": "^20.3.27",
-        "hammerjs": "^2.0.8",
-        "lodash": "^4.17.19",
-        "ngx-color-picker": "^19.0.0",
+        "lodash": "^4.17.21",
+        "ngx-color-picker": "^20.0.0",
         "ngx-mat-select-search": "^8.0.2",
-        "rxjs": "^7.8.0",
-        "uuid": "^8.3.0",
-        "zone.js": "~0.15.1"
+        "rxjs": "^6.5.3 || ^7.4.0",
+        "uuid": "^8.3.0"
     },
     "dependencies": {
         "tslib": "^2.0.0"
