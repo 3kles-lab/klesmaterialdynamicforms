@@ -11,7 +11,7 @@ import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
 @Component({
     selector: 'kles-form-password-visibility',
     template: `
-        <button [disabled]="group?.get(field?.name).disabled" mat-icon-button aria-label="visibility" type="button" (click)="toggleVisibility($event)">
+        <button [disabled]="group?.get(field?.name).disabled" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
             <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
     `,

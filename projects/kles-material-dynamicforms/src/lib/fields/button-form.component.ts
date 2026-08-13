@@ -14,13 +14,13 @@ import { ReactiveFormsModule } from '@angular/forms';
                 [name]="field.name"
                 [label]="field.label"
                 [color]="color()"
-                [attribute]="field.attribute"
                 [icon]="icon()"
                 [iconSvg]="iconSvg()"
                 [value]="field.value"
                 [formControlName]="field.name"
                 [tooltip]="field.tooltip"
                 [type]="field.buttonType"
+                [buttonAppearance]="buttonAppearance()"
             >
             </kles-button>
         </div>

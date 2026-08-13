@@ -19,7 +19,7 @@ import { MatIconButton } from '@angular/material/button';
         <div [formGroup]="group" class="form-element">
             <div class="label">
                 {{ field.label }}
-                <button mat-icon-button color="primary" (click)="addField()">
+                <button matIconButton color="primary" (click)="addField()">
                     <mat-icon>add</mat-icon>
                 </button>
             </div>
@@ -31,7 +31,7 @@ import { MatIconButton } from '@angular/material/button';
                             <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]"> </ng-container>
                         }
                         @if (collections[idx]) {
-                            <button mat-icon-button (click)="deleteField(idx)" color="primary">
+                            <button matIconButton (click)="deleteField(idx)" color="primary">
                                 <mat-icon>delete_outlined</mat-icon>
                             </button>
                         }

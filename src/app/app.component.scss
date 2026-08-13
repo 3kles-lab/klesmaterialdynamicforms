@@ -27,7 +27,7 @@
 
 .orange {
   @include mat.button-overrides((
-   filled-container-color: orange,
+   tonal-container-color: orange,
   ));
   
 }

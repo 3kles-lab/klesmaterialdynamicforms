@@ -75,7 +75,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
                 />
             }
             @if (!group.get(field.name).disabled) {
-                <button matSuffix mat-icon-button aria-label="Clear" type="button" (click)="group.controls[field.name].reset()">
+                <button matSuffix matIconButton aria-label="Clear" type="button" (click)="group.controls[field.name].reset()">
                     <mat-icon>close</mat-icon>
                 </button>
             }

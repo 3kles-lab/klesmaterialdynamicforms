@@ -6,8 +6,8 @@ import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
 import { DateAdapter, MatDateFormats } from '@angular/material/core';
-import { EnumButtonAttribute } from '../enums/button-attribute.enum';
 import { SubscriptSizing } from '@angular/material/form-field';
+import { MatButtonAppearance } from '@angular/material/button';
 
 export interface IKlesFieldUi {
     inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week'; // Type
@@ -23,6 +23,7 @@ export interface IKlesFieldUi {
     icon?: string; //Material icon
     iconSvg?: string; //Svg Icon
     appearance?: 'fill' | 'outline'; // MatForm field appearance
+    buttonAppearance?: MatButtonAppearance;
 
     //TODO
     visible?: boolean;
@@ -91,7 +92,6 @@ export interface IKlesFormField {
     clearableComponent?: Type<any>; /*Override default clear component*/
     subComponents?: Type<any>[];
     autofocus?: boolean;
-    attribute?: EnumButtonAttribute;
     subscriptSizing?: SubscriptSizing;
     nonNullable?: boolean;
 

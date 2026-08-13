@@ -12,7 +12,7 @@ import { combineLatest, map, startWith, Subject, takeUntil } from 'rxjs';
 @Component({
     selector: 'kles-form-clear',
     template: `
-        <button [disabled]="disabled()" mat-icon-button aria-label="Clear" type="button" (click)="clear($event)">
+        <button [disabled]="disabled()" matIconButton aria-label="Clear" type="button" (click)="clear($event)">
             <mat-icon>close</mat-icon>
         </button>
     `,

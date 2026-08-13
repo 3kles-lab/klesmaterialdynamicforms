@@ -1,13 +1,12 @@
 import { PropertyPipe } from '@3kles/kles-ng-pipe';
 import { DecimalPipe } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation, DOCUMENT } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit, ViewChild, ViewEncapsulation, DOCUMENT, WritableSignal, signal } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
-    EnumButtonAttribute,
     EnumType,
     IButton,
     IButtonChecker,
@@ -637,7 +636,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 label: 'mat raised button',
                 color: 'accent',
                 icon: 'clear',
-                attribute: EnumButtonAttribute['mat-raised-button'],
+                buttonAppearance: 'elevated',
                 tooltip: 'tooltip button',
                 component: KlesFormButtonComponent,
             },
@@ -648,7 +647,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 color: 'accent',
                 iconSvg: 'excel',
                 tooltip: 'tooltip button',
-                attribute: EnumButtonAttribute['mat-stroked-button'],
+                buttonAppearance: 'outlined',
                 component: KlesFormButtonComponent,
             },
 
@@ -656,7 +655,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 name: 'buttonflat1',
                 label: 'mat flat button',
                 icon: 'clear',
-                attribute: EnumButtonAttribute['mat-flat-button'],
+                buttonAppearance: 'tonal',
                 tooltip: 'tooltip button',
                 hostClass: 'orange',
                 component: KlesFormButtonComponent,
@@ -665,7 +664,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 name: 'buttonflat2',
                 label: 'mat flat button',
                 icon: 'clear',
-                attribute: EnumButtonAttribute['mat-flat-button'],
+                buttonAppearance: 'filled',
                 tooltip: 'tooltip button',
                 hostClass: 'green',
                 component: KlesFormButtonComponent,
@@ -674,7 +673,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 name: 'buttonflat3',
                 label: 'mat flat button',
                 icon: 'clear',
-                attribute: EnumButtonAttribute['mat-flat-button'],
+                buttonAppearance: 'filled',
                 tooltip: 'tooltip button',
                 hostClass: 'blue',
                 component: KlesFormButtonComponent,

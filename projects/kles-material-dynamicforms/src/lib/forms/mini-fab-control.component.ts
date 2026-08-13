@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
     selector: 'kles-mini-fab',
     template: `
-            <button mat-mini-fab extended [type]="type" [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
+            <button matMiniFab [type]="type" [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
             (click)="click($event)" [matTooltip]="tooltip">
                 {{label}}
 

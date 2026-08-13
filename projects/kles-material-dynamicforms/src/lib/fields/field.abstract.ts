@@ -27,6 +27,7 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     public color = computed(() => this.ui?.get(this.field.name)?.value()?.color);
     public icon = computed(() => this.ui?.get(this.field.name)?.value()?.icon);
     public iconSvg = computed(() => this.ui?.get(this.field.name)?.value()?.iconSvg);
+    public buttonAppearance = computed(() => this.ui?.get(this.field.name)?.value()?.buttonAppearance);
 
     protected readonly viewRef = inject(ViewContainerRef);
 
