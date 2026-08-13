@@ -1,3 +1,16 @@
+# [21.1.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.0.2...v21.1.0) (2026-08-13)
+
+
+### Bug Fixes
+
+* Clean date time component ([781b48c](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/781b48c0245b7658c43fb9e47065d327242acf5d))
+* Update library dependencies ([bca2b39](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/bca2b39ef08cf9d48146b6eeb40f1a4bca0fc987))
+
+
+### Features
+
+* Update material buttons appearance ([08db4d4](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/08db4d4ce1520b19a792f0ede6398e6016372d7f))
+
 ## [21.0.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.0.1...v21.0.2) (2026-08-12)
 
 
