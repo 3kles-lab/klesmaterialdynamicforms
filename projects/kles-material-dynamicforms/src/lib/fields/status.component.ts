@@ -57,6 +57,10 @@ import { KlesFieldAbstract } from './field.abstract';
         </span>
     `,
     styles: `
+        :host {
+            display: flex;
+        }
+            
         .kles-status {
             display: inline-flex;
             align-items: center;
