@@ -50,7 +50,7 @@ const field={
 ```
 
 ```html
-<mat-checkbox matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass" [indeterminate]="field.indeterminate" [formControlName]="field.name">{{field.label}}</mat-checkbox>
+<mat-checkbox [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="field.ngClass" [indeterminate]="field.indeterminate" [formControlName]="field.name">{{label()}}</mat-checkbox>
 ```
 
 #### IField

@@ -7,7 +7,6 @@ import { FIELD, GROUP, SIBLING_FIELDS, GROUP_UI } from '../token';
 import { FormGroup } from '@angular/forms';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
 
-
 @Directive()
 export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit, OnDestroy {
     public readonly field = inject<IKlesFieldConfig>(FIELD);
@@ -15,23 +14,31 @@ export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterView
     public readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
     public readonly ui = inject<GroupUiState>(GROUP_UI, { optional: true });
 
-    public appearance = computed(() => this.ui?.get(this.field.name)?.value()?.appearance);
-    public inputType = computed(() => this.ui?.get(this.field.name)?.value()?.inputType);
-    public min = computed(() => this.ui?.get(this.field.name)?.value()?.min);
-    public max = computed(() => this.ui?.get(this.field.name)?.value()?.max);
-    public maxLength = computed(() => this.ui?.get(this.field.name)?.value()?.maxLength ?? 524288);
-    public step = computed(() => this.ui?.get(this.field.name)?.value()?.step);
-    public ngClass = computed(() => this.ui?.get(this.field.name)?.value()?.ngClass);
-    public ngStyle = computed(() => this.ui?.get(this.field.name)?.value()?.ngStyle);
-    public indeterminate = computed(() => this.ui?.get(this.field.name)?.value()?.indeterminate ?? false);
-    public color = computed(() => this.ui?.get(this.field.name)?.value()?.color);
-    public icon = computed(() => this.ui?.get(this.field.name)?.value()?.icon);
-    public iconSvg = computed(() => this.ui?.get(this.field.name)?.value()?.iconSvg);
-    public buttonAppearance = computed(() => this.ui?.get(this.field.name)?.value()?.buttonAppearance);
+    protected readonly fieldUi = computed(() => this.ui?.get(this.field.name)?.value());
+    
+    public readonly appearance = computed(() => this.fieldUi()?.appearance);
+    public readonly inputType = computed(() => this.fieldUi()?.inputType);
+    public readonly min = computed(() => this.fieldUi()?.min);
+    public readonly max = computed(() => this.fieldUi()?.max);
+    public readonly maxLength = computed(() => this.fieldUi()?.maxLength ?? 524288);
+    public readonly step = computed(() => this.fieldUi()?.step);
+    public readonly ngClass = computed(() => this.fieldUi()?.ngClass);
+    public readonly ngStyle = computed(() => this.fieldUi()?.ngStyle);
+    public readonly indeterminate = computed(() => this.fieldUi()?.indeterminate ?? false);
+    public readonly color = computed(() => this.fieldUi()?.color);
+    public readonly icon = computed(() => this.fieldUi()?.icon);
+    public readonly iconSvg = computed(() => this.fieldUi()?.iconSvg);
+    public readonly buttonAppearance = computed(() => this.fieldUi()?.buttonAppearance);
+    public readonly label = computed(() => this.fieldUi()?.label ?? this.field.label);
+    public readonly hint = computed(() => this.fieldUi()?.hint ?? this.field.hint);
+    public readonly placeholder = computed(() => this.fieldUi()?.placeholder ?? this.field.placeholder);
+    public readonly tooltip = computed(() => this.fieldUi()?.tooltip ?? this.field.tooltip);
+    public readonly imageUrl = computed(() => this.fieldUi()?.imageUrl);
+    public readonly imageAlt = computed(() => this.fieldUi()?.imageAlt ?? this.label());
 
     protected readonly viewRef = inject(ViewContainerRef);
 
-    @HostBinding('attr.klesDirective') directive;
+    @HostBinding('attr.klesDirective') directive: any;
 
     protected _onDestroy = new Subject<void>();
 

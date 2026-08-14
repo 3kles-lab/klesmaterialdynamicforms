@@ -22,8 +22,8 @@ import { MatIconModule } from '@angular/material/icon';
     selector: 'kles-form-input',
     template: `
         <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="appearance()" class="field-bottom">
-            @if (field.label) {
-                <mat-label>{{ field.label }}</mat-label>
+            @if (label()) {
+                <mat-label>{{ label() }}</mat-label>
             }
             @if (icon()) {
                 <mat-icon matPrefix>{{ icon() }}</mat-icon>
@@ -32,11 +32,11 @@ import { MatIconModule } from '@angular/material/icon';
             @if (field.autocomplete) {
                 <input
                     matInput
-                    matTooltip="{{ field.tooltip }}"
+                    [matTooltip]="tooltip()"
                     [attr.id]="field.id"
                     [ngClass]="ngClass()"
                     [formControlName]="field.name"
-                    [placeholder]="field.placeholder"
+                    [placeholder]="placeholder()"
                     [type]="inputType()"
                     [maxLength]="maxLength()"
                     [min]="min()"
@@ -76,11 +76,11 @@ import { MatIconModule } from '@angular/material/icon';
             } @else {
                 <input
                     matInput
-                    matTooltip="{{ field.tooltip }}"
+                    [matTooltip]="tooltip()"
                     [attr.id]="field.id"
                     [ngClass]="ngClass()"
                     [formControlName]="field.name"
-                    [placeholder]="field.placeholder"
+                    [placeholder]="placeholder()"
                     [type]="inputType()"
                     [maxLength]="maxLength()"
                     [min]="min()"
@@ -90,8 +90,8 @@ import { MatIconModule } from '@angular/material/icon';
                     (blur)="onBlur()"
                 />
             }
-            @if (field.hint) {
-                <mat-hint>{{ field.hint }}</mat-hint>
+            @if (hint()) {
+                <mat-hint>{{ hint() }}</mat-hint>
             }
             @if (field.subComponents || field.clearable || isPending()) {
                 <div matSuffix class="suffix">

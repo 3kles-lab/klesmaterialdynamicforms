@@ -18,7 +18,7 @@ import { MatIconButton } from '@angular/material/button';
     template: `
         <div [formGroup]="group" class="form-element">
             <div class="label">
-                {{ field.label }}
+                {{ label() }}
                 <button matIconButton color="primary" (click)="addField()">
                     <mat-icon>add</mat-icon>
                 </button>

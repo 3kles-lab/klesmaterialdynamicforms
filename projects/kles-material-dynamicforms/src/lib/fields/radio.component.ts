@@ -10,8 +10,8 @@ import { MatTooltip } from '@angular/material/tooltip';
     selector: 'kles-form-radiobutton',
     template: `
     <div [formGroup]="group">
-        <label class="radio-label-padding">{{field.label}}</label>
-        <mat-radio-group matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="ngClass()" [formControlName]="field.name">
+        <label class="radio-label-padding">{{label()}}</label>
+        <mat-radio-group [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [formControlName]="field.name">
             @for (item of options$ | async; track item) {
                 <mat-radio-button [value]="item">{{item}}</mat-radio-button>
             }

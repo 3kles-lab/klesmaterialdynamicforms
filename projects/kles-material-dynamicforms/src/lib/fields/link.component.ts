@@ -7,8 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'kles-form-link',
     template: `
-        <a [href]="group.controls[field.name].value" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()">
-            {{ field.label }}
+        <a [href]="group.controls[field.name].value" [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()">
+            {{ label() }}
         </a>
     `,
     standalone: true,

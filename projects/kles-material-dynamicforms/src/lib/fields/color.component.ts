@@ -24,10 +24,10 @@ import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
         >
             <input
                 matInput
-                matTooltip="{{ field.tooltip }}"
+                [matTooltip]="tooltip()"
                 [attr.id]="field.id"
                 [ngClass]="ngClass()"
-                [placeholder]="field.placeholder"
+                [placeholder]="placeholder()"
                 [value]="group.get(field.name).value"
                 class="colorPicker"
                 [style.background]="group.get(field.name).value"
@@ -36,9 +36,9 @@ import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
             />
 
             @if (field.subComponents || field.clearable) {
-            <div matSuffix>
-                <ng-content></ng-content>
-            </div>
+                <div matSuffix>
+                    <ng-content></ng-content>
+                </div>
             }
 
             <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
@@ -85,7 +85,7 @@ export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit,
         super.ngOnInit();
     }
 
-    invertColor(hex, bw): string {
+    invertColor(hex: any, bw: any): string {
         if (hex.indexOf('#') === 0) {
             hex = hex.slice(1);
         }

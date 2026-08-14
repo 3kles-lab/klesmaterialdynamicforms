@@ -14,17 +14,17 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     selector: 'kles-form-input-clearable',
     template: `
         <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" [color]="color()" class="form-element" [appearance]="appearance()">
-            @if (field.label) {
-                <mat-label>{{ field.label }}</mat-label>
+            @if (label()) {
+                <mat-label>{{ label() }}</mat-label>
             }
             @if (field.autocomplete) {
                 <input
                     matInput
-                    matTooltip="{{ field.tooltip }}"
+                    [matTooltip]="tooltip()"
                     [attr.id]="field.id"
                     [ngClass]="ngClass()"
                     [formControlName]="field.name"
-                    [placeholder]="field.placeholder"
+                    [placeholder]="placeholder()"
                     [type]="inputType()"
                     [maxLength]="maxLength()"
                     [min]="min()"
@@ -62,11 +62,11 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
             } @else {
                 <input
                     matInput
-                    matTooltip="{{ field.tooltip }}"
+                    [matTooltip]="tooltip()"
                     [attr.id]="field.id"
                     [ngClass]="ngClass()"
                     [formControlName]="field.name"
-                    [placeholder]="field.placeholder"
+                    [placeholder]="placeholder()"
                     [type]="inputType()"
                     [maxLength]="maxLength()"
                     [min]="min()"

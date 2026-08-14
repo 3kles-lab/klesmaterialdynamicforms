@@ -16,11 +16,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     selector: 'kles-form-rangepicker',
     template: `
         <mat-form-field [subscriptSizing]="field.subscriptSizing" [color]="color()" [formGroup]="group" [appearance]="appearance()">
-            <mat-label>{{ field.label }}</mat-label>
+            <mat-label>{{ label() }}</mat-label>
 
-            <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [min]="min()" [max]="max()">
-                <input matStartDate formControlName="start" [placeholder]="field.placeholder?.start ? field.placeholder?.start : ''" />
-                <input matEndDate formControlName="end" [placeholder]="field.placeholder?.end ? field.placeholder?.end : ''" />
+            <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [min]="min()" [max]="max()">
+                <input matStartDate formControlName="start" [placeholder]="placeholder()?.start ? placeholder()?.start : ''" />
+                <input matEndDate formControlName="end" [placeholder]="placeholder()?.end ? placeholder()?.end : ''" />
             </mat-date-range-input>
 
             <div matSuffix class="suffix">
@@ -29,8 +29,8 @@ import { ReactiveFormsModule } from '@angular/forms';
             </div>
 
             <mat-date-range-picker #picker></mat-date-range-picker>
-            @if (field.hint) {
-                <mat-hint>{{ field.hint }}</mat-hint>
+            @if (hint) {
+                <mat-hint>{{ hint() }}</mat-hint>
             }
 
             <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>

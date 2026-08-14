@@ -22,18 +22,18 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
     // encapsulation: ViewEncapsulation.None,
     template: `
         <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()" class="field-bottom">
-            @if (field.label) {
-                <mat-label>{{ field.label }}</mat-label>
+            @if (label()) {
+                <mat-label>{{ label() }}</mat-label>
             }
 
             <mat-select
-                matTooltip="{{ field.tooltip }}"
+                [matTooltip]="tooltip()"
                 [attr.id]="field.id"
                 [ngClass]="ngClass()"
                 (openedChange)="openChange($event)"
                 [compareWith]="compareFn"
                 [panelWidth]="field.panelWidth || 'auto'"
-                [placeholder]="field.placeholder"
+                [placeholder]="placeholder()"
                 [formControlName]="field.name"
                 [multiple]="field.multiple"
                 (selectionChange)="selectionChange($event)"
@@ -136,8 +136,8 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
                 }
             </mat-select>
 
-            @if (field.hint) {
-                <mat-hint>{{ field.hint }}</mat-hint>
+            @if (hint()) {
+                <mat-hint>{{ hint() }}</mat-hint>
             }
             @if (field.subComponents || field.clearable || isPending()) {
                 <div matSuffix class="suffix">

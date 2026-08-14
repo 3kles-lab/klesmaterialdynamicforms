@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
     selector: 'kles-form-label',
     template: `
         <div [formGroup]="group">
-            <input matInput matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="{ color: 'inherit' }" [formControlName]="field.name" [placeholder]="field.placeholder" [type]="inputType()" />
+            <input matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="{ color: 'inherit' }" [formControlName]="field.name" [placeholder]="placeholder()" [type]="inputType()" />
         </div>
     `,
     standalone: true,

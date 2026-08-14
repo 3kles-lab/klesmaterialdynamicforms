@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'kles-form-text',
     template: `
-        <span matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="ngStyle()">
+        <span [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="ngStyle()">
             {{ (field.property && group.controls[field.name].value ? group.controls[field.name].value[field.property] : group.controls[field.name].value) | klesTransform: field.pipeTransform }}
         </span>
         @if (field.subComponents || isPending()) {

@@ -20,10 +20,10 @@ import { MatOption } from '@angular/material/core';
     template: `
         <div class="selection-list" [formGroup]="group">
             <mat-form-field [subscriptSizing]="field.subscriptSizing" [appearance]="appearance()">
-                @if (field.label) {
-                <mat-label>{{ field.label }}</mat-label>
+                @if (label()) {
+                <mat-label>{{ label() }}</mat-label>
                 }
-                <input matInput [placeholder]="field.placeholder" [formControl]="searchControl" />
+                <input matInput [placeholder]="placeholder()" [formControl]="searchControl" />
                 <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.reset(); $event.stopPropagation()">
                     <mat-icon>close</mat-icon>
                 </button>

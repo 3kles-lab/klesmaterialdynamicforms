@@ -12,7 +12,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     selector: 'kles-form-checkbox',
     template: `
         <div [formGroup]="group">
-            <mat-checkbox matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [indeterminate]="indeterminate()" (change)="onChange($event)" [color]="color()" [formControlName]="field.name">{{ field.label }}</mat-checkbox>
+            <mat-checkbox [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [indeterminate]="indeterminate()" (change)="onChange($event)" [color]="color()" [formControlName]="field.name">{{ label() }}</mat-checkbox>
         </div>
     `,
     styles: [],

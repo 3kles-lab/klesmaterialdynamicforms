@@ -18,18 +18,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'kles-form-select-lazy-search',
     template: `
         <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()" class="field-bottom">
-            @if (field.label) {
-                <mat-label>{{ field.label }}</mat-label>
+            @if (label()) {
+                <mat-label>{{ label() }}</mat-label>
             }
 
             <mat-select
-                matTooltip="{{ field.tooltip }}"
+                [matTooltip]="tooltip()"
                 [attr.id]="field.id"
                 [ngClass]="ngClass()"
                 (openedChange)="openChange($event)"
                 [compareWith]="compareFn"
                 [panelWidth]="field.panelWidth || 'auto'"
-                [placeholder]="field.placeholder"
+                [placeholder]="placeholder()"
                 [formControlName]="field.name"
                 [multiple]="field.multiple"
             >

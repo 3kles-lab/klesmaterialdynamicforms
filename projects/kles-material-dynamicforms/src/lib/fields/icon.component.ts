@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'kles-form-icon',
     template: `
-        <mat-icon [color]="color()" matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="ngStyle()">
+        <mat-icon [color]="color()" [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [ngStyle]="ngStyle()">
             {{ group.controls[field.name].value }}
         </mat-icon>
     `,

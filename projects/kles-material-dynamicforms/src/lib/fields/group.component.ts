@@ -17,9 +17,9 @@ import { KlesFormUiGroup } from '../ui/group.ui';
     template: `
         <ng-container [formGroup]="group">
             <ng-container [formGroupName]="field.name">
-                @if (field.label) {
+                @if (label()) {
                     <h4>
-                        <span [matTooltip]="field.tooltip || ''">{{ field.label }}</span>
+                        <span [matTooltip]="tooltip() ?? ''">{{ label() }}</span>
                     </h4>
                 }
 
@@ -51,8 +51,8 @@ export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit,
         return this.orientationClass;
     }
 
-    subGroup: UntypedFormGroup;
-    subUi: GroupUiState;
+    subGroup!: UntypedFormGroup;
+    subUi!: GroupUiState;
 
     ngOnInit() {
         this.subGroup = this.group.controls[this.field.name] as UntypedFormGroup;

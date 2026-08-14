@@ -38,6 +38,15 @@ export interface IKlesFieldUi {
     textareaAutoSize?: { minRows?: number; maxRows?: number };
     virtualScroll?: boolean; //To activate virtual scroll
     itemSize?: number; // itemSize for virtual scroll viewport
+
+    hint?: string;
+
+    label?: string; // Label field
+    placeholder?: any; // Placeholder field
+    tooltip?: string; // Tooltip field
+
+    imageUrl?: string;
+    imageAlt?: string;
 }
 
 export interface IKlesFormField {
@@ -45,9 +54,7 @@ export interface IKlesFormField {
     name: string; // Name Field (key for FormControlName)
     component?: Type<any>;
     id?: string; // Attribut html id
-    label?: string; // Label field
-    placeholder?: any; // Placeholder field
-    tooltip?: string; // Tooltip field
+
     copyTooltip?: string; // Copy component tooltip
     options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string, group?: { [key: string]: any }) => Observable<any[]>); // List options for list component
     property?: string; // Property for field
@@ -87,7 +94,7 @@ export interface IKlesFormField {
         language: string;
         dateFormat: MatDateFormats;
     };
-    hint?: string;
+
     clearable?: boolean; /*active default clear component*/
     clearableComponent?: Type<any>; /*Override default clear component*/
     subComponents?: Type<any>[];

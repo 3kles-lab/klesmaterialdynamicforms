@@ -13,12 +13,12 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
     selector: 'kles-form-datetimepicker',
     template: `
     <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
-        @if (field.label) {
-            <mat-label>{{ field.label }}</mat-label>
+        @if (label()) {
+            <mat-label>{{ label() }}</mat-label>
         }
 
-        <input matInput matTooltip="{{ field.tooltip }}" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name"
-            [placeholder]="field.placeholder" [min]="field.min" [max]="field.max">
+        <input matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name"
+            [placeholder]="placeholder()" [min]="field.min" [max]="field.max">
         <div matSuffix class="suffix">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
             <ng-content></ng-content>
@@ -26,8 +26,8 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
 
         <kles-mat-datepicker #picker [hasBackdrop]="false"></kles-mat-datepicker>
 
-        @if (field.hint) {
-            <mat-hint>{{ field.hint }}</mat-hint>
+        @if (hint()) {
+            <mat-hint>{{ hint() }}</mat-hint>
         }
 
         <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>

@@ -32,7 +32,7 @@ import { KlesFieldAbstract } from 'kles-material-dynamicforms';
 @Component({
     selector: 'kles-form-text',
     template: `
-    <span matTooltip="{{field.tooltip}}" [attr.id]="field.id" [ngClass]="field.ngClass">
+    <span [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="field.ngClass">
         {{group.controls[field.name].value}}
     </span> 
 `

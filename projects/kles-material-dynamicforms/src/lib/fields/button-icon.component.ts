@@ -15,7 +15,7 @@ import { KlesIconButtonComponent } from '../forms/icon-button-control.component'
             [iconSvg]="iconSvg()"
             [value]="field.value"
             [formControlName]="field.name"
-            [tooltip]="field.tooltip"
+            [tooltip]="tooltip()"
             [type]="field.buttonType"
             >
         </kles-icon-button>

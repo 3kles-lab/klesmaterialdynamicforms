@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     template: `
     <div [formGroup]="group">  
         <mat-chip-listbox>
-            <mat-chip-option [color]="color()" matTooltip="{{field.tooltip}}" [attr.id]="field.id" selected [ngClass]="ngClass()" [ngStyle]="ngStyle()">
+            <mat-chip-option [color]="color()" [matTooltip]="tooltip()" [attr.id]="field.id" selected [ngClass]="ngClass()" [ngStyle]="ngStyle()">
                 @if (icon()) {
                     <mat-icon>{{icon()}}</mat-icon>
                 }
