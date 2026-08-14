@@ -1,3 +1,10 @@
+## [21.4.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.4.0...v21.4.1) (2026-08-14)
+
+
+### Bug Fixes
+
+* move currency options to ui config ([d536535](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/d536535223c67154a624966830489fc8747ffa51))
+
 # [21.4.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.3.0...v21.4.0) (2026-08-14)
 
 
