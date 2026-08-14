@@ -1,3 +1,10 @@
+## [21.2.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.2.1...v21.2.2) (2026-08-14)
+
+
+### Bug Fixes
+
+* status component align ([aad64c9](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/aad64c947d22d67053bdc624c2fae969552d2f2d))
+
 ## [21.2.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.2.0...v21.2.1) (2026-08-14)
 
 
