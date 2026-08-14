@@ -11,8 +11,10 @@ import {
     IButton,
     IButtonChecker,
     KlesDynamicFormIntl,
+    KlesFormActionMenuComponent,
     KlesFormCheckboxComponent,
     KlesFormCheckboxIndeterminateComponent,
+    KlesFormCurrencyComponent,
     KlesFormDateComponent,
     KlesFormFabComponent,
     KlesFormFileComponent,
@@ -246,6 +248,24 @@ export class AppComponent implements OnInit, AfterViewInit {
                 component: KlesFormColorComponent,
                 name: 'color',
                 value: '',
+            },
+            {
+                component: KlesFormCurrencyComponent,
+                name: 'amount',
+                label: 'Montant',
+                placeholder: '0,00 €',
+                value: 1250.5,
+                min: 0,
+                max: 1000000,
+                currencyOptions: {
+                    code: 'EUR',
+                    locale: 'fr-FR',
+                    display: 'symbol',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    useGrouping: true,
+                    allowNegative: false,
+                },
             },
             {
                 component: KlesFormSelectionListComponent,
@@ -642,6 +662,42 @@ export class AppComponent implements OnInit, AfterViewInit {
     buildButtonForm() {
         this.fieldsButton = [
             {
+                name: 'actions',
+                component: KlesFormActionMenuComponent,
+                icon: 'more_vert',
+                tooltip: 'Actions',
+                // ariaLabel: 'Actions disponibles',
+                options: [
+                    {
+                        id: 'edit',
+                        label: 'Modifier',
+                        icon: 'edit',
+
+                        // disabled: (context) => context?.readonlyMode === true,
+                    },
+                    {
+                        id: 'duplicate',
+                        label: 'Dupliquer',
+                        icon: 'content_copy',
+                    },
+                    {
+                        id: 'delete',
+                        label: 'Supprimer',
+                        icon: 'delete',
+                        color: 'warn',
+                        dividerBefore: true,
+
+                        // visible: (context) => context?.provider.canDelete === true,
+                    },
+                ],
+
+                onAction: ({ actionId, context, value, group }) => {
+                    console.log('Actionid', actionId);
+                    console.log('Action sélectionnée', value);
+                    console.log('Valeurs de la ligne', group.getRawValue());
+                },
+            },
+            {
                 name: 'matbutton',
                 label: 'mat button',
                 color: 'accent',
@@ -703,6 +759,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                 icon: 'add',
                 tooltip: 'tooltip icon button',
                 component: KlesFormIconButtonComponent,
+                onAction: (event) => {
+                    console.log(event);
+                },
             },
 
             {
