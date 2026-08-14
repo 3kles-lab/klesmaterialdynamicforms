@@ -31,8 +31,8 @@ import { KlesFieldAbstract } from './field.abstract';
     `,
     styles: `
         :host {
-            display: block;
-            width: 100%;
+            display: flex;
+            justify-content: inherit;
         }
 
         .kles-tile {
