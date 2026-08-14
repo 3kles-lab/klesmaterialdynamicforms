@@ -1,11 +1,11 @@
-import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider } from '@angular/core';
+import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider, Signal, input, computed } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
 import { KlesFormClearComponent } from '../fields/subfields/clear.component';
 import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { isDestroyable } from '../utils/destroyable.guard';
-import { FIELD, FIELD_NAME, GROUP, SIBLING_FIELDS, GROUP_UI } from '../token';
+import { FIELD, FIELD_NAME, GROUP, SIBLING_FIELDS, GROUP_UI, FIELD_CONTEXT } from '../token';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
 
 @Directive({
@@ -17,6 +17,8 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
     @Input() group!: UntypedFormGroup;
     @Input() ui!: GroupUiState;
     @Input() siblingFields!: T[];
+
+    @Input() context: Signal<unknown | null> | null = null;
 
     componentRef: ComponentRef<any> | undefined;
     subComponents: ComponentRef<any>[] = [];
@@ -41,6 +43,7 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
         const fieldChanged = !!changes['field'] && !changes['field'].isFirstChange();
         const uiChanged = !!changes['ui'] && !changes['ui'].isFirstChange();
         const siblingFieldsChanged = !!changes['siblingFields'] && !changes['siblingFields'].isFirstChange();
+        const contextChanged = !!changes['context'] && !changes['context'].isFirstChange();
 
         if (groupChanged) {
             this.group = changes['group'].currentValue;
@@ -58,7 +61,11 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
             this.siblingFields = changes['siblingFields'].currentValue;
         }
 
-        if (groupChanged || fieldChanged || uiChanged || siblingFieldsChanged) {
+        if (contextChanged) {
+            this.context = changes['context'].currentValue;
+        }
+
+        if (groupChanged || fieldChanged || uiChanged || siblingFieldsChanged || contextChanged) {
             this.buildComponent();
         }
     }
@@ -112,6 +119,15 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
                     provide: GROUP_UI,
                     useValue: this.ui,
                 },
+
+                ...(this.context
+                    ? [
+                          {
+                              provide: FIELD_CONTEXT,
+                              useValue: this.context,
+                          },
+                      ]
+                    : []),
             ],
             parent: this.injector,
         };

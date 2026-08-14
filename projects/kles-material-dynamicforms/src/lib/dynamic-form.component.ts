@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Inject } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Inject, Signal } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -36,7 +36,7 @@ FormControlName.prototype.ngOnChanges = function () {
         <form class="{{ orientationClass }}" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
             @for (field of fields; track field.name) {
                 @if (field.visible !== false) {
-                    <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="fields"> </ng-container>
+                    <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="fields" [context]="context"> </ng-container>
                 }
             }
             @if (form && form.errors) {
@@ -56,6 +56,7 @@ FormControlName.prototype.ngOnChanges = function () {
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, FormsModule, ReactiveFormsModule, MatError],
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {
+    @Input() context: Signal<unknown | null> | null = null;
     @Input() fields: IKlesFieldConfig[] = [];
     @Input() validators: IKlesValidator<ValidatorFn>[] = [];
     @Input() asyncValidators: IKlesValidator<AsyncValidatorFn>[] = [];
