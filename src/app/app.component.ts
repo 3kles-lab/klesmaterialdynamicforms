@@ -18,6 +18,7 @@ import {
     KlesFormFileComponent,
     KlesFormIconButtonComponent,
     KlesFormMiniFabComponent,
+    KlesFormTileComponent,
     KlesMaterialDynamicformsModule,
 } from 'kles-material-dynamicforms';
 import {
@@ -34,7 +35,11 @@ import {
     KlesFormSelectionListComponent,
     KlesFormTextareaComponent,
     KlesFormTextComponent,
-    KlesFormCopyComponent, KlesFormInputClearableComponent, KlesFormSelectComponent, KlesFormSelectSearchComponent, KlesFormDateTimeComponent
+    KlesFormCopyComponent,
+    KlesFormInputClearableComponent,
+    KlesFormSelectComponent,
+    KlesFormSelectSearchComponent,
+    KlesFormDateTimeComponent,
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
@@ -71,21 +76,20 @@ import { DatePickerIntl } from './date-picker.i18n';
         // { provide: DateAdapter, useClass: MomentDateAdapter },
         // { provide: MAT_DATE_FORMATS, useValue: KLES_MAT_MOMENT_FORMATS },
         {
-            provide: KlesMatDatepickerIntl, useClass: DatePickerIntl
-        }
+            provide: KlesMatDatepickerIntl,
+            useClass: DatePickerIntl,
+        },
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [KlesDynamicFormComponent, MaterialModule],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit, AfterViewInit {
     title = 'KlesMaterialDynamicForms';
     color = '';
 
-
     private document = inject(DOCUMENT);
-
 
     @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
     fields: IKlesFieldConfig[];
@@ -121,7 +125,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         // { WHLO: 700, test: 700 }
     ];
 
-    constructor(private _adapter: DateAdapter<any>, private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer, private ref: ChangeDetectorRef) {
+    constructor(
+        private _adapter: DateAdapter<any>,
+        private matIconRegistry: MatIconRegistry,
+        private domSanitizer: DomSanitizer,
+        private ref: ChangeDetectorRef,
+    ) {
         this.matIconRegistry.addSvgIcon('excel', this.domSanitizer.bypassSecurityTrustResourceUrl('./assets/images/excel.svg'));
 
         const decPipe = new DecimalPipe('fr-FR');
@@ -155,8 +164,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             // console.log('FormButton ', e, '=', this.formButton.form.controls[e]);
         });
 
-        this.formButton.form.controls['buttonfile'].valueChanges.subscribe(s => {
-          console.log('Button file changed=', s);
+        this.formButton.form.controls['buttonfile'].valueChanges.subscribe((s) => {
+            console.log('Button file changed=', s);
         });
 
         // this.formButton.form.valueChanges.subscribe((s) => {
@@ -341,6 +350,15 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         this.fieldsInput = [
             {
+                name: 'provider',
+                component: KlesFormTileComponent,
+                label: 'Google Workspace',
+                hint: 'SSO for Google Workspace',
+                imageUrl: 'https://www.gstatic.com/marketing-cms/assets/images/97/37/bbe70068407199f1ada4b3f6b9f8/g-about-gatg.png=n-w64-h65-fcrop64=1,00000367fffffd72-rw',
+                imageAlt: 'Google Workspace',
+                tooltip: 'Configurer Google Workspace',
+            },
+            {
                 name: 'inputtext',
                 placeholder: 'Input Text',
                 inputType: 'text',
@@ -469,7 +487,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 placeholder: 'datetime',
                 hint: 'test',
                 component: KlesFormDateTimeComponent,
-                clearable: true
+                clearable: true,
             },
             {
                 name: 'range',
@@ -747,7 +765,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 options: ['toto', 'titi'],
                 multiple: true,
                 tooltip: 'tooltip button toogle',
-            }
+            },
         ];
     }
 
@@ -878,7 +896,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.form.form.controls.checkbox.patchValue(-1, { emitEvent: false, onlySelf: true });
     }
 
-    public toggleThemeMode(event){
+    public toggleThemeMode(event) {
         this.document.body.classList.toggle('dark');
     }
 }
