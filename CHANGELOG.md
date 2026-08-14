@@ -1,3 +1,15 @@
+# [21.4.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.3.0...v21.4.0) (2026-08-14)
+
+
+### Bug Fixes
+
+* tile justify content ([3507312](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/3507312d8ba329fb11cd545525888fc3a3752f51))
+
+
+### Features
+
+* add resolve ui from context && fix status component && fix context in groupcomponent ([ee36f0d](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/ee36f0d99e5f99d1a27eb6c8935cb942386b0704))
+
 # [21.3.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.2.2...v21.3.0) (2026-08-14)
 
 
