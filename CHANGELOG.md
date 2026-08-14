@@ -1,3 +1,21 @@
+# [21.2.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.1.0...v21.2.0) (2026-08-14)
+
+
+### Bug Fixes
+
+* call signal instead of field property directly ([f562e6a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/f562e6a49d0de026e83a21481c65eecddd9eb9c7))
+* clear code ([27218ee](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/27218eea0c9e97147d74d48bd6072eb1e0d1c4ff))
+
+
+### Features
+
+* add action menu field ([fa184ac](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/fa184ace3d496dca46f3340f6df6254fc1fe94aa))
+* add currency field ([92da356](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/92da356a787ae683f95a87fdf0a95d693ad38421))
+* add onAction property ([58db0c8](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/58db0c8792fee00eb2aa8c03f92f755209fad2b7))
+* add optional context inside field ([12709ac](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/12709ac808f17f3b00e8b285ec85a7ce558959cd))
+* add status component ([8770189](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/8770189afe795dbdf8e1d9d56787e27ce9289773))
+* add tile component ([a4afd1f](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/a4afd1ffa412b4f78f3cf7cf17cf64f20bb5fdb1))
+
 # [21.1.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.0.2...v21.1.0) (2026-08-13)
 
 
