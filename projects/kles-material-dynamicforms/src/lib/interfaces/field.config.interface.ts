@@ -18,6 +18,28 @@ export interface IKlesFieldActionEvent<TContext = unknown, TValue = unknown> {
     originalEvent: Event;
 }
 
+export interface IKlesCurrencyOptions {
+    /**
+     * Code ISO 4217 : EUR, USD, GBP...
+     * DEFAULT_CURRENCY_CODE sera utilisé par défaut.
+     */
+    code?: string;
+
+    /**
+     * Locale Intl : fr-FR, en-US...
+     * LOCALE_ID sera utilisé par défaut.
+     */
+    locale?: string;
+
+    display?: 'symbol' | 'narrowSymbol' | 'code' | 'name';
+
+    minimumFractionDigits?: number;
+    maximumFractionDigits?: number;
+
+    useGrouping?: boolean;
+    allowNegative?: boolean;
+}
+
 export interface IKlesFieldUi {
     inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week'; // Type
     min?: number | Date;
@@ -116,6 +138,8 @@ export interface IKlesFormField {
     providers?: Array<Provider | StaticProvider>;
 
     onAction?: (event: IKlesFieldActionEvent<any, any>) => void;
+
+    currencyOptions?: IKlesCurrencyOptions;
 }
 
 export type IKlesFieldConfig = IKlesFormField & IKlesFieldUi;

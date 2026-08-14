@@ -15,5 +15,6 @@ export enum EnumType {
     group = 'group',
     lineBreak = 'lineBreak',
     badge = 'badge',
-    range = 'range'
+    range = 'range',
+    currency = 'currency',
 }
