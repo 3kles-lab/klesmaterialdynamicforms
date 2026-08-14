@@ -9,6 +9,15 @@ import { DateAdapter, MatDateFormats } from '@angular/material/core';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { MatButtonAppearance } from '@angular/material/button';
 
+export interface IKlesFieldActionEvent<TContext = unknown, TValue = unknown> {
+    actionId: string;
+    value?: TValue;
+    context: TContext | null;
+    field: IKlesFieldConfig;
+    group: UntypedFormGroup;
+    originalEvent: Event;
+}
+
 export interface IKlesFieldUi {
     inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week'; // Type
     min?: number | Date;
@@ -105,6 +114,8 @@ export interface IKlesFormField {
     onFocus?: (field: IKlesFieldConfig, group: UntypedFormGroup) => void;
     onBlur?: (field: IKlesFieldConfig, group: UntypedFormGroup) => void;
     providers?: Array<Provider | StaticProvider>;
+
+    onAction?: (event: IKlesFieldActionEvent<any, any>) => void;
 }
 
 export type IKlesFieldConfig = IKlesFormField & IKlesFieldUi;

@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
                 [tooltip]="tooltip()"
                 [type]="field.buttonType"
                 [buttonAppearance]="buttonAppearance()"
+                (action)="triggerAction(field.name, $event)"
             >
             </kles-button>
         </div>

@@ -1,4 +1,4 @@
-import { OnInit, Input, Injectable, Component } from '@angular/core';
+import { OnInit, Input, Injectable, Component, EventEmitter, Output } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { MatButtonAppearance } from '@angular/material/button';
 
@@ -21,7 +21,7 @@ export interface IUIButton {
 
 @Component({
     template: '',
-    standalone: true
+    standalone: true,
 })
 export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     @Input() name = '';
@@ -41,19 +41,26 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     @Input() tooltip?: string;
     @Input() buttonAppearance: MatButtonAppearance = 'text';
 
+    @Output() action = new EventEmitter<MouseEvent>();
+
     protected _type = 'button';
 
-    onChange: any = () => { };
-    onTouched: any = () => { };
+    onChange: any = () => {};
+    onTouched: any = () => {};
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
-    click(event) {
-        if (!this.disabled && this.value && this._type === 'button') {
+    click(event: MouseEvent) {
+        if (this.disabled || this._type !== 'button') {
+            return;
+        }
+
+        if (this.value) {
             this.value.event = this.name;
             this.onChange(this.value);
         }
+
+        this.action.emit(event);
     }
 
     writeValue(value: IButton): void {
@@ -65,14 +72,14 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
         }
         if (value.uiButton) {
             const uiButton = value.uiButton;
-            this.label = (uiButton.label) ? uiButton.label : this.label;
-            this.color = (uiButton.color) ? uiButton.color : this.color;
-            this.icon = (uiButton.icon) ? uiButton.icon : this.icon;
-            this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
-            this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
-            this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
-            this.type = (uiButton.type) ? uiButton.type : 'submit';
-            this.buttonAppearance = (uiButton.buttonAppearance) ? uiButton.buttonAppearance : this.buttonAppearance;
+            this.label = uiButton.label ? uiButton.label : this.label;
+            this.color = uiButton.color ? uiButton.color : this.color;
+            this.icon = uiButton.icon ? uiButton.icon : this.icon;
+            this.iconSvg = uiButton.iconSvg ? uiButton.iconSvg : this.iconSvg;
+            this.disabled = uiButton.disabled ? uiButton.disabled : this.disabled;
+            this.classButton = uiButton.class ? uiButton.class : this.classButton;
+            this.type = uiButton.type ? uiButton.type : 'submit';
+            this.buttonAppearance = uiButton.buttonAppearance ? uiButton.buttonAppearance : this.buttonAppearance;
         }
         this.value = value;
     }

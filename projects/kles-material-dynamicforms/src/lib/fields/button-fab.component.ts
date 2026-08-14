@@ -10,26 +10,29 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'kles-form-fab',
     template: `
-    <div [formGroup]="group">
-        <kles-fab
-            [attr.id]="field.id" [classButton]="ngClass()" 
-            [name]="field.name" [label]="label()" [color]="color()"
-            [icon]="icon()"
-            [iconSvg]="iconSvg()"
-            [value]="field.value"
-            [formControlName]="field.name"
-            [tooltip]="tooltip()"
-            [type]="field.buttonType"
+        <div [formGroup]="group">
+            <kles-fab
+                [attr.id]="field.id"
+                [classButton]="ngClass()"
+                [name]="field.name"
+                [label]="label()"
+                [color]="color()"
+                [icon]="icon()"
+                [iconSvg]="iconSvg()"
+                [value]="field.value"
+                [formControlName]="field.name"
+                [tooltip]="tooltip()"
+                [type]="field.buttonType"
+                (action)="triggerAction(field.name, $event)"
             >
-        </kles-fab>
-    </div>
+            </kles-fab>
+        </div>
     `,
     styles: [],
     standalone: true,
-    imports: [MatIconModule, MatTooltipModule, MatButtonModule, KlesFabComponent, ReactiveFormsModule]
+    imports: [MatIconModule, MatTooltipModule, MatButtonModule, KlesFabComponent, ReactiveFormsModule],
 })
 export class KlesFormFabComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-
     ngOnInit(): void {
         super.ngOnInit();
     }

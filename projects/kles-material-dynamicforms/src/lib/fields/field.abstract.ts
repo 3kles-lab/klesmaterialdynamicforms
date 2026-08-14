@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, HostBinding, OnDestroy, OnInit, ViewContainerRef, computed, inject } from '@angular/core';
+import { AfterViewInit, Directive, HostBinding, OnDestroy, OnInit, Signal, ViewContainerRef, computed, inject } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IKlesField } from '../interfaces/field.interface';
@@ -13,7 +13,7 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
     public readonly group = inject<FormGroup<any>>(GROUP);
     public readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
     public readonly ui = inject<GroupUiState>(GROUP_UI, { optional: true });
-    public readonly context = inject(FIELD_CONTEXT, { optional: true }) as TContext;
+    public readonly context = inject(FIELD_CONTEXT, { optional: true }) as Signal<TContext | null> | null;
 
     protected readonly fieldUi = computed(() => this.ui?.get(this.field.name)?.value());
 
@@ -119,5 +119,18 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
         if (this.field?.onBlur) {
             this.field.onBlur(this.field, this.group);
         }
+    }
+
+    public triggerAction(actionId: string, originalEvent: Event, value?: unknown): void {
+        originalEvent.stopPropagation();
+
+        this.field.onAction?.({
+            actionId,
+            value,
+            context: this.context?.() ?? null,
+            field: this.field,
+            group: this.group,
+            originalEvent,
+        });
     }
 }
