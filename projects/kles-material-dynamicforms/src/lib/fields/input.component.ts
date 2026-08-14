@@ -113,8 +113,8 @@ import { MatIconModule } from '@angular/material/icon';
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatTooltipModule, MatProgressSpinnerModule, MatOptionModule, MatError, MatErrorMessageDirective, KlesComponentDirective, MatIconModule],
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    filteredOption$: Observable<{ loading: boolean; options: any[] }>;
-    options$: Observable<{ loading: boolean; options: any[] }>;
+    filteredOption$!: Observable<{ loading: boolean; options: any[] }>;
+    options$!: Observable<{ loading: boolean; options: any[] }>;
     private isFocused = new Subject<boolean>();
     isLoading = signal(false);
 
@@ -140,7 +140,7 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
                         } else if (this.field.options instanceof Function) {
                             obs$ = this.field.options();
                         } else {
-                            obs$ = of(this.field.options);
+                            obs$ = of(this.field.options ?? []);
                         }
                         return concat(
                             of({ loading: true, options: [] }),
@@ -180,7 +180,7 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
         }
 
         this.filteredOption$ = concat(
-            combineLatest([this.group.get(this.field.name).valueChanges.pipe(startWith('')), this.options$]).pipe(
+            combineLatest([this.group.get(this.field.name)?.valueChanges.pipe(startWith('')) ?? of(''), this.options$]).pipe(
                 map(([data, response]) => {
                     if (response.loading) {
                         return response;
