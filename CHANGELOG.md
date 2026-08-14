@@ -1,3 +1,10 @@
+# [21.3.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.2.2...v21.3.0) (2026-08-14)
+
+
+### Features
+
+* add context signal input ([5535057](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/55350574414b8fb026069ddd08867d1496615c69))
+
 ## [21.2.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.2.1...v21.2.2) (2026-08-14)
 
 
