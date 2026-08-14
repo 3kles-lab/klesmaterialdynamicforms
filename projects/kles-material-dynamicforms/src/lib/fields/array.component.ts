@@ -16,11 +16,11 @@ import { ArrayUiState } from '../ui/ui-state/array-ui-state';
     template: `
         <div [formGroup]="group" class="container" [ngClass]="{ 'container-column': field.direction === 'column' }">
             <ng-container [formArrayName]="field.name">
-                @for (subGroup of formArray.controls; track subGroup.value._id; let index = $index;) {
+                @for (subGroup of formArray.controls; track subGroup.value._id; let index = $index) {
                     <div class="group-container" [ngClass]="field.direction === 'column' ? 'column' : 'row'">
                         @for (subfield of field.collections; track subfield.name) {
                             @if (subfield.visible !== false) {
-                                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [ui]="subUi?.at(index)" [siblingFields]="field.collections"> </ng-container>
+                                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [ui]="subUi?.at(index)" [siblingFields]="field.collections" [context]="context"> </ng-container>
                             }
                         }
                     </div>

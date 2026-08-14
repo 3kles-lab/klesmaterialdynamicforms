@@ -70,6 +70,15 @@ export interface IKlesStatusOptions {
     resolve?: (value: any, context: unknown | null, field: IKlesFieldConfig, group: UntypedFormGroup) => IKlesStatusDefinition | null;
 }
 
+export interface IKlesFieldUiResolveEvent<TContext = unknown> {
+    context: TContext | null;
+    field: IKlesFieldConfig;
+    group: UntypedFormGroup;
+    siblingFields: IKlesFieldConfig[];
+}
+
+export type IKlesFieldUiResolver<TContext = unknown> = (event: IKlesFieldUiResolveEvent<TContext>) => Partial<Omit<IKlesFieldUi, 'resolveUi'>>;
+
 export interface IKlesFieldUi {
     inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week'; // Type
     min?: number | Date;
@@ -108,6 +117,8 @@ export interface IKlesFieldUi {
 
     imageUrl?: string;
     imageAlt?: string;
+
+    resolveUi?: IKlesFieldUiResolver;
 }
 
 export interface IKlesFormField {

@@ -25,7 +25,7 @@ import { KlesFormUiGroup } from '../ui/group.ui';
 
                 @for (subfield of field.collections; track subfield.name) {
                     @if (subfield.visible !== false) {
-                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections" [ui]="subUi"> </ng-container>
+                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="field.collections" [ui]="subUi" [context]="context"> </ng-container>
                     }
                 }
             </ng-container>

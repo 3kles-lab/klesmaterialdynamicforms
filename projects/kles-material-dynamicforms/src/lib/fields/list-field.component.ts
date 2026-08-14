@@ -28,7 +28,7 @@ import { MatIconButton } from '@angular/material/button';
                 @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index) {
                     <div class="subfields">
                         @for (subfield of collections[idx]; track subfield.name) {
-                            <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]"> </ng-container>
+                            <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]" [context]="context"> </ng-container>
                         }
                         @if (collections[idx]) {
                             <button matIconButton (click)="deleteField(idx)" color="primary">
@@ -69,7 +69,7 @@ import { MatIconButton } from '@angular/material/button';
     imports: [MatError, MatIcon, MatIconButton, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    formArray: UntypedFormArray;
+    formArray!: UntypedFormArray;
     collections: IKlesFieldConfig[][] = [];
 
     private fb = inject(UntypedFormBuilder);
@@ -86,7 +86,7 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
 
     private createFormGroup(): UntypedFormGroup {
         const group = this.fb.group({});
-        this.field.collections?.forEach((item) => {
+        this.field.collections?.forEach((item: any) => {
             const control = this.fb.control(null, this.bindValidations(item.validations || []), this.bindAsyncValidations(item.asyncValidations || []));
             group.addControl(item.name, control);
         });
@@ -103,9 +103,9 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         this.formArray.push(this.createFormGroup());
     }
 
-    private bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
+    private bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn | null {
         if (validations.length > 0) {
-            const validList = [];
+            const validList: ValidatorFn[] = [];
             validations.forEach((valid) => {
                 validList.push(valid.validator);
             });
@@ -114,9 +114,9 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         return null;
     }
 
-    private bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
+    private bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn | null {
         if (validations.length > 0) {
-            const validList = [];
+            const validList: AsyncValidatorFn[] = [];
             validations.forEach((valid) => {
                 validList.push(valid.validator);
             });

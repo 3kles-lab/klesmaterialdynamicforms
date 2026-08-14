@@ -26,9 +26,9 @@ import { KlesFieldAbstract } from './field.abstract';
             } @else if (resolvedStatus(); as status) {
                 <span
                     class="kles-status"
-                    [class.kles-status--chip]="appearance() === 'chip'"
-                    [class.kles-status--badge]="appearance() === 'badge'"
-                    [class.kles-status--text]="appearance() === 'text'"
+                    [class.kles-status--chip]="statusAppearance() === 'chip'"
+                    [class.kles-status--badge]="statusAppearance() === 'badge'"
+                    [class.kles-status--text]="statusAppearance() === 'text'"
                     [class.kles-status--neutral]="status.tone === 'neutral'"
                     [class.kles-status--info]="status.tone === 'info'"
                     [class.kles-status--success]="status.tone === 'success'"
@@ -168,7 +168,7 @@ export class KlesFormStatusComponent<TContext = unknown> extends KlesFieldAbstra
         initialValue: this.control.status,
     });
 
-    readonly appearance = computed(() => this.field.statusOptions?.appearance ?? 'chip');
+    readonly statusAppearance = computed(() => this.field.statusOptions?.appearance ?? 'chip');
 
     readonly showDot = computed(() => this.field.statusOptions?.showDot ?? true);
 

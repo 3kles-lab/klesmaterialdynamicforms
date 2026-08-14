@@ -17,14 +17,14 @@ import { GroupUiState } from './ui/ui-state/group-ui-state';
 
 const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
 FormControlDirective.prototype.ngOnChanges = function () {
-    this.form.nativeElement = this.valueAccessor._elementRef?.nativeElement;
+    this.form.nativeElement = this.valueAccessor?._elementRef?.nativeElement;
     return originFormControlNgOnChanges.apply(this, arguments);
 };
 
 const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
 FormControlName.prototype.ngOnChanges = function () {
     const result = originFormControlNameNgOnChanges.apply(this, arguments);
-    this.control.nativeElement = this.valueAccessor._elementRef?.nativeElement;
+    this.control.nativeElement = this.valueAccessor?._elementRef?.nativeElement;
     return result;
 };
 
