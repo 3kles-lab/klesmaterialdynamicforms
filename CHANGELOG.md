@@ -1,3 +1,10 @@
+## [21.2.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.2.0...v21.2.1) (2026-08-14)
+
+
+### Bug Fixes
+
+* status component host ([bef6488](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/bef6488b6e1f7a71d411d41d6575c355f4fbd6f9))
+
 # [21.2.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.1.0...v21.2.0) (2026-08-14)
 
 
