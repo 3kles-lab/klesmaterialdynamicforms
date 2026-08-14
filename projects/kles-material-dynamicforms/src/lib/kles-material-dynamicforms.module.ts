@@ -59,6 +59,9 @@ import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
 import { KlesFormDateTimeComponent } from './fields/date-time.component';
 import { KlesFormCopyComponent } from './fields/subfields/copy.component';
 
+import { KlesFormActionMenuComponent } from './fields/action-menu.component';
+import { KlesFormTileComponent } from './fields/tile.component';
+
 const components = [
     KlesDynamicFormComponent,
     KlesFormLabelComponent,
@@ -105,6 +108,8 @@ const components = [
     KlesFormIconButtonComponent,
     KlesFormSelectionListSearchComponent,
     KlesFormCopyComponent,
+    KlesFormTileComponent,
+    KlesFormActionMenuComponent
 ];
 
 const colorPicker = [ColorPickerComponent, ColorPickerDirective];
