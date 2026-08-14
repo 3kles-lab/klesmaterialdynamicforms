@@ -20,6 +20,7 @@ import {
     KlesFormFileComponent,
     KlesFormIconButtonComponent,
     KlesFormMiniFabComponent,
+    KlesFormStatusComponent,
     KlesFormTileComponent,
     KlesMaterialDynamicformsModule,
 } from 'kles-material-dynamicforms';
@@ -265,6 +266,88 @@ export class AppComponent implements OnInit, AfterViewInit {
                     maximumFractionDigits: 2,
                     useGrouping: true,
                     allowNegative: false,
+                },
+            },
+            {
+                component: KlesFormStatusComponent,
+                name: 'status1',
+                value: 'disabled',
+                statusOptions: {
+                    appearance: 'chip',
+                    values: {
+                        active: {
+                            label: 'Actif',
+                            tone: 'success',
+                        },
+
+                        pending: {
+                            label: 'En attente',
+                            tone: 'warning',
+                        },
+
+                        disabled: {
+                            label: 'Désactivé',
+                            tone: 'neutral',
+                        },
+
+                        error: {
+                            label: 'Erreur',
+                            tone: 'error',
+                        },
+                    },
+                },
+            },
+            {
+                component: KlesFormStatusComponent,
+                name: 'status2',
+                value: { enabled: true },
+                statusOptions: {
+                    appearance: 'chip',
+                    resolve: (provider, context) => {
+                        if (!provider) {
+                            return null;
+                        }
+
+                        if (!provider.enabled) {
+                            return {
+                                label: 'Désactivé',
+                                tone: 'neutral',
+                                icon: 'block',
+                            };
+                        }
+
+                        return {
+                            label: 'Actif',
+                            tone: 'success',
+                            icon: 'check_circle',
+                        };
+                    },
+
+                    // values: {
+                    //     active: {
+                    //         label: 'Actif',
+                    //         tone: 'success',
+                    //         icon: 'check_circle',
+                    //     },
+
+                    //     pending: {
+                    //         label: 'En attente',
+                    //         tone: 'warning',
+                    //         icon: 'schedule',
+                    //     },
+
+                    //     disabled: {
+                    //         label: 'Désactivé',
+                    //         tone: 'neutral',
+                    //         icon: 'block',
+                    //     },
+
+                    //     error: {
+                    //         label: 'Erreur',
+                    //         tone: 'error',
+                    //         icon: 'error',
+                    //     },
+                    // },
                 },
             },
             {
