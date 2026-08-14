@@ -59,8 +59,9 @@ import { KlesFieldAbstract } from './field.abstract';
     styles: `
         :host {
             display: flex;
+            justify-content: inherit;
         }
-            
+
         .kles-status {
             display: inline-flex;
             align-items: center;
