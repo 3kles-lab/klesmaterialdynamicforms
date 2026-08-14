@@ -52,6 +52,7 @@ export * from './lib/fields/selection-list.component';
 export * from './lib/fields/button-toogle-group.component';
 export * from './lib/fields/array.component';
 export * from './lib/fields/range.component';
+export * from './lib/fields/tile.component';
 export * from './lib/fields/subfields/clear.component';
 export * from './lib/fields/select.lazy-search.component';
 export * from './lib/fields/button-fab.component';
