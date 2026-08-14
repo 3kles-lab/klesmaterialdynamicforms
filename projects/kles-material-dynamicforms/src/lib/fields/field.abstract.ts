@@ -3,19 +3,20 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IKlesField } from '../interfaces/field.interface';
 import type { IKlesFieldConfig } from '../interfaces/field.config.interface';
-import { FIELD, GROUP, SIBLING_FIELDS, GROUP_UI } from '../token';
+import { FIELD, GROUP, SIBLING_FIELDS, GROUP_UI, FIELD_CONTEXT } from '../token';
 import { FormGroup } from '@angular/forms';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
 
 @Directive()
-export abstract class KlesFieldAbstract implements IKlesField, OnInit, AfterViewInit, OnDestroy {
+export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesField, OnInit, AfterViewInit, OnDestroy {
     public readonly field = inject<IKlesFieldConfig>(FIELD);
     public readonly group = inject<FormGroup<any>>(GROUP);
     public readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
     public readonly ui = inject<GroupUiState>(GROUP_UI, { optional: true });
+    public readonly context = inject(FIELD_CONTEXT, { optional: true }) as TContext;
 
     protected readonly fieldUi = computed(() => this.ui?.get(this.field.name)?.value());
-    
+
     public readonly appearance = computed(() => this.fieldUi()?.appearance);
     public readonly inputType = computed(() => this.fieldUi()?.inputType);
     public readonly min = computed(() => this.fieldUi()?.min);
