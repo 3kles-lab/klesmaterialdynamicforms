@@ -118,6 +118,8 @@ export interface IKlesFieldUi {
     imageUrl?: string;
     imageAlt?: string;
 
+    currencyOptions?: IKlesCurrencyOptions;
+
     resolveUi?: IKlesFieldUiResolver;
 }
 
@@ -179,8 +181,6 @@ export interface IKlesFormField {
     providers?: Array<Provider | StaticProvider>;
 
     onAction?: (event: IKlesFieldActionEvent<any, any>) => void;
-
-    currencyOptions?: IKlesCurrencyOptions;
     statusOptions?: IKlesStatusOptions;
 }
 

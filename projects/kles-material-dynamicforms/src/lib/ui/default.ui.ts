@@ -27,6 +27,7 @@ export class KlesFormUiControl extends KlesAbstractFormUiControl {
             hint: this.field.hint,
             placeholder: this.field.placeholder,
             tooltip: this.field.tooltip,
+            currencyOptions: this.field.currencyOptions,
         });
     }
 }

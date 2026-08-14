@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, DEFAULT_CURRENCY_CODE, Directive, ElementRef, forwardRef, HostListener, inject, Input, LOCALE_ID, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, DEFAULT_CURRENCY_CODE, Directive, ElementRef, forwardRef, HostListener, inject, Input, LOCALE_ID, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -293,13 +293,13 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
                 [matTooltip]="tooltip()"
                 [formControlName]="field.name"
                 [placeholder]="placeholder()"
-                [currency]="field.currencyOptions?.code || defaultCurrencyCode"
-                [locale]="field.currencyOptions?.locale || localeId"
-                [currencyDisplay]="field.currencyOptions?.display || 'symbol'"
-                [minimumFractionDigits]="field.currencyOptions?.minimumFractionDigits"
-                [maximumFractionDigits]="field.currencyOptions?.maximumFractionDigits"
-                [useGrouping]="field.currencyOptions?.useGrouping !== false"
-                [allowNegative]="field.currencyOptions?.allowNegative !== false"
+                [currency]="currencyOptions()?.code || defaultCurrencyCode"
+                [locale]="currencyOptions()?.locale || localeId"
+                [currencyDisplay]="currencyOptions()?.display || 'symbol'"
+                [minimumFractionDigits]="currencyOptions()?.minimumFractionDigits"
+                [maximumFractionDigits]="currencyOptions()?.maximumFractionDigits"
+                [useGrouping]="currencyOptions()?.useGrouping !== false"
+                [allowNegative]="currencyOptions()?.allowNegative !== false"
                 (focus)="onFocus()"
                 (blur)="onBlur()"
             />
@@ -336,6 +336,8 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
 })
 export class KlesFormCurrencyComponent extends KlesFieldAbstract {
     readonly localeId = inject(LOCALE_ID);
+
+    public readonly currencyOptions = computed(() => this.resolvedFieldUi()?.currencyOptions);
 
     readonly defaultCurrencyCode = inject(DEFAULT_CURRENCY_CODE);
 }
