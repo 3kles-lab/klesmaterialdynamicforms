@@ -62,6 +62,7 @@ import { KlesFormCopyComponent } from './fields/subfields/copy.component';
 import { KlesFormActionMenuComponent } from './fields/action-menu.component';
 import { KlesFormTileComponent } from './fields/tile.component';
 import { KlesFormCurrencyComponent } from './fields/currency.component';
+import { KlesFormStatusComponent } from './fields/status.component';
 
 const components = [
     KlesDynamicFormComponent,
@@ -111,7 +112,8 @@ const components = [
     KlesFormCopyComponent,
     KlesFormTileComponent,
     KlesFormActionMenuComponent,
-    KlesFormCurrencyComponent
+    KlesFormCurrencyComponent,
+    KlesFormStatusComponent
 ];
 
 const colorPicker = [ColorPickerComponent, ColorPickerDirective];

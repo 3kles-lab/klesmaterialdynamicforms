@@ -40,6 +40,36 @@ export interface IKlesCurrencyOptions {
     allowNegative?: boolean;
 }
 
+export type KlesStatusTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
+
+export type KlesStatusAppearance = 'chip' | 'badge' | 'text';
+
+export interface IKlesStatusDefinition {
+    label: string;
+    tone?: KlesStatusTone;
+    icon?: string;
+    iconSvg?: string;
+    tooltip?: string;
+    ariaLabel?: string;
+    ngClass?: any;
+}
+
+export interface IKlesStatusOptions {
+    values?: Record<string, IKlesStatusDefinition>;
+    appearance?: KlesStatusAppearance;
+    /**
+     * Affiche un point coloré lorsque le statut
+     * ne possède pas d'icône.
+     */
+    showDot?: boolean;
+    fallback?: IKlesStatusDefinition;
+    /**
+     * Permet de gérer des valeurs plus complexes,
+     * notamment des objets.
+     */
+    resolve?: (value: any, context: unknown | null, field: IKlesFieldConfig, group: UntypedFormGroup) => IKlesStatusDefinition | null;
+}
+
 export interface IKlesFieldUi {
     inputType?: 'text' | 'button' | 'checkbox' | 'color' | 'date' | 'datetime-local' | 'email' | 'file' | 'hidden' | 'image' | 'month' | 'number' | 'password' | 'radio' | 'range' | 'reset' | 'search' | 'submit' | 'tel' | 'time' | 'url' | 'week'; // Type
     min?: number | Date;
@@ -140,6 +170,7 @@ export interface IKlesFormField {
     onAction?: (event: IKlesFieldActionEvent<any, any>) => void;
 
     currencyOptions?: IKlesCurrencyOptions;
+    statusOptions?: IKlesStatusOptions;
 }
 
 export type IKlesFieldConfig = IKlesFormField & IKlesFieldUi;

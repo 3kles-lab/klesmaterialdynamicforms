@@ -17,4 +17,5 @@ export enum EnumType {
     badge = 'badge',
     range = 'range',
     currency = 'currency',
+    status = 'status',
 }
