@@ -1,3 +1,10 @@
+## [21.5.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.5.0...v21.5.1) (2026-08-17)
+
+
+### Bug Fixes
+
+* chip grid appearance ([37ca0c8](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/37ca0c85bf109273eff6049a120abdf78cf7a22c))
+
 # [21.5.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.4.2...v21.5.0) (2026-08-17)
 
 
