@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { KlesFieldAbstract } from './field.abstract';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-kles-form-tile',
@@ -15,9 +16,9 @@ import { KlesFieldAbstract } from './field.abstract';
             }
 
             <div class="kles-tile__content">
-                @if (label()) {
+                @if (displayValue(); as value) {
                     <div class="kles-tile__label">
-                        {{ label() }}
+                        {{ value }}
                     </div>
                 }
 
@@ -78,4 +79,30 @@ import { KlesFieldAbstract } from './field.abstract';
         }
     `,
 })
-export class KlesFormTileComponent extends KlesFieldAbstract {}
+export class KlesFormTileComponent extends KlesFieldAbstract {
+    private readonly control = this.group.controls[this.field.name];
+
+    private readonly controlValue = toSignal(this.control.valueChanges, {
+        initialValue: this.control.value,
+    });
+
+    readonly formattedValue = computed(() => {
+        const value = this.controlValue();
+
+        if (value == null) {
+            return '';
+        }
+
+        if (this.field.displayWith) {
+            return this.field.displayWith(value) ?? '';
+        }
+
+        if (this.field.property && typeof value === 'object') {
+            return String(value[this.field.property] ?? '');
+        }
+
+        return String(value);
+    });
+
+    readonly displayValue = computed(() => this.formattedValue() || this.label() || '');
+}
