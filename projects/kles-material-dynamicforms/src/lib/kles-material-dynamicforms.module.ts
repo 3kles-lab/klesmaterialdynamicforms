@@ -63,6 +63,7 @@ import { KlesFormActionMenuComponent } from './fields/action-menu.component';
 import { KlesFormTileComponent } from './fields/tile.component';
 import { KlesFormCurrencyComponent } from './fields/currency.component';
 import { KlesFormStatusComponent } from './fields/status.component';
+import { KlesFormChipGridComponent } from './fields/chip-grid.component';
 
 const components = [
     KlesDynamicFormComponent,
@@ -113,7 +114,8 @@ const components = [
     KlesFormTileComponent,
     KlesFormActionMenuComponent,
     KlesFormCurrencyComponent,
-    KlesFormStatusComponent
+    KlesFormStatusComponent,
+    KlesFormChipGridComponent
 ];
 
 const colorPicker = [ColorPickerComponent, ColorPickerDirective];

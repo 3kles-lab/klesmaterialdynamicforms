@@ -64,6 +64,7 @@ export * from './lib/fields/subfields/password-visibility.component';
 export * from './lib/fields/action-menu.component';
 export * from './lib/fields/currency.component';
 export * from './lib/fields/status.component';
+export * from './lib/fields/chip-grid.component';
 
 /**ENUMS */
 export * from './lib/enums/type.enum';
