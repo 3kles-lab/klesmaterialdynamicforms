@@ -55,7 +55,6 @@ import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkb
 
 import { KlesFormFileComponent } from './fields/file.component';
 import { KlesFileControlComponent } from './forms/file-control.component';
-import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
 import { KlesFormDateTimeComponent } from './fields/date-time.component';
 import { KlesFormCopyComponent } from './fields/subfields/copy.component';
 
@@ -115,14 +114,13 @@ const components = [
     KlesFormActionMenuComponent,
     KlesFormCurrencyComponent,
     KlesFormStatusComponent,
-    KlesFormChipGridComponent
+    KlesFormChipGridComponent,
 ];
 
-const colorPicker = [ColorPickerComponent, ColorPickerDirective];
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, NgxMatSelectSearchModule, components, directives, pipes, colorPicker],
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, NgxMatSelectSearchModule, components, directives, pipes],
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }, pipes],
     exports: [components, pipes, directives],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],

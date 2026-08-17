@@ -1,12 +1,13 @@
 @use '@angular/material' as mat;
 
+
 .button-center {
     background-color: red;
 }
 
-.group-block {
-    display: group !important;
-}
+// .group-block {
+//     display: group !important;
+// }
 
 .container {
     display: flex;

@@ -9,6 +9,8 @@ import { DateAdapter, MatDateFormats } from '@angular/material/core';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { MatButtonAppearance } from '@angular/material/button';
 
+import type { ColorCommitMode, ColorOutputFormat, ColorPickerPosition } from '@3kles/kles-material-color-picker';
+
 export interface IKlesFieldActionEvent<TContext = unknown, TValue = unknown> {
     actionId: string;
     value?: TValue;
@@ -95,14 +97,20 @@ export interface IKlesFieldUi {
     appearance?: 'fill' | 'outline'; // MatForm field appearance
     buttonAppearance?: MatButtonAppearance;
 
-    //TODO
     visible?: boolean;
     colorOption?: {
+        // mode?: 'color' | 'grayscale' | 'presets';
+
         disable?: boolean;
-        position?: 'auto' | 'top' | 'bottom' | 'left' | 'right' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-        positionOffset?: string;
-        mode?: 'color' | 'grayscale' | 'presets';
-        format?: 'auto' | 'hex' | 'rgba' | 'hsla';
+        position?: ColorPickerPosition;
+        positionOffset?: number;
+        format?: ColorOutputFormat;
+        commitMode?: ColorCommitMode;
+        alpha?: boolean;
+        eyeDropper?: boolean;
+        saveOnOutside?: boolean;
+        fallbackColor?: string;
+        presets?: readonly string[];
     };
     direction?: 'column' | 'row' | 'grid' | 'inline-grid';
     textareaAutoSize?: { minRows?: number; maxRows?: number };

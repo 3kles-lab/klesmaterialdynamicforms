@@ -1,116 +1,128 @@
 import { CommonModule } from '@angular/common';
-import { KlesFieldAbstract } from './field.abstract';
-import { OnInit, Component, OnDestroy } from '@angular/core';
-import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
-import { MatTooltip } from '@angular/material/tooltip';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormField } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { ColorPickerComponent, ColorPickerDirective } from 'ngx-color-picker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { MaterialColorPickerTriggerComponent, parseColor, readableTextColor, toCssRgba } from '@3kles/kles-material-color-picker';
+
+import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
+import { KlesFieldAbstract } from './field.abstract';
+
 @Component({
     selector: 'kles-form-color',
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent],
     template: `
-        <mat-form-field
-            [subscriptSizing]="field.subscriptSizing"
-            [formGroup]="group"
-            class="form-element"
-            [colorPicker]="group.get(field.name).value"
-            (colorPickerChange)="group.get(field.name).setValue($event)"
-            [cpPosition]="field.colorOption.position"
-            [cpColorMode]="field.colorOption.mode"
-            [cpOutputFormat]="field.colorOption.format"
-            [cpPositionOffset]="field.colorOption.positionOffset"
-            [appearance]="appearance()"
-        >
+        <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="field.subscriptSizing">
             <input
                 matInput
+                autocomplete="off"
                 [matTooltip]="tooltip()"
                 [attr.id]="field.id"
                 [ngClass]="ngClass()"
                 [placeholder]="placeholder()"
-                [value]="group.get(field.name).value"
-                class="colorPicker"
-                [style.background]="group.get(field.name).value"
-                [style.color]="invertColor(group.get(field.name).value, true)"
                 [formControlName]="field.name"
+                [style.background-color]="backgroundColor()"
+                [style.color]="foregroundColor()"
             />
+
+            <kles-material-color-picker-trigger
+                matSuffix
+                [color]="currentColor()"
+                [outputFormat]="colorOption().format ?? 'hex8'"
+                [commitMode]="colorOption().commitMode ?? 'live'"
+                [alpha]="colorOption().alpha ?? true"
+                [eyeDropper]="colorOption().eyeDropper ?? true"
+                [saveOnOutside]="colorOption().saveOnOutside ?? true"
+                [fallbackColor]="colorOption().fallbackColor ?? '#000000ff'"
+                [presets]="colorOption().presets ?? []"
+                
+                [disabled]="pickerDisabled()"
+                (colorChange)="setColor($event)"
+            />
+
+<!-- TODO [position]="colorOption().position ?? 'auto'"
+                [positionOffset]="colorOption().positionOffset ?? 8" -->
+
 
             @if (field.subComponents || field.clearable) {
                 <div matSuffix>
-                    <ng-content></ng-content>
+                    <ng-content />
                 </div>
             }
 
-            <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
+            <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations" />
         </mat-form-field>
     `,
-    styles: ['mat-form-field {width: calc(100%)}'],
-    standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, MatTooltip, ReactiveFormsModule, MatFormField, ColorPickerDirective, MatInput],
+    styles: `
+        :host {
+            display: block;
+            width: 100%;
+        }
+
+        mat-form-field {
+            width: 100%;
+        }
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class KlesFormColorComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    ngOnInit() {
-        if (!this.field.colorOption) {
-            this.field.colorOption = {
-                position: 'auto',
-                mode: 'color',
-                format: 'auto',
-                positionOffset: '0%',
-            };
-        }
-        if (!this.field.colorOption.position) {
-            this.field.colorOption = {
-                ...this.field.colorOption,
-                position: 'auto',
-            };
-        }
-        if (!this.field.colorOption.mode) {
-            this.field.colorOption = {
-                ...this.field.colorOption,
-                mode: 'color',
-            };
-        }
-        if (!this.field.colorOption.format) {
-            this.field.colorOption = {
-                ...this.field.colorOption,
-                format: 'auto',
-            };
-        }
-        if (!this.field.colorOption.positionOffset) {
-            this.field.colorOption = {
-                ...this.field.colorOption,
-                positionOffset: '0%',
-            };
-        }
-        super.ngOnInit();
-    }
+export class KlesFormColorComponent extends KlesFieldAbstract {
+    private readonly formControl = this.group.controls[this.field.name];
 
-    invertColor(hex: any, bw: any): string {
-        if (hex.indexOf('#') === 0) {
-            hex = hex.slice(1);
-        }
-        // convert 3-digit hex to 6-digits.
-        if (hex.length === 3) {
-            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-        }
-        if (hex.length !== 6) {
-            return '#000000';
-        }
-        let r = parseInt(hex.slice(0, 2), 16);
-        let g = parseInt(hex.slice(2, 4), 16);
-        let b = parseInt(hex.slice(4, 6), 16);
-        if (bw) {
-            return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? '#000000' : '#FFFFFF';
-        }
-        // invert color components
-        const r1 = (255 - r).toString(16);
-        const g1 = (255 - g).toString(16);
-        const b1 = (255 - b).toString(16);
-        // pad each with zeros and return
-        return '#' + r1 + g1 + b1;
-    }
+    private readonly controlValue = toSignal(this.formControl.valueChanges, {
+        initialValue: this.formControl.value,
+    });
 
-    ngOnDestroy(): void {
-        super.ngOnDestroy();
+    private readonly controlStatus = toSignal(this.formControl.statusChanges, {
+        initialValue: this.formControl.status,
+    });
+
+    readonly colorOption = computed(() => {
+        const dynamicField = this.ui?.get(this.field.name)?.value();
+
+        return dynamicField?.colorOption ?? this.field.colorOption ?? {};
+    });
+
+    readonly parsedColor = computed(() => {
+        return parseColor(this.controlValue());
+    });
+
+    readonly currentColor = computed(() => {
+        const value = this.controlValue();
+
+        if (typeof value === 'string' && this.parsedColor()) {
+            return value;
+        }
+
+        return this.colorOption().fallbackColor ?? '#000000ff';
+    });
+
+    readonly backgroundColor = computed(() => {
+        const color = this.parsedColor();
+
+        return color ? toCssRgba(color) : '#ffffff';
+    });
+
+    readonly foregroundColor = computed(() => {
+        const color = this.parsedColor();
+
+        return color ? readableTextColor(color) : '#000000';
+    });
+
+    readonly pickerDisabled = computed(() => {
+        return this.controlStatus() === 'DISABLED' || this.colorOption().disable === true;
+    });
+
+    setColor(value: string): void {
+        if (this.pickerDisabled()) {
+            return;
+        }
+
+        this.formControl.setValue(value);
+        this.formControl.markAsDirty();
+        this.formControl.markAsTouched();
     }
 }

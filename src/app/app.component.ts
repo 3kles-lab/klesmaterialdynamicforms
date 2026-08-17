@@ -14,12 +14,14 @@ import {
     KlesFormActionMenuComponent,
     KlesFormCheckboxComponent,
     KlesFormCheckboxIndeterminateComponent,
+    KlesFormChipGridComponent,
     KlesFormCurrencyComponent,
     KlesFormDateComponent,
     KlesFormFabComponent,
     KlesFormFileComponent,
     KlesFormIconButtonComponent,
     KlesFormMiniFabComponent,
+    KlesFormPasswordVisibilityComponent,
     KlesFormStatusComponent,
     KlesFormTileComponent,
     KlesMaterialDynamicformsModule,
@@ -93,6 +95,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     color = '';
 
     private document = inject(DOCUMENT);
+
+    context = signal({
+        tutu: 'aaaaa',
+    });
 
     @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
     fields: IKlesFieldConfig[];
@@ -248,7 +254,12 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 component: KlesFormColorComponent,
                 name: 'color',
-                value: '',
+                // value: '',
+                colorOption: {
+                    alpha: true,
+                    presets: ['#6750a4ff', '#006e1cff', '#ba1a1aff', '#00639bff', '#ffb300ff', '#ffffff40', '#00000000'],
+                },
+                appearance: 'outline',
             },
             {
                 component: KlesFormCurrencyComponent,
@@ -322,32 +333,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                             icon: 'check_circle',
                         };
                     },
-
-                    // values: {
-                    //     active: {
-                    //         label: 'Actif',
-                    //         tone: 'success',
-                    //         icon: 'check_circle',
-                    //     },
-
-                    //     pending: {
-                    //         label: 'En attente',
-                    //         tone: 'warning',
-                    //         icon: 'schedule',
-                    //     },
-
-                    //     disabled: {
-                    //         label: 'Désactivé',
-                    //         tone: 'neutral',
-                    //         icon: 'block',
-                    //     },
-
-                    //     error: {
-                    //         label: 'Erreur',
-                    //         tone: 'error',
-                    //         icon: 'error',
-                    //     },
-                    // },
                 },
             },
             {
@@ -359,8 +344,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 type: EnumType.group,
                 name: 'environment',
-                direction: 'column',
-                ngClass: 'group-block',
+                direction: 'row',
+                // ngClass: 'group-block',
                 collections: [
                     {
                         component: KlesFormInputClearableComponent,
@@ -455,7 +440,9 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 name: 'provider',
                 component: KlesFormTileComponent,
-                label: 'Google Workspace',
+                // label: 'Google Workspace',
+                value: { toto: 'Google Workspace' },
+                property: 'toto',
                 hint: 'SSO for Google Workspace',
                 imageUrl: 'https://www.gstatic.com/marketing-cms/assets/images/97/37/bbe70068407199f1ada4b3f6b9f8/g-about-gatg.png=n-w64-h65-fcrop64=1,00000367fffffd72-rw',
                 imageAlt: 'Google Workspace',
@@ -464,23 +451,36 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 name: 'inputtext',
                 placeholder: 'Input Text',
-                inputType: 'text',
+                inputType: 'password',
+                subComponents: [KlesFormPasswordVisibilityComponent],
                 tooltip: 'tooltip text',
                 // value: 'input text value',
-                asyncValue: of(null).pipe(delay(5000)),
-                validations: [
-                    {
-                        validator: Validators.required,
-                        name: 'required',
-                        message: 'fsdfdsfdsf',
-                    },
-                ],
+                // asyncValue: of(null).pipe(delay(5000)),
+                // validations: [
+                //     {
+                //         validator: Validators.required,
+                //         name: 'required',
+                //         message: 'fsdfdsfdsf',
+                //     },
+                // ],
                 component: KlesFormInputComponent,
-                valueChanges: (field, group, siblingFields) => {
-                    if (group.controls[field.name].value === 'test') {
-                        (siblingFields.find((sibling) => sibling.name === 'selectTest').options as BehaviorSubject<string[]>).next(['ccc', 'dddd']);
-                    }
-                },
+                // valueChanges: (field, group, siblingFields) => {
+                //     if (group.controls[field.name].value === 'test') {
+                //         (siblingFields.find((sibling) => sibling.name === 'selectTest').options as BehaviorSubject<string[]>).next(['ccc', 'dddd']);
+                //     }
+                // },
+            },
+            {
+                name: 'chipgrid',
+                component: KlesFormChipGridComponent,
+                label: 'ahaahh',
+                placeholder: 'bbbbb',
+                autocomplete: true,
+                property: 'BUAR',
+                lazy: true,
+                options: new BehaviorSubject<any[]>(toto).pipe(delay(1000), shareReplay(1)),
+                // value: [],
+                appearance: 'outline',
             },
             {
                 name: 'inputtextmax',
@@ -491,6 +491,11 @@ export class AppComponent implements OnInit, AfterViewInit {
                 copyTooltip: 'Valeur copiée',
                 subComponents: [KlesFormCopyComponent],
                 component: KlesFormInputComponent,
+                resolveUi: ({ context }) => {
+                    return {
+                        appearance: context ? 'outline' : 'fill',
+                    };
+                },
             },
             {
                 name: 'inputnumber',
@@ -764,6 +769,29 @@ export class AppComponent implements OnInit, AfterViewInit {
                         icon: 'content_copy',
                     },
                     {
+                        options: [
+                            {
+                                id: 'edit',
+                                label: 'Modifier',
+                                icon: 'edit',
+
+                                // disabled: (context) => context?.readonlyMode === true,
+                            },
+                            {
+                                id: 'duplicate',
+                                label: 'Dupliquer',
+                                icon: 'content_copy',
+                            },
+                            {
+                                id: 'delete',
+                                label: 'Supprimer',
+                                icon: 'delete',
+                                color: 'warn',
+                                dividerBefore: true,
+
+                                // visible: (context) => context?.provider.canDelete === true,
+                            },
+                        ],
                         id: 'delete',
                         label: 'Supprimer',
                         icon: 'delete',
@@ -776,6 +804,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
                 onAction: ({ actionId, context, value, group }) => {
                     console.log('Actionid', actionId);
+                    console.log('context', context);
                     console.log('Action sélectionnée', value);
                     console.log('Valeurs de la ligne', group.getRawValue());
                 },
