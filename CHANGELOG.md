@@ -1,3 +1,10 @@
+# [21.6.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.5.1...v21.6.0) (2026-08-17)
+
+
+### Features
+
+* remove ngx color picker to kles material color picker ([821653a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/821653aa769efe6334ed5055f7cb62614ae0cf08))
+
 ## [21.5.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.5.0...v21.5.1) (2026-08-17)
 
 
