@@ -1,12 +1,12 @@
-import { Component, inject, Input, signal } from '@angular/core';
-import { FormGroup, UntypedFormGroup } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
 
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { IKlesField } from '../../interfaces/field.interface';
-import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
-
+import { FIELD, GROUP, GROUP_UI, SIBLING_FIELDS } from '../../token';
+import { GroupUiState } from '../../ui/ui-state/group-ui-state';
 
 @Component({
     selector: 'kles-form-password-visibility',
@@ -23,13 +23,14 @@ export class KlesFormPasswordVisibilityComponent implements IKlesField {
     readonly group = inject<FormGroup<any>>(GROUP);
     readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
 
+    public readonly ui = inject<GroupUiState>(GROUP_UI, { optional: true });
 
-    hide = signal(true);
+    hide = computed(() => {
+        return this.ui?.get(this.field.name)?.value().inputType === 'password';
+    });
 
-    toggleVisibility(event): void {
+    toggleVisibility(event: any): void {
         event.stopPropagation();
-        this.hide.set(!this.hide());
-        // this.field.inputType = this.hide ? 'password' : 'text';
-        //TODO
+        this.ui?.get(this.field.name)?.patchValue({ inputType: this.hide() ? 'text' : 'password' });
     }
 }
