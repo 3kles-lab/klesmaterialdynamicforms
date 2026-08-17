@@ -16,49 +16,47 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 @Component({
     selector: 'kles-form-chip-grid',
     template: `
-        <div [formGroup]="group">
-            <mat-form-field [matTooltip]="tooltip()">
-                <mat-label>{{ label() }}</mat-label>
-                <mat-chip-grid #reactiveChipGrid [formControl]="group.controls[field.name]">
-                    @for (value of group.controls[field.name].value ?? []; track value) {
-                        <mat-chip-row (removed)="removeChip(value)">
-                            {{ value | klesTransform: field.pipeTransform }}
-                            <button matChipRemove>
-                                <mat-icon>cancel</mat-icon>
-                            </button>
-                        </mat-chip-row>
-                    }
-                </mat-chip-grid>
-                <input
-                    #search
-                    [formControl]="searchControl"
-                    [placeholder]="placeholder()"
-                    [matChipInputFor]="reactiveChipGrid"
-                    (matChipInputTokenEnd)="onTokenEnd($event)"
-                    [matAutocomplete]="auto"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    (focus)="onFocus()"
-                    (blur)="onBlur()"
-                />
+        <mat-form-field [formGroup]="group" [matTooltip]="tooltip()" [appearance]="appearance()">
+            <mat-label>{{ label() }}</mat-label>
+            <mat-chip-grid #reactiveChipGrid [formControl]="group.controls[field.name]">
+                @for (value of group.controls[field.name].value ?? []; track value) {
+                    <mat-chip-row (removed)="removeChip(value)">
+                        {{ value | klesTransform: field.pipeTransform }}
+                        <button matChipRemove>
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </mat-chip-row>
+                }
+            </mat-chip-grid>
+            <input
+                #search
+                [formControl]="searchControl"
+                [placeholder]="placeholder()"
+                [matChipInputFor]="reactiveChipGrid"
+                (matChipInputTokenEnd)="onTokenEnd($event)"
+                [matAutocomplete]="auto"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+            />
 
-                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); search.value = ''">
-                    @if (filteredOption$ | async; as filteredOption) {
-                        @if (filteredOption.loading) {
-                            <mat-option disabled>
-                                <div class="loadingSelect">
-                                    {{ intl.loading }}...
-                                    <mat-spinner class="spinner" diameter="20"></mat-spinner>
-                                </div>
-                            </mat-option>
-                        } @else {
-                            @for (item of filteredOption.options; track item) {
-                                <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}</mat-option>
-                            }
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event); search.value = ''">
+                @if (filteredOption$ | async; as filteredOption) {
+                    @if (filteredOption.loading) {
+                        <mat-option disabled>
+                            <div class="loadingSelect">
+                                {{ intl.loading }}...
+                                <mat-spinner class="spinner" diameter="20"></mat-spinner>
+                            </div>
+                        </mat-option>
+                    } @else {
+                        @for (item of filteredOption.options; track item) {
+                            <mat-option [value]="item" [disabled]="item?.disabled">{{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}</mat-option>
                         }
                     }
-                </mat-autocomplete>
-            </mat-form-field>
-        </div>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
