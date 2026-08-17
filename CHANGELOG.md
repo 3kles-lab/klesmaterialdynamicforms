@@ -1,3 +1,15 @@
+# [21.5.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.4.2...v21.5.0) (2026-08-17)
+
+
+### Bug Fixes
+
+* password vibility use ui state ([10da91e](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/10da91e53ff081db0c7cecd68b682d0bc7dc5afa))
+
+
+### Features
+
+* add chip grid component ([19035f9](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/19035f9d09eec7c1b30a0134773b4fd7c10d3820))
+
 ## [21.4.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.4.1...v21.4.2) (2026-08-17)
 
 
