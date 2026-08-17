@@ -1,3 +1,10 @@
+## [21.4.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.4.1...v21.4.2) (2026-08-17)
+
+
+### Bug Fixes
+
+* tile component use formcontrol value ([afb0ecf](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/afb0ecff33cbb4ddb904f578b73e23d7b0f11e44))
+
 ## [21.4.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.4.0...v21.4.1) (2026-08-14)
 
 
