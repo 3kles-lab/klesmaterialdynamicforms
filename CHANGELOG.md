@@ -1,3 +1,10 @@
+# [21.7.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.6.1...v21.7.0) (2026-08-18)
+
+
+### Features
+
+* replace select search with select component ([56add5f](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/56add5f82ad81e97dfd36bf933afda4f2ffd4cf9))
+
 ## [21.6.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.6.0...v21.6.1) (2026-08-18)
 
 
