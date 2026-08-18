@@ -43,7 +43,6 @@ import {
     KlesFormCopyComponent,
     KlesFormInputClearableComponent,
     KlesFormSelectComponent,
-    KlesFormSelectSearchComponent,
     KlesFormDateTimeComponent,
 } from 'kles-material-dynamicforms';
 import { KlesFormButtonToogleGroupComponent } from 'kles-material-dynamicforms';
@@ -254,12 +253,14 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 component: KlesFormColorComponent,
                 name: 'color',
+                clearable: true,
                 // value: '',
                 colorOption: {
                     alpha: true,
+                    position: 'top-right',
                     presets: ['#6750a4ff', '#006e1cff', '#ba1a1aff', '#00639bff', '#ffb300ff', '#ffffff40', '#00000000'],
                 },
-                appearance: 'outline',
+                // appearance: 'outline',
             },
             {
                 component: KlesFormCurrencyComponent,
@@ -548,7 +549,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 name: 'selectTest',
                 placeholder: 'select multiple',
-                component: KlesFormSelectSearchComponent,
+                component: KlesFormSelectComponent,
                 property: 'BUAR',
                 triggerComponent: SelectTriggerComponent,
                 autocompleteComponent: SelectOptionComponent,
@@ -604,44 +605,61 @@ export class AppComponent implements OnInit, AfterViewInit {
                 clearable: true,
                 label: 'Enter a date range',
             },
-            {
-                name: 'selectInfinite',
-                placeholder: 'select search infinite iciii',
-                // component: KlesFormSelectComponent,
-                component: KlesFormSelectSearchComponent,
-                // multiple: true,
-                // virtualScroll: false,
-                options: ['aaaa'],
-                // asyncValue: of(0),
+            // {
+            //     name: 'selectInfinite',
+            //     placeholder: 'select search infinite iciii',
+            //     // component: KlesFormSelectComponent,
+            //     component: KlesFormSelectSearchComponent,
+            //     // multiple: true,
+            //     // virtualScroll: false,
+            //     options: ['aaaa'],
+            //     // asyncValue: of(0),
 
-                // property: 'key',
-                // property: 'STKY',
-                // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
-                // // value: 'aaa',
-                // lazy: true,
-                // options: of(['aaa', 'bbb'])
-            },
+            //     // property: 'key',
+            //     // property: 'STKY',
+            //     // options: new BehaviorSubject<any[]>(optionsTest).pipe(delay(1000)),
+            //     // // value: 'aaa',
+            //     // lazy: true,
+            //     // options: of(['aaa', 'bbb'])
+            // },
             {
                 name: 'selectTestSimple',
                 placeholder: 'select simple',
                 component: KlesFormSelectComponent,
                 // component: KlesFormSelectComponent,
-                property: 'BUAR',
-                autocompleteComponent: SelectOptionComponent,
+                // property: 'BUAR',
+                // autocompleteComponent: SelectOptionComponent,
+                // lazy: true,
+                // value: toto[0],
+                search: {
+                    // placeholder: 'aaaa',
+                    // clearOnClose: false
+                    minLength: 3,
+                    keys: ['toto'],
+                    // mode: 'remote',
+                },
+                multiple: true,
                 lazy: true,
-                value: toto[0],
-                // options: toto
-                options: new BehaviorSubject<any[]>(toto).pipe(delay(2000), shareReplay(1)),
-                // options: [{ BUAR: 'A', TX40: 'aaaa' }, { BUAR: 'C', TX40: 'bbb' }]
-                // options: of(['aaa', 'bbb'])
+                property: 'toto',
+                // virtualScroll: true,
+                // options: [1, 2, 3, 4],
+                options: of([...Array(300).keys()].map((k) =>({toto: k}))).pipe(delay(300)),
+                // options: (value, group) => {
+                //     console.log(value);
+                //     return of([...Array(300).keys()].map((k) => ({ toto: k }))).pipe(delay(300));
+                // },
+                valueChanges: (field, group, siblingField, valueChanged) => {
+                    console.log(group.get(field.name)?.value);
+                },
             },
             {
                 name: 'selectSearchMultipleKey',
                 placeholder: 'select search with multiple key',
-                component: KlesFormSelectSearchComponent,
+                component: KlesFormSelectComponent,
                 searchKeys: ['BUAR', 'TX40'],
                 property: 'BUAR',
                 clearable: true,
+                multiple: true,
                 autocompleteComponent: SelectOptionComponent,
                 options: new BehaviorSubject<any[]>([
                     { BUAR: 'A', TX40: 'aaaa' },
