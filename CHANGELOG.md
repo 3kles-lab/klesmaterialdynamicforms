@@ -1,3 +1,10 @@
+## [21.7.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.0...v21.7.1) (2026-08-18)
+
+
+### Bug Fixes
+
+* remove ngx select search ([143c3ab](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/143c3ab557bf78120039832097c46f59d0cb1b71))
+
 # [21.7.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.6.1...v21.7.0) (2026-08-18)
 
 
