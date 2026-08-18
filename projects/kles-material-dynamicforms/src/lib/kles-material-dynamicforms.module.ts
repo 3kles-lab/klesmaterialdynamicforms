@@ -27,7 +27,6 @@ import { KlesFormGroupComponent } from './fields/group.component';
 import { KlesFormInputClearableComponent } from './fields/input.clearable.component';
 import { KlesFormIconComponent } from './fields/icon.component';
 import { KlesTransformPipe } from './pipe/transform.pipe';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { KlesFormLineBreakComponent } from './fields/line-break.component';
 import { ArrayFormatPipe } from './pipe/array.pipe';
 import { KlesFormLinkComponent } from './fields/link.component';
@@ -114,7 +113,7 @@ const components = [
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];
 const pipes = [KlesTransformPipe, ArrayFormatPipe];
 @NgModule({
-    imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, NgxMatSelectSearchModule, components, directives, pipes],
+    imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, components, directives, pipes],
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }, pipes],
     exports: [components, pipes, directives],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
