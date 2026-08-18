@@ -1,3 +1,10 @@
+## [21.6.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.6.0...v21.6.1) (2026-08-18)
+
+
+### Bug Fixes
+
+* color suffix ([e25e5cd](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/e25e5cd2be850d224e2e71d124c4fcd1268dc55e))
+
 # [21.6.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.5.1...v21.6.0) (2026-08-17)
 
 
