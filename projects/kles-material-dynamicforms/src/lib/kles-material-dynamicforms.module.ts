@@ -9,7 +9,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MaterialModule } from './modules/material.module';
 import { KlesFormLabelComponent } from './fields/label.component';
 import { KlesFormInputComponent } from './fields/input.component';
-import { KlesFormSelectComponent } from './fields/select.component';
 import { KlesFormDateComponent } from './fields/date.component';
 import { KlesFormRadioComponent } from './fields/radio.component';
 import { KlesFormCheckboxComponent } from './fields/checkbox.component';
@@ -29,7 +28,6 @@ import { KlesFormInputClearableComponent } from './fields/input.clearable.compon
 import { KlesFormIconComponent } from './fields/icon.component';
 import { KlesTransformPipe } from './pipe/transform.pipe';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { KlesFormSelectSearchComponent } from './fields/select.search.component';
 import { KlesFormLineBreakComponent } from './fields/line-break.component';
 import { ArrayFormatPipe } from './pipe/array.pipe';
 import { KlesFormLinkComponent } from './fields/link.component';
@@ -40,7 +38,6 @@ import { KlesFormButtonToogleGroupComponent } from './fields/button-toogle-group
 import { KlesFormArrayComponent } from './fields/array.component';
 import { KlesFormRangeComponent } from './fields/range.component';
 import { KlesFormClearComponent } from './fields/subfields/clear.component';
-import { KlesFormSelectLazySearchComponent } from './fields/select.lazy-search.component';
 import { KlesFormFabComponent } from './fields/button-fab.component';
 import { KlesFabComponent } from './forms/fab-control.component';
 import { KlesMiniFabComponent } from './forms/mini-fab-control.component';
@@ -78,7 +75,6 @@ const components = [
     KlesFormButtonCheckerComponent,
     KlesButtonFileComponent,
     KlesFormButtonFileComponent,
-    KlesFormSelectComponent,
     KlesFormDateComponent,
     KlesFormDateTimeComponent,
     KlesFormRadioComponent,
@@ -92,7 +88,6 @@ const components = [
     KlesFormChipComponent,
     KlesFormGroupComponent,
     KlesFormIconComponent,
-    KlesFormSelectSearchComponent,
     KlesFormLineBreakComponent,
     KlesFormLinkComponent,
     KlesFormSlideToggleComponent,
@@ -101,7 +96,6 @@ const components = [
     KlesFormArrayComponent,
     KlesFormRangeComponent,
     KlesFormClearComponent,
-    KlesFormSelectLazySearchComponent,
     KlesFormFabComponent,
     KlesFabComponent,
     KlesMiniFabComponent,

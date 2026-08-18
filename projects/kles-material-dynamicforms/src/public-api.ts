@@ -38,13 +38,11 @@ export * from './lib/fields/file.component';
 export * from './lib/fields/label.component';
 export * from './lib/fields/list-field.component';
 export * from './lib/fields/radio.component';
-export * from './lib/fields/select.component';
 export * from './lib/fields/textarea.component';
 export * from './lib/fields/text.component';
 export * from './lib/fields/chip.component';
 export * from './lib/fields/group.component';
 export * from './lib/fields/icon.component';
-export * from './lib/fields/select.search.component';
 export * from './lib/fields/line-break.component';
 export * from './lib/fields/link.component';
 export * from './lib/fields/slide-toggle.component';
@@ -54,7 +52,6 @@ export * from './lib/fields/array.component';
 export * from './lib/fields/range.component';
 export * from './lib/fields/tile.component';
 export * from './lib/fields/subfields/clear.component';
-export * from './lib/fields/select.lazy-search.component';
 export * from './lib/fields/button-fab.component';
 export * from './lib/fields/button-mini-fab.component';
 export * from './lib/fields/button-icon.component';
@@ -65,6 +62,7 @@ export * from './lib/fields/action-menu.component';
 export * from './lib/fields/currency.component';
 export * from './lib/fields/status.component';
 export * from './lib/fields/chip-grid.component';
+export * from './lib/fields/select.component'
 
 /**ENUMS */
 export * from './lib/enums/type.enum';

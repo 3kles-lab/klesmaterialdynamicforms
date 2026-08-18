@@ -131,6 +131,16 @@ export interface IKlesFieldUi {
     resolveUi?: IKlesFieldUiResolver;
 }
 
+export interface IKlesSelectSearchOptions {
+    mode?: 'local' | 'remote';
+    keys?: string[];
+    debounceTime?: number;
+    minLength?: number;
+    clearOnClose?: boolean;
+    placeholder?: string;
+    ariaLabel?: string;
+}
+
 export interface IKlesFormField {
     type?: EnumType; // Mapper type if(type && !component)=>type
     name: string; // Name Field (key for FormControlName)
@@ -139,6 +149,7 @@ export interface IKlesFormField {
 
     copyTooltip?: string; // Copy component tooltip
     options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string, group?: { [key: string]: any }) => Observable<any[]>); // List options for list component
+    search?: boolean | IKlesSelectSearchOptions;
     property?: string; // Property for field
     collections?: any; // Collections for subfield
     value?: any; // Value field
