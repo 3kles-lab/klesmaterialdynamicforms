@@ -29,34 +29,30 @@ import { KlesFieldAbstract } from './field.abstract';
                 [style.color]="foregroundColor()"
             />
 
-            <kles-material-color-picker-trigger
-                matSuffix
-                [color]="currentColor()"
-                [outputFormat]="colorOption().format ?? 'hex8'"
-                [commitMode]="colorOption().commitMode ?? 'live'"
-                [alpha]="colorOption().alpha ?? true"
-                [eyeDropper]="colorOption().eyeDropper ?? true"
-                [saveOnOutside]="colorOption().saveOnOutside ?? true"
-                [fallbackColor]="colorOption().fallbackColor ?? '#000000ff'"
-                [presets]="colorOption().presets ?? []"
-                
-                [disabled]="pickerDisabled()"
-                (colorChange)="setColor($event)"
-            />
-
-<!-- TODO [position]="colorOption().position ?? 'auto'"
-                [positionOffset]="colorOption().positionOffset ?? 8" -->
-
-
-            @if (field.subComponents || field.clearable) {
-                <div matSuffix>
+            <div matSuffix class="suffix">
+                <kles-material-color-picker-trigger
+                    [color]="currentColor()"
+                    [outputFormat]="colorOption().format ?? 'hex8'"
+                    [commitMode]="colorOption().commitMode ?? 'live'"
+                    [alpha]="colorOption().alpha ?? true"
+                    [eyeDropper]="colorOption().eyeDropper ?? true"
+                    [saveOnOutside]="colorOption().saveOnOutside ?? true"
+                    [fallbackColor]="colorOption().fallbackColor ?? '#000000ff'"
+                    [presets]="colorOption().presets ?? []"
+                    [position]="colorOption().position ?? 'auto'"
+                    [positionOffset]="colorOption().positionOffset ?? 8"
+                    [disabled]="pickerDisabled()"
+                    (colorChange)="setColor($event)"
+                />
+                @if (field.subComponents || field.clearable) {
                     <ng-content />
-                </div>
-            }
+                }
+            </div>
 
             <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations" />
         </mat-form-field>
     `,
+    styleUrls: ['../styles/mat-suffix.style.scss'],
     styles: `
         :host {
             display: block;
