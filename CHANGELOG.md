@@ -1,3 +1,11 @@
+## [21.7.3](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.2...v21.7.3) (2026-08-19)
+
+
+### Bug Fixes
+
+* chip grid display validation ([9f398ae](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/9f398aef07b42c53586cc29374c1f1bd682b1fbb))
+* recreate uiState when field change ([8910b94](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/8910b9410bda2136bbc3d770d12ff0434a0fa4f9))
+
 ## [21.7.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.1...v21.7.2) (2026-08-19)
 
 
