@@ -1,3 +1,10 @@
+## [21.7.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.1...v21.7.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* select subcomponent && range hint ([82b846d](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/82b846d862fc6d59753d7b025543117813e8ebd8))
+
 ## [21.7.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.0...v21.7.1) (2026-08-18)
 
 
