@@ -5,13 +5,14 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { combineLatest, concat, distinctUntilChanged, filter, map, Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { KlesDynamicFormIntl } from '../dynamic-form-intl';
+import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 
 @Component({
     selector: 'kles-form-chip-grid',
@@ -56,12 +57,14 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
                     }
                 }
             </mat-autocomplete>
+
+            <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations"></mat-error>
         </mat-form-field>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
     standalone: true,
-    imports: [MatIconModule, KlesTransformPipe, MatChipsModule, MatTooltip, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, AsyncPipe, MatProgressSpinnerModule],
+    imports: [MatIconModule, KlesTransformPipe, MatChipsModule, MatTooltip, ReactiveFormsModule, MatFormFieldModule, MatAutocompleteModule, AsyncPipe, MatProgressSpinnerModule, MatError, MatErrorMessageDirective],
 })
 export class KlesFormChipGridComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     options = this.field.options as any[];
