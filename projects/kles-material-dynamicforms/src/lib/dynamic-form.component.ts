@@ -90,6 +90,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes.fields?.firstChange) {
             this.updateForm();
+            this.ui = this.createUi();
             this._onLoaded.emit();
         }
 
