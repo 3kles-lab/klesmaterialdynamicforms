@@ -29,7 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
             </div>
 
             <mat-date-range-picker #picker></mat-date-range-picker>
-            @if (hint) {
+            @if (hint()) {
                 <mat-hint>{{ hint() }}</mat-hint>
             }
 
