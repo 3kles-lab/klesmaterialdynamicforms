@@ -1,3 +1,10 @@
+## [21.7.5](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.4...v21.7.5) (2026-08-24)
+
+
+### Bug Fixes
+
+* chip grid filter and search ([2875ad5](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/2875ad5e0f5047ae5a54dc81a3be3ecafc6bf5f8))
+
 ## [21.7.4](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.3...v21.7.4) (2026-08-24)
 
 
