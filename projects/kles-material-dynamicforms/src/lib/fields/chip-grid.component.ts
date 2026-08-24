@@ -22,7 +22,7 @@ import { MatErrorMessageDirective } from '../directive/mat-error-message.directi
             <mat-chip-grid #reactiveChipGrid [formControl]="group.controls[field.name]">
                 @for (value of group.controls[field.name].value ?? []; track value) {
                     <mat-chip-row (removed)="removeChip(value)">
-                        {{ value | klesTransform: field.pipeTransform }}
+                         {{ (field.property ? value[field.property] : item) | klesTransform: field.pipeTransform }}
                         <button matChipRemove>
                             <mat-icon>cancel</mat-icon>
                         </button>
