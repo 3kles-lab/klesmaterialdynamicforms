@@ -1,3 +1,11 @@
+## [21.7.4](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.3...v21.7.4) (2026-08-24)
+
+
+### Bug Fixes
+
+* chip grid value with property ([0558647](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/05586479d252b12158d33848817d44bc94dcaaab))
+* chip grid value with property ([8c40231](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/8c40231419b32e1ac431691380d0d3c227092701))
+
 ## [21.7.3](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.2...v21.7.3) (2026-08-19)
 
 
