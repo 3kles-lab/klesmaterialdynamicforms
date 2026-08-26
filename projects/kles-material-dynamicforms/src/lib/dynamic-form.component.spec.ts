@@ -1,0 +1,44 @@
+import { TestBed } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { KlesDynamicFormComponent } from './dynamic-form.component';
+import { KlesFormInputComponent } from './fields/input.component';
+import { IKlesFieldConfig } from './interfaces/field.config.interface';
+
+describe('KlesDynamicFormComponent', () => {
+    it('rebuilds the GroupUiState when the fields input changes', () => {
+        TestBed.configureTestingModule({
+            imports: [KlesDynamicFormComponent, KlesFormInputComponent, NoopAnimationsModule],
+        });
+
+        const fixture = TestBed.createComponent(KlesDynamicFormComponent);
+        const initialFields: IKlesFieldConfig[] = [
+            {
+                name: 'first',
+                component: KlesFormInputComponent,
+                appearance: 'fill',
+            },
+        ];
+        fixture.componentRef.setInput('fields', initialFields);
+        fixture.detectChanges();
+
+        const initialUi = fixture.componentInstance.ui;
+        expect(initialUi.get('first')?.value()?.appearance).toBe('fill');
+
+        const nextFields: IKlesFieldConfig[] = [
+            {
+                name: 'second',
+                component: KlesFormInputComponent,
+                appearance: 'outline',
+            },
+        ];
+        fixture.componentRef.setInput('fields', nextFields);
+        fixture.detectChanges();
+
+        expect(fixture.componentInstance.ui).not.toBe(initialUi);
+        expect(fixture.componentInstance.ui.get('first')).toBeNull();
+        expect(fixture.componentInstance.ui.get('second')?.value()?.appearance).toBe('outline');
+        expect(fixture.componentInstance.form.get('first')).toBeNull();
+        expect(fixture.componentInstance.form.get('second')).toBeInstanceOf(FormControl);
+    });
+});

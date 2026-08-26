@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ViewContainerRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider, Signal, input, computed } from '@angular/core';
+import { ApplicationRef, Directive, Input, OnInit, ViewContainerRef, ViewRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider, Signal } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
@@ -22,16 +22,16 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
 
     componentRef: ComponentRef<any> | undefined;
     subComponents: ComponentRef<any>[] = [];
+    private subComponentViews = new Map<ComponentRef<any>, ViewRef>();
 
     constructor(
         protected container: ViewContainerRef,
         protected injector: Injector,
+        private applicationRef: ApplicationRef,
     ) {}
 
     ngOnDestroy(): void {
-        if (this.componentRef) {
-            this.componentRef.destroy();
-        }
+        this.destroyComponents();
     }
 
     ngOnInit() {
@@ -71,11 +71,7 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
     }
 
     buildComponent() {
-        if (this.componentRef) {
-            this.subComponents.forEach((c) => c.destroy());
-            this.subComponents = [];
-            this.componentRef.destroy();
-        }
+        this.destroyComponents();
 
         const options: {
             providers: Array<Provider | StaticProvider>;
@@ -192,6 +188,15 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
         const injector: Injector = Injector.create(options);
         const component = this.container.createComponent(componentType, { injector });
 
+        // The host element is projected into the field component. Keeping its view
+        // in this container would make Angular's logical DOM differ from the real DOM.
+        const viewIndex = this.container.indexOf(component.hostView);
+        const detachedView = viewIndex !== -1 ? this.container.detach(viewIndex) : null;
+        if (detachedView) {
+            this.applicationRef.attachView(detachedView);
+            this.subComponentViews.set(component, detachedView);
+        }
+
         component.onDestroy(() => {
             if (isDestroyable(injector)) {
                 injector.destroy();
@@ -199,5 +204,20 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
         });
 
         return component;
+    }
+
+    private destroyComponents(): void {
+        this.componentRef?.destroy();
+        this.componentRef = undefined;
+
+        this.subComponents.forEach((component) => {
+            const view = this.subComponentViews.get(component);
+            if (view) {
+                this.applicationRef.detachView(view);
+            }
+            component.destroy();
+        });
+        this.subComponents = [];
+        this.subComponentViews.clear();
     }
 }
