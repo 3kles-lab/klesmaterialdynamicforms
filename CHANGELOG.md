@@ -1,3 +1,10 @@
+## [21.7.6](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.5...v21.7.6) (2026-08-26)
+
+
+### Bug Fixes
+
+* detach view before delete sub component ([b3865e1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/b3865e156e70be178713a7193c117f069622c59c))
+
 ## [21.7.5](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.4...v21.7.5) (2026-08-24)
 
 
