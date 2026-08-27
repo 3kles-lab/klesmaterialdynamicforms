@@ -33,7 +33,7 @@ FormControlName.prototype.ngOnChanges = function () {
     selector: 'app-kles-dynamic-form',
     standalone: true,
     template: `
-        <form class="{{ orientationClass }}" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
+        <form class="{{ orientationClass }}" [class.dynamic-form-nowrap]="direction === 'row' && wrap === false" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
             @for (field of fields; track field.name) {
                 @if (field.visible !== false) {
                     <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="fields" [context]="context"> </ng-container>
@@ -48,6 +48,7 @@ FormControlName.prototype.ngOnChanges = function () {
         '.dynamic-form-column { display: flex;flex-direction: column; }',
         '.dynamic-form-column > * { width: 100%; }',
         '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline}',
+        '.dynamic-form-row.dynamic-form-nowrap { flex-wrap: nowrap; }',
         '.dynamic-form-row > * { width: 100%; }',
         '.dynamic-form-grid { display: grid; }',
         '.dynamic-form-inline-grid { display: inline-grid; }',
@@ -65,6 +66,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     @Output() _onLoaded = new EventEmitter();
 
     @Input() direction: 'column' | 'row' | 'grid' | 'inline-grid' = 'column';
+    @Input() wrap = true;
     @Input() formClass: string | string[] | Set<string> | { [klass: string]: any };
 
     form: UntypedFormGroup;

@@ -252,6 +252,8 @@ import { KlesFormGroupComponent } from 'kles-material-dynamicforms';
 ```javascript
 const field={
   name: 'group',
+  direction: 'row',
+  wrap: false, // true by default; false prevents fields from wrapping
   collections:[
     {
       component: KlesFormButtonComponent,

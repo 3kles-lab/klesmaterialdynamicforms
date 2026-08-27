@@ -113,6 +113,7 @@ export interface IKlesFieldUi {
         presets?: readonly string[];
     };
     direction?: 'column' | 'row' | 'grid' | 'inline-grid';
+    wrap?: boolean; // Allow fields in a row group to wrap (default: true)
     textareaAutoSize?: { minRows?: number; maxRows?: number };
     virtualScroll?: boolean; //To activate virtual scroll
     itemSize?: number; // itemSize for virtual scroll viewport

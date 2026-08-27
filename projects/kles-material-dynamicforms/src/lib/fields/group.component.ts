@@ -37,6 +37,7 @@ import { KlesFormUiGroup } from '../ui/group.ui';
         ':host.group-container-column { display: flex;flex-direction: column; justify-content:inherit; }',
         ':host.group-container-column > * { width: 100%; }',
         ':host.group-container-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline; justify-content:inherit; }',
+        ':host.group-container-row.group-container-nowrap { flex-wrap: nowrap; }',
         ':host.group-container-row > * { width: 100%; }',
         ':host.group-container-grid { display: grid; }',
         ':host.group-container-inline-grid { display: inline-grid; }',
@@ -48,7 +49,7 @@ export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit,
     orientationClass: 'group-container' | 'group-container-column' | 'group-container-row' | 'group-container-grid' | 'group-container-inline-grid' = 'group-container';
 
     @HostBinding('class') get className() {
-        return this.orientationClass;
+        return this.orientationClass === 'group-container-row' && this.field.wrap === false ? `${this.orientationClass} group-container-nowrap` : this.orientationClass;
     }
 
     subGroup!: UntypedFormGroup;

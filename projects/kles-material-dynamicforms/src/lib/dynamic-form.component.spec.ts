@@ -6,6 +6,21 @@ import { KlesFormInputComponent } from './fields/input.component';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 
 describe('KlesDynamicFormComponent', () => {
+    it('prevents wrapping in row direction when wrap is false', () => {
+        TestBed.configureTestingModule({
+            imports: [KlesDynamicFormComponent, NoopAnimationsModule],
+        });
+
+        const fixture = TestBed.createComponent(KlesDynamicFormComponent);
+        fixture.componentRef.setInput('direction', 'row');
+        fixture.componentRef.setInput('wrap', false);
+        fixture.detectChanges();
+
+        const form = fixture.nativeElement.querySelector('form') as HTMLFormElement;
+        expect(form.classList).toContain('dynamic-form-row');
+        expect(form.classList).toContain('dynamic-form-nowrap');
+    });
+
     it('rebuilds the GroupUiState when the fields input changes', () => {
         TestBed.configureTestingModule({
             imports: [KlesDynamicFormComponent, KlesFormInputComponent, NoopAnimationsModule],

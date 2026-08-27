@@ -49,5 +49,7 @@ this.formValidators = [];
 ```
 
 ```html
-<app-kles-dynamic-form #form direction="column" [fields]="fields" [validators]="formValidators"></app-kles-dynamic-form>
+<app-kles-dynamic-form #form direction="row" [wrap]="false" [fields]="fields" [validators]="formValidators"></app-kles-dynamic-form>
 ```
+
+`wrap` vaut `true` par défaut. En direction `row`, utilisez `[wrap]="false"` pour empêcher le retour à la ligne des champs.
