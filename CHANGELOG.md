@@ -1,3 +1,10 @@
+# [21.8.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.6...v21.8.0) (2026-08-27)
+
+
+### Features
+
+* add wrap option ([9218fe0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/9218fe0acf946a0715f49a38a5a5d379732d3f23))
+
 ## [21.7.6](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.5...v21.7.6) (2026-08-26)
 
 
