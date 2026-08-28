@@ -39,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
         :host {
             display: flex;
             justify-content: inherit;
+            text-align:left;
         }
 
         .kles-tile {
@@ -84,7 +85,6 @@ import { MatIconModule } from '@angular/material/icon';
             font-weight: 500;
             line-height: 20px;
             text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .kles-tile__hint {
@@ -94,7 +94,6 @@ import { MatIconModule } from '@angular/material/icon';
             font-weight: 400;
             line-height: 16px;
             text-overflow: ellipsis;
-            white-space: nowrap;
         }
     `,
 })
