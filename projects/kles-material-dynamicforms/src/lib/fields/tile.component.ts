@@ -3,16 +3,21 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { KlesFieldAbstract } from './field.abstract';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
     selector: 'app-kles-form-tile',
     standalone: true,
-    imports: [CommonModule, MatTooltipModule],
+    imports: [CommonModule, MatTooltipModule, MatIconModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
         <div class="kles-tile" [ngClass]="ngClass()" [ngStyle]="ngStyle()" [matTooltip]="tooltip()">
             @if (imageUrl()) {
                 <img class="kles-tile__image" [src]="imageUrl()" [alt]="imageAlt()" />
+            } @else if (icon()) {
+                <mat-icon class="kles-tile__icon">
+                    {{ icon() }}
+                </mat-icon>
             }
 
             <div class="kles-tile__content">
@@ -44,10 +49,24 @@ import { toSignal } from '@angular/core/rxjs-interop';
             padding: 8px;
         }
 
-        .kles-tile__image {
+        .kles-tile__image,
+        .kles-tile__icon {
             width: 36px;
             height: 36px;
             flex: 0 0 36px;
+        }
+
+        .kles-tile__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--mat-sys-primary);
+
+            font-size: 28px;
+        }
+
+        .kles-tile__image {
             object-fit: contain;
         }
 
