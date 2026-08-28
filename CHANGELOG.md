@@ -1,3 +1,10 @@
+## [21.8.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.8.0...v21.8.1) (2026-08-28)
+
+
+### Bug Fixes
+
+* tile component image or icon ([f0dde1e](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/f0dde1e15f89aacfba149d386aec76da1bc67ac6))
+
 # [21.8.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.7.6...v21.8.0) (2026-08-27)
 
 
