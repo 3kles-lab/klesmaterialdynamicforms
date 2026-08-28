@@ -1,3 +1,10 @@
+## [21.8.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.8.1...v21.8.2) (2026-08-28)
+
+
+### Bug Fixes
+
+* tile component wrap and align ([0778302](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/077830221035bce89e35d150ff9fe38b531397ea))
+
 ## [21.8.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.8.0...v21.8.1) (2026-08-28)
 
 
