@@ -1,5 +1,4 @@
-import { computed, ElementRef, input } from '@angular/core';
-import { Component, forwardRef, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, forwardRef, input, viewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
 import { KlesButtonComponent } from './button-control.component';
@@ -32,42 +31,48 @@ export interface IButtonFile extends IButton {
     imports: [KlesButtonComponent],
 })
 export class KlesButtonFileComponent extends KlesButtonBase<IButtonFile> {
-    @ViewChild('file') file!: ElementRef<HTMLInputElement>;
+    private readonly file = viewChild<ElementRef<HTMLInputElement>>('file');
     readonly accept = input('*.*');
     readonly effectiveAccept = computed(() => this.uiButtonState()?.accept ?? this.accept());
-    fileReader = new FileReader();
-    fileContent: string | ArrayBuffer | null = null;
+
     click(_event: MouseEvent): void {
         if (!this.effectiveDisabled()) {
-            this.file.nativeElement.click();
+            this.file()?.nativeElement.click();
         }
     }
 
-    onFileLoad(fileLoadedEvent: ProgressEvent<FileReader>): void {
-        const textFromFileLoaded = fileLoadedEvent.target?.result ?? null;
-        this.fileContent = textFromFileLoaded;
+    override writeValue(value: IButtonFile | null | undefined): void {
+        super.writeValue(value);
+
+        if (!value?.fileContent) {
+            this.resetNativeFileInput();
+        }
     }
 
     async onFileSelect(input: HTMLInputElement): Promise<void> {
         const files = input.files;
 
-        if (files && files.length > 0) {
-            const fileContents: (string | ArrayBuffer)[] = [];
-            for (let i = 0; i < files.length; i++) {
-                try {
-                    const content = await this.readUploadedFile(files[i]);
-                    if (content !== null) {
-                        fileContents.push(content);
+        try {
+            if (files && files.length > 0) {
+                const fileContents: (string | ArrayBuffer)[] = [];
+                for (let i = 0; i < files.length; i++) {
+                    try {
+                        const content = await this.readUploadedFile(files[i]);
+                        if (content !== null) {
+                            fileContents.push(content);
+                        }
+                    } catch {
                     }
-                } catch {
                 }
-            }
 
-            const value = this.effectiveValue();
-            value.event = this.name();
-            value.fileContent = fileContents.length === 1 ? fileContents[0] : fileContents;
-            this.onChange(value);
-            input.value = '';
+                const value = this.effectiveValue();
+                value.event = this.name();
+                value.fileContent = fileContents.length === 1 ? fileContents[0] : fileContents;
+                this.onChange(value);
+                input.value = '';
+            }
+        } finally {
+            this.markAsTouched();
         }
     }
 
@@ -84,5 +89,12 @@ export class KlesButtonFileComponent extends KlesButtonBase<IButtonFile> {
             };
             temporaryFileReader.readAsArrayBuffer(inputFile);
         });
+    }
+
+    private resetNativeFileInput(): void {
+        const input = this.file()?.nativeElement;
+        if (input) {
+            input.value = '';
+        }
     }
 }

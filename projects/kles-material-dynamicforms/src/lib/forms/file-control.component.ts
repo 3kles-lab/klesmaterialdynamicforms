@@ -1,10 +1,10 @@
 
-import { Component, forwardRef, Input, signal } from '@angular/core';
+import { Component, ElementRef, forwardRef, Input, signal, viewChild } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
     selector: 'kles-file-control',
-    template: ` <input [accept]="accept" [multiple]="multiple" [disabled]="disabled" (change)="onFileSelected($event.target)" type="file" /> `,
+    template: ` <input #fileInput [accept]="accept" [multiple]="multiple" [disabled]="disabled" (change)="onFileSelected($event.target)" (blur)="markAsTouched()" type="file" /> `,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
@@ -16,6 +16,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
     imports: [FormsModule],
 })
 export class KlesFileControlComponent implements ControlValueAccessor {
+    private readonly fileInput = viewChild<ElementRef<HTMLInputElement>>('fileInput');
     private readonly disabledState = signal(false);
 
     @Input() get disabled(): boolean {
@@ -28,12 +29,21 @@ export class KlesFileControlComponent implements ControlValueAccessor {
     @Input() accept = '*.*';
     @Input() multiple = false;
 
-    value: { name: string; content: ArrayBuffer }[] | null = null;
+    value: KlesFileControlValue = null;
 
-    onChange: any = () => {};
-    onTouched: any = () => {};
+    private onChange: (value: KlesFileControlValue) => void = () => {};
+    private onTouched: () => void = () => {};
 
-    writeValue(obj: any): void {}
+    writeValue(value: KlesFileControlValue | undefined): void {
+        this.value = value ?? null;
+
+        if (!value || value.length === 0) {
+            const input = this.fileInput()?.nativeElement;
+            if (input) {
+                input.value = '';
+            }
+        }
+    }
 
     async onFileSelected(input: HTMLInputElement): Promise<void> {
         const fileList = input.files;
@@ -57,17 +67,30 @@ export class KlesFileControlComponent implements ControlValueAccessor {
             this.value = null;
             this.onChange(this.value);
         }
+
+        this.markAsTouched();
     }
 
-    registerOnChange(fn: any): void {
+    registerOnChange(fn: (value: KlesFileControlValue) => void): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: any): void {
+    registerOnTouched(fn: () => void): void {
         this.onTouched = fn;
+    }
+
+    markAsTouched(): void {
+        this.onTouched();
     }
 
     setDisabledState?(isDisabled: boolean): void {
         this.disabled = isDisabled;
     }
 }
+
+export interface KlesFileValue {
+    name: string;
+    content: ArrayBuffer;
+}
+
+export type KlesFileControlValue = KlesFileValue[] | null;

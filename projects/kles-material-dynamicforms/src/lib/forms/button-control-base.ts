@@ -1,9 +1,9 @@
-import { Component, computed, EventEmitter, input, OnInit, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, HostListener, input, OnInit, Output, signal } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { MatButtonAppearance } from '@angular/material/button';
 
 export interface IButton {
-    event?: any;
+    event?: string;
     uiButton?: IUIButton;
 }
 
@@ -52,8 +52,8 @@ export abstract class KlesButtonBase<TButton extends IButton = IButton> implemen
 
     @Output() action = new EventEmitter<MouseEvent>();
 
-    onChange: any = () => {};
-    onTouched: any = () => {};
+    protected onChange: (value: TButton) => void = () => {};
+    protected onTouched: () => void = () => {};
 
     ngOnInit(): void {}
 
@@ -72,7 +72,7 @@ export abstract class KlesButtonBase<TButton extends IButton = IButton> implemen
         this.action.emit(event);
     }
 
-    writeValue(value: TButton): void {
+    writeValue(value: TButton | null | undefined): void {
         if (!value) {
             value = { event: this.name() } as TButton;
         }
@@ -83,12 +83,17 @@ export abstract class KlesButtonBase<TButton extends IButton = IButton> implemen
         this.writtenValueState.set(value);
     }
 
-    registerOnChange(fn: any): void {
+    registerOnChange(fn: (value: TButton) => void): void {
         this.onChange = fn;
     }
 
-    registerOnTouched(fn: any): void {
+    registerOnTouched(fn: () => void): void {
         this.onTouched = fn;
+    }
+
+    @HostListener('focusout')
+    protected markAsTouched(): void {
+        this.onTouched();
     }
 
     setDisabledState?(isDisabled: boolean): void {
