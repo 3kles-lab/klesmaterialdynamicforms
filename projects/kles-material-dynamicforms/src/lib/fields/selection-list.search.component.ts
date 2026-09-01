@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
 import { KlesComponentDirective } from '../directive/dynamic-component.directive';
 import { MatOption } from '@angular/material/core';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 @Component({
     selector: 'kles-form-selection-list-search',
     template: `
@@ -23,7 +24,7 @@ import { MatOption } from '@angular/material/core';
                 @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
                 }
-                <input matInput [placeholder]="placeholder()" [formControl]="searchControl" />
+                <input klesFocusTarget matInput [placeholder]="placeholder()" [formControl]="searchControl" />
                 <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.reset(); $event.stopPropagation()">
                     <mat-icon>close</mat-icon>
                 </button>
@@ -74,7 +75,7 @@ import { MatOption } from '@angular/material/core';
         `,
     ],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, ScrollingModule, KlesTransformPipe, KlesComponentDirective, MatListModule],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, ScrollingModule, KlesTransformPipe, KlesComponentDirective, MatListModule, KlesFocusTargetDirective],
 })
 export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     selection!: KlesSelectionModel<any>;

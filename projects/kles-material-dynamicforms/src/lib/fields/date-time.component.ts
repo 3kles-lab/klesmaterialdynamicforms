@@ -8,6 +8,7 @@ import { MatInput } from "@angular/material/input";
 import { MatTooltip } from "@angular/material/tooltip";
 import { MatErrorMessageDirective } from "../directive/mat-error-message.directive";
 import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
+import { KlesFocusTargetDirective } from "../directive/focus-target.directive";
 
 @Component({
     selector: 'kles-form-datetimepicker',
@@ -17,7 +18,7 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
             <mat-label>{{ label() }}</mat-label>
         }
 
-        <input matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name"
+        <input klesFocusTarget matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="field.ngClass" [matDatepicker]="picker" [formControlName]="field.name"
             [placeholder]="placeholder()" [min]="field.min" [max]="field.max">
         <div matSuffix class="suffix">
             <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
@@ -50,7 +51,8 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
         MatTooltip,
         MatDatepickerModule,
         MatErrorMessageDirective,
-        KlesMaterialDatepickerModule
+        KlesMaterialDatepickerModule,
+        KlesFocusTargetDirective
     ]
 })
 export class KlesFormDateTimeComponent extends KlesFieldAbstract {

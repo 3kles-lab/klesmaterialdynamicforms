@@ -14,6 +14,7 @@ import { MatErrorMessageDirective } from '../directive/mat-error-message.directi
 import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
 import { KlesFieldAbstract } from './field.abstract';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 interface ChipOptionsState {
     loading: boolean;
@@ -39,6 +40,7 @@ interface ChipOptionsState {
             </mat-chip-grid>
 
             <input
+                klesFocusTarget
                 #chipInput="matChipInput"
                 [formControl]="searchControl"
                 [placeholder]="placeholder()"
@@ -82,7 +84,7 @@ interface ChipOptionsState {
     ],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
     standalone: true,
-    imports: [AsyncPipe, KlesTransformPipe, MatAutocompleteModule, MatChipsModule, MatError, MatErrorMessageDirective, MatFormFieldModule, MatIconModule, MatProgressSpinnerModule, MatTooltip, ReactiveFormsModule],
+    imports: [AsyncPipe, KlesTransformPipe, MatAutocompleteModule, MatChipsModule, MatError, MatErrorMessageDirective, MatFormFieldModule, MatIconModule, MatProgressSpinnerModule, MatTooltip, ReactiveFormsModule, KlesFocusTargetDirective],
 })
 export class KlesFormChipGridComponent extends KlesFieldAbstract implements OnInit {
     readonly control = this.group.controls[this.field.name] as FormControl<any[]>;

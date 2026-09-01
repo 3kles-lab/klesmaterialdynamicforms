@@ -10,14 +10,16 @@ import { MaterialColorPickerTriggerComponent, parseColor, readableTextColor, toC
 
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { KlesFieldAbstract } from './field.abstract';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Component({
     selector: 'kles-form-color',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent, KlesFocusTargetDirective],
     template: `
         <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'">
             <input
+                klesFocusTarget
                 matInput
                 autocomplete="off"
                 [matTooltip]="tooltip()"

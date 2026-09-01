@@ -13,6 +13,7 @@ import { EnumType } from '../enums/type.enum';
 import { FieldMapper } from '../decorators/component.decorator';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
 import { KlesFieldAbstract } from './field.abstract';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 /**
  * ValueAccessor monétaire.
@@ -32,11 +33,7 @@ import { KlesFieldAbstract } from './field.abstract';
     ],
 })
 export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor, OnChanges {
-    /**
-     * Public pour rester compatible avec le mécanisme
-     * nativeElement utilisé par la librairie.
-     */
-    readonly _elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
+    private readonly elementRef = inject<ElementRef<HTMLInputElement>>(ElementRef);
 
     private readonly renderer = inject(Renderer2);
 
@@ -82,7 +79,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
     }
 
     setDisabledState(disabled: boolean): void {
-        this.renderer.setProperty(this._elementRef.nativeElement, 'disabled', disabled);
+        this.renderer.setProperty(this.elementRef.nativeElement, 'disabled', disabled);
     }
 
     @HostListener('focus')
@@ -145,7 +142,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
     }
 
     private setInputValue(value: string): void {
-        this.renderer.setProperty(this._elementRef.nativeElement, 'value', value);
+        this.renderer.setProperty(this.elementRef.nativeElement, 'value', value);
     }
 
     private formatCurrency(value: number | null): string {
@@ -265,7 +262,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
 @Component({
     selector: 'kles-form-currency',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatError, MatErrorMessageDirective, KlesCurrencyValueAccessorDirective],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatError, MatErrorMessageDirective, KlesCurrencyValueAccessorDirective, KlesFocusTargetDirective],
     template: `
         <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [appearance]="appearance()" class="form-element field-bottom">
             @if (label()) {
@@ -281,6 +278,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
             }
 
             <input
+                klesFocusTarget
                 matInput
                 klesCurrency
                 type="text"

@@ -1,5 +1,5 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ElementRef } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule, ControlValueAccessor, FormControl } from '@angular/forms';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal } from '@angular/core';
+import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
 import { klesFieldControlFactory, klesFieldUiFactory } from './factories/field.factory';
@@ -14,23 +14,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { AbstractUiState } from './ui/ui-state/ui-state.abstract';
 import { GroupUiState } from './ui/ui-state/group-ui-state';
-
-const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
-FormControlDirective.prototype.ngOnChanges = function (changes: SimpleChanges) {
-    const form = this.form as FormControl & { nativeElement?: unknown };
-    const valueAccessor = this.valueAccessor as (ControlValueAccessor & { _elementRef?: ElementRef }) | null;
-    form.nativeElement = valueAccessor?._elementRef?.nativeElement;
-    return originFormControlNgOnChanges.call(this, changes);
-};
-
-const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
-FormControlName.prototype.ngOnChanges = function (changes: SimpleChanges) {
-    const result = originFormControlNameNgOnChanges.call(this, changes);
-    const control = this.control as FormControl & { nativeElement?: unknown };
-    const valueAccessor = this.valueAccessor as (ControlValueAccessor & { _elementRef?: ElementRef }) | null;
-    control.nativeElement = valueAccessor?._elementRef?.nativeElement;
-    return result;
-};
 
 @Component({
     exportAs: 'klesDynamicForm',

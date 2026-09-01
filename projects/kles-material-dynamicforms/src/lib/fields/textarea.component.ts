@@ -8,6 +8,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { MatInput } from '@angular/material/input';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Component({
     selector: 'kles-form-textarea',
@@ -17,7 +18,7 @@ import { MatInput } from '@angular/material/input';
             <mat-label>{{label()}}</mat-label>
         }
 
-        <textarea matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()"
+        <textarea klesFocusTarget matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()"
         [formControlName]="field.name" cdkTextareaAutosize [placeholder]="placeholder()"
         [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows"  [maxlength]="maxLength()">
         </textarea>
@@ -33,7 +34,7 @@ import { MatInput } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, ScrollingModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, TextFieldModule, MatInput]
+    imports: [CommonModule, MatErrorMessageDirective, ScrollingModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, TextFieldModule, MatInput, KlesFocusTargetDirective]
 })
 export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit(): void {

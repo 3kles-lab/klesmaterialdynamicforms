@@ -9,6 +9,7 @@ export * from './lib/directive/dynamic-field.directive';
 export * from './lib/directive/dynamic-component.directive';
 export * from './lib/directive/mat-error-message.directive';
 export * from './lib/directive/mat-error-form.directive';
+export * from './lib/directive/focus-target.directive';
 
 /*FORMS*/
 export * from './lib/forms/button-control-base';
@@ -19,7 +20,6 @@ export * from './lib/forms/file-control.component';
 export * from './lib/forms/fab-control.component';
 export * from './lib/forms/mini-fab-control.component';
 export * from './lib/forms/icon-button-control.component';
-export * from './lib/forms/indeterminate-checkbox';
 
 /**FIELDS */
 export * from './lib/fields/badge.component';

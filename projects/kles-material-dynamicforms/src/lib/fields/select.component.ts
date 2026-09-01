@@ -20,6 +20,7 @@ import { KlesTransformPipe } from '../pipe/transform.pipe';
 import { KlesFieldAbstract } from './field.abstract';
 import { KlesSelectSearchInputComponent } from './select-search-input.component';
 import { IKlesSelectSearchOptions } from '../interfaces/field.config.interface';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 interface DeferredQuery {
     kind: 'open' | 'search' | 'close';
@@ -44,6 +45,7 @@ interface MatSelectInternals {
             }
 
             <mat-select
+                klesFocusTarget
                 [matTooltip]="tooltip()"
                 [attr.id]="field.id"
                 [ngClass]="ngClass()"
@@ -174,6 +176,7 @@ interface MatSelectInternals {
         MatFormField,
         MatCheckbox,
         KlesSelectSearchInputComponent,
+        KlesFocusTargetDirective,
     ],
 })
 export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit, AfterViewInit, OnDestroy {
@@ -188,6 +191,10 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     private readonly matSelect = viewChild(MatSelect);
     private readonly virtualViewport = viewChild(CdkVirtualScrollViewport);
+
+    protected override focus(): void {
+        this.matSelect()?.focus();
+    }
 
     searchOptions: IKlesSelectSearchOptions = {};
 

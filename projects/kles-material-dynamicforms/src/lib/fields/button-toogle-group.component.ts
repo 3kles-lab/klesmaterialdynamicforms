@@ -1,16 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, viewChildren } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggle, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Component({
     selector: 'kles-form-button-toogle-group',
     template: `
         <div [formGroup]="group" class="form-element">
-            <mat-button-toggle-group [formControlName]="field.name" [multiple]="field.multiple" [attr.id]="field.id" [ngClass]="ngClass()">
+            <mat-button-toggle-group klesFocusTarget [formControlName]="field.name" [multiple]="field.multiple" [attr.id]="field.id" [ngClass]="ngClass()">
                 @for (item of options$ | async; track item) {
                     <mat-button-toggle [value]="item">
                         {{(field.property ? item[field.property] : item) | klesTransform:field.pipeTransform}}
@@ -20,9 +21,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
         </div>
 `,
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, KlesTransformPipe, MatButtonToggleModule],
+    imports: [CommonModule, ReactiveFormsModule, KlesTransformPipe, MatButtonToggleModule, KlesFocusTargetDirective],
 })
 export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
+    private readonly buttonToggles = viewChildren(MatButtonToggle);
+
+    protected override focus(): void {
+        this.buttonToggles().at(0)?.focus();
+    }
 
     options$: Observable<any[]> = of([]);
 

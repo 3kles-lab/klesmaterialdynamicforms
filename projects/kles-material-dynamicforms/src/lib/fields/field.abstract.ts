@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, HostBinding, OnDestroy, OnInit, Signal, ViewContainerRef, computed, inject } from '@angular/core';
+import { AfterViewInit, Directive, HostBinding, OnDestroy, OnInit, Signal, ViewContainerRef, afterNextRender, computed, inject, viewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IKlesField } from '../interfaces/field.interface';
@@ -7,6 +7,7 @@ import { FIELD, GROUP, SIBLING_FIELDS, GROUP_UI, FIELD_CONTEXT } from '../token'
 import { FormGroup } from '@angular/forms';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
 import { ThemePalette } from '@angular/material/core';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Directive()
 export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesField, OnInit, AfterViewInit, OnDestroy {
@@ -56,6 +57,7 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
     public readonly imageAlt = computed(() => this.resolvedFieldUi()?.imageAlt ?? this.label());
 
     protected readonly viewRef = inject(ViewContainerRef);
+    protected readonly focusTarget = viewChild(KlesFocusTargetDirective);
 
     @HostBinding('attr.klesDirective') directive: any;
 
@@ -65,6 +67,12 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
         if (this.field.directive) {
             this.directive = new this.field.directive(this.viewRef, this);
         }
+
+        afterNextRender(() => {
+            if (this.field.autofocus) {
+                this.focus();
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -88,11 +96,6 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
             this.directive?.ngAfterViewInit();
         }
 
-        if (this.field.autofocus) {
-            setTimeout(() => {
-                (<any>this.group.controls[this.field.name])?.nativeElement.focus();
-            });
-        }
     }
 
     ngOnDestroy(): void {
@@ -137,6 +140,10 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
         if (this.field?.onBlur) {
             this.field.onBlur(this.field, this.group);
         }
+    }
+
+    protected focus(): void {
+        this.focusTarget()?.focus();
     }
 
     public triggerAction(actionId: string, originalEvent: Event, value?: unknown): void {

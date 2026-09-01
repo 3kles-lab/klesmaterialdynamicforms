@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
 import { KlesComponentDirective } from '../directive/dynamic-component.directive';
 import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Component({
     selector: 'kles-form-input-clearable',
@@ -19,6 +20,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
             }
             @if (field.autocomplete) {
                 <input
+                    klesFocusTarget
                     matInput
                     [matTooltip]="tooltip()"
                     [attr.id]="field.id"
@@ -61,6 +63,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
                 </mat-autocomplete>
             } @else {
                 <input
+                    klesFocusTarget
                     matInput
                     [matTooltip]="tooltip()"
                     [attr.id]="field.id"
@@ -89,7 +92,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/loading-select.style.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatErrorMessageDirective, MatProgressSpinner, MatIcon, MatTooltip, KlesComponentDirective, MatOption, MatInput, MatLabel, MatFormField],
+    imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatErrorMessageDirective, MatProgressSpinner, MatIcon, MatTooltip, KlesComponentDirective, MatOption, MatInput, MatLabel, MatFormField, KlesFocusTargetDirective],
 })
 export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {

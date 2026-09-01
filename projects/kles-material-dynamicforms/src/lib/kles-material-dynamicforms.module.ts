@@ -46,7 +46,6 @@ import { KlesFormIconButtonComponent } from './fields/button-icon.component';
 import { KlesFormSelectionListSearchComponent } from './fields/selection-list.search.component';
 import { MatErrorMessageDirective } from './directive/mat-error-message.directive';
 import { MatErrorFormDirective } from './directive/mat-error-form.directive';
-import { KlesIndeterminateCheckboxComponent } from './forms/indeterminate-checkbox';
 
 import { KlesFormFileComponent } from './fields/file.component';
 import { KlesFileControlComponent } from './forms/file-control.component';
@@ -77,7 +76,6 @@ const components = [
     KlesFormDateTimeComponent,
     KlesFormRadioComponent,
     KlesFormCheckboxComponent,
-    KlesIndeterminateCheckboxComponent,
     KlesFormListFieldComponent,
     KlesFormColorComponent,
     KlesFormTextareaComponent,

@@ -16,6 +16,7 @@ import { MatErrorMessageDirective } from '../directive/mat-error-message.directi
 import { KlesComponentDirective } from '../directive/dynamic-component.directive';
 import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 import { MatIconModule } from '@angular/material/icon';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @FieldMapper({ type: EnumType.input })
 @Component({
@@ -31,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
 
             @if (field.autocomplete) {
                 <input
+                    klesFocusTarget
                     matInput
                     [matTooltip]="tooltip()"
                     [attr.id]="field.id"
@@ -75,6 +77,7 @@ import { MatIconModule } from '@angular/material/icon';
                 </mat-autocomplete>
             } @else {
                 <input
+                    klesFocusTarget
                     matInput
                     [matTooltip]="tooltip()"
                     [attr.id]="field.id"
@@ -110,7 +113,7 @@ import { MatIconModule } from '@angular/material/icon';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatTooltipModule, MatProgressSpinnerModule, MatOptionModule, MatError, MatErrorMessageDirective, KlesComponentDirective, MatIconModule],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatTooltipModule, MatProgressSpinnerModule, MatOptionModule, MatError, MatErrorMessageDirective, KlesComponentDirective, MatIconModule, KlesFocusTargetDirective],
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     filteredOption$!: Observable<{ loading: boolean; options: any[] }>;

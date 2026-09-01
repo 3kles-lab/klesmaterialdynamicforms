@@ -7,6 +7,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatInput, MatInputModule } from '@angular/material/input';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Component({
     selector: 'kles-form-datepicker',
@@ -15,7 +16,7 @@ import { MatInput, MatInputModule } from '@angular/material/input';
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }
-            <input matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="placeholder()" [min]="min()" [max]="max()" />
+            <input klesFocusTarget matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [matDatepicker]="picker" [formControlName]="field.name" [placeholder]="placeholder()" [min]="min()" [max]="max()" />
             <div matSuffix class="suffix">
                 <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
                 <ng-content></ng-content>
@@ -30,7 +31,7 @@ import { MatInput, MatInputModule } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}', '.suffix { display: flex; flex-direction: row}'],
     standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatTooltipModule, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput],
+    imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatTooltipModule, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput, KlesFocusTargetDirective],
 })
 export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() {

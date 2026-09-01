@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule } from '@angular/forms';
+import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @FieldMapper({ type: EnumType.range, factory: (field) => new KlesFormRange(field).create() })
 @Component({
@@ -19,7 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
             <mat-label>{{ label() }}</mat-label>
 
             <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [min]="min()" [max]="max()">
-                <input matStartDate formControlName="start" [placeholder]="placeholder()?.start ? placeholder()?.start : ''" />
+                <input klesFocusTarget matStartDate formControlName="start" [placeholder]="placeholder()?.start ? placeholder()?.start : ''" />
                 <input matEndDate formControlName="end" [placeholder]="placeholder()?.end ? placeholder()?.end : ''" />
             </mat-date-range-input>
 
@@ -39,7 +40,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss'],
     standalone: true,
-    imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTooltipModule, ReactiveFormsModule],
+    imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTooltipModule, ReactiveFormsModule, KlesFocusTargetDirective],
 })
 export class KlesFormRangeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     ngOnInit() {

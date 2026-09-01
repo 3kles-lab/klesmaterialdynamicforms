@@ -21,6 +21,26 @@ describe('KlesDynamicFormComponent', () => {
         expect(form.classList).toContain('dynamic-form-nowrap');
     });
 
+    it('focuses the explicitly declared target when autofocus is enabled', async () => {
+        TestBed.configureTestingModule({
+            imports: [KlesDynamicFormComponent, KlesFormInputComponent, NoopAnimationsModule],
+        });
+
+        const fixture = TestBed.createComponent(KlesDynamicFormComponent);
+        fixture.componentRef.setInput('fields', [
+            {
+                name: 'focusedField',
+                component: KlesFormInputComponent,
+                autofocus: true,
+            },
+        ] satisfies IKlesFieldConfig[]);
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+        expect(document.activeElement).toBe(input);
+    });
+
     it('rebuilds the GroupUiState when the fields input changes', () => {
         TestBed.configureTestingModule({
             imports: [KlesDynamicFormComponent, KlesFormInputComponent, NoopAnimationsModule],
