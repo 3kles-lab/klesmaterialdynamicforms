@@ -1,9 +1,8 @@
-import { ɵTypedOrUntyped } from '@angular/forms';
 import { AbstractUiState } from './ui-state.abstract';
-import { computed, Signal } from '@angular/core';
+import { KlesTypedOrUntyped } from './ui-state.types';
 
 export class GroupUiState<TUiState extends { [K in keyof TUiState]: AbstractUiState<any> } = any> extends AbstractUiState<any, any> {
-    public states: ɵTypedOrUntyped<TUiState, TUiState, { [key: string]: AbstractUiState<any> }> = {} as TUiState;
+    public states: KlesTypedOrUntyped<TUiState, TUiState, { [key: string]: AbstractUiState<any> }> = {} as TUiState;
 
     constructor(states?: TUiState) {
         super();

@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
@@ -14,7 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     selector: 'kles-form-selection-list',
     template: `
         <div class="margin-top" [formGroup]="group">
-            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="ngClass()" (selectionChange)="onSelectionChange($event)">
+            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="ngClass()" [disabled]="disabled()" (selectionChange)="onSelectionChange($event)">
                 @if(options$ | async; as options){ @if(field.virtualScroll){
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 20" style="height:100%">
                     @if (!field.autocompleteComponent) {
@@ -56,6 +57,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 export class KlesFormSelectionListComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     selection!: KlesSelectionModel<any>;
     options$!: Observable<any[]>;
+    private readonly control = this.group.controls[this.field.name];
+    private readonly controlStatus = toSignal(this.control.statusChanges, {
+        initialValue: this.control.status,
+    });
+    readonly disabled = computed(() => {
+        this.controlStatus();
+        return this.control.disabled;
+    });
 
     ngOnInit() {
         super.ngOnInit();
@@ -80,14 +89,14 @@ export class KlesFormSelectionListComponent extends KlesFieldAbstract implements
             this.options$ = of(this.field.options ?? []);
         }
 
-        this.group.controls[this.field.name].valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((value) => {
+        this.control.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((value) => {
             this.selection.setSelection(Array.isArray(value) ? value : [value], { emitEvent: false });
         });
 
         this.selection.changed.pipe(takeUntil(this._onDestroy)).subscribe((change) => {
-            this.group.controls[this.field.name].patchValue(change.source.selected);
-            this.group.controls[this.field.name].markAllAsTouched();
-            this.group.controls[this.field.name].markAsDirty();
+            this.control.patchValue(change.source.selected);
+            this.control.markAllAsTouched();
+            this.control.markAsDirty();
         });
     }
     ngOnDestroy(): void {
@@ -95,6 +104,10 @@ export class KlesFormSelectionListComponent extends KlesFieldAbstract implements
     }
 
     onSelectionChange(selection: MatSelectionListChange) {
+        if (this.disabled()) {
+            return;
+        }
+
         selection.options.forEach((option) => {
             option.selected ? this.selection.select([option.value]) : this.selection.deselect([option.value]);
         });

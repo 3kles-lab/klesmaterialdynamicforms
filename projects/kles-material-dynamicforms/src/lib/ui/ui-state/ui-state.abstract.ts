@@ -1,5 +1,5 @@
-import { EventEmitter, Signal, signal } from '@angular/core';
-import { ɵGetProperty } from '@angular/forms';
+import { Signal, signal } from '@angular/core';
+import { KlesGetProperty } from './ui-state.types';
 
 export abstract class AbstractUiState<TValue = any, TRawValue extends TValue = TValue> {
     protected _value = signal<TValue | undefined>(undefined);
@@ -7,9 +7,9 @@ export abstract class AbstractUiState<TValue = any, TRawValue extends TValue = T
     private _parent: AbstractUiState<any> | null = null;
     private _parentKey: string | number | null = null;
 
-    get<P extends string | readonly (string | number)[]>(path: P): AbstractUiState<ɵGetProperty<TRawValue, P>> | null;
-    get<P extends string | Array<string | number>>(path: P): AbstractUiState<ɵGetProperty<TRawValue, P>> | null;
-    get<P extends string | (string | number)[]>(path: P): AbstractUiState<ɵGetProperty<TRawValue, P>> | null {
+    get<P extends string | readonly (string | number)[]>(path: P): AbstractUiState<KlesGetProperty<TRawValue, P>> | null;
+    get<P extends string | Array<string | number>>(path: P): AbstractUiState<KlesGetProperty<TRawValue, P>> | null;
+    get<P extends string | (string | number)[]>(path: P): AbstractUiState<KlesGetProperty<TRawValue, P>> | null {
         let currPath: Array<string | number> | string = path;
         if (currPath == null) return null;
         if (!Array.isArray(currPath)) currPath = currPath.split('.').filter(Boolean);

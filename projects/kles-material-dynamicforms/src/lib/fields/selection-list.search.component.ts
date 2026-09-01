@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
@@ -25,12 +26,12 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
                 <mat-label>{{ label() }}</mat-label>
                 }
                 <input klesFocusTarget matInput [placeholder]="placeholder()" [formControl]="searchControl" />
-                <button matSuffix matIconButton aria-label="Clear" (click)="searchControl.reset(); $event.stopPropagation()">
+                <button matSuffix matIconButton type="button" aria-label="Clear" [disabled]="disabled()" (click)="searchControl.reset(); $event.stopPropagation()">
                     <mat-icon>close</mat-icon>
                 </button>
             </mat-form-field>
 
-            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="ngClass()" (selectionChange)="onSelectionChange($event)">
+            <mat-selection-list [attr.id]="field.id" [multiple]="field.multiple" [ngClass]="ngClass()" [disabled]="disabled()" (selectionChange)="onSelectionChange($event)">
                 @if(optionFiltered$ | async; as options){ @if(field.virtualScroll){
                 <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 20" style="height:100%">
                     @if (!field.autocompleteComponent) {
@@ -83,6 +84,14 @@ export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract impl
     searchControl = new FormControl<string | null>('');
 
     optionFiltered$: Observable<any[]> = of([]);
+    private readonly control = this.group.controls[this.field.name];
+    private readonly controlStatus = toSignal(this.control.statusChanges, {
+        initialValue: this.control.status,
+    });
+    readonly disabled = computed(() => {
+        this.controlStatus();
+        return this.control.disabled;
+    });
 
     ngOnInit() {
         if (!this.field.subscriptSizing) {
@@ -106,14 +115,17 @@ export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract impl
             this.options$ = this.field.options.pipe(shareReplay(1));
         }
 
-        this.group.controls[this.field.name].valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((value) => {
+        this.syncSearchDisabledState();
+        this.control.statusChanges.pipe(takeUntil(this._onDestroy)).subscribe(() => this.syncSearchDisabledState());
+
+        this.control.valueChanges.pipe(takeUntil(this._onDestroy)).subscribe((value) => {
             this.selection.setSelection(Array.isArray(value) ? value : [value], { emitEvent: false });
         });
 
         this.selection.changed.pipe(takeUntil(this._onDestroy)).subscribe((change) => {
-            this.group.controls[this.field.name].patchValue(change.source.selected);
-            this.group.controls[this.field.name].markAllAsTouched();
-            this.group.controls[this.field.name].markAsDirty();
+            this.control.patchValue(change.source.selected);
+            this.control.markAllAsTouched();
+            this.control.markAsDirty();
         });
 
         this.optionFiltered$ = this.searchControl.valueChanges.pipe(
@@ -149,8 +161,20 @@ export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract impl
     }
 
     onSelectionChange(selection: MatSelectionListChange) {
+        if (this.disabled()) {
+            return;
+        }
+
         selection.options.forEach((option) => {
             option.selected ? this.selection.select([option.value]) : this.selection.deselect([option.value]);
         });
+    }
+
+    private syncSearchDisabledState(): void {
+        if (this.control.disabled && this.searchControl.enabled) {
+            this.searchControl.disable({ emitEvent: false });
+        } else if (this.control.enabled && this.searchControl.disabled) {
+            this.searchControl.enable({ emitEvent: false });
+        }
     }
 }

@@ -120,6 +120,7 @@ export * from './lib/ui/ui-state/array-ui-state';
 export * from './lib/ui/ui-state/control-ui-state';
 export * from './lib/ui/ui-state/group-ui-state';
 export * from './lib/ui/ui-state/ui-state.abstract';
+export * from './lib/ui/ui-state/ui-state.types';
 
 /**TOKEN */
 export * from './lib/token';
