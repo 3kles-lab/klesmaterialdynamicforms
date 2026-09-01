@@ -18,7 +18,7 @@ export class KlesSelectionModel<T> {
     private _selectedToEmit: T[] = [];
 
     /** Cache for the array value of the selected items. */
-    private _selected: T[] | null;
+    private _selected: T[] | null = null;
 
     /** Selected values. */
     get selected(): T[] {

@@ -25,7 +25,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 })
 export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
 
-    options$: Observable<any[]>;
+    options$: Observable<any[]> = of([]);
 
     ngOnInit() {
         super.ngOnInit();
@@ -37,7 +37,7 @@ export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implem
             this.options$ = this.field.options();
         }
         else {
-            this.options$ = of(this.field.options);
+            this.options$ = of(this.field.options ?? []);
         }
     }
     ngOnDestroy(): void {

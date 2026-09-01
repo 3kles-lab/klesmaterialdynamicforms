@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormControl, FormGroup } from "@angular/forms";
+import { AbstractControl, FormArray, FormControl, UntypedFormGroup } from "@angular/forms";
 import { KlesFormControl } from "./default.control";
 import { v4 as uuidv4 } from 'uuid';
 import { componentMapper } from "../decorators/component.decorator";
@@ -7,7 +7,7 @@ import { klesFieldControlFactory } from "../factories/field.factory";
 export class KlesFormArray extends KlesFormControl {
 
     public create(): AbstractControl<any, any> {
-        const array = new FormArray([], {
+        const array = new FormArray<AbstractControl>([], {
             validators: this.bindValidations(this.field.validations || []),
             asyncValidators: this.bindAsyncValidations(this.field.asyncValidations || []),
             updateOn: this.field.updateOn || 'change'
@@ -17,7 +17,7 @@ export class KlesFormArray extends KlesFormControl {
             if (this.field.collections && Array.isArray(this.field.collections)) {
                 this.field.value.forEach(val => {
                     const line = { ...val, _id: val?._id || uuidv4() };
-                    const group = new FormGroup({ _id: new FormControl(line._id) });
+                    const group = new UntypedFormGroup({ _id: new FormControl(line._id) });
                     this.field.collections?.forEach(subfield => {
                         const data = line[subfield.name] || null;
                         let control;
@@ -34,7 +34,7 @@ export class KlesFormArray extends KlesFormControl {
                 });
             }
         } else {
-            const group = new FormGroup({ _id: new FormControl(uuidv4()) });
+            const group = new UntypedFormGroup({ _id: new FormControl(uuidv4()) });
             this.field.collections?.forEach(subfield => {
                 let control;
                 if (subfield.type) {

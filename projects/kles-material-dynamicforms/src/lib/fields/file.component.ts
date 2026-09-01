@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     selector: 'kles-form-file',
     template: `
         <div [formGroup]="group">
-            <kles-file-control [attr.id]="field.id" [formControlName]="field.name" [accept]="field.accept" [disabled]="field.disabled" [multiple]="field.multiple"></kles-file-control>
+            <kles-file-control [attr.id]="field.id" [formControlName]="field.name" [accept]="field.accept ?? '*.*'" [disabled]="field.disabled ?? false" [multiple]="field.multiple ?? false"></kles-file-control>
         </div>
     `,
     styles: ['mat-form-field {width: calc(100%)}'],

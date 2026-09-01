@@ -11,7 +11,7 @@ import { MatInput, MatInputModule } from '@angular/material/input';
 @Component({
     selector: 'kles-form-datepicker',
     template: `
-        <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
+        <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }

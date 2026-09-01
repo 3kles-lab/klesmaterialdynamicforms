@@ -19,7 +19,7 @@ import { MatOption } from '@angular/material/core';
     selector: 'kles-form-selection-list-search',
     template: `
         <div class="selection-list" [formGroup]="group">
-            <mat-form-field [subscriptSizing]="field.subscriptSizing" [appearance]="appearance()">
+            <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [appearance]="appearance()">
                 @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
                 }
@@ -78,11 +78,11 @@ import { MatOption } from '@angular/material/core';
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, ScrollingModule, KlesTransformPipe, KlesComponentDirective, MatListModule],
 })
 export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    selection: KlesSelectionModel<any>;
-    options$: Observable<any[]>;
-    searchControl = new FormControl();
+    selection!: KlesSelectionModel<any>;
+    options$: Observable<any[]> = of([]);
+    searchControl = new FormControl<string | null>('');
 
-    optionFiltered$: Observable<any[]>;
+    optionFiltered$: Observable<any[]> = of([]);
 
     ngOnInit() {
         if (!this.field.subscriptSizing) {
@@ -118,7 +118,7 @@ export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract impl
 
         this.optionFiltered$ = this.searchControl.valueChanges.pipe(
             takeUntil(this._onDestroy),
-            startWith(null as string),
+            startWith(''),
             debounceTime(this.field.debounceTime || 0),
             distinctUntilChanged(),
             map((value) => value?.toLowerCase()),
@@ -126,7 +126,7 @@ export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract impl
                 if (this.field.options instanceof Function) {
                     return this.field.options(value);
                 } else {
-                    return (this.field.options instanceof Observable ? this.options$ : of(this.field.options)).pipe(
+                    return (this.field.options instanceof Observable ? this.options$ : of(this.field.options ?? [])).pipe(
                         map((options) => {
                             if (!value) {
                                 return options;

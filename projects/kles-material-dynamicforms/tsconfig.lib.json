@@ -5,19 +5,14 @@
     "declarationMap": true,
     "declaration": true,
     "inlineSources": true,
+    "strict": true,
     "types": []
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    },
     "strictMetadataEmit": true,
     "enableResourceInlining": true,
-    "strictTemplates": false
+    "strictTemplates": true
   },
   "exclude": [
     "src/test.ts",

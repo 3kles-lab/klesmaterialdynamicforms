@@ -6,6 +6,7 @@ import type { IKlesFieldConfig, IKlesFieldUi } from '../interfaces/field.config.
 import { FIELD, GROUP, SIBLING_FIELDS, GROUP_UI, FIELD_CONTEXT } from '../token';
 import { FormGroup } from '@angular/forms';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
+import { ThemePalette } from '@angular/material/core';
 
 @Directive()
 export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesField, OnInit, AfterViewInit, OnDestroy {
@@ -34,8 +35,8 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
         };
     });
 
-    public readonly appearance = computed(() => this.resolvedFieldUi()?.appearance);
-    public readonly inputType = computed(() => this.resolvedFieldUi()?.inputType);
+    public readonly appearance = computed(() => this.resolvedFieldUi().appearance ?? 'fill');
+    public readonly inputType = computed(() => this.resolvedFieldUi().inputType ?? 'text');
     public readonly min = computed(() => this.resolvedFieldUi()?.min);
     public readonly max = computed(() => this.resolvedFieldUi()?.max);
     public readonly maxLength = computed(() => this.resolvedFieldUi()?.maxLength ?? 524288);
@@ -43,11 +44,11 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
     public readonly ngClass = computed(() => this.resolvedFieldUi()?.ngClass);
     public readonly ngStyle = computed(() => this.resolvedFieldUi()?.ngStyle);
     public readonly indeterminate = computed(() => this.resolvedFieldUi()?.indeterminate ?? false);
-    public readonly color = computed(() => this.resolvedFieldUi()?.color);
-    public readonly icon = computed(() => this.resolvedFieldUi()?.icon);
-    public readonly iconSvg = computed(() => this.resolvedFieldUi()?.iconSvg);
-    public readonly buttonAppearance = computed(() => this.resolvedFieldUi()?.buttonAppearance);
-    public readonly label = computed(() => this.resolvedFieldUi()?.label ?? this.field.label);
+    public readonly color = computed<Exclude<ThemePalette, undefined>>(() => this.resolvedFieldUi().color ?? 'primary');
+    public readonly icon = computed(() => this.resolvedFieldUi().icon ?? '');
+    public readonly iconSvg = computed(() => this.resolvedFieldUi().iconSvg ?? '');
+    public readonly buttonAppearance = computed(() => this.resolvedFieldUi().buttonAppearance ?? 'text');
+    public readonly label = computed(() => this.resolvedFieldUi().label ?? this.field.label ?? '');
     public readonly hint = computed(() => this.resolvedFieldUi()?.hint ?? this.field.hint);
     public readonly placeholder = computed(() => this.resolvedFieldUi()?.placeholder ?? this.field.placeholder);
     public readonly tooltip = computed(() => this.resolvedFieldUi()?.tooltip ?? this.field.tooltip);

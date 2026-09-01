@@ -21,7 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
     selector: 'kles-form-input',
     template: `
-        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing" class="form-element" [appearance]="appearance()" class="field-bottom">
+        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'" class="form-element" [appearance]="appearance()" class="field-bottom">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }
@@ -47,7 +47,7 @@ import { MatIconModule } from '@angular/material/icon';
                     (blur)="onBlur()"
                 />
 
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="field.panelWidth ?? 'auto'">
                     @if (filteredOption$ | async; as filteredOption) {
                         @if (filteredOption.loading) {
                             <mat-option disabled>
@@ -176,7 +176,7 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
                     ),
                 );
             } else {
-                this.options$ = of({ loading: false, options: this.field.options });
+                this.options$ = of({ loading: false, options: this.field.options ?? [] });
             }
         }
 
@@ -205,17 +205,20 @@ export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit,
 
     private filterData(value: any, options: any[]): any[] {
         let filterValue;
+        const property = this.field.property;
 
         if (typeof value === 'string' && Object.prototype.toString.call(value) === '[object String]') {
             filterValue = value.toLowerCase();
+        } else if (property) {
+            filterValue = value[property]?.toString().toLowerCase() ?? '';
         } else {
-            filterValue = value[this.field.property].toLowerCase();
+            filterValue = value?.toString().toLowerCase() ?? '';
         }
 
-        if (this.field.property) {
-            return options.filter((option) => option[this.field.property].toLowerCase().indexOf(filterValue) === 0);
+        if (property) {
+            return options.filter((option) => option[property]?.toString().toLowerCase().indexOf(filterValue) === 0);
         }
-        return options.filter((option) => option.toLowerCase().indexOf(filterValue) === 0);
+        return options.filter((option) => option?.toString().toLowerCase().indexOf(filterValue) === 0);
     }
 
     displayFn(value: any) {

@@ -1,6 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { IKlesValidator, KlesValidationKey } from '../interfaces/validator.interface';
-import { AsyncValidator, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
+import { AsyncValidatorFn, FormsModule, ReactiveFormsModule, UntypedFormGroup, ValidatorFn } from '@angular/forms';
 
 import { flattenValidators } from '../utils/validation.util';
 
@@ -9,12 +9,12 @@ import { flattenValidators } from '../utils/validation.util';
     template: `
         @if (form && form.errors) {
             @for (validation of validationsKeys; track validation.name) {
-                @if (form?.hasError(validation.name) && validation.message) {
+                @if (form.hasError(validation.name) && validation.message) {
                     {{ validation.message }}
                 }
             }
             @for (validation of asyncValidationsKeys; track validation.name) {
-                @if (form?.hasError(validation.name) && validation.message) {
+                @if (form.hasError(validation.name) && validation.message) {
                     {{ validation.message }}
                 }
             }
@@ -28,15 +28,15 @@ export class MatErrorFormDirective {
     validationsKeys: KlesValidationKey[] = [];
     asyncValidationsKeys: KlesValidationKey[] = [];
 
-    @Input({ required: true }) form: UntypedFormGroup;
+    @Input({ required: true }) form!: UntypedFormGroup;
 
     @Input()
-    set validations(v: IKlesValidator<Validators>[]) {
-        this.validationsKeys = flattenValidators<Validators>(v ?? []);
+    set validations(v: IKlesValidator<ValidatorFn>[] | undefined) {
+        this.validationsKeys = flattenValidators<ValidatorFn>(v ?? []);
     }
 
     @Input()
-    set asyncValidations(v: IKlesValidator<AsyncValidator>[]) {
-        this.asyncValidationsKeys = flattenValidators<AsyncValidator>(v ?? []);
+    set asyncValidations(v: IKlesValidator<AsyncValidatorFn>[] | undefined) {
+        this.asyncValidationsKeys = flattenValidators<AsyncValidatorFn>(v ?? []);
     }
 }

@@ -28,7 +28,7 @@ import { MatIconButton } from '@angular/material/button';
                 @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index) {
                     <div class="subfields">
                         @for (subfield of collections[idx]; track subfield.name) {
-                            <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections[idx]" [context]="context"> </ng-container>
+                            <ng-container klesDynamicField [field]="subfield" [group]="$any(subGroup)" [siblingFields]="collections[idx]" [context]="context"> </ng-container>
                         }
                         @if (collections[idx]) {
                             <button matIconButton (click)="deleteField(idx)" color="primary">
@@ -39,14 +39,14 @@ import { MatIconButton } from '@angular/material/button';
                 }
                 @for (validation of field.validations; track validation.name) {
                     <ng-container ngProjectAs="mat-error">
-                        @if (group.get(field.name).hasError(validation.name)) {
+                        @if (validation.name && group.controls[field.name].hasError(validation.name)) {
                             <mat-error>{{ validation.message }}</mat-error>
                         }
                     </ng-container>
                 }
                 @for (validation of field.asyncValidations; track validation.name) {
                     <ng-container ngProjectAs="mat-error">
-                        @if (group.get(field.name).hasError(validation.name)) {
+                        @if (validation.name && group.controls[field.name].hasError(validation.name)) {
                             <mat-error>{{ validation.message }}</mat-error>
                         }
                     </ng-container>

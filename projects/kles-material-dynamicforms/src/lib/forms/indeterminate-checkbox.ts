@@ -1,7 +1,8 @@
 
 import { Component, forwardRef, Input, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckbox, MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
     selector: 'kles-checkbox-indeterminate',
@@ -10,7 +11,7 @@ import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
       #checkbox
       [indeterminate]="isIndeterminate"
       (change)="onCheckboxChange($event)"
-      (color)="color"
+      [color]="color"
       (blur)="onTouched()">
       {{label}}
     </mat-checkbox>
@@ -27,12 +28,12 @@ import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
     imports: [MatCheckboxModule, ReactiveFormsModule, FormsModule],
 })
 export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor, AfterViewInit {
-  @Input() label: string;
-  @Input() color: string;
-  @ViewChild('checkbox') checkbox: MatCheckbox;
+  @Input() label = '';
+  @Input() color: ThemePalette = 'primary';
+  @ViewChild('checkbox') checkbox!: MatCheckbox;
 
   isIndeterminate = false;
-  private innerValue: boolean;
+  private innerValue: boolean | -1 = false;
 
   onChange: any = () => { };
   onTouched: any = () => { };
@@ -42,9 +43,9 @@ export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor,
     this.updateCheckbox(this.innerValue);
   }
 
-  writeValue(value: any): void {
-    this.innerValue = value;
-    this.updateCheckbox(value);
+  writeValue(value: boolean | -1 | null): void {
+    this.innerValue = value ?? false;
+    this.updateCheckbox(this.innerValue);
   }
 
   registerOnChange(fn: any): void {
@@ -61,13 +62,13 @@ export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor,
     }
   }
 
-  onCheckboxChange(event: any): void {
+  onCheckboxChange(event: MatCheckboxChange): void {
     const checked = event.checked;
     this.onChange(checked);
     this.isIndeterminate = false;
   }
 
-  private updateCheckbox(value: any): void {
+  private updateCheckbox(value: boolean | -1): void {
     if (this.checkbox) {
       if (value === -1) {
         this.isIndeterminate = true;

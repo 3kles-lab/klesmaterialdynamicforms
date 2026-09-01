@@ -5,11 +5,12 @@ import { Observable, Subject } from 'rxjs';
 import { EnumType } from '../enums/type.enum';
 import { IKlesField } from './field.interface';
 import { IKlesDirective } from './directive.interface';
-import { DateAdapter, MatDateFormats } from '@angular/material/core';
+import { DateAdapter, MatDateFormats, ThemePalette } from '@angular/material/core';
 import { SubscriptSizing } from '@angular/material/form-field';
 import { MatButtonAppearance } from '@angular/material/button';
 
 import type { ColorCommitMode, ColorOutputFormat, ColorPickerPosition } from '@3kles/kles-material-color-picker';
+import type { KlesComponentType } from './component.interface';
 
 export interface IKlesFieldActionEvent<TContext = unknown, TValue = unknown> {
     actionId: string;
@@ -91,7 +92,7 @@ export interface IKlesFieldUi {
     ngClass?: any; // ngclass for field
     ngStyle?: any; // ngStyle for field
     indeterminate?: boolean; // Indeterminate checkable component
-    color?: string; //Material color
+    color?: ThemePalette; //Material color
     icon?: string; //Material icon
     iconSvg?: string; //Svg Icon
     appearance?: 'fill' | 'outline'; // MatForm field appearance
@@ -147,18 +148,16 @@ export interface IKlesFormField {
     name: string; // Name Field (key for FormControlName)
     component?: Type<any>;
     id?: string; // Attribut html id
-
-    copyTooltip?: string; // Copy component tooltip
     options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string, group?: { [key: string]: any }) => Observable<any[]>); // List options for list component
     search?: boolean | IKlesSelectSearchOptions;
     property?: string; // Property for field
-    collections?: any; // Collections for subfield
+    collections?: IKlesFieldConfig[]; // Collections for subfield
     value?: any; // Value field
     asyncValue?: Observable<any>; // Value field
     multiple?: boolean; // Multiple selection field
     disabled?: boolean; // Disabled field
     autocomplete?: boolean; // Autocomplete input field
-    autocompleteComponent?: Type<any>; //Autocomplete component to display in list option
+    autocompleteComponent?: KlesComponentType<any>; //Autocomplete component to display in list option
     displayWith?: ((value: any) => string) | null; // Autocomplete display format
     panelWidth?: string | number; //With for panel list option
     pending?: boolean;
@@ -170,7 +169,7 @@ export interface IKlesFormField {
     }[];
 
     valueChanges?: (field: IKlesFieldConfig, group: UntypedFormGroup, siblingField?: IKlesFieldConfig[], valueChanged?: any) => void;
-    triggerComponent?: Type<any>; //trigger component to customize trigger label in select
+    triggerComponent?: KlesComponentType<any>; //trigger component to customize trigger label in select
 
     searchKeys?: string[]; //list of keys for multiple searches
     updateOn?: 'change' | 'blur' | 'submit';

@@ -30,16 +30,18 @@ export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {
     disabled: Signal<boolean>;
 
     constructor() {
+        const control = this.group.controls[this.field.name];
+
         this.disabled = toSignal(
             combineLatest([
-                this.group.get(this.field.name)?.valueChanges.pipe(
-                    startWith(this.group.get(this.field.name).value),
+                control.valueChanges.pipe(
+                    startWith(control.value),
                     map((value) => {
                         return !this.isPresent(value);
                     }),
                 ),
-                this.group.get(this.field.name)?.statusChanges.pipe(
-                    startWith(this.group.get(this.field.name).status),
+                control.statusChanges.pipe(
+                    startWith(control.status),
                     map((status) => status === 'DISABLED'),
                 ),
             ]).pipe(
@@ -48,6 +50,7 @@ export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {
                     return empty || disabled;
                 }),
             ),
+            { initialValue: true },
         );
     }
 
@@ -56,7 +59,7 @@ export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {
         this._onDestroy.complete();
     }
 
-    clear(event): void {
+    clear(event: MouseEvent): void {
         event.stopPropagation();
         this.group.controls[this.field.name].reset();
     }

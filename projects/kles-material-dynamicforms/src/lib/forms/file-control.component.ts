@@ -21,7 +21,7 @@ export class KlesFileControlComponent implements ControlValueAccessor {
     @Input() accept = '*.*';
     @Input() multiple = false;
 
-    value: { name: string; content: ArrayBuffer }[];
+    value: { name: string; content: ArrayBuffer }[] | null = null;
 
     onChange: any = () => {};
     onTouched: any = () => {};
@@ -29,12 +29,17 @@ export class KlesFileControlComponent implements ControlValueAccessor {
     writeValue(obj: any): void {}
 
     async onFileSelected(input: HTMLInputElement): Promise<void> {
-        if (input.files.length > 0) {
-            const file: FileList = input.files;
-            let files = [];
+        const fileList = input.files;
 
-            for (let i = 0; i < file.length; i++) {
-                const currentFile: File = file.item(i);
+        if (fileList && fileList.length > 0) {
+            const files: { name: string; content: ArrayBuffer }[] = [];
+
+            for (let i = 0; i < fileList.length; i++) {
+                const currentFile = fileList.item(i);
+
+                if (!currentFile) {
+                    continue;
+                }
 
                 files[i] = { name: currentFile.name, content: await currentFile.arrayBuffer() };
             }

@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class KlesTransformPipe implements PipeTransform {
 
-    transform(value: any, pipes: { pipe: PipeTransform, options?: any[] }[]): any {
+    transform(value: any, pipes?: { pipe: PipeTransform, options?: any[] }[]): any {
 
         if (pipes && pipes.length > 0) {
             return pipes.reduce((acc, p) => {

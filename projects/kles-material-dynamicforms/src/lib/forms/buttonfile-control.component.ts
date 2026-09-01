@@ -1,4 +1,4 @@
-import { Input, ChangeDetectionStrategy } from '@angular/core';
+import { Input, ChangeDetectionStrategy, ElementRef } from '@angular/core';
 import { Component, forwardRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
@@ -6,7 +6,7 @@ import { KlesButtonComponent } from './button-control.component';
 
 
 export interface IButtonFile extends IButton {
-    fileContent?: string | string[];
+    fileContent?: string | ArrayBuffer | (string | ArrayBuffer)[] | null;
 }
 
 @Component({
@@ -33,14 +33,14 @@ export interface IButtonFile extends IButton {
     imports: [KlesButtonComponent],
 })
 export class KlesButtonFileComponent extends KlesButtonBase {
-    @ViewChild('file') file;
+    @ViewChild('file') file!: ElementRef<HTMLInputElement>;
     @Input() accept = '*.*';
     fileReader = new FileReader();
-    fileContent: string | string[];
+    fileContent: string | ArrayBuffer | null = null;
     value: IButtonFile = {};
 
 
-    click(event) {
+    click(_event: MouseEvent): void {
         if (!this.disabled) {
             this.file.nativeElement.click();
         }
@@ -67,34 +67,34 @@ export class KlesButtonFileComponent extends KlesButtonBase {
     }
 
 
-    onFileLoad(fileLoadedEvent) {
-        const textFromFileLoaded = fileLoadedEvent.target.result;
+    onFileLoad(fileLoadedEvent: ProgressEvent<FileReader>): void {
+        const textFromFileLoaded = fileLoadedEvent.target?.result ?? null;
         this.fileContent = textFromFileLoaded;
     }
 
-    async onFileSelect(input: HTMLInputElement) {
-        if (input.files.length > 0) {
-            const files = input.files;
-            let fileContent = [];
-            if (files && files.length) {
-                for (let i = 0; i < files.length; i++) {
-                    try {
-                        fileContent[i] = await this.readUploadedFile(files[i]);
-                    } catch (e) {
+    async onFileSelect(input: HTMLInputElement): Promise<void> {
+        const files = input.files;
+
+        if (files && files.length > 0) {
+            const fileContents: (string | ArrayBuffer)[] = [];
+            for (let i = 0; i < files.length; i++) {
+                try {
+                    const content = await this.readUploadedFile(files[i]);
+                    if (content !== null) {
+                        fileContents.push(content);
                     }
-                }
-                if (fileContent.length === 1) {
-                    fileContent = fileContent[0];
+                } catch {
                 }
             }
+
             this.value.event = this.name;
-            this.value.fileContent = fileContent;
+            this.value.fileContent = fileContents.length === 1 ? fileContents[0] : fileContents;
             this.onChange(this.value);
             input.value = '';
         }
     }
 
-    readUploadedFile(inputFile): Promise<any> {
+    readUploadedFile(inputFile: File): Promise<string | ArrayBuffer | null> {
         const temporaryFileReader = new FileReader();
         return new Promise((resolve, reject) => {
             temporaryFileReader.onerror = () => {

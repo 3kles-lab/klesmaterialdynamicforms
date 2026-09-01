@@ -12,14 +12,14 @@ import { MatInput } from '@angular/material/input';
 @Component({
     selector: 'kles-form-textarea',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" [color]="color()" class="form-element" [appearance]="appearance()">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [formGroup]="group" [color]="color()" class="form-element" [appearance]="appearance()">
         @if (label()) {
             <mat-label>{{label()}}</mat-label>
         }
 
         <textarea matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()"
         [formControlName]="field.name" cdkTextareaAutosize [placeholder]="placeholder()"
-        [cdkAutosizeMinRows]="$safeNavigationMigration(field.textareaAutoSize?.minRows)" [cdkAutosizeMaxRows]="$safeNavigationMigration(field.textareaAutoSize?.maxRows)"  [maxlength]="maxLength()">
+        [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows"  [maxlength]="maxLength()">
         </textarea>
 
         @if (field.subComponents || field.clearable) {

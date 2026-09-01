@@ -13,7 +13,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 @Component({
     selector: 'kles-form-input-clearable',
     template: `
-        <mat-form-field [subscriptSizing]="field.subscriptSizing" [formGroup]="group" [color]="color()" class="form-element" [appearance]="appearance()">
+        <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [formGroup]="group" [color]="color()" class="form-element" [appearance]="appearance()">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }
@@ -33,7 +33,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
                     [matAutocomplete]="auto"
                 />
 
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="this.field.panelWidth">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)" [panelWidth]="field.panelWidth ?? 'auto'">
                     @if (filteredOption$ | async; as filteredOption) {
                         @if (filteredOption.loading) {
                             <mat-option class="hide-checkbox" disabled>
@@ -74,7 +74,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
                     [step]="step()"
                 />
             }
-            @if (!group.get(field.name).disabled) {
+            @if (!group.controls[field.name].disabled) {
                 <button matSuffix matIconButton aria-label="Clear" type="button" (click)="group.controls[field.name].reset()">
                     <mat-icon>close</mat-icon>
                 </button>

@@ -1,6 +1,9 @@
-import { Type } from "@angular/core";
+import { Type } from '@angular/core';
 
-export interface IKlesComponent {
-    component: Type<any>;
-    value: any;
+/** Contract implemented by components used to render an option or a select trigger. */
+export interface IKlesComponent<TValue = unknown> {
+    value: TValue;
 }
+
+/** Angular component type compatible with the dynamic option renderer. */
+export type KlesComponentType<TValue = unknown> = Type<IKlesComponent<TValue>>;

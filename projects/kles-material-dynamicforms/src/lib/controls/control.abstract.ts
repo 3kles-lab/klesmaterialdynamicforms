@@ -12,14 +12,14 @@ export abstract class KlesAbstractFormControl implements IKlesControl {
     ) {}
     abstract create(): AbstractControl;
 
-    public bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn {
+    public bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn | null {
         if (validations.length > 0) {
             return Validators.compose(validations.map((validation) => validation.validator));
         }
         return null;
     }
 
-    public bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn {
+    public bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn | null {
         if (validations.length > 0) {
             return Validators.composeAsync(
                 validations.map((validation) => {

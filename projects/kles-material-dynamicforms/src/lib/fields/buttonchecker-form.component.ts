@@ -19,7 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
                 [value]="field.value"
                 [formControlName]="field.name"
                 [tooltip]="tooltip()"
-                [disabled]="field.disabled"
+                [disabled]="field.disabled ?? false"
                 (action)="triggerAction(field.name, $event)"
             >
             </kles-button-checker>

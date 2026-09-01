@@ -12,7 +12,7 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
 @Component({
     selector: 'kles-form-datetimepicker',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
+    <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
         @if (label()) {
             <mat-label>{{ label() }}</mat-label>
         }

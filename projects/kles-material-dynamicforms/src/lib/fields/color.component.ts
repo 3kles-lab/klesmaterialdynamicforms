@@ -16,7 +16,7 @@ import { KlesFieldAbstract } from './field.abstract';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent],
     template: `
-        <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="field.subscriptSizing">
+        <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'">
             <input
                 matInput
                 autocomplete="off"

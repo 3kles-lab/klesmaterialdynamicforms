@@ -38,7 +38,7 @@ interface MatSelectInternals {
 @Component({
     selector: 'kles-form-select',
     template: `
-        <mat-form-field [subscriptSizing]="field.subscriptSizing" [color]="color()" [formGroup]="group" [appearance]="appearance()">
+        <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [color]="color()" [formGroup]="group" [appearance]="appearance()">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }
@@ -79,11 +79,11 @@ interface MatSelectInternals {
                     @if (field.virtualScroll) {
                         <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 48" [style.height.px]="5 * (field.itemSize || 48)">
                             @if (!field.autocompleteComponent) {
-                                <mat-option *cdkVirtualFor="let item of filteredOptions()" [value]="item" [disabled]="$safeNavigationMigration(item?.disabled)">
+                                <mat-option *cdkVirtualFor="let item of filteredOptions()" [value]="item" [disabled]="item?.disabled ?? false">
                                     {{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}
                                 </mat-option>
                             } @else {
-                                <mat-option *cdkVirtualFor="let item of filteredOptions()" [value]="item" [disabled]="$safeNavigationMigration(item?.disabled)">
+                                <mat-option *cdkVirtualFor="let item of filteredOptions()" [value]="item" [disabled]="item?.disabled ?? false">
                                     <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field" />
                                 </mat-option>
                             }
@@ -91,13 +91,13 @@ interface MatSelectInternals {
                     } @else {
                         @if (!field.autocompleteComponent) {
                             @for (item of filteredOptions(); track item) {
-                                <mat-option [value]="item" [disabled]="$safeNavigationMigration(item?.disabled)">
+                                <mat-option [value]="item" [disabled]="item?.disabled ?? false">
                                     {{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}
                                 </mat-option>
                             }
                         } @else {
                             @for (item of filteredOptions(); track item) {
-                                <mat-option [value]="item" [disabled]="$safeNavigationMigration(item?.disabled)">
+                                <mat-option [value]="item" [disabled]="item?.disabled ?? false">
                                     <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field" />
                                 </mat-option>
                             }

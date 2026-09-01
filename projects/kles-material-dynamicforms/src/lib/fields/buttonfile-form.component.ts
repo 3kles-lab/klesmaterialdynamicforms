@@ -19,8 +19,8 @@ import { KlesButtonFileComponent } from '../forms/buttonfile-control.component';
                 [value]="field.value"
                 [formControlName]="field.name"
                 [type]="field.buttonType"
-                [accept]="field.accept"
-                [disabled]="field.disabled"
+                [accept]="field.accept ?? '*.*'"
+                [disabled]="field.disabled ?? false"
             >
             </kles-button-file>
         </div>

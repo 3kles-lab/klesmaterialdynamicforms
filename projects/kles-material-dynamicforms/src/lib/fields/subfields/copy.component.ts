@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { IKlesField } from '../../interfaces/field.interface';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
 import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
+import { KlesDynamicFormIntl } from '../../dynamic-form-intl';
 
 @Component({
     selector: 'kles-form-copy',
@@ -21,19 +22,20 @@ import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
     imports: [MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
 export class KlesFormCopyComponent implements IKlesField {
-    @ViewChild('tooltip') tooltip: MatTooltip;
+    @ViewChild('tooltip') tooltip!: MatTooltip;
 
     readonly field = inject<IKlesFieldConfig>(FIELD);
     readonly group = inject<FormGroup<any>>(GROUP);
     readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
+    readonly intl = inject(KlesDynamicFormIntl);
 
     tooltipText: string;
 
     constructor(private clipBoard: Clipboard) {
-        this.tooltipText = this.field.copyTooltip || '';
+        this.tooltipText = this.intl.copy;
     }
 
-    copy(event): void {
+    copy(event: MouseEvent): void {
         event.stopPropagation();
         const copyText = (this.field.property ? this.group.controls[this.field.name].value?.[this.field.property] : this.group.controls[this.field.name].value) || '';
         this.clipBoard.copy(copyText);

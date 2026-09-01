@@ -3,6 +3,6 @@ import { IKlesValidator } from "../interfaces/validator.interface";
 
 export interface IKlesControl {
     create(): AbstractControl;
-    bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn;
-    bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn;
+    bindValidations(validations: IKlesValidator<ValidatorFn>[]): ValidatorFn | null;
+    bindAsyncValidations(validations: IKlesValidator<AsyncValidatorFn>[]): AsyncValidatorFn | null;
 }

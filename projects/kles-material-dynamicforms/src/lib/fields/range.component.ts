@@ -15,12 +15,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 @Component({
     selector: 'kles-form-rangepicker',
     template: `
-        <mat-form-field [subscriptSizing]="field.subscriptSizing" [color]="color()" [formGroup]="group" [appearance]="appearance()">
+        <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [color]="color()" [formGroup]="group" [appearance]="appearance()">
             <mat-label>{{ label() }}</mat-label>
 
             <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [min]="min()" [max]="max()">
-                <input matStartDate formControlName="start" [placeholder]="placeholder()?.start ? $safeNavigationMigration(placeholder()?.start) : ''" />
-                <input matEndDate formControlName="end" [placeholder]="placeholder()?.end ? $safeNavigationMigration(placeholder()?.end) : ''" />
+                <input matStartDate formControlName="start" [placeholder]="placeholder()?.start ? placeholder()?.start : ''" />
+                <input matEndDate formControlName="end" [placeholder]="placeholder()?.end ? placeholder()?.end : ''" />
             </mat-date-range-input>
 
             <div matSuffix class="suffix">

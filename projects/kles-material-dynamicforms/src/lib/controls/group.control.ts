@@ -42,7 +42,7 @@ export class KlesFormGroup extends KlesFormControl {
                 )
             ).subscribe((response) => {
                 this.field.pending = response.pending;
-                this.field.collections.forEach((col) => col.pending = response.pending);
+                this.field.collections?.forEach((col) => col.pending = response.pending);
                 if (response.pending) {
                     subGroup.disable({ emitEvent: false });
                 } else {

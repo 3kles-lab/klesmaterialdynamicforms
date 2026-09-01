@@ -24,7 +24,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     imports: [CommonModule, MatRadioButton, MatRadioGroup, ReactiveFormsModule, MatTooltip],
 })
 export class KlesFormRadioComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    options$: Observable<any[]>;
+    options$: Observable<any[]> = of([]);
 
     ngOnInit() {
         super.ngOnInit();
@@ -36,7 +36,7 @@ export class KlesFormRadioComponent extends KlesFieldAbstract implements OnInit,
             this.options$ = this.field.options();
         }
         else {
-            this.options$ = of(this.field.options);
+            this.options$ = of(this.field.options ?? []);
         }
     }
 

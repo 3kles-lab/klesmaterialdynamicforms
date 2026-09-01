@@ -267,7 +267,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatError, MatErrorMessageDirective, KlesCurrencyValueAccessorDirective],
     template: `
-        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing" [appearance]="appearance()" class="form-element field-bottom">
+        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [appearance]="appearance()" class="form-element field-bottom">
             @if (label()) {
                 <mat-label>
                     {{ label() }}
@@ -296,8 +296,8 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
                 [currency]="currencyOptions()?.code || defaultCurrencyCode"
                 [locale]="currencyOptions()?.locale || localeId"
                 [currencyDisplay]="currencyOptions()?.display || 'symbol'"
-                [minimumFractionDigits]="$safeNavigationMigration(currencyOptions()?.minimumFractionDigits)"
-                [maximumFractionDigits]="$safeNavigationMigration(currencyOptions()?.maximumFractionDigits)"
+                [minimumFractionDigits]="currencyOptions()?.minimumFractionDigits"
+                [maximumFractionDigits]="currencyOptions()?.maximumFractionDigits"
                 [useGrouping]="currencyOptions()?.useGrouping !== false"
                 [allowNegative]="currencyOptions()?.allowNegative !== false"
                 (focus)="onFocus()"

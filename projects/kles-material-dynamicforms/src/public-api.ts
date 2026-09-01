@@ -27,7 +27,6 @@ export * from './lib/fields/button-form.component';
 export * from './lib/fields/buttonchecker-form.component';
 export * from './lib/fields/buttonfile-form.component';
 export * from './lib/fields/checkbox.component';
-export * from './lib/fields/checkbox-indeterminate.component';
 export * from './lib/fields/color.component';
 export * from './lib/fields/date.component';
 export * from './lib/fields/date-time.component';

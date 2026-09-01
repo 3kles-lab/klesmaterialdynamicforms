@@ -11,7 +11,7 @@ import { GroupUiState } from '../../ui/ui-state/group-ui-state';
 @Component({
     selector: 'kles-form-password-visibility',
     template: `
-        <button [disabled]="group?.get($safeNavigationMigration(field?.name)).disabled" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
+        <button [disabled]="group.controls[field.name].disabled" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
             <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
     `,
@@ -30,7 +30,7 @@ export class KlesFormPasswordVisibilityComponent implements IKlesField {
         return this.ui?.get(this.field.name)?.value().inputType === 'password';
     });
 
-    toggleVisibility(event: any): void {
+    toggleVisibility(event: MouseEvent): void {
         event.stopPropagation();
         this.ui?.get(this.field.name)?.patchValue({ inputType: this.hide() ? 'text' : 'password' });
     }

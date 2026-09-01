@@ -1,5 +1,5 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Inject, Signal, ChangeDetectionStrategy } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ChangeDetectionStrategy, ElementRef } from '@angular/core';
+import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule, ControlValueAccessor, FormControl } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
 import { klesFieldControlFactory, klesFieldUiFactory } from './factories/field.factory';
@@ -16,15 +16,19 @@ import { AbstractUiState } from './ui/ui-state/ui-state.abstract';
 import { GroupUiState } from './ui/ui-state/group-ui-state';
 
 const originFormControlNgOnChanges = FormControlDirective.prototype.ngOnChanges;
-FormControlDirective.prototype.ngOnChanges = function () {
-    this.form.nativeElement = this.valueAccessor?._elementRef?.nativeElement;
-    return originFormControlNgOnChanges.apply(this, arguments);
+FormControlDirective.prototype.ngOnChanges = function (changes: SimpleChanges) {
+    const form = this.form as FormControl & { nativeElement?: unknown };
+    const valueAccessor = this.valueAccessor as (ControlValueAccessor & { _elementRef?: ElementRef }) | null;
+    form.nativeElement = valueAccessor?._elementRef?.nativeElement;
+    return originFormControlNgOnChanges.call(this, changes);
 };
 
 const originFormControlNameNgOnChanges = FormControlName.prototype.ngOnChanges;
-FormControlName.prototype.ngOnChanges = function () {
-    const result = originFormControlNameNgOnChanges.apply(this, arguments);
-    this.control.nativeElement = this.valueAccessor?._elementRef?.nativeElement;
+FormControlName.prototype.ngOnChanges = function (changes: SimpleChanges) {
+    const result = originFormControlNameNgOnChanges.call(this, changes);
+    const control = this.control as FormControl & { nativeElement?: unknown };
+    const valueAccessor = this.valueAccessor as (ControlValueAccessor & { _elementRef?: ElementRef }) | null;
+    control.nativeElement = valueAccessor?._elementRef?.nativeElement;
     return result;
 };
 
@@ -68,10 +72,10 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     @Input() direction: 'column' | 'row' | 'grid' | 'inline-grid' = 'column';
     @Input() wrap = true;
-    @Input() formClass: string | string[] | Set<string> | { [klass: string]: any };
+    @Input() formClass: string | string[] | Set<string> | { [klass: string]: any } = '';
 
-    form: UntypedFormGroup;
-    ui: GroupUiState;
+    form!: UntypedFormGroup;
+    ui!: GroupUiState;
     orientationClass: 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' = 'dynamic-form-column';
 
     get value() {
@@ -147,7 +151,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             });
 
         this.fields
-            // .filter(field => !this.form.controls[field.name])
             .forEach((field) => {
                 if (field.type === EnumType.lineBreak) {
                     return;
@@ -174,41 +177,34 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             const group = control as FormGroup;
             if (field.collections && Array.isArray(field.collections)) {
                 field.collections.forEach((subfield) => {
-                    if (group.controls[subfield]) {
-                        control = this.updateControl(subfield, group.controls[subfield]);
-                    } else {
-                        control = this.createControl(subfield);
-                    }
-                    if (control) {
-                        group.setControl(subfield.name, control, { emitEvent: false });
+                    const existingControl = group.controls[subfield.name];
+                    const updatedControl = existingControl ? this.updateControl(subfield, existingControl) : this.createControl(subfield);
+
+                    if (updatedControl) {
+                        group.setControl(subfield.name, updatedControl, { emitEvent: false });
                     }
                 });
             }
             return group;
         } else {
-            // control.setValidators(this.bindValidations(field.validations || []));
-            // control.setAsyncValidators(this.bindAsyncValidations(field.asyncValidations || []));
-            // if (field.value && control.value !== field.value) {
-            //     control.setValue(field.value);
-            // }
             return control;
         }
     }
 
-    private createControl(field: IKlesFieldConfig): AbstractControl {
-        if (field.type) {
-            return componentMapper.find((c) => c.type === field.type)?.factory ? componentMapper.find((c) => c.type === field.type)?.factory(field, this.ref) : klesFieldControlFactory(field, this.ref);
-        } else {
-            return componentMapper.find((c) => c.component === field.component)?.factory ? componentMapper.find((c) => c.component === field.component)?.factory(field, this.ref) : klesFieldControlFactory(field, this.ref);
-        }
+    private createControl(field: IKlesFieldConfig): AbstractControl | null {
+        const mapping = field.type
+            ? componentMapper.find((candidate) => candidate.type === field.type)
+            : componentMapper.find((candidate) => candidate.component === field.component);
+
+        return mapping ? mapping.factory(field, this.ref) : klesFieldControlFactory(field, this.ref);
     }
 
     private createUiState(field: IKlesFieldConfig): AbstractUiState {
-        if (field.type) {
-            return componentMapper.find((c) => c.type === field.type)?.ui ? componentMapper.find((c) => c.type === field.type)?.ui(field) : klesFieldUiFactory(field);
-        } else {
-            return componentMapper.find((c) => c.component === field.component)?.ui ? componentMapper.find((c) => c.component === field.component)?.ui(field) : klesFieldUiFactory(field);
-        }
+        const mapping = field.type
+            ? componentMapper.find((candidate) => candidate.type === field.type)
+            : componentMapper.find((candidate) => candidate.component === field.component);
+
+        return mapping?.ui(field) ?? klesFieldUiFactory(field);
     }
 
     private createForm() {
@@ -230,7 +226,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     private validateAllFormFields(formGroup: UntypedFormGroup) {
         Object.keys(formGroup.controls).forEach((field) => {
             const control = formGroup.get(field);
-            control.markAsTouched({ onlySelf: true });
+            control?.markAsTouched({ onlySelf: true });
         });
     }
 

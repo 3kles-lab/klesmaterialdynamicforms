@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ReactiveFormsModule, UntypedFormArray } from '@angular/forms';
+import { AbstractControl, ReactiveFormsModule, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import { KlesFormArray } from '../controls/array.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
@@ -18,9 +18,9 @@ import { ArrayUiState } from '../ui/ui-state/array-ui-state';
             <ng-container [formArrayName]="field.name">
                 @for (subGroup of formArray.controls; track subGroup.value._id; let index = $index) {
                     <div class="group-container" [ngClass]="field.direction === 'column' ? 'column' : 'row'">
-                        @for (subfield of field.collections; track subfield.name) {
+                        @for (subfield of field.collections ?? []; track subfield.name) {
                             @if (subfield.visible !== false) {
-                                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [ui]="$safeNavigationMigration(subUi?.at(index))" [siblingFields]="field.collections" [context]="context"> </ng-container>
+                                <ng-container klesDynamicField [field]="subfield" [group]="asFormGroup(subGroup)" [ui]="uiAt(index)" [siblingFields]="field.collections ?? []" [context]="context"> </ng-container>
                             }
                         }
                     </div>
@@ -55,6 +55,14 @@ export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit,
 
     ngOnInit() {
         super.ngOnInit();
+    }
+
+    asFormGroup(control: AbstractControl): UntypedFormGroup {
+        return control as UntypedFormGroup;
+    }
+
+    uiAt(index: number): GroupUiState {
+        return this.subUi.at(index) as GroupUiState;
     }
 
     ngOnDestroy(): void {

@@ -27,7 +27,7 @@ interface ChipOptionsState {
             <mat-label>{{ label() }}</mat-label>
 
             <mat-chip-grid #reactiveChipGrid [formControl]="control">
-                @for (value of control.value ?? []; track $index) {
+                @for (value of control.value; track $index) {
                     <mat-chip-row [value]="value" (removed)="removeChip(value)">
                         {{ displayValue(value) | klesTransform: field.pipeTransform }}
 
@@ -62,7 +62,7 @@ interface ChipOptionsState {
                         </mat-option>
                     } @else {
                         @for (item of filteredOption.options; track item) {
-                            <mat-option [value]="item" [disabled]="$safeNavigationMigration(item?.disabled)">
+                            <mat-option [value]="item" [disabled]="item?.disabled ?? false">
                                 {{ displayValue(item) | klesTransform: field.pipeTransform }}
                             </mat-option>
                         }
@@ -86,7 +86,7 @@ interface ChipOptionsState {
     imports: [AsyncPipe, KlesTransformPipe, MatAutocompleteModule, MatChipsModule, MatError, MatErrorMessageDirective, MatFormFieldModule, MatIconModule, MatProgressSpinnerModule, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormChipGridComponent extends KlesFieldAbstract implements OnInit {
-    readonly control = this.group.controls[this.field.name];
+    readonly control = this.group.controls[this.field.name] as FormControl<any[]>;
 
     readonly intl = inject(KlesDynamicFormIntl);
 
