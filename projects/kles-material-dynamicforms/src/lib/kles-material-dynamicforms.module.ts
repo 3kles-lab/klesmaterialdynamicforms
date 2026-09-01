@@ -57,6 +57,7 @@ import { KlesFormTileComponent } from './fields/tile.component';
 import { KlesFormCurrencyComponent } from './fields/currency.component';
 import { KlesFormStatusComponent } from './fields/status.component';
 import { KlesFormChipGridComponent } from './fields/chip-grid.component';
+import { KlesFormImageUploadComponent } from './fields/image-upload.component';
 
 const components = [
     KlesDynamicFormComponent,
@@ -104,6 +105,7 @@ const components = [
     KlesFormCurrencyComponent,
     KlesFormStatusComponent,
     KlesFormChipGridComponent,
+    KlesFormImageUploadComponent,
 ];
 
 const directives = [KlesDynamicFieldDirective, KlesComponentDirective, MatErrorMessageDirective, MatErrorFormDirective];

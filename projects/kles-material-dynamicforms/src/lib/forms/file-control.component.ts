@@ -49,7 +49,7 @@ export class KlesFileControlComponent implements ControlValueAccessor {
         const fileList = input.files;
 
         if (fileList && fileList.length > 0) {
-            const files: { name: string; content: ArrayBuffer }[] = [];
+            const files: KlesFileValue[] = [];
 
             for (let i = 0; i < fileList.length; i++) {
                 const currentFile = fileList.item(i);
@@ -58,7 +58,12 @@ export class KlesFileControlComponent implements ControlValueAccessor {
                     continue;
                 }
 
-                files[i] = { name: currentFile.name, content: await currentFile.arrayBuffer() };
+                files[i] = {
+                    name: currentFile.name,
+                    content: await currentFile.arrayBuffer(),
+                    type: currentFile.type,
+                    size: currentFile.size,
+                };
             }
 
             this.value = files;
@@ -91,6 +96,8 @@ export class KlesFileControlComponent implements ControlValueAccessor {
 export interface KlesFileValue {
     name: string;
     content: ArrayBuffer;
+    type?: string;
+    size?: number;
 }
 
 export type KlesFileControlValue = KlesFileValue[] | null;

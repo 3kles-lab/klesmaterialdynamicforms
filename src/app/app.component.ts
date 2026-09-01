@@ -19,6 +19,7 @@ import {
     KlesFormFabComponent,
     KlesFormFileComponent,
     KlesFormIconButtonComponent,
+    KlesFormImageUploadComponent,
     KlesFormMiniFabComponent,
     KlesFormPasswordVisibilityComponent,
     KlesFormStatusComponent,
@@ -124,6 +125,19 @@ export class AppComponent implements OnInit, AfterViewInit {
     ];
 
     structuredLayoutDemo: KlesFormElement[] = [
+        {
+            name: 'profilePhoto',
+            component: KlesFormImageUploadComponent,
+            label: 'Photo de profil',
+            hint: 'Image JPEG, PNG ou WebP de 2 Mo maximum.',
+            imageAlt: 'Photo de profil',
+            accept: 'image/jpeg,image/png,image/webp',
+            imageUploadOptions: {
+                maxFileSize: 2 * 1024 * 1024,
+            },
+            layout: { colSpan: 12 },
+        },
+        { type: 'divider' },
         {
             type: 'section',
             title: 'Informations du compte',

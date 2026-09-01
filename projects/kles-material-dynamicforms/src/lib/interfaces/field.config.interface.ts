@@ -44,6 +44,17 @@ export interface IKlesCurrencyOptions {
     allowNegative?: boolean;
 }
 
+export interface IKlesImageUploadOptions {
+    /** Taille maximale autorisée, en octets. 2 Mio par défaut. */
+    maxFileSize?: number;
+    changeLabel?: string;
+    deleteLabel?: string;
+    emptyIcon?: string;
+    uploadIcon?: string;
+    invalidTypeMessage?: string;
+    maxFileSizeMessage?: string;
+}
+
 export type KlesStatusTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type KlesStatusAppearance = 'chip' | 'badge' | 'text';
@@ -180,6 +191,7 @@ export interface IKlesFormField {
     lazy?: boolean;
     buttonType?: 'submit' | 'button' | 'reset';
     accept?: string;
+    imageUploadOptions?: IKlesImageUploadOptions;
     dateOptions?: {
         adapter?: {
             class: Type<DateAdapter<any>>;

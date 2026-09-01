@@ -3,6 +3,7 @@ export enum EnumType {
     select = 'select',
     text = 'text',
     file = 'file',
+    imageUpload = 'imageUpload',
     button = 'button',
     checkbox = 'checkbox',
     number = 'number',

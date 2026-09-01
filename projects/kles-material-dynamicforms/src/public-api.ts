@@ -34,6 +34,7 @@ export * from './lib/fields/field.abstract';
 export * from './lib/fields/input.component';
 export * from './lib/fields/input.clearable.component';
 export * from './lib/fields/file.component';
+export * from './lib/fields/image-upload.component';
 export * from './lib/fields/label.component';
 export * from './lib/fields/list-field.component';
 export * from './lib/fields/radio.component';
