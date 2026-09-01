@@ -1018,7 +1018,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 name: 'beginend',
                 validator: this.checkBeginEndValue('beginvalue', 'endvalue'),
-                message: 'status.error.range.text',
+                message: 'status.error.range.textaaaaaa',
             },
         ];
     }

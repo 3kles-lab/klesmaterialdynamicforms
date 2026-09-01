@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { IKlesComponent } from 'kles-material-dynamicforms';
 
-interface SelectOption {
+export interface SelectOption {
     BUAR: string;
     TX40: string;
 }
@@ -14,7 +14,7 @@ interface SelectOption {
     </span> 
 `,
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: true
+    standalone: true,
 })
 export class SelectOptionComponent implements IKlesComponent<SelectOption> {
     @Input({ required: true }) value!: SelectOption;
