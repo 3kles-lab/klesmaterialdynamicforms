@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, isDevMode } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -14,16 +14,22 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { AbstractUiState } from './ui/ui-state/ui-state.abstract';
 import { GroupUiState } from './ui/ui-state/group-ui-state';
+import { KlesFormElementsComponent } from './form-elements.component';
+import { IKlesLayoutConfig, KlesFormElement, flattenKlesFields, isKlesStructuralElement } from './interfaces/layout.interface';
 
 @Component({
     exportAs: 'klesDynamicForm',
     selector: 'app-kles-dynamic-form',
     standalone: true,
     template: `
-        <form class="{{ orientationClass }}" [class.dynamic-form-nowrap]="direction === 'row' && wrap === false" [ngClass]="formClass" [formGroup]="form" (submit)="onSubmit($event)">
-            @for (field of fields; track field.name) {
-                @if (field.visible !== false) {
-                    <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="fields" [context]="context"> </ng-container>
+        <form class="{{ orientationClass }}" [class.dynamic-form-nowrap]="orientationClass === 'dynamic-form-row' && wrap === false" [ngClass]="formClass" [ngStyle]="gridStyles" [formGroup]="form" (submit)="onSubmit($event)">
+            @if (usesAdvancedLayout) {
+                <kles-form-elements [elements]="fields" [group]="form" [ui]="ui" [context]="context" [layoutConfig]="layout" />
+            } @else {
+                @for (field of legacyFields; track field.name) {
+                    @if (field.visible !== false) {
+                        <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="legacyFields" [context]="context"> </ng-container>
+                    }
                 }
             }
             @if (form && form.errors) {
@@ -37,15 +43,15 @@ import { GroupUiState } from './ui/ui-state/group-ui-state';
         '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline}',
         '.dynamic-form-row.dynamic-form-nowrap { flex-wrap: nowrap; }',
         '.dynamic-form-row > * { width: 100%; }',
-        '.dynamic-form-grid { display: grid; }',
-        '.dynamic-form-inline-grid { display: inline-grid; }',
+        '.dynamic-form-grid { display: grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 10px); }',
+        '.dynamic-form-inline-grid { display: inline-grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 10px); }',
     ],
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }],
-    imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, FormsModule, ReactiveFormsModule, MatError],
+    imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, KlesFormElementsComponent, FormsModule, ReactiveFormsModule, MatError],
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {
     @Input() context: Signal<unknown | null> | null = null;
-    @Input() fields: IKlesFieldConfig[] = [];
+    @Input() fields: KlesFormElement[] = [];
     @Input() validators: IKlesValidator<ValidatorFn>[] = [];
     @Input() asyncValidators: IKlesValidator<AsyncValidatorFn>[] = [];
     // tslint:disable-next-line: no-output-native
@@ -54,16 +60,46 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     @Input() direction: 'column' | 'row' | 'grid' | 'inline-grid' = 'column';
     @Input() wrap = true;
+    /** Configuration of the advanced grid container. */
+    @Input() layout: IKlesLayoutConfig = {};
     @Input() formClass: string | string[] | Set<string> | { [klass: string]: any } = '';
 
     form!: UntypedFormGroup;
     ui!: GroupUiState;
+    private flattenedSource: KlesFormElement[] | null = null;
+    private flattenedFields: IKlesFieldConfig[] = [];
+    private readonly layoutWarnings = new Set<string>();
     get orientationClass(): 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' {
+        if (this.hasRootElementLayout && this.direction !== 'inline-grid') return 'dynamic-form-grid';
         return `dynamic-form-${this.direction}`;
     }
 
     get value() {
         return this.form.value;
+    }
+
+    get legacyFields(): IKlesFieldConfig[] {
+        if (this.flattenedSource !== this.fields) {
+            this.flattenedSource = this.fields;
+            this.flattenedFields = flattenKlesFields(this.fields);
+        }
+        return this.flattenedFields;
+    }
+
+    get usesAdvancedLayout(): boolean {
+        return this.direction === 'grid' || this.direction === 'inline-grid' || this.hasRootElementLayout || this.fields.some(isKlesStructuralElement);
+    }
+
+    get gridStyles(): Record<string, string | number> | null {
+        if (this.orientationClass !== 'dynamic-form-grid' && this.orientationClass !== 'dynamic-form-inline-grid') return null;
+        return {
+            '--kles-grid-columns': this.normalizeColumns(this.layout.columns),
+            '--kles-grid-gap': this.layout.gap?.trim() || '10px',
+        };
+    }
+
+    private get hasRootElementLayout(): boolean {
+        return this.fields.some((element) => element.layout != null);
     }
 
     constructor(
@@ -78,17 +114,17 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.fields?.firstChange) {
+        if (changes.fields && !changes.fields.firstChange && this.form) {
             this.updateForm();
             this.ui = this.createUi();
             this._onLoaded.emit();
         }
 
-        if (!changes.validators?.firstChange && this.form) {
+        if (changes.validators && !changes.validators.firstChange && this.form) {
             this.form.setValidators(this.validators.map((v) => v.validator));
         }
 
-        if (!changes.asyncValidators?.firstChange && this.form) {
+        if (changes.asyncValidators && !changes.asyncValidators.firstChange && this.form) {
             this.form.setAsyncValidators(this.asyncValidators.map((v) => v.validator));
         }
 
@@ -105,15 +141,16 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     }
 
     private updateForm() {
+        const fields = this.legacyFields;
         Object.keys(this.form.controls)
             .filter((key) => {
-                return !this.fields.map((field) => field.name).includes(key);
+                return !fields.map((field) => field.name).includes(key);
             })
             .forEach((key) => {
                 this.form.removeControl(key);
             });
 
-        this.fields
+        fields
             .forEach((field) => {
                 if (field.type === EnumType.lineBreak) {
                     return;
@@ -173,7 +210,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     private createForm() {
         const group = this.fb.group({});
 
-        this.fields.forEach((field) => {
+        this.legacyFields.forEach((field) => {
             const control = this.createControl(field);
             if (control) {
                 group.addControl(field.name, control);
@@ -196,7 +233,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     private createUi() {
         const uiGroup = new GroupUiState();
 
-        this.fields.forEach((field) => {
+        this.legacyFields.forEach((field) => {
             const uiState = this.createUiState(field);
             if (uiState) {
                 uiGroup.addUiState(field.name, uiState);
@@ -204,5 +241,16 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         });
 
         return uiGroup;
+    }
+
+    private normalizeColumns(value: number | undefined): number {
+        if (value == null) return 12;
+        const normalized = Number.isFinite(value) ? Math.min(64, Math.max(1, Math.round(value))) : 12;
+        const warning = `[KlesDynamicForm] columns=${value} is invalid; using ${normalized}.`;
+        if (isDevMode() && normalized !== value && !this.layoutWarnings.has(warning)) {
+            this.layoutWarnings.add(warning);
+            console.warn(warning);
+        }
+        return normalized;
     }
 }

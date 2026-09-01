@@ -23,6 +23,15 @@
     </div>
 
     <div class="container">
+        <div class="block">
+            <h2>CSS Grid layouts</h2>
+            <h3>Prénom / Nom / Email</h3>
+            <app-kles-dynamic-form [fields]="basicLayoutDemo" />
+            <h3>Profil utilisateur structuré en sections</h3>
+            <app-kles-dynamic-form direction="grid" [layout]="{ gap: '16px' }" [fields]="structuredLayoutDemo" />
+            <h3>Responsive (deux colonnes, puis une colonne sous 600 px)</h3>
+            <app-kles-dynamic-form direction="grid" [layout]="{ gap: '16px' }" [fields]="responsiveLayoutDemo" />
+        </div>
         <div style="justify-content: center">
             <button matButton (click)="french()">Dynamically switch to French</button>
         </div>

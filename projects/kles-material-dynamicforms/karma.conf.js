@@ -26,6 +26,12 @@ module.exports = function (config) {
     logLevel: config.LOG_INFO,
     autoWatch: true,
     browsers: ['Chrome'],
+    customLaunchers: {
+      ChromeHeadlessKles: {
+        base: 'ChromeHeadless',
+        flags: ['--disable-gpu', '--disable-software-rasterizer', '--no-sandbox']
+      }
+    },
     singleRun: false,
     restartOnFileChange: true
   });

@@ -11,6 +11,7 @@ import { MatButtonAppearance } from '@angular/material/button';
 
 import type { ColorCommitMode, ColorOutputFormat, ColorPickerPosition } from '@3kles/kles-material-color-picker';
 import type { KlesComponentType } from './component.interface';
+import type { IKlesElementLayout } from './layout.interface';
 
 export interface IKlesFieldActionEvent<TContext = unknown, TValue = unknown> {
     actionId: string;
@@ -201,6 +202,8 @@ export interface IKlesFormField {
 
     onAction?: (event: IKlesFieldActionEvent<any, any>) => void;
     statusOptions?: IKlesStatusOptions;
+    /** Position of this field in an advanced CSS Grid container. */
+    layout?: IKlesElementLayout;
 }
 
 export type IKlesFieldConfig = IKlesFormField & IKlesFieldUi;

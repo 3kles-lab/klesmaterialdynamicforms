@@ -70,6 +70,7 @@ export * from './lib/enums/type.enum';
 export * from './lib/interfaces/component.interface';
 export * from './lib/interfaces/field.interface';
 export * from './lib/interfaces/field.config.interface';
+export * from './lib/interfaces/layout.interface';
 export * from './lib/interfaces/validator.interface';
 export * from './lib/interfaces/directive.interface';
 export * from './lib/interfaces/clear-control.interface';

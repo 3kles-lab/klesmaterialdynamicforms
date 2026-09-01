@@ -10,6 +10,27 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 
 ## Models
 
+### Advanced CSS Grid layout
+
+Add `layout` to an individual root field to enable CSS Grid automatically.
+`direction="grid"` remains available to force it when no field declares a layout.
+The defaults are a 12-column grid, a 10px gap, `colSpan: 12`, and `rowSpan: 1`.
+
+```typescript
+const fields: KlesFormElement[] = [
+  { name: 'firstname', component: KlesFormInputComponent, layout: { colSpan: 6, responsive: { xs: { colSpan: 12 } } } },
+  { name: 'lastname', component: KlesFormInputComponent, layout: { colSpan: 6, responsive: { xs: { colSpan: 12 } } } },
+  { name: 'email', component: KlesFormInputComponent, layout: { colSpan: 12 } },
+];
+```
+
+Configure the root with `[layout]="{ columns: 12, gap: '16px' }"`. Structural
+`section` and `layoutGroup` elements can contain nested `fields` and establish
+independent grids through `layoutConfig`; they do not create Angular form
+controls. `layoutGroup` is deliberately distinct from the existing data-bearing
+`EnumType.group`. The legacy `row`, `column`, `wrap`, and `EnumType.group` APIs
+are unchanged.
+
 
 ### Directives
 
