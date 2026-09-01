@@ -1,15 +1,16 @@
 
-import { Component, forwardRef, Input, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, forwardRef, Input, signal } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckbox, MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { ThemePalette } from '@angular/material/core';
 
 @Component({
     selector: 'kles-checkbox-indeterminate',
     template: `
     <mat-checkbox
-      #checkbox
       [indeterminate]="isIndeterminate"
+      [checked]="isChecked"
+      [disabled]="disabled"
       (change)="onCheckboxChange($event)"
       [color]="color"
       (blur)="onTouched()">
@@ -24,24 +25,31 @@ import { ThemePalette } from '@angular/material/core';
         }
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCheckboxModule, ReactiveFormsModule, FormsModule],
 })
-export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor, AfterViewInit {
+export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor {
   @Input() label = '';
   @Input() color: ThemePalette = 'primary';
-  @ViewChild('checkbox') checkbox!: MatCheckbox;
 
-  isIndeterminate = false;
+  private readonly indeterminateState = signal(false);
+  private readonly checkedState = signal(false);
+  private readonly disabledState = signal(false);
   private innerValue: boolean | -1 = false;
+
+  get isIndeterminate(): boolean {
+    return this.indeterminateState();
+  }
+
+  get isChecked(): boolean {
+    return this.checkedState();
+  }
+
+  get disabled(): boolean {
+    return this.disabledState();
+  }
 
   onChange: any = () => { };
   onTouched: any = () => { };
-
-  ngAfterViewInit(): void {
-    // Initial update to ensure state is correct after view init
-    this.updateCheckbox(this.innerValue);
-  }
 
   writeValue(value: boolean | -1 | null): void {
     this.innerValue = value ?? false;
@@ -57,26 +65,18 @@ export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor,
   }
 
   setDisabledState?(isDisabled: boolean): void {
-    if (this.checkbox) {
-      this.checkbox.disabled = isDisabled;
-    }
+    this.disabledState.set(isDisabled);
   }
 
   onCheckboxChange(event: MatCheckboxChange): void {
     const checked = event.checked;
     this.onChange(checked);
-    this.isIndeterminate = false;
+    this.indeterminateState.set(false);
+    this.checkedState.set(checked);
   }
 
   private updateCheckbox(value: boolean | -1): void {
-    if (this.checkbox) {
-      if (value === -1) {
-        this.isIndeterminate = true;
-        this.checkbox.checked = false;
-      } else {
-        this.isIndeterminate = false;
-        this.checkbox.checked = value;
-      }
-    }
+    this.indeterminateState.set(value === -1);
+    this.checkedState.set(value === -1 ? false : value);
   }
 }

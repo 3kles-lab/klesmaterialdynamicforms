@@ -1,4 +1,4 @@
-import { Input, ChangeDetectionStrategy, ElementRef } from '@angular/core';
+import { computed, ElementRef, input } from '@angular/core';
 import { Component, forwardRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
@@ -12,13 +12,13 @@ export interface IButtonFile extends IButton {
 @Component({
     selector: 'kles-button-file',
     template: `
-        <input type="file" #file style="display: none" [accept]="accept" (change)="onFileSelect($event.target)" multiple />
+        <input type="file" #file style="display: none" [accept]="effectiveAccept()" (change)="onFileSelect($event.target)" multiple />
         <kles-button
-            [classButton]="classButton"
-            [name]="name" [label]="label" [color]="color"
-            [icon]="icon" [iconSvg]="iconSvg"
-            [disabled]="disabled"
-            [value]="value" (click)="click($event)">
+            [classButton]="effectiveClassButton()"
+            [name]="name()" [label]="effectiveLabel()" [color]="effectiveColor()"
+            [icon]="effectiveIcon()" [iconSvg]="effectiveIconSvg()"
+            [disabled]="effectiveDisabled()"
+            [value]="effectiveValue()" (click)="click($event)">
         </kles-button>
     `,
     providers: [
@@ -29,43 +29,19 @@ export interface IButtonFile extends IButton {
         }
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [KlesButtonComponent],
 })
-export class KlesButtonFileComponent extends KlesButtonBase {
+export class KlesButtonFileComponent extends KlesButtonBase<IButtonFile> {
     @ViewChild('file') file!: ElementRef<HTMLInputElement>;
-    @Input() accept = '*.*';
+    readonly accept = input('*.*');
+    readonly effectiveAccept = computed(() => this.uiButtonState()?.accept ?? this.accept());
     fileReader = new FileReader();
     fileContent: string | ArrayBuffer | null = null;
-    value: IButtonFile = {};
-
-
     click(_event: MouseEvent): void {
-        if (!this.disabled) {
+        if (!this.effectiveDisabled()) {
             this.file.nativeElement.click();
         }
     }
-
-    writeValue(value: IButton): void {
-        if (!value) {
-            value = { event: this.name };
-        }
-        if (!value.event) {
-            value.event = this.name;
-        }
-        if (value.uiButton) {
-            const uiButton = value.uiButton;
-            this.label = (uiButton.label) ? uiButton.label : this.label;
-            this.color = (uiButton.color) ? uiButton.color : this.color;
-            this.icon = (uiButton.icon) ? uiButton.icon : this.icon;
-            this.iconSvg = (uiButton.iconSvg) ? uiButton.iconSvg : this.iconSvg;
-            this.disabled = (uiButton.disabled) ? uiButton.disabled : this.disabled;
-            this.classButton = (uiButton.class) ? uiButton.class : this.classButton;
-            this.accept = (uiButton.accept) ? uiButton.accept : this.accept;
-        }
-        this.value = value;
-    }
-
 
     onFileLoad(fileLoadedEvent: ProgressEvent<FileReader>): void {
         const textFromFileLoaded = fileLoadedEvent.target?.result ?? null;
@@ -87,9 +63,10 @@ export class KlesButtonFileComponent extends KlesButtonBase {
                 }
             }
 
-            this.value.event = this.name;
-            this.value.fileContent = fileContents.length === 1 ? fileContents[0] : fileContents;
-            this.onChange(this.value);
+            const value = this.effectiveValue();
+            value.event = this.name();
+            value.fileContent = fileContents.length === 1 ? fileContents[0] : fileContents;
+            this.onChange(value);
             input.value = '';
         }
     }

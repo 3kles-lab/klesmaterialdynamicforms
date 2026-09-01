@@ -18,7 +18,7 @@ import { KlesIconButtonComponent } from '../forms/icon-button-control.component'
                 [value]="field.value"
                 [formControlName]="field.name"
                 [tooltip]="tooltip()"
-                [type]="field.buttonType"
+                [type]="field.buttonType ?? 'button'"
                 (action)="triggerAction(field.name, $event)"
             >
             </kles-icon-button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { KlesButtonBase } from './button-control-base';
 import { CommonModule } from '@angular/common';
@@ -9,16 +9,16 @@ import { MatButton } from '@angular/material/button';
 @Component({
     selector: 'kles-button',
     template: `
-            <button [matButton]="buttonAppearance" [type]="type" [ngClass]="classButton" [color]="(color)?color:'primary'" [disabled]="disabled"
-            (click)="click($event)" [matTooltip]="tooltip">
-                {{label}}
+            <button [matButton]="effectiveButtonAppearance()" [type]="effectiveType()" [ngClass]="effectiveClassButton()" [color]="effectiveColor() || 'primary'" [disabled]="effectiveDisabled()"
+            (click)="click($event)" [matTooltip]="tooltip()">
+                {{ effectiveLabel() }}
 
-                @if (icon) {
-                    <mat-icon>{{icon}}</mat-icon>
+                @if (effectiveIcon(); as icon) {
+                    <mat-icon>{{ icon }}</mat-icon>
                 }
 
-                @if (iconSvg) {
-                    <mat-icon svgIcon="{{iconSvg}}"></mat-icon>
+                @if (effectiveIconSvg(); as iconSvg) {
+                    <mat-icon [svgIcon]="iconSvg"></mat-icon>
                 }
             </button>
     `,
@@ -30,7 +30,6 @@ import { MatButton } from '@angular/material/button';
         }
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MatIcon, MatTooltip, MatButton]
 })
 export class KlesButtonComponent extends KlesButtonBase implements OnInit {

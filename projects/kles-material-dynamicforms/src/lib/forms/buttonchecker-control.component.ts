@@ -1,4 +1,4 @@
-import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
 
@@ -15,20 +15,31 @@ export interface IButtonChecker extends IButton {
 @Component({
     selector: 'kles-button-checker',
     template: `
-        @if (value.error && !value.busy) {
+        @if (effectiveValue().error && !effectiveValue().busy) {
         <span>
-            <kles-button [classButton]="classButton" [name]="name" [label]="label" [color]="color" [icon]="icon" [iconSvg]="iconSvg" [value]="value" [tooltip]="tooltip" [disabled]="disabled" matBadge="{{ countError() }}" (click)="click($event)">
+            <kles-button
+                [classButton]="effectiveClassButton()"
+                [name]="name()"
+                [label]="effectiveLabel()"
+                [color]="effectiveColor()"
+                [icon]="effectiveIcon()"
+                [iconSvg]="effectiveIconSvg()"
+                [value]="effectiveValue()"
+                [tooltip]="tooltip()"
+                [disabled]="effectiveDisabled()"
+                [matBadge]="countError()"
+                (click)="click($event)">
             </kles-button>
         </span>
         }
         <span style="text-align: center;">
-            @if (value.busy || false) {
+            @if (effectiveValue().busy) {
             <span style="text-align: center;margin-right: 10px">
                 <mat-spinner [diameter]="25"></mat-spinner>
             </span>
-            } @if (value.message) {
+            } @if (effectiveValue().message; as message) {
             <span style="margin-right: 10px">
-                {{ value.message }}
+                {{ message }}
             </span>
             }
         </span>
@@ -41,17 +52,10 @@ export interface IButtonChecker extends IButton {
         },
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, KlesButtonComponent, MatProgressSpinner, MatBadge],
 })
-export class KlesButtonCheckerComponent extends KlesButtonBase implements ControlValueAccessor {
-    value: IButtonChecker = {
-        busy: false,
-        error: [],
-        event: false,
-    };
-
+export class KlesButtonCheckerComponent extends KlesButtonBase<IButtonChecker> implements ControlValueAccessor {
     countError(): number {
-        return this.value.error ? this.value.error.length : 0;
+        return this.effectiveValue().error?.length ?? 0;
     }
 }

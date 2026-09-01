@@ -16,7 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
             [value]="field.value"
             [formControlName]="field.name"
             [tooltip]="tooltip()"
-            [type]="field.buttonType"
+            [type]="field.buttonType ?? 'button'"
             (action)="triggerAction(field.name, $event)"
             >
         </kles-mini-fab>

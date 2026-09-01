@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ChangeDetectionStrategy, ElementRef } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ElementRef } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule, ControlValueAccessor, FormControl } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -58,7 +58,6 @@ FormControlName.prototype.ngOnChanges = function (changes: SimpleChanges) {
         '.dynamic-form-inline-grid { display: inline-grid; }',
     ],
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }],
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, FormsModule, ReactiveFormsModule, MatError],
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {
@@ -76,7 +75,9 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     form!: UntypedFormGroup;
     ui!: GroupUiState;
-    orientationClass: 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' = 'dynamic-form-column';
+    get orientationClass(): 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' {
+        return `dynamic-form-${this.direction}`;
+    }
 
     get value() {
         return this.form.value;
@@ -90,7 +91,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.form = this.createForm();
         this.ui = this.createUi();
-        this.setOrientationClass();
         this._onLoaded.emit();
     }
 
@@ -109,9 +109,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             this.form.setAsyncValidators(this.asyncValidators.map((v) => v.validator));
         }
 
-        if (!changes.direction?.firstChange) {
-            this.orientationClass = this.direction === 'row' ? 'dynamic-form-row' : 'dynamic-form-column';
-        }
     }
 
     onSubmit(event: Event) {
@@ -121,23 +118,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             this.submit.emit(this.form.getRawValue());
         } else {
             this.validateAllFormFields(this.form);
-        }
-    }
-
-    private setOrientationClass() {
-        switch (this.direction) {
-            case 'column':
-                this.orientationClass = 'dynamic-form-column';
-                break;
-            case 'row':
-                this.orientationClass = 'dynamic-form-row';
-                break;
-            case 'grid':
-                this.orientationClass = 'dynamic-form-grid';
-                break;
-            case 'inline-grid':
-                this.orientationClass = 'dynamic-form-inline-grid';
-                break;
         }
     }
 

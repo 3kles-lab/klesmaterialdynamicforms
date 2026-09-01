@@ -18,7 +18,7 @@ import { KlesButtonFileComponent } from '../forms/buttonfile-control.component';
                 [iconSvg]="iconSvg()"
                 [value]="field.value"
                 [formControlName]="field.name"
-                [type]="field.buttonType"
+                [type]="field.buttonType ?? 'button'"
                 [accept]="field.accept ?? '*.*'"
                 [disabled]="field.disabled ?? false"
             >

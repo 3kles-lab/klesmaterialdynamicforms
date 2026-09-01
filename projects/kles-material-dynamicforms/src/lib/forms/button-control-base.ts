@@ -1,4 +1,4 @@
-import { OnInit, Input, Injectable, Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, EventEmitter, input, OnInit, Output, signal } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { MatButtonAppearance } from '@angular/material/button';
 
@@ -21,30 +21,36 @@ export interface IUIButton {
 
 @Component({
     template: '',
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
-export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
-    @Input() name = '';
-    @Input() label = '';
-    @Input() color = 'accent';
-    @Input() icon = '';
-    @Input() iconSvg = '';
-    @Input() disabled = false;
-    @Input('type') get type(): any {
-        return this._type;
-    }
-    set type(value: any) {
-        this._type = value || this._type;
-    }
-    @Input() classButton = '';
-    @Input() value: IButton = {};
-    @Input() tooltip?: string;
-    @Input() buttonAppearance: MatButtonAppearance = 'text';
+export abstract class KlesButtonBase<TButton extends IButton = IButton> implements OnInit, ControlValueAccessor {
+    readonly name = input('');
+    readonly label = input('');
+    readonly color = input('accent');
+    readonly icon = input('');
+    readonly iconSvg = input('');
+    readonly disabled = input(false);
+    readonly type = input<string | undefined>('button');
+    readonly classButton = input('');
+    readonly value = input<TButton>({} as TButton);
+    readonly tooltip = input<string>();
+    readonly buttonAppearance = input<MatButtonAppearance>('text');
+
+    protected readonly uiButtonState = signal<IUIButton | undefined>(undefined);
+    private readonly formDisabledState = signal<boolean | undefined>(undefined);
+    private readonly writtenValueState = signal<TButton | undefined>(undefined, { equal: () => false });
+
+    readonly effectiveLabel = computed(() => this.uiButtonState()?.label ?? this.label());
+    readonly effectiveColor = computed(() => this.uiButtonState()?.color ?? this.color());
+    readonly effectiveIcon = computed(() => this.uiButtonState()?.icon ?? this.icon());
+    readonly effectiveIconSvg = computed(() => this.uiButtonState()?.iconSvg ?? this.iconSvg());
+    readonly effectiveDisabled = computed(() => this.formDisabledState() ?? this.uiButtonState()?.disabled ?? this.disabled());
+    readonly effectiveType = computed(() => this.uiButtonState()?.type ?? (this.uiButtonState() ? 'submit' : this.type() || 'button'));
+    readonly effectiveClassButton = computed(() => this.uiButtonState()?.class ?? this.classButton());
+    readonly effectiveButtonAppearance = computed(() => this.uiButtonState()?.buttonAppearance ?? this.buttonAppearance());
+    readonly effectiveValue = computed(() => this.writtenValueState() ?? this.value());
 
     @Output() action = new EventEmitter<MouseEvent>();
-
-    protected _type = 'button';
 
     onChange: any = () => {};
     onTouched: any = () => {};
@@ -52,37 +58,29 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     ngOnInit(): void {}
 
     click(event: MouseEvent) {
-        if (this.disabled || this._type !== 'button') {
+        if (this.effectiveDisabled() || this.effectiveType() !== 'button') {
             return;
         }
 
-        if (this.value) {
-            this.value.event = this.name;
-            this.onChange(this.value);
+        const value = this.effectiveValue();
+        if (value) {
+            value.event = this.name();
+            this.writtenValueState.set(value);
+            this.onChange(value);
         }
 
         this.action.emit(event);
     }
 
-    writeValue(value: IButton): void {
+    writeValue(value: TButton): void {
         if (!value) {
-            value = { event: this.name };
+            value = { event: this.name() } as TButton;
         }
         if (!value.event) {
-            value.event = this.name;
+            value.event = this.name();
         }
-        if (value.uiButton) {
-            const uiButton = value.uiButton;
-            this.label = uiButton.label ? uiButton.label : this.label;
-            this.color = uiButton.color ? uiButton.color : this.color;
-            this.icon = uiButton.icon ? uiButton.icon : this.icon;
-            this.iconSvg = uiButton.iconSvg ? uiButton.iconSvg : this.iconSvg;
-            this.disabled = uiButton.disabled ? uiButton.disabled : this.disabled;
-            this.classButton = uiButton.class ? uiButton.class : this.classButton;
-            this.type = uiButton.type ? uiButton.type : 'submit';
-            this.buttonAppearance = uiButton.buttonAppearance ? uiButton.buttonAppearance : this.buttonAppearance;
-        }
-        this.value = value;
+        this.uiButtonState.set(value.uiButton);
+        this.writtenValueState.set(value);
     }
 
     registerOnChange(fn: any): void {
@@ -94,6 +92,6 @@ export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {
     }
 
     setDisabledState?(isDisabled: boolean): void {
-        this.disabled = isDisabled;
+        this.formDisabledState.set(isDisabled);
     }
 }
