@@ -1,34 +1,22 @@
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { ArrayFormatPipe, IKlesComponent } from 'kles-material-dynamicforms';
 
-import { Component, OnChanges, OnInit, SimpleChanges, Type, ChangeDetectionStrategy } from "@angular/core";
-import { ArrayFormatPipe, IKlesComponent } from "kles-material-dynamicforms";
+interface SelectOption {
+    BUAR: string;
+    TX40: string;
+}
 
 @Component({
     selector: 'kles-select-trigger',
     template: `
-    <span>
-        {{value | arrayFormat:'BUAR'}}
-    </span> 
-`,
+        <span>
+            {{ value | arrayFormat: 'BUAR' }}
+        </span>
+    `,
     standalone: true,
     changeDetection: ChangeDetectionStrategy.Eager,
-    imports: [ArrayFormatPipe]
+    imports: [ArrayFormatPipe],
 })
-export class SelectTriggerComponent implements IKlesComponent, OnInit, OnChanges {
-
-    component: Type<any>;
-    value: any;
-
-    constructor(){
-        
-    }
-
-    ngOnInit() {
-        // console.log('ici Value=', this.value);
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        // console.log('changes inside SelectTriggerComponent', changes)
-    }
-
-
+export class SelectTriggerComponent implements IKlesComponent<SelectOption[]> {
+    @Input({ required: true }) value: SelectOption[] = [];
 }

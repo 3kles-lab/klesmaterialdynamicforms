@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "esModuleInterop": true,
@@ -16,12 +15,12 @@
     ],
     "paths": {
       "kles-material-dynamicforms": [
-        "dist/kles-material-dynamicforms/kles-material-dynamicforms",
-        "dist/kles-material-dynamicforms"
+        "./dist/kles-material-dynamicforms/kles-material-dynamicforms",
+        "./dist/kles-material-dynamicforms"
       ],
       "kles-material-dynamicforms/*": [
-        "dist/kles-material-dynamicforms/kles-material-dynamicforms",
-        "dist/kles-material-dynamicforms"
+        "./dist/kles-material-dynamicforms/kles-material-dynamicforms",
+        "./dist/kles-material-dynamicforms"
       ]
     },
     "useDefineForClassFields": false

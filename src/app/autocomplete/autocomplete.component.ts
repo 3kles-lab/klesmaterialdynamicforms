@@ -1,21 +1,19 @@
-import { Component, OnInit, Type, ChangeDetectionStrategy } from "@angular/core";
-import { IKlesComponent } from "projects/kles-material-dynamicforms/src/public-api";
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { IKlesComponent } from 'kles-material-dynamicforms';
+
+interface AutocompleteOption {
+    test: string;
+    val: string;
+}
 
 @Component({
     selector: 'kles-auto',
-    template: `
-    <span>
-        {{value.test}} - {{value.val}}
-    </span> 
-`,
+    template: ` @if (value) {
+        <span> {{ value.test }} - {{ value.val }} </span>
+    }`,
     changeDetection: ChangeDetectionStrategy.Eager,
-    standalone: true
+    standalone: true,
 })
-export class AutocompleteComponent implements IKlesComponent, OnInit {
-    component: Type<any>;
-    value: any;
-
-    ngOnInit() {
-        // console.log('Value=', this.value);
-    }
+export class AutocompleteComponent implements IKlesComponent<AutocompleteOption | null> {
+    @Input({ required: true }) value!: AutocompleteOption | null;
 }

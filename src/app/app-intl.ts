@@ -5,5 +5,5 @@ import { KlesDynamicFormIntl } from 'kles-material-dynamicforms';
 export class TranslatedKlesLabelIntl extends KlesDynamicFormIntl {
     override loading = 'Chargement';
     override selectAll = 'Tout sélectionner';
-    
+    override copy: string = 'Valeur copié !!';
 }

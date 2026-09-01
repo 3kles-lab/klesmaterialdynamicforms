@@ -1,5 +1,10 @@
-import { Component, OnInit, Type, ChangeDetectionStrategy } from "@angular/core";
-import { IKlesComponent } from "dist/kles-material-dynamicforms";
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { IKlesComponent } from 'kles-material-dynamicforms';
+
+interface SelectOption {
+    BUAR: string;
+    TX40: string;
+}
 
 @Component({
     selector: 'kles-select-option',
@@ -11,18 +16,6 @@ import { IKlesComponent } from "dist/kles-material-dynamicforms";
     changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true
 })
-export class SelectOptionComponent implements IKlesComponent, OnInit {
-
-    component: Type<any>;
-    value: any;
-
-    constructor(){
-        
-    }
-
-    ngOnInit() {
-        // console.log('ici Value=', this.value);
-    }
-
-
+export class SelectOptionComponent implements IKlesComponent<SelectOption> {
+    @Input({ required: true }) value!: SelectOption;
 }

@@ -13,7 +13,6 @@ import {
     KlesDynamicFormIntl,
     KlesFormActionMenuComponent,
     KlesFormCheckboxComponent,
-    KlesFormCheckboxIndeterminateComponent,
     KlesFormChipGridComponent,
     KlesFormCurrencyComponent,
     KlesFormDateComponent,
@@ -60,6 +59,7 @@ import { LuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { KLES_MAT_LUXON_FORMATS, KlesMatLuxonAdapter } from '@3kles/kles-material-luxon-adapter';
 import { KLES_MAT_MOMENT_FORMATS, KlesMatMomentAdapter } from '@3kles/kles-material-moment-adapter';
 import { DatePickerIntl } from './date-picker.i18n';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
     selector: 'app-root',
@@ -99,31 +99,31 @@ export class AppComponent implements OnInit, AfterViewInit {
         tutu: 'aaaaa',
     });
 
-    @ViewChild('form', { static: false }) form: KlesDynamicFormComponent;
-    fields: IKlesFieldConfig[];
+    @ViewChild('form', { static: false }) form!: KlesDynamicFormComponent;
+    fields!: IKlesFieldConfig[];
     formValidators: IKlesValidator<ValidatorFn>[] = [];
 
-    @ViewChild('formText', { static: false }) formText: KlesDynamicFormComponent;
-    fieldsText: IKlesFieldConfig[];
+    @ViewChild('formText', { static: false }) formText!: KlesDynamicFormComponent;
+    fieldsText!: IKlesFieldConfig[];
     formValidatorsText: IKlesValidator<ValidatorFn>[] = [];
 
-    @ViewChild('formInput', { static: false }) formInput: KlesDynamicFormComponent;
-    fieldsInput: IKlesFieldConfig[];
+    @ViewChild('formInput', { static: false }) formInput!: KlesDynamicFormComponent;
+    fieldsInput!: IKlesFieldConfig[];
     formValidatorsInput: IKlesValidator<ValidatorFn>[] = [];
 
-    @ViewChild('formButton', { static: false }) formButton: KlesDynamicFormComponent;
-    fieldsButton: IKlesFieldConfig[];
+    @ViewChild('formButton', { static: false }) formButton!: KlesDynamicFormComponent;
+    fieldsButton!: IKlesFieldConfig[];
     formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
     colorVariable = '#00FF00';
 
-    @ViewChild('formError', { static: false }) formError: KlesDynamicFormComponent;
-    fieldsError: IKlesFieldConfig[];
+    @ViewChild('formError', { static: false }) formError!: KlesDynamicFormComponent;
+    fieldsError!: IKlesFieldConfig[];
     formValidatorsError: IKlesValidator<ValidatorFn>[] = [];
     formAsyncValidatorsError: IKlesValidator<AsyncValidatorFn>[] = [];
 
     options2 = [...Array(10000).keys()];
 
-    warehouseList = [
+    warehouseList: Array<{ WHLO: number; test: number }> = [
         // { WHLO: 100, test: 100 },
         // { WHLO: 200, test: 200 },
         // { WHLO: 300, test: 300 },
@@ -232,7 +232,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     buildForm() {
         this.fields = [
             {
-                component: KlesFormCheckboxIndeterminateComponent,
+                component: KlesFormCheckboxComponent,
                 name: 'checkbox',
                 // value: -1, // -1 mean indeterminate state
             },
@@ -489,7 +489,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                 inputType: 'text',
                 tooltip: 'tooltip text',
                 maxLength: 10,
-                copyTooltip: 'Valeur copiée',
                 subComponents: [KlesFormCopyComponent],
                 component: KlesFormInputComponent,
                 resolveUi: ({ context }) => {
@@ -757,9 +756,9 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 component: KlesFormTextareaComponent,
                 placeholder: 'textarea',
-                textareaAutoSize: {
-                    minRows: 10,
-                },
+                // textareaAutoSize: {
+                //     minRows: 10,
+                // },
                 name: 'textarea',
             },
         ];
@@ -930,7 +929,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 component: KlesFormButtonCheckerComponent,
                 name: 'checkererror',
                 label: 'View error',
-                color: 'warning',
+                color: 'warn',
                 icon: 'clear',
                 ngClass: 'mat-raised-button',
                 tooltip: 'tooltip button',
@@ -1031,7 +1030,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
             const beginControl = control.get(begin);
             const endControl = control.get(end);
-            if (!beginControl.value || !endControl.value) {
+            if (!beginControl || !endControl || beginControl.value == null || beginControl.value === '' || endControl.value == null || endControl.value === '') {
                 return null;
             }
             if (Number(beginControl.value) >= Number(endControl.value)) {
@@ -1057,15 +1056,15 @@ export class AppComponent implements OnInit, AfterViewInit {
                 },
             ]).pipe(
                 catchError(() => {
-                    return of(null);
+                    return of([]);
                 }),
                 map((listStatus) => {
                     const beginControl = control.get(begin);
                     const endControl = control.get(end);
-                    if (!beginControl.value || !endControl.value) {
+                    if (!beginControl || !endControl || beginControl.value == null || beginControl.value === '' || endControl.value == null || endControl.value === '') {
                         return null;
                     }
-                    let value = null;
+                    let value: ValidationErrors | null = null;
 
                     listStatus.forEach((line) => {
                         if ((Number(line.beginvalue) <= Number(beginControl.value) && Number(beginControl.value) < Number(line.endvalue)) || (Number(line.beginvalue) < Number(endControl.value) && Number(endControl.value) < Number(line.endvalue))) {
@@ -1085,7 +1084,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.form.form.controls.checkbox.patchValue(-1, { emitEvent: false, onlySelf: true });
     }
 
-    public toggleThemeMode(event) {
+    public toggleThemeMode(_event: MatSlideToggleChange): void {
         this.document.body.classList.toggle('dark');
     }
 }
