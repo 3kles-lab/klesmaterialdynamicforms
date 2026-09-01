@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
 
@@ -7,16 +7,17 @@ import { MatIconButton } from '@angular/material/button';
 import { IKlesField } from '../../interfaces/field.interface';
 import { FIELD, GROUP, GROUP_UI, SIBLING_FIELDS } from '../../token';
 import { GroupUiState } from '../../ui/ui-state/group-ui-state';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'kles-form-password-visibility',
     template: `
-        <button [disabled]="group.controls[field.name].disabled" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
+        <button [disabled]="disabled()" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
             <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
     `,
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatIcon, MatIconButton],
 })
 export class KlesFormPasswordVisibilityComponent implements IKlesField {
@@ -25,8 +26,13 @@ export class KlesFormPasswordVisibilityComponent implements IKlesField {
     readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
 
     public readonly ui = inject<GroupUiState>(GROUP_UI, { optional: true });
+    private readonly control = this.group.controls[this.field.name];
 
-    hide = computed(() => {
+    readonly disabled = toSignal(this.control.statusChanges.pipe(map(() => this.control.disabled)), {
+        initialValue: this.control.disabled,
+    });
+
+    readonly hide = computed(() => {
         return this.ui?.get(this.field.name)?.value().inputType === 'password';
     });
 

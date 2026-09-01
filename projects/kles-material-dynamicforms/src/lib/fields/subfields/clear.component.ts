@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IKlesClearControl } from '../../interfaces/clear-control.interface';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
@@ -7,7 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { combineLatest, map, startWith, Subject, takeUntil } from 'rxjs';
+import { combineLatest, map, startWith } from 'rxjs';
 
 @Component({
     selector: 'kles-form-clear',
@@ -17,15 +17,12 @@ import { combineLatest, map, startWith, Subject, takeUntil } from 'rxjs';
         </button>
     `,
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatIcon, MatIconButton],
 })
-export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {
+export class KlesFormClearComponent implements IKlesClearControl {
     readonly field = inject<IKlesFieldConfig>(FIELD);
     readonly group = inject<FormGroup<any>>(GROUP);
     readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
-
-    private _onDestroy = new Subject<void>();
 
     disabled: Signal<boolean>;
 
@@ -45,18 +42,12 @@ export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {
                     map((status) => status === 'DISABLED'),
                 ),
             ]).pipe(
-                takeUntil(this._onDestroy),
                 map(([empty, disabled]) => {
                     return empty || disabled;
                 }),
             ),
             { initialValue: true },
         );
-    }
-
-    ngOnDestroy(): void {
-        this._onDestroy.next();
-        this._onDestroy.complete();
     }
 
     clear(event: MouseEvent): void {

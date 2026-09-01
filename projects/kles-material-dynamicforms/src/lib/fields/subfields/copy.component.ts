@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
@@ -21,28 +21,26 @@ import { KlesDynamicFormIntl } from '../../dynamic-form-intl';
     imports: [MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
 export class KlesFormCopyComponent implements IKlesField {
-    @ViewChild('tooltip') tooltip!: MatTooltip;
+    private readonly tooltip = viewChild.required<MatTooltip>('tooltip');
 
     readonly field = inject<IKlesFieldConfig>(FIELD);
     readonly group = inject<FormGroup<any>>(GROUP);
     readonly siblingFields = inject<IKlesFieldConfig[]>(SIBLING_FIELDS);
     readonly intl = inject(KlesDynamicFormIntl);
+    private readonly clipboard = inject(Clipboard);
 
-    tooltipText: string;
-
-    constructor(private clipBoard: Clipboard) {
-        this.tooltipText = this.intl.copy;
-    }
+    readonly tooltipText = this.intl.copy;
 
     copy(event: MouseEvent): void {
         event.stopPropagation();
         const copyText = (this.field.property ? this.group.controls[this.field.name].value?.[this.field.property] : this.group.controls[this.field.name].value) || '';
-        this.clipBoard.copy(copyText);
+        this.clipboard.copy(copyText);
 
-        this.tooltip.disabled = false;
-        this.tooltip.show();
+        const tooltip = this.tooltip();
+        tooltip.disabled = false;
+        tooltip.show();
         setTimeout(() => {
-            this.tooltip.disabled = true;
+            tooltip.disabled = true;
         }, 1000);
     }
 }
