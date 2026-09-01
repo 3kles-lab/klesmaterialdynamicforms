@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
@@ -33,7 +33,6 @@ import { MatInput } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorMessageDirective, ScrollingModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, TextFieldModule, MatInput]
 })
 export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

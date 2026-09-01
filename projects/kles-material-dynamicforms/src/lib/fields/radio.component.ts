@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { Observable, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 `,
     styles: [],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatRadioButton, MatRadioGroup, ReactiveFormsModule, MatTooltip],
 })
 export class KlesFormRadioComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

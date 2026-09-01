@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, ReactiveFormsModule, UntypedFormArray, UntypedFormGroup } from '@angular/forms';
 import { KlesFormArray } from '../controls/array.control';
 import { FieldMapper } from '../decorators/component.decorator';
@@ -38,7 +38,6 @@ import { ArrayUiState } from '../ui/ui-state/array-ui-state';
         '.column { flex-direction: column; gap: 0px}',
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormArrayComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

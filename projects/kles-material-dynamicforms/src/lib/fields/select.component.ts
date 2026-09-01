@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit, signal, viewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatOption } from '@angular/material/core';
@@ -156,7 +156,6 @@ interface MatSelectInternals {
     ],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         ReactiveFormsModule,

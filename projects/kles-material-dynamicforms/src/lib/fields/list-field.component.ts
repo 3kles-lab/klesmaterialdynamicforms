@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
@@ -27,10 +27,10 @@ import { MatIconButton } from '@angular/material/button';
             <div class="dynamic-form" [formGroupName]="field.name">
                 @for (subGroup of formArray.controls; track subGroup.value._id; let idx = $index) {
                     <div class="subfields">
-                        @for (subfield of collections[idx]; track subfield.name) {
-                            <ng-container klesDynamicField [field]="subfield" [group]="$any(subGroup)" [siblingFields]="collections[idx]" [context]="context"> </ng-container>
+                        @for (subfield of collections()[idx]; track subfield.name) {
+                            <ng-container klesDynamicField [field]="subfield" [group]="$any(subGroup)" [siblingFields]="collections()[idx]" [context]="context"> </ng-container>
                         }
-                        @if (collections[idx]) {
+                        @if (collections()[idx]) {
                             <button matIconButton (click)="deleteField(idx)" color="primary">
                                 <mat-icon>delete_outlined</mat-icon>
                             </button>
@@ -66,21 +66,22 @@ import { MatIconButton } from '@angular/material/button';
         `,
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatError, MatIcon, MatIconButton, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
     formArray!: UntypedFormArray;
-    collections: IKlesFieldConfig[][] = [];
+    readonly collections = signal<IKlesFieldConfig[][]>([]);
 
     private fb = inject(UntypedFormBuilder);
 
     ngOnInit(): void {
         this.formArray = this.group.controls[this.field.name] as UntypedFormArray;
 
-        this.collections = this.formArray?.controls?.map(() => {
-            return this.field.collections ? cloneDeep(this.field.collections) : [];
-        });
+        this.collections.set(
+            this.formArray.controls.map(() => {
+                return this.field.collections ? cloneDeep(this.field.collections) : [];
+            }),
+        );
 
         super.ngOnInit();
     }
@@ -94,13 +95,14 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         return group;
     }
 
-    deleteField(index: number) {
-        this.collections.splice(index, 1);
+    deleteField(index: number): void {
+        this.collections.update((collections) => collections.filter((_, currentIndex) => currentIndex !== index));
         this.formArray.removeAt(index);
     }
 
-    addField() {
-        this.collections.push(this.field.collections ? cloneDeep(this.field.collections) : []);
+    addField(): void {
+        const collection = this.field.collections ? cloneDeep(this.field.collections) : [];
+        this.collections.update((collections) => [...collections, collection]);
         this.formArray.push(this.createFormGroup());
     }
 

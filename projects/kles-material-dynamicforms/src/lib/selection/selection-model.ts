@@ -1,5 +1,6 @@
 import { SelectionChange, getMultipleValuesInSingleSelectionError } from "@angular/cdk/collections";
 import { Subject } from "rxjs";
+import { signal } from '@angular/core';
 
 
 
@@ -8,6 +9,8 @@ import { Subject } from "rxjs";
  * (They put everything in private, thanks to angular team)
  */
 export class KlesSelectionModel<T> {
+    private readonly _revision = signal(0);
+
     /** Currently-selected values. */
     private _selection = new Set<T>();
 
@@ -145,6 +148,7 @@ export class KlesSelectionModel<T> {
      * Determines whether a value is selected.
      */
     isSelected(value: T): boolean {
+        this._revision();
         return this._selection.has(this._getConcreteValue(value));
     }
 
@@ -205,6 +209,7 @@ export class KlesSelectionModel<T> {
 
             if (!this.isSelected(value)) {
                 this._selection.add(value);
+                this._revision.update((revision) => revision + 1);
             }
 
             if (this._emitChanges) {
@@ -218,6 +223,7 @@ export class KlesSelectionModel<T> {
         value = this._getConcreteValue(value);
         if (this.isSelected(value)) {
             this._selection.delete(value);
+            this._revision.update((revision) => revision + 1);
 
             if (this._emitChanges) {
                 this._deselectedToEmit.push(value);

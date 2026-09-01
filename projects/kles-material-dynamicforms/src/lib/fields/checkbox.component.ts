@@ -1,4 +1,4 @@
-import { Component, computed, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -17,7 +17,6 @@ import { MatTooltip } from '@angular/material/tooltip';
     `,
     styles: [],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MatCheckbox, MatTooltip],
 })
 export class KlesFormCheckboxComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

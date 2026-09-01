@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy } from "@angular/core";
+import { Component } from "@angular/core";
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -38,7 +38,6 @@ import { KlesMaterialDatepickerModule } from "@3kles/kles-material-datepicker";
         '.suffix { display: flex; flex-direction: row; }'
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         CommonModule,
         ReactiveFormsModule,

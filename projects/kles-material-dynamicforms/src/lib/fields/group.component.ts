@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 import { KlesFormGroup } from '../controls/group.control';
 import { FieldMapper } from '../decorators/component.decorator';
@@ -43,14 +43,27 @@ import { KlesFormUiGroup } from '../ui/group.ui';
         ':host.group-container-inline-grid { display: inline-grid; }',
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [KlesDynamicFieldDirective, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
-    orientationClass: 'group-container' | 'group-container-column' | 'group-container-row' | 'group-container-grid' | 'group-container-inline-grid' = 'group-container';
+    private readonly orientationClass = computed(() => {
+        switch (this.field.direction) {
+            case 'column':
+                return 'group-container-column';
+            case 'row':
+                return 'group-container-row';
+            case 'grid':
+                return 'group-container-grid';
+            case 'inline-grid':
+                return 'group-container-inline-grid';
+            default:
+                return 'group-container';
+        }
+    });
 
     @HostBinding('class') get className() {
-        return this.orientationClass === 'group-container-row' && this.field.wrap === false ? `${this.orientationClass} group-container-nowrap` : this.orientationClass;
+        const orientationClass = this.orientationClass();
+        return orientationClass === 'group-container-row' && this.field.wrap === false ? `${orientationClass} group-container-nowrap` : orientationClass;
     }
 
     subGroup!: UntypedFormGroup;
@@ -60,29 +73,9 @@ export class KlesFormGroupComponent extends KlesFieldAbstract implements OnInit,
         this.subGroup = this.group.controls[this.field.name] as UntypedFormGroup;
         this.subUi = this.ui?.get(this.field.name) as GroupUiState;
         super.ngOnInit();
-        this.setOrientationClass();
     }
 
     ngOnDestroy(): void {
         super.ngOnDestroy();
-    }
-
-    private setOrientationClass() {
-        if (this.field.direction) {
-            switch (this.field.direction) {
-                case 'column':
-                    this.orientationClass = 'group-container-column';
-                    break;
-                case 'row':
-                    this.orientationClass = 'group-container-row';
-                    break;
-                case 'grid':
-                    this.orientationClass = 'group-container-grid';
-                    break;
-                case 'inline-grid':
-                    this.orientationClass = 'group-container-inline-grid';
-                    break;
-            }
-        }
     }
 }

@@ -1,4 +1,4 @@
-import { OnInit, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { OnInit, Component, OnDestroy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 
 import { ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +27,6 @@ import { KlesButtonFileComponent } from '../forms/buttonfile-control.component';
     `,
     styles: [],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, KlesButtonFileComponent],
 })
 export class KlesFormButtonFileComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

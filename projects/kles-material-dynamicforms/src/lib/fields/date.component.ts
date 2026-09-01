@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
@@ -30,7 +30,6 @@ import { MatInput, MatInputModule } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}', '.suffix { display: flex; flex-direction: row}'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatTooltipModule, MatError, MatHint, MatDatepickerModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, MatInput],
 })
 export class KlesFormDateComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

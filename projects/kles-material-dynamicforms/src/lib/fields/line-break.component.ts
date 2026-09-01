@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -17,7 +17,6 @@ import { KlesFieldAbstract } from './field.abstract';
                      height:0;
                  }`
     ],
-    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true
 })
 export class KlesFormLineBreakComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

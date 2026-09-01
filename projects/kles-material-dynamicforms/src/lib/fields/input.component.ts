@@ -1,5 +1,5 @@
 import { KlesFieldAbstract } from './field.abstract';
-import { OnInit, Component, OnDestroy, signal, ViewContainerRef, computed, inject, ChangeDetectionStrategy } from '@angular/core';
+import { OnInit, Component, OnDestroy, signal, ViewContainerRef, computed, inject } from '@angular/core';
 import { combineLatest, concat, Observable, of, Subject } from 'rxjs';
 import { startWith, map, switchMap, distinctUntilChanged, filter } from 'rxjs/operators';
 import { EnumType } from '../enums/type.enum';
@@ -110,7 +110,6 @@ import { MatIconModule } from '@angular/material/icon';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatTooltipModule, MatProgressSpinnerModule, MatOptionModule, MatError, MatErrorMessageDirective, KlesComponentDirective, MatIconModule],
 })
 export class KlesFormInputComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

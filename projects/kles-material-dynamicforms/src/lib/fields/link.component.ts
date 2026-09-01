@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -12,7 +12,6 @@ import { ReactiveFormsModule } from '@angular/forms';
         </a>
     `,
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormLinkComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

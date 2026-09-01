@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
@@ -74,7 +74,6 @@ import { MatOption } from '@angular/material/core';
         `,
     ],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, ScrollingModule, KlesTransformPipe, KlesComponentDirective, MatListModule],
 })
 export class KlesFormSelectionListSearchComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

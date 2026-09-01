@@ -1,4 +1,4 @@
-import { Component, computed, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit } from '@angular/core';
 import { KlesFormRange } from '../controls/range.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
@@ -39,7 +39,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss'],
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTooltipModule, ReactiveFormsModule],
 })
 export class KlesFormRangeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
