@@ -13,12 +13,14 @@ export class KlesFormGroup extends KlesFormControl {
         if (this.field.collections && Array.isArray(this.field.collections)) {
             this.field.collections.forEach(subfield => {
                 let control;
+                const value = subfield.value ?? this.field.value?.[subfield.name];
+
                 if (subfield.type) {
-                    control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, value: subfield.value || this.field.value?.[subfield.name] }, this.ref)
-                        || klesFieldControlFactory({ ...subfield, value: subfield.value || this.field.value?.[subfield.name] }, this.ref);
+                    control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, value }, this.ref)
+                        || klesFieldControlFactory({ ...subfield, value }, this.ref);
                 } else {
-                    control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield, value: subfield.value || this.field.value?.[subfield.name] })
-                        || klesFieldControlFactory({ ...subfield, value: subfield.value || this.field.value?.[subfield.name] }, this.ref);
+                    control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield, value })
+                        || klesFieldControlFactory({ ...subfield, value }, this.ref);
                 }
 
                 subGroup.addControl(subfield.name, control);
