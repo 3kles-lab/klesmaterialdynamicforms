@@ -1,42 +1,32 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { IKlesValidator, KlesValidationKey } from '../interfaces/validator.interface';
+import { Component, computed, input } from '@angular/core';
 import { AsyncValidatorFn, FormsModule, ReactiveFormsModule, UntypedFormGroup, ValidatorFn } from '@angular/forms';
-
+import { IKlesValidator } from '../interfaces/validator.interface';
 import { flattenValidators } from '../utils/validation.util';
 
 @Component({
     selector: '[matErrorForm]',
     template: `
-        @if (form && form.errors) {
-            @for (validation of validationsKeys; track validation.name) {
-                @if (form.hasError(validation.name) && validation.message) {
+        @if (form().errors) {
+            @for (validation of validationsKeys(); track validation.name) {
+                @if (form().hasError(validation.name) && validation.message) {
                     {{ validation.message }}
                 }
             }
-            @for (validation of asyncValidationsKeys; track validation.name) {
-                @if (form.hasError(validation.name) && validation.message) {
+
+            @for (validation of asyncValidationsKeys(); track validation.name) {
+                @if (form().hasError(validation.name) && validation.message) {
                     {{ validation.message }}
                 }
             }
         }
     `,
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, FormsModule],
 })
 export class MatErrorFormDirective {
-    validationsKeys: KlesValidationKey[] = [];
-    asyncValidationsKeys: KlesValidationKey[] = [];
-
-    @Input({ required: true }) form!: UntypedFormGroup;
-
-    @Input()
-    set validations(v: IKlesValidator<ValidatorFn>[] | undefined) {
-        this.validationsKeys = flattenValidators<ValidatorFn>(v ?? []);
-    }
-
-    @Input()
-    set asyncValidations(v: IKlesValidator<AsyncValidatorFn>[] | undefined) {
-        this.asyncValidationsKeys = flattenValidators<AsyncValidatorFn>(v ?? []);
-    }
+    readonly form = input.required<UntypedFormGroup>();
+    readonly validations = input<IKlesValidator<ValidatorFn>[]>();
+    readonly asyncValidations = input<IKlesValidator<AsyncValidatorFn>[]>();
+    readonly validationsKeys = computed(() => flattenValidators<ValidatorFn>(this.validations() ?? []));
+    readonly asyncValidationsKeys = computed(() => flattenValidators<AsyncValidatorFn>(this.asyncValidations() ?? []));
 }
