@@ -18,7 +18,6 @@ import { KlesDynamicFormIntl } from '../../dynamic-form-intl';
         </button>
     `,
     standalone: true,
-    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
 export class KlesFormCopyComponent implements IKlesField {
