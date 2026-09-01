@@ -1,4 +1,4 @@
-import { OnInit, Component, OnDestroy } from '@angular/core';
+import { OnInit, Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { KlesFormInputComponent } from './input.component';
 import { CommonModule } from '@angular/common';
 import { MatAutocompleteModule, MatOption } from '@angular/material/autocomplete';
@@ -89,6 +89,7 @@ import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/loading-select.style.scss'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MatAutocompleteModule, MatErrorMessageDirective, MatProgressSpinner, MatIcon, MatTooltip, KlesComponentDirective, MatOption, MatInput, MatLabel, MatFormField],
 })
 export class KlesFormInputClearableComponent extends KlesFormInputComponent implements OnInit, OnDestroy {

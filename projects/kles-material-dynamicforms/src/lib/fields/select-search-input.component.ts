@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DestroyRef, ElementRef, inject, input, OnDestroy, OnInit, viewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, ElementRef, inject, input, OnDestroy, OnInit, viewChild, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconButton } from '@angular/material/button';
@@ -127,6 +127,7 @@ import { MatSelect } from '@angular/material/select';
             }
         `,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     encapsulation: ViewEncapsulation.None,
 })
 export class KlesSelectSearchInputComponent implements OnInit, AfterViewInit, OnDestroy {

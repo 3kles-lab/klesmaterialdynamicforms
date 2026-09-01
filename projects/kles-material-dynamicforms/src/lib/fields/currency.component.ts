@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, computed, DEFAULT_CURRENCY_CODE, Directive, ElementRef, forwardRef, HostListener, inject, Input, LOCALE_ID, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, computed, DEFAULT_CURRENCY_CODE, Directive, ElementRef, forwardRef, HostListener, inject, Input, LOCALE_ID, OnChanges, Renderer2, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
@@ -296,8 +296,8 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
                 [currency]="currencyOptions()?.code || defaultCurrencyCode"
                 [locale]="currencyOptions()?.locale || localeId"
                 [currencyDisplay]="currencyOptions()?.display || 'symbol'"
-                [minimumFractionDigits]="currencyOptions()?.minimumFractionDigits"
-                [maximumFractionDigits]="currencyOptions()?.maximumFractionDigits"
+                [minimumFractionDigits]="$safeNavigationMigration(currencyOptions()?.minimumFractionDigits)"
+                [maximumFractionDigits]="$safeNavigationMigration(currencyOptions()?.maximumFractionDigits)"
                 [useGrouping]="currencyOptions()?.useGrouping !== false"
                 [allowNegative]="currencyOptions()?.allowNegative !== false"
                 (focus)="onFocus()"
@@ -332,6 +332,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
             }
         `,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss'],
 })
 export class KlesFormCurrencyComponent extends KlesFieldAbstract {

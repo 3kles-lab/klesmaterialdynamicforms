@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, Injector, Input } from '@angular/core';
+import { Component, AfterViewInit, Injector, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatFormFieldControl, MatFormField } from '@angular/material/form-field';
 import { IKlesValidator, KlesValidationKey } from '../interfaces/validator.interface';
 import { AsyncValidator, Validators } from '@angular/forms';
@@ -21,6 +21,7 @@ import { flattenValidators } from '../utils/validation.util';
         }
     `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule],
 })
 export class MatErrorMessageDirective implements AfterViewInit {

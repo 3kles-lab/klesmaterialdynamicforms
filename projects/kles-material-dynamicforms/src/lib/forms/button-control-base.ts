@@ -1,4 +1,4 @@
-import { OnInit, Input, Injectable, Component, EventEmitter, Output } from '@angular/core';
+import { OnInit, Input, Injectable, Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { MatButtonAppearance } from '@angular/material/button';
 
@@ -21,6 +21,7 @@ export interface IUIButton {
 
 @Component({
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true,
 })
 export abstract class KlesButtonBase implements OnInit, ControlValueAccessor {

@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInput, MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -62,7 +62,7 @@ interface ChipOptionsState {
                         </mat-option>
                     } @else {
                         @for (item of filteredOption.options; track item) {
-                            <mat-option [value]="item" [disabled]="item?.disabled">
+                            <mat-option [value]="item" [disabled]="$safeNavigationMigration(item?.disabled)">
                                 {{ displayValue(item) | klesTransform: field.pipeTransform }}
                             </mat-option>
                         }
@@ -82,6 +82,7 @@ interface ChipOptionsState {
     ],
     styleUrls: ['../styles/mat-suffix.style.scss', '../styles/mat-field-bottom.style.scss', '../styles/loading-select.style.scss'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [AsyncPipe, KlesTransformPipe, MatAutocompleteModule, MatChipsModule, MatError, MatErrorMessageDirective, MatFormFieldModule, MatIconModule, MatProgressSpinnerModule, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormChipGridComponent extends KlesFieldAbstract implements OnInit {

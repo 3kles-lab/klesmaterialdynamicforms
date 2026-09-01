@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { Input, ChangeDetectionStrategy } from '@angular/core';
 import { Component, forwardRef, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
@@ -29,6 +29,7 @@ export interface IButtonFile extends IButton {
         }
     ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [KlesButtonComponent],
 })
 export class KlesButtonFileComponent extends KlesButtonBase {

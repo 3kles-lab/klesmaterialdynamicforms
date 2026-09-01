@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     `,
     styles: [],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatSlideToggle, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormSlideToggleComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

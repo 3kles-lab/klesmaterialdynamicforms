@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Inject, Signal } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Inject, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, FormControlDirective, FormControlName, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -54,6 +54,7 @@ FormControlName.prototype.ngOnChanges = function () {
         '.dynamic-form-inline-grid { display: inline-grid; }',
     ],
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, FormsModule, ReactiveFormsModule, MatError],
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {

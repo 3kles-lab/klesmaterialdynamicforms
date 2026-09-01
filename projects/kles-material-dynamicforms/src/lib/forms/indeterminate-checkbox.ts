@@ -1,5 +1,5 @@
 
-import { Component, forwardRef, Input, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
 
@@ -23,6 +23,7 @@ import { MatCheckbox, MatCheckboxModule } from '@angular/material/checkbox';
         }
     ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatCheckboxModule, ReactiveFormsModule, FormsModule],
 })
 export class KlesIndeterminateCheckboxComponent implements ControlValueAccessor, AfterViewInit {

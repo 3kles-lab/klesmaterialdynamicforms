@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, Signal } from '@angular/core';
+import { Component, inject, OnDestroy, Signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IKlesClearControl } from '../../interfaces/clear-control.interface';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
@@ -17,6 +17,7 @@ import { combineLatest, map, startWith, Subject, takeUntil } from 'rxjs';
         </button>
     `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatIcon, MatIconButton],
 })
 export class KlesFormClearComponent implements IKlesClearControl, OnDestroy {

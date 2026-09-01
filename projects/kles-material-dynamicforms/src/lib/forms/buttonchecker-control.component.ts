@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { IButton, KlesButtonBase } from './button-control-base';
 
@@ -41,6 +41,7 @@ export interface IButtonChecker extends IButton {
         },
     ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, KlesButtonComponent, MatProgressSpinner, MatBadge],
 })
 export class KlesButtonCheckerComponent extends KlesButtonBase implements ControlValueAccessor {

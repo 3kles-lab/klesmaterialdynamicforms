@@ -1,5 +1,5 @@
 
-import { Component, OnChanges, OnInit, SimpleChanges, Type } from "@angular/core";
+import { Component, OnChanges, OnInit, SimpleChanges, Type, ChangeDetectionStrategy } from "@angular/core";
 import { ArrayFormatPipe, IKlesComponent } from "kles-material-dynamicforms";
 
 @Component({
@@ -10,6 +10,7 @@ import { ArrayFormatPipe, IKlesComponent } from "kles-material-dynamicforms";
     </span> 
 `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ArrayFormatPipe]
 })
 export class SelectTriggerComponent implements IKlesComponent, OnInit, OnChanges {

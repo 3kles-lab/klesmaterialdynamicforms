@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { KlesFieldAbstract } from "./field.abstract";
 import { MatIcon } from "@angular/material/icon";
 import { KlesTransformPipe } from "../pipe/transform.pipe";
@@ -23,6 +23,7 @@ import { ReactiveFormsModule } from "@angular/forms";
 `,
     styles: [],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatIcon, KlesTransformPipe, MatChipOption, MatChipListbox, MatTooltip, ReactiveFormsModule]
 })
 export class KlesFormChipComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

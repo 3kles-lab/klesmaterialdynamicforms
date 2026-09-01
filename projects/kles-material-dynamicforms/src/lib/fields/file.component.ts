@@ -1,5 +1,5 @@
 import { KlesFieldAbstract } from './field.abstract';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EnumType } from '../enums/type.enum';
 import { FieldMapper } from '../decorators/component.decorator';
 import { KlesFileControlComponent } from '../forms/file-control.component';
@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [KlesFileControlComponent, FormsModule, ReactiveFormsModule],
 })
 export class KlesFormFileComponent extends KlesFieldAbstract {}

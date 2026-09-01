@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { IKlesValidator, KlesValidationKey } from '../interfaces/validator.interface';
 import { AsyncValidator, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
 
@@ -21,6 +21,7 @@ import { flattenValidators } from '../utils/validation.util';
         }
     `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [ReactiveFormsModule, FormsModule],
 })
 export class MatErrorFormDirective {

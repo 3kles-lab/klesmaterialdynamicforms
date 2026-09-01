@@ -1,4 +1,4 @@
-import { Component, OnInit, Type } from "@angular/core";
+import { Component, OnInit, Type, ChangeDetectionStrategy } from "@angular/core";
 import { IKlesComponent } from "projects/kles-material-dynamicforms/src/public-api";
 
 @Component({
@@ -8,6 +8,7 @@ import { IKlesComponent } from "projects/kles-material-dynamicforms/src/public-a
         {{value.test}} - {{value.val}}
     </span> 
 `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: true
 })
 export class AutocompleteComponent implements IKlesComponent, OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
 import { MatErrorMessageDirective } from '../directive/mat-error-message.directive';
@@ -19,7 +19,7 @@ import { MatInput } from '@angular/material/input';
 
         <textarea matInput [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()"
         [formControlName]="field.name" cdkTextareaAutosize [placeholder]="placeholder()"
-        [cdkAutosizeMinRows]="field.textareaAutoSize?.minRows" [cdkAutosizeMaxRows]="field.textareaAutoSize?.maxRows"  [maxlength]="maxLength()">
+        [cdkAutosizeMinRows]="$safeNavigationMigration(field.textareaAutoSize?.minRows)" [cdkAutosizeMaxRows]="$safeNavigationMigration(field.textareaAutoSize?.maxRows)"  [maxlength]="maxLength()">
         </textarea>
 
         @if (field.subComponents || field.clearable) {
@@ -33,6 +33,7 @@ import { MatInput } from '@angular/material/input';
     `,
     styles: ['mat-form-field {width: calc(100%)}'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorMessageDirective, ScrollingModule, ReactiveFormsModule, MatTooltip, MatLabel, MatFormField, TextFieldModule, MatInput]
 })
 export class KlesFormTextareaComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

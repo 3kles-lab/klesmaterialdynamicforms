@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
@@ -17,6 +17,7 @@ import { FIELD, GROUP, SIBLING_FIELDS } from '../../token';
         </button>
     `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatIconModule, MatButtonModule, MatTooltipModule, ClipboardModule],
 })
 export class KlesFormCopyComponent implements IKlesField {

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IKlesFieldConfig } from '../../interfaces/field.config.interface';
 
@@ -11,11 +11,12 @@ import { GroupUiState } from '../../ui/ui-state/group-ui-state';
 @Component({
     selector: 'kles-form-password-visibility',
     template: `
-        <button [disabled]="group?.get(field?.name).disabled" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
+        <button [disabled]="group?.get($safeNavigationMigration(field?.name)).disabled" matIconButton aria-label="visibility" type="button" (click)="toggleVisibility($event)">
             <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
     `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatIcon, MatIconButton],
 })
 export class KlesFormPasswordVisibilityComponent implements IKlesField {

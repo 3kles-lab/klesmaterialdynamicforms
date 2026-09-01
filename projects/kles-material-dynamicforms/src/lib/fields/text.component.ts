@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -29,6 +29,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         `,
     ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, KlesTransformPipe, MatTooltip, ReactiveFormsModule],
 })
 export class KlesFormTextComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

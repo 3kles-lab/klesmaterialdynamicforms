@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { KlesButtonBase } from './button-control-base';
 import { CommonModule } from '@angular/common';
@@ -30,6 +30,7 @@ import { MatButton } from '@angular/material/button';
         }
     ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, MatIcon, MatTooltip, MatButton]
 })
 export class KlesButtonComponent extends KlesButtonBase implements OnInit {

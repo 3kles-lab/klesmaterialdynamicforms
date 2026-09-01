@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
 import { KlesFieldAbstract } from './field.abstract';
@@ -16,6 +16,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 `,
     standalone: true,
     
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatTooltipModule, MatBadgeModule],
 })
 export class KlesFormBadgeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

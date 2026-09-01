@@ -1,4 +1,4 @@
-import { Component, computed, OnDestroy, OnInit } from '@angular/core';
+import { Component, computed, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { KlesFormRange } from '../controls/range.control';
 import { FieldMapper } from '../decorators/component.decorator';
 import { EnumType } from '../enums/type.enum';
@@ -19,8 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
             <mat-label>{{ label() }}</mat-label>
 
             <mat-date-range-input [formGroupName]="field.name" [rangePicker]="picker" [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [min]="min()" [max]="max()">
-                <input matStartDate formControlName="start" [placeholder]="placeholder()?.start ? placeholder()?.start : ''" />
-                <input matEndDate formControlName="end" [placeholder]="placeholder()?.end ? placeholder()?.end : ''" />
+                <input matStartDate formControlName="start" [placeholder]="placeholder()?.start ? $safeNavigationMigration(placeholder()?.start) : ''" />
+                <input matEndDate formControlName="end" [placeholder]="placeholder()?.end ? $safeNavigationMigration(placeholder()?.end) : ''" />
             </mat-date-range-input>
 
             <div matSuffix class="suffix">
@@ -39,6 +39,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     styles: ['mat-form-field {width: calc(100%)}'],
     styleUrls: ['../styles/mat-suffix.style.scss'],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, MatErrorMessageDirective, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatTooltipModule, ReactiveFormsModule],
 })
 export class KlesFormRangeComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

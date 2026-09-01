@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { KlesFieldAbstract } from './field.abstract';
 import { CommonModule } from '@angular/common';
@@ -20,6 +20,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
         </div>
 `,
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CommonModule, ReactiveFormsModule, KlesTransformPipe, MatButtonToggleModule],
 })
 export class KlesFormButtonToogleGroupComponent extends KlesFieldAbstract implements OnInit, OnDestroy {

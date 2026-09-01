@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { KlesFieldAbstract } from './field.abstract';
 import { UntypedFormGroup, UntypedFormArray, UntypedFormBuilder, ValidatorFn, Validators, AsyncValidatorFn, ReactiveFormsModule } from '@angular/forms';
 import { IKlesValidator } from '../interfaces/validator.interface';
@@ -66,6 +66,7 @@ import { MatIconButton } from '@angular/material/button';
         `,
     ],
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatError, MatIcon, MatIconButton, KlesDynamicFieldDirective, ReactiveFormsModule],
 })
 export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnInit, OnDestroy {
