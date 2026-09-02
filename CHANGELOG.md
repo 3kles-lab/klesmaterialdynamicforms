@@ -1,3 +1,10 @@
+## [22.0.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.0...v22.0.1) (2026-09-02)
+
+
+### Bug Fixes
+
+* image upload style ([6d00302](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/6d003027718783b7f50eb9e8cd5a2dc9465c0587))
+
 # [22.0.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v21.8.2...v22.0.0) (2026-09-02)
 
 
