@@ -1,3 +1,10 @@
+## [22.0.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.1...v22.0.2) (2026-09-02)
+
+
+### Bug Fixes
+
+* slide toogle hint ([1b5af18](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/1b5af18fa5bf585492c0704e04bee82aca3121d9))
+
 ## [22.0.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.0...v22.0.1) (2026-09-02)
 
 
