@@ -40,16 +40,7 @@ const DEFAULT_ACCEPT = 'image/jpeg,image/png,image/webp';
                     <p class="kles-image-upload__hint">{{ hint() }}</p>
                 }
 
-                <input
-                    #fileInput
-                    type="file"
-                    hidden
-                    [attr.id]="field.id"
-                    [accept]="accept()"
-                    [disabled]="disabled()"
-                    [attr.aria-label]="options().changeLabel ?? intl.imageUploadChange"
-                    (change)="selectFile($event)"
-                />
+                <input #fileInput type="file" hidden [attr.id]="field.id" [accept]="accept()" [disabled]="disabled()" [attr.aria-label]="options().changeLabel ?? intl.imageUploadChange" (change)="selectFile($event)" />
 
                 <div class="kles-image-upload__actions">
                     <button matButton="outlined" type="button" [disabled]="disabled()" (click)="openFilePicker()">
@@ -112,6 +103,8 @@ const DEFAULT_ACCEPT = 'image/jpeg,image/png,image/webp';
             align-items: center;
             gap: 10px;
             font: var(--mat-sys-title-large);
+            font-size: 20px;
+            font-weight: 500;
         }
 
         .kles-image-upload__title mat-icon {
@@ -121,6 +114,7 @@ const DEFAULT_ACCEPT = 'image/jpeg,image/png,image/webp';
         .kles-image-upload__hint {
             margin: 8px 0 14px;
             color: var(--mat-sys-on-surface-variant);
+            font: var(--mat-sys-body-medium);
         }
 
         .kles-image-upload__actions {
