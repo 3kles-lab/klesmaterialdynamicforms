@@ -9,11 +9,27 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 @Component({
     selector: 'kles-form-slide-toggle',
     template: `
-        <div [formGroup]="group">
+        <div class="kles-slide-toggle" [formGroup]="group">
             <mat-slide-toggle klesFocusTarget [matTooltip]="tooltip()" [attr.id]="field.id" [ngClass]="ngClass()" [color]="color()" [formControlName]="field.name">{{ label() }}</mat-slide-toggle>
+            @if (hint()) {
+                <div class="kles-slide-toggle__hint">{{ hint() }}</div>
+            }
         </div>
     `,
-    styles: [],
+    styles: `
+        .kles-slide-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .kles-slide-toggle__hint {
+            color: var(--mat-sys-on-surface-variant);
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+        }
+    `,
     standalone: true,
     imports: [CommonModule, MatSlideToggle, MatTooltip, ReactiveFormsModule, KlesFocusTargetDirective],
 })
