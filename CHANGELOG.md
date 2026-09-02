@@ -1,3 +1,10 @@
+## [22.0.3](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.2...v22.0.3) (2026-09-02)
+
+
+### Bug Fixes
+
+* remove default gap on grid layout ([6e1c505](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/6e1c505af15d16eb57f2563775c8029cd2d891a3))
+
 ## [22.0.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.1...v22.0.2) (2026-09-02)
 
 
