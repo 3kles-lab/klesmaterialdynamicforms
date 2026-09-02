@@ -21,7 +21,7 @@ export interface IKlesElementLayout extends IKlesElementLayoutBreakpoint {
 export interface IKlesLayoutConfig {
     /** Number of columns in the grid. Defaults to 12. */
     columns?: number;
-    /** CSS gap between grid cells. Defaults to 10px. */
+    /** CSS gap between grid cells. Defaults to 0. */
     gap?: string;
 }
 

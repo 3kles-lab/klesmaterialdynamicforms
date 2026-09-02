@@ -18,7 +18,7 @@ import {
 import { GroupUiState } from './ui/ui-state/group-ui-state';
 
 const DEFAULT_COLUMNS = 12;
-const DEFAULT_GAP = '10px';
+const DEFAULT_GAP = '0';
 
 @Component({
     selector: 'kles-form-elements',
@@ -74,7 +74,7 @@ const DEFAULT_GAP = '10px';
         .kles-layout-grid {
             display: grid;
             grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr));
-            gap: var(--kles-grid-gap, 10px);
+            gap: var(--kles-grid-gap, 0);
         }
         .kles-form-section-header { margin-bottom: 14px; }
         .kles-form-section-title { display: flex; align-items: center; gap: 8px; }

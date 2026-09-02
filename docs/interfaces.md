@@ -8,7 +8,7 @@
 `KlesDynamicFormComponent` keeps its historical `row`, `column` and `wrap` API.
 The CSS Grid renderer is enabled automatically as soon as a root element declares
 `layout`; `direction="grid"` can still force it when every field uses the defaults.
-The grid has 12 columns and a 10px gap by default; override them with
+The grid has 12 columns and no gap by default; override them with
 `[layout]="{ columns: 12, gap: '16px' }"`.
 
 Each field accepts `layout?: IKlesElementLayout`:

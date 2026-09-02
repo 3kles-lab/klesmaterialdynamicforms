@@ -22,6 +22,7 @@ import {
     KlesFormImageUploadComponent,
     KlesFormMiniFabComponent,
     KlesFormPasswordVisibilityComponent,
+    KlesFormSlideToggleComponent,
     KlesFormStatusComponent,
     KlesFormTileComponent,
     KlesMaterialDynamicformsModule,
@@ -170,6 +171,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 { name: 'defaultWorkspace', component: KlesFormSelectComponent, label: 'Workspace par défaut', value: 'PROD Logistique', options: ['PROD Logistique', 'PROD'], hint: 'Le workspace par défaut doit faire partie des workspaces rattachés.', layout: { colSpan: 12 } },
             ],
         },
+         { name: 'localAccess', label: 'aaaaa', component: KlesFormSlideToggleComponent, value: true, hint: 'ceci est un hint' },
     ];
 
     responsiveLayoutDemo: KlesFormElement[] = [

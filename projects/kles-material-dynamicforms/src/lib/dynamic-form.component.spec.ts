@@ -128,7 +128,9 @@ describe('KlesDynamicFormComponent', () => {
 
     it('defaults fields to the full grid width', () => {
         const fixture = createGrid([input('full')]);
+        const form = fixture.nativeElement.querySelector('form') as HTMLElement;
         const cell = fixture.nativeElement.querySelector('.kles-layout-item') as HTMLElement;
+        expect(form.style.getPropertyValue('--kles-grid-gap')).toBe('0');
         expect(cell.style.getPropertyValue('--kles-col-span')).toBe('12');
     });
 

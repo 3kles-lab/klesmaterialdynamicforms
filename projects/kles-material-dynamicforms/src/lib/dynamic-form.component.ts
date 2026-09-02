@@ -17,6 +17,8 @@ import { GroupUiState } from './ui/ui-state/group-ui-state';
 import { KlesFormElementsComponent } from './form-elements.component';
 import { IKlesLayoutConfig, KlesFormElement, flattenKlesFields, isKlesStructuralElement } from './interfaces/layout.interface';
 
+const DEFAULT_GRID_GAP = '0';
+
 @Component({
     exportAs: 'klesDynamicForm',
     selector: 'app-kles-dynamic-form',
@@ -43,8 +45,8 @@ import { IKlesLayoutConfig, KlesFormElement, flattenKlesFields, isKlesStructural
         '.dynamic-form-row { display: inline-flex; flex-wrap:wrap; gap:10px; align-items: baseline}',
         '.dynamic-form-row.dynamic-form-nowrap { flex-wrap: nowrap; }',
         '.dynamic-form-row > * { width: 100%; }',
-        '.dynamic-form-grid { display: grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 10px); }',
-        '.dynamic-form-inline-grid { display: inline-grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 10px); }',
+        '.dynamic-form-grid { display: grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 0); }',
+        '.dynamic-form-inline-grid { display: inline-grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 0); }',
     ],
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }],
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, KlesFormElementsComponent, FormsModule, ReactiveFormsModule, MatError],
@@ -94,7 +96,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         if (this.orientationClass !== 'dynamic-form-grid' && this.orientationClass !== 'dynamic-form-inline-grid') return null;
         return {
             '--kles-grid-columns': this.normalizeColumns(this.layout.columns),
-            '--kles-grid-gap': this.layout.gap?.trim() || '10px',
+            '--kles-grid-gap': this.layout.gap?.trim() || DEFAULT_GRID_GAP,
         };
     }
 

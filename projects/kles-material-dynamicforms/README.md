@@ -14,7 +14,7 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 
 Add `layout` to an individual root field to enable CSS Grid automatically.
 `direction="grid"` remains available to force it when no field declares a layout.
-The defaults are a 12-column grid, a 10px gap, `colSpan: 12`, and `rowSpan: 1`.
+The defaults are a 12-column grid, no gap, `colSpan: 12`, and `rowSpan: 1`.
 
 ```typescript
 const fields: KlesFormElement[] = [
