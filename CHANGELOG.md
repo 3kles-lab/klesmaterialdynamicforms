@@ -1,3 +1,16 @@
+# [22.1.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.3...v22.1.0) (2026-09-04)
+
+
+### Bug Fixes
+
+* list field direction ([1bf2d93](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/1bf2d9308f15ba1b4b582e544666333e3933c17f))
+
+
+### Features
+
+* improve kles form list component ([5512f14](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/5512f14e0c10617d2800e57da3a0ea88008d68ee))
+* update list field component ([986561d](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/986561d4300f55a790f4c30c80fab719ce897e6b))
+
 ## [22.0.3](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.2...v22.0.3) (2026-09-02)
 
 
