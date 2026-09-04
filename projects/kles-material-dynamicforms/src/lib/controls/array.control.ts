@@ -1,60 +1,26 @@
-import { AbstractControl, FormArray, FormControl, UntypedFormGroup } from "@angular/forms";
-import { KlesFormControl } from "./default.control";
-import { v4 as uuidv4 } from 'uuid';
-import { componentMapper } from "../decorators/component.decorator";
-import { klesFieldControlFactory } from "../factories/field.factory";
+import { AbstractControl, FormArray } from '@angular/forms';
+import { KlesFormControl } from './default.control';
+import { createKlesFormArrayGroup } from '../factories/form-array-group.factory';
 
 export class KlesFormArray extends KlesFormControl {
-
     public create(): AbstractControl<any, any> {
         const array = new FormArray<AbstractControl>([], {
             validators: this.bindValidations(this.field.validations || []),
             asyncValidators: this.bindAsyncValidations(this.field.asyncValidations || []),
-            updateOn: this.field.updateOn || 'change'
+            updateOn: this.field.updateOn || 'change',
         });
 
-        if (this.field.value && Array.isArray(this.field.value)) {
-            if (this.field.collections && Array.isArray(this.field.collections)) {
-                this.field.value.forEach(val => {
-                    const line = { ...val, _id: val?._id || uuidv4() };
-                    const group = new UntypedFormGroup({ _id: new FormControl(line._id) });
-                    this.field.collections?.forEach(subfield => {
-                        const data = line[subfield.name] || null;
-                        let control;
-                        if (subfield.type) {
-                            control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield, ...(data && { value: data }) }, this.ref)
-                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) }, this.ref);
-                        } else {
-                            control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield, ...(data && { value: data }) }, this.ref)
-                                || klesFieldControlFactory({ ...subfield, ...(data && { value: data }) }, this.ref);
-                        }
-                        group.addControl(subfield.name, control);
-                    });
-                    array.push(group);
-                });
+        if (Array.isArray(this.field.value)) {
+            for (const value of this.field.value) {
+                array.push(createKlesFormArrayGroup(this.field, this.ref, value));
             }
         } else {
-            const group = new UntypedFormGroup({ _id: new FormControl(uuidv4()) });
-            this.field.collections?.forEach(subfield => {
-                let control;
-                if (subfield.type) {
-                    control = componentMapper.find(c => c.type === subfield.type)?.factory({ ...subfield }, this.ref)
-                        || klesFieldControlFactory({ ...subfield }, this.ref);
-                } else {
-                    control = componentMapper.find(c => c.component === subfield.component)?.factory({ ...subfield }, this.ref)
-                        || klesFieldControlFactory({ ...subfield }, this.ref);
-
-                }
-                group.addControl(subfield.name, control);
-            });
-            array.push(group);
+            array.push(createKlesFormArrayGroup(this.field, this.ref));
         }
-
 
         if (this.field.disabled) {
             array.disable();
         }
-
 
         return array;
     }
