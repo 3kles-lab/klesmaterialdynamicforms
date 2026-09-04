@@ -36,7 +36,14 @@ import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
             <div class="list-field__content" [formArrayName]="field.name">
                 @for (subGroup of formArray.controls; track subGroup; let idx = $index) {
                     <div class="list-field__row">
-                        <div class="list-field__fields">
+                        <div
+                            class="list-field__fields"
+                            [class.list-field__fields--column]="fieldsDirection === 'column'"
+                            [class.list-field__fields--row]="fieldsDirection === 'row'"
+                            [class.list-field__fields--grid]="fieldsDirection === 'grid'"
+                            [class.list-field__fields--inline-grid]="fieldsDirection === 'inline-grid'"
+                            [class.list-field__fields--nowrap]="fieldsDirection === 'row' && field.wrap === false"
+                        >
                             @for (subfield of collections()[idx]; track subfield.name) {
                                 <div class="list-field__field" [style.grid-column]="getGridColumn(subfield)" [style.grid-row]="getGridRow(subfield)">
                                     <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections()[idx]" [context]="context" />
@@ -79,6 +86,8 @@ import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
                 min-width: 0;
             }
 
+            /* Header */
+
             .list-field__header {
                 display: flex;
                 align-items: center;
@@ -89,7 +98,6 @@ import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
 
             .list-field__label {
                 min-width: 0;
-
                 font-weight: 500;
             }
 
@@ -97,6 +105,8 @@ import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
                 margin-left: auto;
                 flex-shrink: 0;
             }
+
+            /* Content */
 
             .list-field__content {
                 display: flex;
@@ -107,43 +117,97 @@ import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
                 min-width: 0;
             }
 
+            /* Une ligne du FormArray */
+
             .list-field__row {
                 display: grid;
                 grid-template-columns: minmax(0, 1fr) auto;
                 align-items: start;
-
                 gap: 8px;
 
                 width: 100%;
                 min-width: 0;
             }
 
+            /* Conteneur des fields */
+
             .list-field__fields {
-                display: grid;
-                grid-template-columns: repeat(12, minmax(0, 1fr));
-
-                gap: 12px;
-
                 width: 100%;
                 min-width: 0;
             }
+
+            /* direction: column */
+
+            .list-field__fields--column {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .list-field__fields--column > .list-field__field {
+                width: 100%;
+            }
+
+            /* direction: row */
+
+            .list-field__fields--row {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: baseline;
+                gap: 10px;
+            }
+
+            .list-field__fields--row > .list-field__field {
+                flex: 1 1 0;
+                width: auto;
+                min-width: 0;
+            }
+
+            .list-field__fields--row.list-field__fields--nowrap {
+                flex-wrap: nowrap;
+            }
+
+            /* direction: grid OU présence d'un layout */
+
+            .list-field__fields--grid {
+                display: grid;
+                grid-template-columns: repeat(12, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            /* direction: inline-grid */
+
+            .list-field__fields--inline-grid {
+                display: inline-grid;
+                grid-template-columns: repeat(12, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            /* Field */
 
             .list-field__field {
                 width: 100%;
                 min-width: 0;
             }
 
+            /* Suppression */
+
             .list-field__delete {
-                flex-shrink: 0;
+                align-self: start;
                 margin-top: 4px;
+                flex-shrink: 0;
             }
+
+            /* Liste vide */
 
             .list-field__empty {
                 padding: 16px;
-
                 text-align: center;
                 opacity: 0.7;
             }
+
+            /* Erreurs du FormArray */
 
             .list-field__errors {
                 display: flex;
@@ -175,6 +239,18 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
 
     ngOnInit(): void {
         super.ngOnInit();
+    }
+
+    get hasLayout(): boolean {
+        return (this.field.collections ?? []).some((subfield) => subfield.layout != null);
+    }
+
+    get fieldsDirection(): 'column' | 'row' | 'grid' | 'inline-grid' {
+        if (this.hasLayout) {
+            return this.field.direction === 'inline-grid' ? 'inline-grid' : 'grid';
+        }
+
+        return this.field.direction ?? 'row';
     }
 
     deleteField(index: number): void {
