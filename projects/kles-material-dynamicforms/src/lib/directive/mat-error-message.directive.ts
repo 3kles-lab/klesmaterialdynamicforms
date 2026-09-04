@@ -25,6 +25,13 @@ import { flattenValidators } from '../utils/validation.util';
         }
     `,
     standalone: true,
+    styles: [
+        `
+            :host {
+                overflow-wrap: break-word;
+            }
+        `,
+    ],
 })
 export class MatErrorMessageDirective implements AfterViewInit {
     readonly validations = input<IKlesValidator<ValidatorFn>[] | undefined>();

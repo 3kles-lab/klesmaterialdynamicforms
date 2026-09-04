@@ -8,7 +8,10 @@ export class KlesDynamicFormIntl {
     selectAll = 'Select all';
     clearSearch = 'Clear';
     search = 'Search';
+    add = 'Add';
+    delete = 'Delete';
     copy = 'Copied value';
+    empty = 'No items';
     imageUploadChange = 'Change image';
     imageUploadDelete = 'Delete';
     imageUploadInvalidType = 'Unsupported image format.';

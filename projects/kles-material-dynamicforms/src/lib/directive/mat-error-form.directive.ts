@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import { AsyncValidatorFn, FormsModule, ReactiveFormsModule, UntypedFormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormsModule, ReactiveFormsModule, UntypedFormGroup, ValidatorFn } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { map, startWith, switchMap } from 'rxjs';
 
@@ -23,19 +23,26 @@ import { flattenValidators } from '../utils/validation.util';
             }
         }
     `,
+    styles: [
+        `
+            :host {
+                overflow-wrap: break-word;
+            }
+        `,
+    ],
     standalone: true,
     imports: [ReactiveFormsModule, FormsModule],
 })
 export class MatErrorFormDirective {
-    readonly form = input.required<UntypedFormGroup>();
+    readonly form = input.required<AbstractControl>();
 
-    readonly validations = input<IKlesValidator<ValidatorFn>[]>([]);
+    readonly validations = input<IKlesValidator<ValidatorFn>[] | undefined>([]);
 
-    readonly asyncValidations = input<IKlesValidator<AsyncValidatorFn>[]>([]);
+    readonly asyncValidations = input<IKlesValidator<AsyncValidatorFn>[] | undefined>([]);
 
-    readonly validationsKeys = computed(() => flattenValidators<ValidatorFn>(this.validations()));
+    readonly validationsKeys = computed(() => flattenValidators<ValidatorFn>(this.validations() ?? []));
 
-    readonly asyncValidationsKeys = computed(() => flattenValidators<AsyncValidatorFn>(this.asyncValidations()));
+    readonly asyncValidationsKeys = computed(() => flattenValidators<AsyncValidatorFn>(this.asyncValidations() ?? []));
 
     readonly formErrors = toSignal(
         toObservable(this.form).pipe(
