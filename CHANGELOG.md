@@ -1,3 +1,10 @@
+## [22.1.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.1.0...v22.1.1) (2026-09-05)
+
+
+### Bug Fixes
+
+* list field ui ([aebf62a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/aebf62a5709e308c1d2e7f9291a5f7dddbd40ae6))
+
 # [22.1.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.0.3...v22.1.0) (2026-09-04)
 
 
