@@ -14,8 +14,12 @@ import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { createKlesFormArrayGroup } from '../factories/form-array-group.factory';
 import { KlesDynamicFormIntl } from '../dynamic-form-intl';
 import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
+import { KlesFormUiArray } from '../ui/array.ui';
+import { KlesFormUiGroup } from '../ui/group.ui';
+import { ArrayUiState } from '../ui/ui-state/array-ui-state';
+import { GroupUiState } from '../ui/ui-state/group-ui-state';
 
-@FieldMapper({ type: 'listfield', factory: (field) => new KlesFormArray(field).create() })
+@FieldMapper({ type: 'listfield', factory: (field) => new KlesFormArray(field).create(), ui: (field) => new KlesFormUiArray(field).create() })
 @Component({
     selector: 'kles-form-listfield',
     template: `
@@ -46,7 +50,7 @@ import { MatErrorFormDirective } from '../directive/mat-error-form.directive';
                         >
                             @for (subfield of collections()[idx]; track subfield.name) {
                                 <div class="list-field__field" [style.grid-column]="getGridColumn(subfield)" [style.grid-row]="getGridRow(subfield)">
-                                    <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections()[idx]" [context]="context" />
+                                    <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections()[idx]" [ui]="getRowUi(idx)" [context]="context" />
                                 </div>
                             }
                         </div>
@@ -225,6 +229,7 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
     readonly intl = inject(KlesDynamicFormIntl);
 
     formArray: FormArray<FormGroup<Record<string, AbstractControl>>>;
+    subUi!: ArrayUiState;
     readonly collections = signal<IKlesFieldConfig[][]>([]);
 
     constructor() {
@@ -238,7 +243,12 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
     }
 
     ngOnInit(): void {
+        this.subUi = this.ui?.get(this.field.name) as ArrayUiState;
         super.ngOnInit();
+    }
+
+    getRowUi(index: number): GroupUiState {
+        return this.subUi.at(index) as GroupUiState;
     }
 
     get hasLayout(): boolean {
@@ -254,11 +264,13 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
     }
 
     deleteField(index: number): void {
+        this.subUi.removeAt(index);
         this.formArray.removeAt(index);
         this.collections.update((collections) => collections.filter((_, currentIndex) => currentIndex !== index));
     }
 
     addField(): void {
+        this.subUi.push(new KlesFormUiGroup({ ...this.field, value: undefined }).create());
         this.formArray.push(createKlesFormArrayGroup(this.field));
         this.collections.update((collections) => [...collections, cloneDeep(this.field.collections ?? [])]);
     }
