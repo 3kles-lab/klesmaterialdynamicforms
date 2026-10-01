@@ -20,6 +20,7 @@ import {
     KlesFormFileComponent,
     KlesFormIconButtonComponent,
     KlesFormImageUploadComponent,
+    KlesFormListFieldComponent,
     KlesFormMiniFabComponent,
     KlesFormPasswordVisibilityComponent,
     KlesFormSlideToggleComponent,
@@ -119,6 +120,16 @@ export class AppComponent implements OnInit, AfterViewInit {
     formValidatorsButton: IKlesValidator<ValidatorFn>[] = [];
     colorVariable = '#00FF00';
 
+    @ViewChild('structuredForm') structuredForm!: KlesDynamicFormComponent;
+
+    expandAllSections(): void {
+        this.structuredForm.expandAllSections();
+    }
+
+    collapseAllSections(): void {
+        this.structuredForm.collapseAllSections();
+    }
+
     basicLayoutDemo: KlesFormElement[] = [
         { name: 'demoFirstname', component: KlesFormInputComponent, label: 'Prénom', layout: { colSpan: 6 } },
         { name: 'demoLastname', component: KlesFormInputComponent, label: 'Nom', layout: { colSpan: 6 } },
@@ -138,11 +149,12 @@ export class AppComponent implements OnInit, AfterViewInit {
             },
             layout: { colSpan: 12 },
         },
-        { type: 'divider' },
         {
             type: 'section',
             title: 'Informations du compte',
             icon: 'person',
+            collapsible: true,
+            expanded: true,
             fields: [
                 { name: 'accountEmail', component: KlesFormInputComponent, inputType: 'email', label: 'Email', icon: 'email', value: 'q.tellier@3kles-consulting.com', disabled: true, layout: { colSpan: 12 } },
                 { name: 'accountFirstname', component: KlesFormInputComponent, label: 'Prénom', icon: 'person', value: 'Quentin', layout: { colSpan: 6, responsive: { xs: { colSpan: 12 } } } },
@@ -150,28 +162,38 @@ export class AppComponent implements OnInit, AfterViewInit {
                 { name: 'accountPhone', component: KlesFormInputComponent, inputType: 'tel', label: 'Téléphone', icon: 'phone', layout: { colSpan: 12 } },
             ],
         },
-        { type: 'divider' },
         {
             type: 'section',
             title: 'Préférences',
             icon: 'tune',
+            collapsible: true,
+            expanded: false,
             fields: [
                 { name: 'language', component: KlesFormSelectComponent, label: 'Langue', value: 'fr-FR', options: ['fr-FR', 'en-US'], layout: { colSpan: 4, responsive: { xs: { colSpan: 12 } } } },
                 { name: 'timezone', component: KlesFormSelectComponent, label: 'Fuseau horaire', value: 'UTC+00:00 — UTC', options: ['UTC+00:00 — UTC', 'UTC+01:00 — Paris'], layout: { colSpan: 4, responsive: { xs: { colSpan: 12 } } } },
                 { name: 'theme', component: KlesFormSelectComponent, label: 'Thème', value: 'light', options: ['light', 'dark'], layout: { colSpan: 4, responsive: { xs: { colSpan: 12 } } } },
             ],
         },
-        { type: 'divider' },
         {
             type: 'section',
             title: 'Workspaces',
             icon: 'group',
+            collapsible: true,
+            expanded: false,
             fields: [
                 { name: 'attachedWorkspaces', component: KlesFormInputComponent, label: 'Workspaces rattachés', value: 'PROD Logistique, PROD', layout: { colSpan: 12 } },
-                { name: 'defaultWorkspace', component: KlesFormSelectComponent, label: 'Workspace par défaut', value: 'PROD Logistique', options: ['PROD Logistique', 'PROD'], hint: 'Le workspace par défaut doit faire partie des workspaces rattachés.', layout: { colSpan: 12 } },
+                {
+                    name: 'defaultWorkspace',
+                    component: KlesFormSelectComponent,
+                    label: 'Workspace par défaut',
+                    value: 'PROD Logistique',
+                    options: ['PROD Logistique', 'PROD'],
+                    hint: 'Le workspace par défaut doit faire partie des workspaces rattachés.',
+                    layout: { colSpan: 12 },
+                },
             ],
         },
-         { name: 'localAccess', label: 'aaaaa', component: KlesFormSlideToggleComponent, value: true, hint: 'ceci est un hint' },
+        { name: 'localAccess', label: 'aaaaa', component: KlesFormSlideToggleComponent, value: true, hint: 'ceci est un hint' },
     ];
 
     responsiveLayoutDemo: KlesFormElement[] = [
@@ -294,6 +316,62 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     buildForm() {
         this.fields = [
+            {
+                component: KlesFormListFieldComponent,
+                name: 'listField',
+                // label: 'test list',
+                // direction: 'row',
+                collections: [
+                    {
+                        name: 'beginvalue',
+                        component: KlesFormInputComponent,
+                        inputType: 'number',
+                        label: 'Begin value',
+                        appearance: 'outline',
+                        // autofocus: true,
+                        clearable: true,
+                        subscriptSizing: 'dynamic',
+                        layout: {
+                            colSpan: 4,
+                        },
+                        validations: [
+                            {
+                                message: 'status.value.begin.error.required.text',
+                                name: 'required',
+                                validator: Validators.required,
+                            },
+                            {
+                                name: 'pattern',
+                                validator: Validators.pattern('^([0-9][0-9]{0,2}|1000)$'),
+                                message: 'status.value.begin.error.notValid.text',
+                            },
+                        ],
+                    },
+                    {
+                        name: 'endvalue',
+                        component: KlesFormInputComponent,
+                        inputType: 'number',
+                        label: 'End value',
+                        layout: {
+                            colSpan: 8,
+                        },
+                        clearable: true,
+                        subscriptSizing: 'dynamic',
+                        validations: [
+                            {
+                                message: 'status.value.end.error.required.text',
+                                name: 'required',
+                                validator: Validators.required,
+                            },
+                            {
+                                name: 'pattern',
+                                validator: Validators.pattern('^([0-9][0-9]{0,2}|1000)$'),
+                                message: 'status.value.end.error.notValid.text',
+                            },
+                        ],
+                    },
+                ],
+            },
             {
                 component: KlesFormCheckboxComponent,
                 name: 'checkbox',
@@ -705,7 +783,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 property: 'toto',
                 // virtualScroll: true,
                 // options: [1, 2, 3, 4],
-                options: of([...Array(300).keys()].map((k) =>({toto: k}))).pipe(delay(300)),
+                options: of([...Array(300).keys()].map((k) => ({ toto: k }))).pipe(delay(300)),
                 // options: (value, group) => {
                 //     console.log(value);
                 //     return of([...Array(300).keys()].map((k) => ({ toto: k }))).pipe(delay(300));
@@ -1147,7 +1225,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         // Set checkbox to indeterminate
         // this.form.form.controls.checkbox.patchValue(-1, { emitEvent: false, onlySelf: true });
 
-        this.form.form.disable()
+        this.form.form.disable();
     }
 
     public toggleThemeMode(_event: MatSlideToggleChange): void {
