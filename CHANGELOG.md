@@ -1,3 +1,15 @@
+# [22.2.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.1.1...v22.2.0) (2026-10-01)
+
+
+### Bug Fixes
+
+* add radius on tile component ([f306425](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/f30642520e85588ab65c021ff88f22fea35fb8d0))
+
+
+### Features
+
+* add expended section ([f183c8a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/f183c8a186974e1560d895b53336b1bfe5551a89))
+
 ## [22.1.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.1.0...v22.1.1) (2026-09-05)
 
 
