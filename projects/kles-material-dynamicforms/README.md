@@ -32,6 +32,43 @@ controls. `layoutGroup` is deliberately distinct from the existing data-bearing
 are unchanged.
 
 
+### Collapsible sections
+
+Set `collapsible: true` on a section to render a Material expansion panel.
+It starts open by default; use `expanded: false` to start closed. Sections
+without `collapsible` keep their existing appearance. Panels open and close
+independently, including nested sections. Collapsing keeps fields mounted,
+so their values, validation, and subscriptions remain active.
+
+```typescript
+const fields: KlesFormElement[] = [
+  {
+    type: 'section',
+    title: 'Additional information',
+    description: 'Optional details',
+    icon: 'info',
+    collapsible: true,
+    expanded: false,
+    fields: [{ name: 'notes', component: KlesFormInputComponent }],
+  },
+];
+```
+
+Use a `ViewChild` reference to open or close every collapsible section, including
+nested sections, after the view is initialized:
+
+```typescript
+@ViewChild(KlesDynamicFormComponent) dynamicForm!: KlesDynamicFormComponent;
+
+openAll(): void {
+  this.dynamicForm.expandAllSections();
+}
+
+closeAll(): void {
+  this.dynamicForm.collapseAllSections();
+}
+```
+
 ### Directives
 
 - <b>KlesComponentDirective</b> -> Directive to inject component with value

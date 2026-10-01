@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Signal, isDevMode } from '@angular/core';
+import { Component, Input, Signal, ViewChildren, QueryList, isDevMode } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 import { KlesDynamicFieldDirective } from './directive/dynamic-field.directive';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
 import {
@@ -24,14 +25,13 @@ const DEFAULT_GAP = '0';
     selector: 'kles-form-elements',
     standalone: true,
     host: { style: 'display: contents' },
-    imports: [CommonModule, KlesDynamicFieldDirective, MatIcon],
+    imports: [CommonModule, KlesDynamicFieldDirective, MatIcon, MatExpansionModule],
     template: `
         @for (element of elements; track element) {
             @if (isVisible(element)) {
                 <div class="kles-layout-item" [ngClass]="layoutClasses(element)" [ngStyle]="layoutStyles(element)">
                     @if (isSection(element)) {
-                        <section class="kles-form-section">
-                            <header class="kles-form-section-header">
+                        <ng-template #sectionHeader>
                                 <div class="kles-form-section-title">
                                     @if (section(element).iconSvg; as iconSvg) {
                                         <mat-icon [svgIcon]="iconSvg" aria-hidden="true" />
@@ -43,11 +43,29 @@ const DEFAULT_GAP = '0';
                                 @if (section(element).description; as description) {
                                     <p>{{ description }}</p>
                                 }
-                            </header>
+                        </ng-template>
+                        <ng-template #sectionBody>
                             <div class="kles-layout-grid" [ngStyle]="containerStyles(section(element).layoutConfig)">
                                 <kles-form-elements [elements]="section(element).fields" [group]="group" [ui]="ui" [context]="context" [layoutConfig]="section(element).layoutConfig ?? {}" />
                             </div>
-                        </section>
+                        </ng-template>
+                        @if (section(element).collapsible) {
+                            <mat-expansion-panel class="kles-form-section kles-form-section-collapsible" [expanded]="section(element).expanded ?? true">
+                                <mat-expansion-panel-header>
+                                    <div class="kles-form-section-header kles-form-section-panel-header">
+                                        <ng-container [ngTemplateOutlet]="sectionHeader" />
+                                    </div>
+                                </mat-expansion-panel-header>
+                                <ng-container [ngTemplateOutlet]="sectionBody" />
+                            </mat-expansion-panel>
+                        } @else {
+                            <section class="kles-form-section">
+                                <header class="kles-form-section-header">
+                                    <ng-container [ngTemplateOutlet]="sectionHeader" />
+                                </header>
+                                <ng-container [ngTemplateOutlet]="sectionBody" />
+                            </section>
+                        }
                     } @else if (isLayoutGroup(element)) {
                         <div class="kles-layout-grid kles-form-layout-group" [ngStyle]="containerStyles(layoutGroup(element).layoutConfig)">
                             <kles-form-elements [elements]="layoutGroup(element).fields" [group]="group" [ui]="ui" [context]="context" [layoutConfig]="layoutGroup(element).layoutConfig ?? {}" />
@@ -77,6 +95,29 @@ const DEFAULT_GAP = '0';
             gap: var(--kles-grid-gap, 0);
         }
         .kles-form-section-header { margin-bottom: 14px; }
+        .kles-form-section-collapsible {
+            --mat-expansion-container-elevation-shadow: none;
+            --mat-expansion-container-background-color: transparent;
+            --mat-expansion-container-shape: 0;
+            border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(127, 127, 127, .25));
+        }
+        .kles-form-section-panel-header { min-width: 0; margin: 0; padding: 10px 0; }
+        .kles-form-section-collapsible mat-expansion-panel-header { height: auto; min-height: 48px; padding-inline: 0; }
+        /* Material exposes no token for body padding; scope this override to our section panels. */
+        :host ::ng-deep .kles-form-section-collapsible > .mat-expansion-panel-content-wrapper > .mat-expansion-panel-content > .mat-expansion-panel-body {
+            padding-inline: 0;
+        }
+        .kles-form-section-collapsible .kles-form-section-title h3 { font-size: 1rem; line-height: 1.5rem; }
+        .kles-form-section-collapsible .kles-form-section-title mat-icon {
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            color: var(--mat-sys-primary, currentColor);
+        }
+        .kles-form-section-collapsible .kles-form-section-header p {
+            font-size: .875rem;
+            color: var(--mat-sys-on-surface-variant, currentColor);
+        }
         .kles-form-section-title { display: flex; align-items: center; gap: 8px; }
         .kles-form-section-title mat-icon {
             width: 24px;
@@ -135,6 +176,8 @@ const DEFAULT_GAP = '0';
     `],
 })
 export class KlesFormElementsComponent {
+    @ViewChildren(MatExpansionPanel) private panels!: QueryList<MatExpansionPanel>;
+    @ViewChildren(KlesFormElementsComponent) private children!: QueryList<KlesFormElementsComponent>;
     private _elements: KlesFormElement[] = [];
     siblingFields: IKlesFieldConfig[] = [];
     private readonly layoutWarnings = new Set<string>();
@@ -149,6 +192,16 @@ export class KlesFormElementsComponent {
     @Input({ required: true }) ui!: GroupUiState;
     @Input() context: Signal<unknown | null> | null = null;
     @Input() layoutConfig: IKlesLayoutConfig = {};
+
+    expandAllSections(): void {
+        this.panels?.forEach((panel) => panel.open());
+        this.children?.forEach((child) => child.expandAllSections());
+    }
+
+    collapseAllSections(): void {
+        this.panels?.forEach((panel) => panel.close());
+        this.children?.forEach((child) => child.collapseAllSections());
+    }
 
     isVisible(element: KlesFormElement): boolean {
         return isKlesStructuralElement(element) || element.visible !== false;

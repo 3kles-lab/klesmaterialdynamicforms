@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, isDevMode } from '@angular/core';
+import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ViewChild, isDevMode } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -52,6 +52,7 @@ const DEFAULT_GRID_GAP = '0';
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, KlesFormElementsComponent, FormsModule, ReactiveFormsModule, MatError],
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges {
+    @ViewChild(KlesFormElementsComponent) private formElements?: KlesFormElementsComponent;
     @Input() context: Signal<unknown | null> | null = null;
     @Input() fields: KlesFormElement[] = [];
     @Input() validators: IKlesValidator<ValidatorFn>[] = [];
@@ -78,6 +79,16 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     get value() {
         return this.form.value;
+    }
+
+    /** Open every collapsible section, including nested sections. Call after the view is initialized. */
+    expandAllSections(): void {
+        this.formElements?.expandAllSections();
+    }
+
+    /** Close every collapsible section, including nested sections. Call after the view is initialized. */
+    collapseAllSections(): void {
+        this.formElements?.collapseAllSections();
     }
 
     get legacyFields(): IKlesFieldConfig[] {

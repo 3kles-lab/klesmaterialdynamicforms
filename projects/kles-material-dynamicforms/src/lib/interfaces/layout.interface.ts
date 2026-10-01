@@ -33,6 +33,10 @@ export interface IKlesFormSection extends IKlesStructuralElement {
     type: 'section';
     title: string;
     description?: string;
+    /** Render as a Material expansion panel. Defaults to false. */
+    collapsible?: boolean;
+    /** Expansion panel state. Defaults to true; only applies when collapsible is true. */
+    expanded?: boolean;
     /** Material icon displayed before the section title. */
     icon?: string;
     /** Registered Material SVG icon displayed before the section title. */

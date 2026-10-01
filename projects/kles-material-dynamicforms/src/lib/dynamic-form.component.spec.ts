@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { KlesDynamicFormComponent } from './dynamic-form.component';
 import { KlesFormInputComponent } from './fields/input.component';
@@ -221,6 +223,113 @@ describe('KlesDynamicFormComponent', () => {
         ]);
         expect(fixture.nativeElement.querySelectorAll('.kles-form-section').length).toBe(2);
         expect(Object.keys(fixture.componentInstance.form.controls)).toEqual(['one', 'two']);
+        expect(fixture.nativeElement.querySelector('mat-expansion-panel')).toBeNull();
+    });
+
+    it('toggles sections independently while preserving mounted fields and validation', () => {
+        const fixture = createGrid([
+            { type: 'section', title: 'One', icon: 'person', description: 'Details', collapsible: true, fields: [input('one')] },
+            { type: 'section', title: 'Two', collapsible: true, expanded: false, fields: [input('two')] },
+        ]);
+        const panels = fixture.debugElement.queryAll(By.directive(MatExpansionPanel));
+        const first = panels[0].componentInstance as MatExpansionPanel;
+        const second = panels[1].componentInstance as MatExpansionPanel;
+        const headers = fixture.nativeElement.querySelectorAll('mat-expansion-panel-header') as NodeListOf<HTMLElement>;
+        const control = fixture.componentInstance.form.get('one')!;
+        const inputElement = panels[0].nativeElement.querySelector('input');
+        control.setValidators(Validators.required);
+        control.setValue('Saved value');
+        control.markAsDirty();
+        control.markAsTouched();
+        fixture.detectChanges();
+
+        expect(first.expanded).toBeTrue();
+        expect(second.expanded).toBeFalse();
+        expect(headers[0].textContent).toContain('Details');
+        expect(headers[0].querySelector('mat-icon')!.textContent).toContain('person');
+        headers[0].click();
+        fixture.detectChanges();
+        expect(first.expanded).toBeFalse();
+        expect(headers[0].getAttribute('aria-expanded')).toBe('false');
+        expect(fixture.componentInstance.form.get('one')).toBe(control);
+        expect(panels[0].nativeElement.querySelector('input')).toBe(inputElement);
+        expect(control.value).toBe('Saved value');
+        expect(control.dirty).toBeTrue();
+        expect(control.touched).toBeTrue();
+        control.setValue('');
+        expect(fixture.componentInstance.form.invalid).toBeTrue();
+
+        headers[1].dispatchEvent(new KeyboardEvent('keydown', { keyCode: 13, bubbles: true }));
+        fixture.detectChanges();
+        expect(second.expanded).toBeTrue();
+        expect(first.expanded).toBeFalse();
+        headers[0].click();
+        fixture.detectChanges();
+        expect(first.expanded).toBeTrue();
+        expect(second.expanded).toBeTrue();
+        expect(panels[0].nativeElement.querySelector('input')).toBe(inputElement);
+    });
+
+    it('supports nested panels and changes to their configured expansion state', () => {
+        const fields: KlesFormElement[] = [
+            {
+                type: 'section', title: 'Outer', collapsible: true, expanded: false,
+                fields: [{ type: 'section', title: 'Inner', collapsible: true, fields: [input('nested')] }],
+            },
+        ];
+        const fixture = createGrid(fields);
+        const panels = fixture.debugElement.queryAll(By.directive(MatExpansionPanel));
+        const outer = panels[0].componentInstance as MatExpansionPanel;
+        const inner = panels[1].componentInstance as MatExpansionPanel;
+        expect(outer.expanded).toBeFalse();
+        expect(inner.expanded).toBeTrue();
+        expect(fixture.componentInstance.form.get('nested')).toBeInstanceOf(FormControl);
+        if (fields[0].type === 'section') fields[0].expanded = true;
+        fixture.componentRef.setInput('fields', [...fields]);
+        fixture.detectChanges();
+        expect(outer.expanded).toBeTrue();
+        inner.close();
+        fixture.detectChanges();
+        expect(outer.expanded).toBeTrue();
+        expect(inner.expanded).toBeFalse();
+    });
+
+    it('opens and closes all collapsible sections through the dynamic form API', () => {
+        const fixture = createGrid([
+            {
+                type: 'section', title: 'Plain', fields: [
+                    {
+                        type: 'layoutGroup', fields: [
+                            {
+                                type: 'section', title: 'Outer', collapsible: true, expanded: false,
+                                fields: [{ type: 'section', title: 'Inner', collapsible: true, fields: [input('nested')] }],
+                            },
+                        ],
+                    },
+                ],
+            },
+            { type: 'section', title: 'Sibling', collapsible: true, fields: [input('sibling')] },
+        ]);
+        const panels = fixture.debugElement.queryAll(By.directive(MatExpansionPanel))
+            .map((element) => element.componentInstance as MatExpansionPanel);
+        expect(panels.length).toBe(3);
+        fixture.componentInstance.collapseAllSections();
+        fixture.detectChanges();
+        expect(panels.every((panel) => !panel.expanded)).toBeTrue();
+        fixture.componentInstance.expandAllSections();
+        fixture.detectChanges();
+        expect(panels.every((panel) => panel.expanded)).toBeTrue();
+        fixture.componentInstance.collapseAllSections();
+        fixture.detectChanges();
+        expect(panels.every((panel) => !panel.expanded)).toBeTrue();
+        expect(Object.keys(fixture.componentInstance.form.controls)).toEqual(['nested', 'sibling']);
+        expect(fixture.nativeElement.querySelectorAll('section.kles-form-section').length).toBe(1);
+    });
+
+    it('allows bulk section operations on forms without sections', () => {
+        const fixture = createGrid([input('plain')]);
+        expect(() => fixture.componentInstance.expandAllSections()).not.toThrow();
+        expect(() => fixture.componentInstance.collapseAllSections()).not.toThrow();
     });
 
     it('keeps the named EnumType.group as a data-bearing FormGroup', () => {
