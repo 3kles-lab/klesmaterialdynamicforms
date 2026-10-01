@@ -69,6 +69,7 @@ import { MatIconModule } from '@angular/material/icon';
 
         .kles-tile__image {
             object-fit: contain;
+            border-radius: 8px;
         }
 
         .kles-tile__content {
