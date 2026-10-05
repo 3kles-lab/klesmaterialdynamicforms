@@ -1,3 +1,10 @@
+## [22.3.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.3.0...v22.3.1) (2026-10-05)
+
+
+### Bug Fixes
+
+* prevent collapsible section chevrons from being clipped in dialogs ([7870e41](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/7870e4151e64fa9dcc2e4e18b9f29edb1bcacd19))
+
 # [22.3.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.2.0...v22.3.0) (2026-10-05)
 
 
