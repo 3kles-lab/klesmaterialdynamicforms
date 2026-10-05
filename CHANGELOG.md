@@ -1,3 +1,10 @@
+# [22.3.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.2.0...v22.3.0) (2026-10-05)
+
+
+### Features
+
+* add phone component ([b39a893](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/b39a893d3f6f17190ba4e6e74b1c9b0978fbe34c))
+
 # [22.2.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.1.1...v22.2.0) (2026-10-01)
 
 
