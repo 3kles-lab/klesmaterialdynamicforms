@@ -17,6 +17,8 @@ export * from './lib/forms/button-control.component';
 export * from './lib/forms/buttonchecker-control.component';
 export * from './lib/forms/buttonfile-control.component';
 export * from './lib/forms/file-control.component';
+export * from './lib/forms/phone-control.component';
+export * from './lib/fields/phone.component';
 export * from './lib/forms/fab-control.component';
 export * from './lib/forms/mini-fab-control.component';
 export * from './lib/forms/icon-button-control.component';

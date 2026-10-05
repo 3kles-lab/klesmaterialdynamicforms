@@ -55,6 +55,8 @@ import { KlesFormCopyComponent } from './fields/subfields/copy.component';
 import { KlesFormActionMenuComponent } from './fields/action-menu.component';
 import { KlesFormTileComponent } from './fields/tile.component';
 import { KlesFormCurrencyComponent } from './fields/currency.component';
+import { KlesFormPhoneComponent } from './fields/phone.component';
+import { KlesPhoneControlComponent } from './forms/phone-control.component';
 import { KlesFormStatusComponent } from './fields/status.component';
 import { KlesFormChipGridComponent } from './fields/chip-grid.component';
 import { KlesFormImageUploadComponent } from './fields/image-upload.component';
@@ -103,6 +105,8 @@ const components = [
     KlesFormTileComponent,
     KlesFormActionMenuComponent,
     KlesFormCurrencyComponent,
+    KlesFormPhoneComponent,
+    KlesPhoneControlComponent,
     KlesFormStatusComponent,
     KlesFormChipGridComponent,
     KlesFormImageUploadComponent,

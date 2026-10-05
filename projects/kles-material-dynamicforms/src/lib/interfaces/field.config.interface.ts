@@ -12,6 +12,7 @@ import { MatButtonAppearance } from '@angular/material/button';
 import type { ColorCommitMode, ColorOutputFormat, ColorPickerPosition } from '@3kles/kles-material-color-picker';
 import type { KlesComponentType } from './component.interface';
 import type { IKlesElementLayout } from './layout.interface';
+import type { IKlesPhoneOptions } from '../forms/phone-control.component';
 
 export interface IKlesFieldActionEvent<TContext = unknown, TValue = unknown> {
     actionId: string;
@@ -141,6 +142,7 @@ export interface IKlesFieldUi {
     imageAlt?: string;
 
     currencyOptions?: IKlesCurrencyOptions;
+    phoneOptions?: IKlesPhoneOptions;
 
     resolveUi?: IKlesFieldUiResolver;
 }

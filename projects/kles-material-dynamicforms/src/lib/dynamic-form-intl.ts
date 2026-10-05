@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class KlesDynamicFormIntl {
     loading = 'Loading';
+    phoneInvalid = 'Invalid international phone number.';
     selectAll = 'Select all';
     clearSearch = 'Clear';
     search = 'Search';

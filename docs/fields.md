@@ -9,12 +9,77 @@
 - [`KlesFormGroupComponent`](#klesformgroupcomponent): FormGroup in form
 - [`KlesFormIconComponent`](#klesformiconcomponent): FormGroup in form
 - [`KlesFormInputComponent`](#klesforminputcomponent): Input in form
+- [`KlesFormPhoneComponent`](#klesformphonecomponent): International phone field with a country selector
 - [`KlesFormInputClearableComponent`](#klesforminputclearablecomponent): Input clearable in form
 - [`KlesFormListFieldComponent`](#klesformlistfieldcomponent): List of field in form
 - [`KlesFormRadioComponent`](#klesformradiocomponent): RadioButton in form
 - [`KlesFormSelectComponent`](#klesformselectcomponent): Select in form
 - [`KlesFormTextComponent`](#klesformtextcomponent): Display text in form
 - [`KlesFormTextareaComponent`](#klesformtextareacomponent): TextArea in form
+
+#### KlesFormPhoneComponent
+
+Composite Angular Material field with a localized Material country selector and calling codes.
+The selected country is displayed compactly as `FR (+33)`; the dropdown retains full localized names.
+An example mobile number for the selected country appears when the input is empty, unless a custom
+`placeholder` is configured. A subtle vertical separator distinguishes the two zones.
+`KlesPhoneControlComponent` implements `MatFormFieldControl<string>` and `ControlValueAccessor`;
+it can also be used directly inside a `mat-form-field` with reactive forms.
+
+```typescript
+import { EnumType, IKlesFieldConfig } from '@3kles/kles-material-dynamicforms';
+
+const phoneField: IKlesFieldConfig = {
+    type: EnumType.phone,
+    name: 'phone',
+    label: 'Téléphone',
+    appearance: 'outline',
+    clearable: true,
+    value: '+33612345678',
+    phoneOptions: {
+        defaultCountry: 'FR',
+        countries: ['FR', 'BE', 'CH', 'GB', 'US', 'CA'],
+        locale: 'fr-FR',
+        countryLabel: 'Pays et indicatif',
+        internationalLabel: 'International',
+        invalidMessage: 'Numéro de téléphone invalide.',
+    },
+};
+```
+
+Import `KlesFormPhoneComponent` to register `EnumType.phone` when using standalone components,
+or import `KlesMaterialDynamicformsModule`. You can also set `component: KlesFormPhoneComponent`.
+
+The default country is `FR`; all countries supported by `libphonenumber-js` are offered by default.
+Country names use `LOCALE_ID` unless `phoneOptions.locale` is supplied. `countries` limits the selector,
+not validation: international numbers from other countries remain accepted via the International option.
+National input is interpreted using the selected country. Pasted `+` and `00` numbers detect their country.
+Selecting a different country clears the number and emits `null`, while keeping the newly selected
+country. Input is formatted while typing
+using the selected country's numbering plan (`061234` in France displays `06 12 34`). Letters and
+unsupported punctuation are filtered out; overlong insertions and extensions are rejected.
+Cursor positioning and deletion across formatting separators are preserved. Blur formats valid
+international input in national notation when a country is selected.
+
+Valid control values are E.164 strings (`06 12 34 56 78` in France becomes `+33612345678`).
+Empty input emits `null`. Incomplete or invalid numeric input is preserved as a string and sets the `phone`
+validation error, so submit only valid forms. Validation uses `libphonenumber-js/max` numbering-plan
+metadata, supports fixed-line and mobile numbers, and rejects extensions. Optional empty fields are
+valid; add `Validators.required` through the usual `validations` configuration to make them mandatory.
+Existing synchronous and asynchronous validators, `updateOn`, reset and disabled states are preserved.
+The default error text can be customized using `KlesDynamicFormIntl.phoneInvalid` or `invalidMessage`.
+
+For direct standalone usage, import `KlesPhoneControlComponent`, `MatFormFieldModule` and
+`ReactiveFormsModule`:
+
+```html
+<mat-form-field appearance="outline">
+    <mat-label>Téléphone</mat-label>
+    <kles-phone-control [formControl]="phoneControl"
+        ariaLabel="Téléphone" [options]="{ defaultCountry: 'FR' }" />
+    <mat-error>Numéro de téléphone invalide</mat-error>
+</mat-form-field>
+```
 
 #### KlesFieldAbstract
 
