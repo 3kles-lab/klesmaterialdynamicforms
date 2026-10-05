@@ -102,7 +102,8 @@ const DEFAULT_GAP = '0';
             border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(127, 127, 127, .25));
         }
         .kles-form-section-panel-header { min-width: 0; margin: 0; padding: 10px 0; }
-        .kles-form-section-collapsible mat-expansion-panel-header { height: auto; min-height: 48px; padding-inline: 0; }
+        /* Reserve space for Material's indicator SVG, which has negative 8px inline margins. */
+        .kles-form-section-collapsible mat-expansion-panel-header { height: auto; min-height: 48px; padding-inline: 0 8px; }
         /* Material exposes no token for body padding; scope this override to our section panels. */
         :host ::ng-deep .kles-form-section-collapsible > .mat-expansion-panel-content-wrapper > .mat-expansion-panel-content > .mat-expansion-panel-body {
             padding-inline: 0;
