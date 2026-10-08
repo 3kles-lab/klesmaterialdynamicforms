@@ -213,6 +213,10 @@ import { GroupUiState } from '../ui/ui-state/group-ui-state';
 
             /* Erreurs du FormArray */
 
+            .list-field__errors:not(:has(mat-error:not(:empty))) {
+                display: none;
+            }
+
             .list-field__errors {
                 display: flex;
                 flex-direction: column;
@@ -237,7 +241,7 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
         this.formArray = this.group.controls[this.field.name] as FormArray<FormGroup<Record<string, AbstractControl>>>;
         this.collections.set(
             this.formArray.controls.map(() => {
-                return cloneDeep(this.field.collections ?? []);
+                return this.createRowFields();
             }),
         );
     }
@@ -272,11 +276,18 @@ export class KlesFormListFieldComponent extends KlesFieldAbstract implements OnI
     addField(): void {
         this.subUi.push(new KlesFormUiGroup({ ...this.field, value: undefined }).create());
         this.formArray.push(createKlesFormArrayGroup(this.field));
-        this.collections.update((collections) => [...collections, cloneDeep(this.field.collections ?? [])]);
+        this.collections.update((collections) => [...collections, this.createRowFields()]);
     }
 
     ngOnDestroy(): void {
         super.ngOnDestroy();
+    }
+
+    private createRowFields(): IKlesFieldConfig[] {
+        return cloneDeep(this.field.collections ?? []).map((field) => ({
+            ...field,
+            subscriptSizing: field.subscriptSizing ?? 'dynamic',
+        }));
     }
 
     getGridColumn(field: IKlesFieldConfig): string {
