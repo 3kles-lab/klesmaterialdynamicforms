@@ -4,7 +4,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit,
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatOption } from '@angular/material/core';
-import { MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatError, MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -163,6 +163,7 @@ interface MatSelectInternals {
         ReactiveFormsModule,
         KlesTransformPipe,
         MatErrorMessageDirective,
+        MatError,
         MatProgressSpinner,
         MatHint,
         MatOption,
