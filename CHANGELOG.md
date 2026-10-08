@@ -1,3 +1,11 @@
+## [22.3.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.3.1...v22.3.2) (2026-10-08)
+
+
+### Bug Fixes
+
+* list-field error & overlap ([02688de](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/02688de2189c59ce37b9e8763e47810c88369c95))
+* select error not visible ([8d64962](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/8d64962f601270e9580d30c51155a3a3af49923f))
+
 ## [22.3.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.3.0...v22.3.1) (2026-10-05)
 
 
