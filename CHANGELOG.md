@@ -1,3 +1,10 @@
+# [22.4.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.3.2...v22.4.0) (2026-10-09)
+
+
+### Features
+
+* add optionsGroups on select ([4f0208b](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/4f0208bbec2808a9860ebe12f8d37d848a89f5d7))
+
 ## [22.3.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.3.1...v22.3.2) (2026-10-08)
 
 
