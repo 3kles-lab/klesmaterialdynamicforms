@@ -3,7 +3,7 @@ import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrollin
 import { AfterViewInit, ChangeDetectorRef, Component, inject, OnDestroy, OnInit, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatOption } from '@angular/material/core';
+import { MatOptgroup, MatOption } from '@angular/material/core';
 import { MatError, MatFormField, MatHint, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatSelect, MatSelectTrigger } from '@angular/material/select';
@@ -19,7 +19,7 @@ import { EnumType } from '../enums/type.enum';
 import { KlesTransformPipe } from '../pipe/transform.pipe';
 import { KlesFieldAbstract } from './field.abstract';
 import { KlesSelectSearchInputComponent } from './select-search-input.component';
-import { IKlesSelectSearchOptions } from '../interfaces/field.config.interface';
+import { IKlesSelectOptionGroup, IKlesSelectSearchOptions } from '../interfaces/field.config.interface';
 import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 interface DeferredQuery {
@@ -78,7 +78,21 @@ interface MatSelectInternals {
                         </mat-checkbox>
                     }
 
-                    @if (field.virtualScroll) {
+                    @if (hasOptionGroups()) {
+                        @for (optionGroup of filteredOptionGroups(); track $index) {
+                            <mat-optgroup [label]="optionGroup.label" [disabled]="optionGroup.disabled ?? false">
+                                @for (item of optionGroup.options; track item) {
+                                    <mat-option [value]="item" [disabled]="item?.disabled ?? false">
+                                        @if (!field.autocompleteComponent) {
+                                            {{ (field.property ? item[field.property] : item) | klesTransform: field.pipeTransform }}
+                                        } @else {
+                                            <ng-container klesComponent [component]="field.autocompleteComponent" [value]="item" [field]="field" />
+                                        }
+                                    </mat-option>
+                                }
+                            </mat-optgroup>
+                        }
+                    } @else if (isVirtualScrollEnabled()) {
                         <cdk-virtual-scroll-viewport [itemSize]="field.itemSize || 48" [style.height.px]="5 * (field.itemSize || 48)">
                             @if (!field.autocompleteComponent) {
                                 <mat-option *cdkVirtualFor="let item of filteredOptions()" [value]="item" [disabled]="item?.disabled ?? false">
@@ -167,6 +181,7 @@ interface MatSelectInternals {
         MatProgressSpinner,
         MatHint,
         MatOption,
+        MatOptgroup,
         KlesComponentDirective,
         ScrollingModule,
         MatSelectTrigger,
@@ -186,6 +201,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     readonly selectAllIndeterminate = signal(false);
     readonly isLoading = signal(false);
     readonly filteredOptions = signal<any[]>([]);
+    readonly filteredOptionGroups = signal<IKlesSelectOptionGroup[]>([]);
 
     readonly intl = inject(KlesDynamicFormIntl);
     protected readonly changeDetectorRef = inject(ChangeDetectorRef);
@@ -218,8 +234,8 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
         if (this.usesDeferredSource()) {
             const selected = this.selectedValues();
-            this.sourceOptions = selected;
-            this.setVisibleOptions(selected);
+            this.sourceOptions = this.hasOptionGroups() ? [] : selected;
+            this.setVisibleOptions(this.sourceOptions);
             // MatSelect cannot open without at least one MatOption. When search is
             // disabled, keep the loading option rendered until the deferred source
             // is requested on the first opening.
@@ -268,9 +284,17 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         return this.field.search === true || (this.field.search != null && typeof this.field.search === 'object');
     }
 
+    hasOptionGroups(): boolean {
+        return this.field.optionGroups != null;
+    }
+
+    isVirtualScrollEnabled(): boolean {
+        return !!this.field.virtualScroll && !this.hasOptionGroups();
+    }
+
     panelClasses(): string[] {
         const classes = ['kles-select-panel'];
-        if (this.field.virtualScroll) {
+        if (this.isVirtualScrollEnabled()) {
             classes.push('kles-select-virtual-panel');
         }
         if (this.isSearchEnabled()) {
@@ -296,7 +320,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
             this.searchControl.setValue('');
         }
 
-        if (opened && this.field.virtualScroll) {
+        if (opened && this.isVirtualScrollEnabled()) {
             setTimeout(() => {
                 this.virtualViewport()?.scrollToIndex(0);
                 this.virtualViewport()?.checkViewportSize();
@@ -306,7 +330,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     toggleVisibleOptions(state: { checked: boolean }): void {
         const selected = this.selectedValues();
-        const enabledOptions = this.visibleOptions.filter((option) => !option?.disabled);
+        const enabledOptions = this.enabledVisibleOptions();
 
         if (!state.checked) {
             const remaining = selected.filter((value) => !enabledOptions.some((option) => this.compareFn(value, option)));
@@ -322,7 +346,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
 
     getHiddenSelectedOptions(): any[] {
         const selected = this.selectedValues();
-        if (this.field.virtualScroll) {
+        if (this.isVirtualScrollEnabled()) {
             return selected;
         }
 
@@ -358,7 +382,8 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     }
 
     private loadInitialOptions(): void {
-        if (isObservable(this.field.options) || typeof this.field.options === 'function') {
+        const source = this.hasOptionGroups() ? this.field.optionGroups : this.field.options;
+        if (isObservable(source) || typeof source === 'function') {
             this.isLoading.set(true);
         }
 
@@ -384,7 +409,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                         const selected = this.selectedValues();
                         // Preserve a disabled loading option when the closed select
                         // would otherwise contain no option and could not reopen.
-                        return of({ loading: !this.isSearchEnabled() && selected.length === 0, options: selected, sourceOptions: undefined as any[] | undefined });
+                        return of({ loading: !this.isSearchEnabled() && selected.length === 0, options: this.hasOptionGroups() ? [] : selected, sourceOptions: undefined as any[] | undefined });
                     }
 
                     const search = query.value || '';
@@ -410,7 +435,7 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
                     }
 
                     const options$ =
-                        this.searchOptions.mode === 'remote' && typeof this.field.options === 'function' && searchLength > 0
+                        this.searchOptions.mode === 'remote' && typeof (this.hasOptionGroups() ? this.field.optionGroups : this.field.options) === 'function' && searchLength > 0
                             ? this.resolveOptions(search)
                             : (this.deferredOptionsRequest$ ?? this.resolveOptions());
                     return concat(
@@ -440,13 +465,14 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     }
 
     private resolveOptions(search?: string): Observable<any[]> {
-        if (isObservable(this.field.options)) {
-            return this.field.options as Observable<any[]>;
+        const source = this.hasOptionGroups() ? this.field.optionGroups : this.field.options;
+        if (isObservable(source)) {
+            return source as Observable<any[]>;
         }
-        if (typeof this.field.options === 'function') {
-            return this.field.options(search, this.group.getRawValue());
+        if (typeof source === 'function') {
+            return source(search, this.group.getRawValue());
         }
-        return of(this.field.options ?? []);
+        return of(source ?? []);
     }
 
     private applyLocalFilter(value: string): void {
@@ -456,13 +482,24 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
     }
 
     private setVisibleOptions(options: any[]): void {
-        this.visibleOptions = options;
-        this.filteredOptions.set(options);
+        const groups: IKlesSelectOptionGroup[] = this.hasOptionGroups() ? options.filter((optionGroup) => optionGroup.options.length > 0) : [];
+        this.filteredOptionGroups.set(groups);
+        this.visibleOptions = this.hasOptionGroups() ? groups.flatMap((optionGroup) => optionGroup.options) : options;
+        this.filteredOptions.set(this.visibleOptions);
         this.updateSelectAllState(this.group.controls[this.field.name].value);
         this.changeDetectorRef.markForCheck();
     }
 
     private filterOptions(options: any[], value: string): any[] {
+        if (this.hasOptionGroups()) {
+            return (options as IKlesSelectOptionGroup[])
+                .map((optionGroup) => ({ ...optionGroup, options: this.filterFlatOptions(optionGroup.options, value) }))
+                .filter((optionGroup) => optionGroup.options.length > 0);
+        }
+        return this.filterFlatOptions(options, value);
+    }
+
+    private filterFlatOptions(options: any[], value: string): any[] {
         const search = value.trim().toLocaleLowerCase();
         if (!search) {
             return options;
@@ -558,10 +595,17 @@ export class KlesFormSelectComponent extends KlesFieldAbstract implements OnInit
         }
 
         const selected = Array.isArray(values) ? values : [];
-        const enabledOptions = this.visibleOptions.filter((option) => !option?.disabled);
+        const enabledOptions = this.enabledVisibleOptions();
         const selectedCount = enabledOptions.filter((option) => selected.some((value) => this.compareFn(value, option))).length;
         const allSelected = enabledOptions.length > 0 && selectedCount === enabledOptions.length;
         this.selectAllIndeterminate.set(selectedCount > 0 && !allSelected);
         this.selectAllControl.setValue(allSelected, { emitEvent: false });
+    }
+
+    private enabledVisibleOptions(): any[] {
+        const options = this.hasOptionGroups()
+            ? this.filteredOptionGroups().filter((optionGroup) => !optionGroup.disabled).flatMap((optionGroup) => optionGroup.options)
+            : this.visibleOptions;
+        return options.filter((option) => !option?.disabled);
     }
 }

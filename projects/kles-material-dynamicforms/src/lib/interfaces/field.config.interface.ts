@@ -157,12 +157,25 @@ export interface IKlesSelectSearchOptions {
     ariaLabel?: string;
 }
 
+export interface IKlesSelectOptionGroup<TOption = any> {
+    label: string;
+    disabled?: boolean;
+    options: TOption[];
+}
+
+export type KlesSelectOptionGroupsSource<TOption = any> =
+    | IKlesSelectOptionGroup<TOption>[]
+    | Observable<IKlesSelectOptionGroup<TOption>[]>
+    | ((value?: string, group?: { [key: string]: any }) => Observable<IKlesSelectOptionGroup<TOption>[]>);
+
 export interface IKlesFormField {
     type?: EnumType; // Mapper type if(type && !component)=>type
     name: string; // Name Field (key for FormControlName)
     component?: Type<any>;
     id?: string; // Attribut html id
     options?: any[] | Subject<any[]> | Observable<any[]> | ((value?: string, group?: { [key: string]: any }) => Observable<any[]>); // List options for list component
+    /** Grouped select source. Takes precedence over options; uses non-virtual rendering. */
+    optionGroups?: KlesSelectOptionGroupsSource;
     search?: boolean | IKlesSelectSearchOptions;
     property?: string; // Property for field
     collections?: IKlesFieldConfig[]; // Collections for subfield

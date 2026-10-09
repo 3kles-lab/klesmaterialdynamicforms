@@ -529,6 +529,70 @@ const form:FormGroup=new FormGroup({
 <ng-container klesDynamicField [field]="field" [group]="form"></ng-container>
 ```
 
+##### Grouped options
+
+Use `optionGroups` instead of `options` to display `mat-optgroup` headings. Each
+group has a `label`, an optional `disabled` flag, and an `options` array containing
+the same values or objects used in a flat select.
+
+```typescript
+const field: IKlesFieldConfig = {
+  type: EnumType.select,
+  name: 'destination',
+  property: 'label',
+  optionGroups: [
+    {
+      label: 'Europe',
+      options: [
+        { id: 1, label: 'Paris' },
+        { id: 2, label: 'Madrid', disabled: true },
+      ],
+    },
+    {
+      label: 'Asie',
+      disabled: true,
+      options: [{ id: 3, label: 'Tokyo' }],
+    },
+  ],
+};
+```
+
+`IKlesSelectOptionGroup<TOption>` and `KlesSelectOptionGroupsSource<TOption>` are
+exported for typing backend responses. `optionGroups` accepts an array, an
+Observable (including a Subject), or a function returning an Observable:
+
+```typescript
+// Backend already returns IKlesSelectOptionGroup<Destination>[]:
+optionGroups: this.api.getDestinationGroups()
+
+// Adapt a flat response in the application:
+optionGroups: this.api.getDestinations().pipe(
+  map(items => buildDestinationGroups(items))
+)
+
+// Load on opening and search remotely; formValues contains the form's raw values:
+lazy: true,
+search: { mode: 'remote', minLength: 3 },
+optionGroups: (search, formValues) =>
+  this.api.getDestinationGroups(search, formValues)
+```
+
+- When provided, `optionGroups` takes precedence over `options`, including an empty
+  array. Existing fields using only `options` retain their behavior.
+- Groups and their options retain source order. Empty groups are hidden.
+- Group headings are not selectable. A disabled group disables all its options;
+  individual options can also be disabled within an enabled group.
+- The form returns the selected option itself (or an array for `multiple`), never
+  a group wrapper. Existing `property`, `pipeTransform`, `autocompleteComponent`
+  and `triggerComponent` settings continue to apply to the options.
+- Local search filters options with the existing `property` / `search.keys`
+  rules and hides groups with no matching options. Group labels are not searched.
+  Remote search displays the groups returned by the provider.
+- Select-all acts only on enabled options in the visible results. Existing
+  selections in disabled groups or outside the search results are preserved.
+- Grouped selects use regular rendering even if `virtualScroll: true` is set.
+  Flat selects keep their existing virtual scrolling behavior.
+
 #### KlesFormTextComponent
 
 Display text in form

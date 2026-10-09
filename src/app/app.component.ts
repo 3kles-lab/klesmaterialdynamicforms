@@ -822,6 +822,46 @@ export class AppComponent implements OnInit, AfterViewInit {
                 },
             },
             {
+                name: 'selectOptionGroups',
+                component: KlesFormSelectComponent,
+                label: 'Destinations par groupe',
+                placeholder: 'Choisir des destinations',
+                appearance: 'outline',
+                property: 'label',
+                value: [],
+                multiple: true,
+                lazy: true,
+                search: { mode: 'local', debounceTime: 200 },
+                optionGroups: () =>
+                  of([
+                    {
+                      label: 'Europe',
+                      options: [
+                        { id: 'paris', label: 'Paris' },
+                        { id: 'madrid', label: 'Madrid' },
+                        { id: 'rome', label: 'Rome', disabled: true },
+                      ],
+                    },
+                    {
+                      label: 'Amérique',
+                      options: [
+                        { id: 'montreal', label: 'Montréal' },
+                        { id: 'new-york', label: 'New York' },
+                      ],
+                    },
+                    {
+                      label: 'Asie',
+                      disabled: true,
+                      options: [
+                        { id: 'tokyo', label: 'Tokyo' },
+                        { id: 'seoul', label: 'Séoul' },
+                      ],
+                    },
+                  ]).pipe(delay(500)),
+                hint: 'Rome et les destinations en Asie sont indisponibles.',
+                layout: { colSpan: 12 },
+            },
+              {
                 name: 'selectSearchMultipleKey',
                 placeholder: 'select search with multiple key',
                 component: KlesFormSelectComponent,
