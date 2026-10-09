@@ -34,7 +34,7 @@
                     <button matButton type="button" (click)="collapseAllSections()">Tout fermer</button>
                 </div>
             </div>
-            <app-kles-dynamic-form #structuredForm direction="grid" [layout]="{ gap: '16px' }" [fields]="structuredLayoutDemo" />
+            <app-kles-dynamic-form #structuredForm direction="grid" [fields]="structuredLayoutDemo" />
             <h3>Responsive (deux colonnes, puis une colonne sous 600 px)</h3>
             <app-kles-dynamic-form direction="grid" [layout]="{ gap: '16px' }" [fields]="responsiveLayoutDemo" />
         </div>

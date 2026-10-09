@@ -19,6 +19,7 @@ export class KlesFormUiControl extends KlesAbstractFormUiControl {
             iconSvg: this.field.iconSvg,
             appearance: this.field.appearance ?? 'fill',
             buttonAppearance: this.field.buttonAppearance ?? 'text',
+            hideSelectionIndicator: this.field.hideSelectionIndicator,
 
             imageUrl: this.field.imageUrl,
             imageAlt: this.field.imageAlt,

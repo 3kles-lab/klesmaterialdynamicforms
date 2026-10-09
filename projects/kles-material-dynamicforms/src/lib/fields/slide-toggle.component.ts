@@ -17,6 +17,14 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
         </div>
     `,
     styles: `
+        :host {
+            display: block;
+        }
+
+        :host(:not(:last-child)) {
+            padding-bottom: var(--kles-slide-toggle-spacing, 8px);
+        }
+
         .kles-slide-toggle {
             display: flex;
             flex-direction: column;

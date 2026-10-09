@@ -207,7 +207,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                 },
             ],
         },
-        { name: 'localAccess', label: 'aaaaa', component: KlesFormSlideToggleComponent, value: true, hint: 'ceci est un hint' },
+        { name: 'localAccess', label: 'aaaaa', component: KlesFormSlideToggleComponent, value: true,  },
+         { name: 'fsdfsdfsdf', label: 'aaaaa', component: KlesFormSlideToggleComponent, value: true },
     ];
 
     responsiveLayoutDemo: KlesFormElement[] = [
@@ -1163,7 +1164,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                 options: ['toto', 'titi'],
                 multiple: true,
                 tooltip: 'tooltip button toogle',
+                hideSelectionIndicator: true,
             },
+            
         ];
     }
 

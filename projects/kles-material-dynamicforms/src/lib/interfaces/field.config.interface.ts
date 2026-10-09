@@ -110,6 +110,8 @@ export interface IKlesFieldUi {
     iconSvg?: string; //Svg Icon
     appearance?: 'fill' | 'outline'; // MatForm field appearance
     buttonAppearance?: MatButtonAppearance;
+    /** Hide the button-toggle selection indicator in both selection modes. */
+    hideSelectionIndicator?: boolean;
 
     visible?: boolean;
     colorOption?: {

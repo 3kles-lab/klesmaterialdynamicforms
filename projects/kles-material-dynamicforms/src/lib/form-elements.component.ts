@@ -89,6 +89,9 @@ const DEFAULT_GAP = '0';
             grid-row-start: var(--kles-effective-row-start, var(--kles-row-start, auto));
             grid-row-end: span var(--kles-effective-row-span, var(--kles-row-span, 1));
         }
+        .kles-layout-item:has(> kles-form-slide-toggle):not(:last-child) {
+            padding-bottom: var(--kles-slide-toggle-spacing, 8px);
+        }
         .kles-layout-grid {
             display: grid;
             grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr));
