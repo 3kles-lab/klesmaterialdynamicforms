@@ -1,3 +1,10 @@
+# [22.5.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.4.0...v22.5.0) (2026-10-09)
+
+
+### Features
+
+* add hide button toggle indicator option and slide toggle padding bottom ([c4a1b52](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/c4a1b5215378db03150a5d8a73889f4955a7b204))
+
 # [22.4.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.3.2...v22.4.0) (2026-10-09)
 
 
