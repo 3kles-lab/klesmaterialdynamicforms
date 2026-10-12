@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -15,9 +16,16 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 @Component({
     selector: 'kles-form-color',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent, KlesFocusTargetDirective],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent, KlesFocusTargetDirective],
     template: `
         <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'">
+            @if (label()) {
+                <mat-label>{{ label() }}</mat-label>
+            }
+            @if (icon()) {
+                <mat-icon matPrefix>{{ icon() }}</mat-icon>
+            }
+
             <input
                 klesFocusTarget
                 matInput
@@ -50,6 +58,10 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
                     <ng-content />
                 }
             </div>
+
+            @if (hint()) {
+                <mat-hint>{{ hint() }}</mat-hint>
+            }
 
             <mat-error matErrorMessage [validations]="field.validations" [asyncValidations]="field.asyncValidations" />
         </mat-form-field>
