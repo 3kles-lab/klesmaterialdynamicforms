@@ -90,7 +90,7 @@ const DEFAULT_GAP = '0';
             grid-row-end: span var(--kles-effective-row-span, var(--kles-row-span, 1));
         }
         .kles-layout-item:has(> kles-form-slide-toggle):not(:last-child) {
-            padding-bottom: var(--kles-slide-toggle-spacing, 8px);
+            padding-bottom: var(--kles-slide-toggle-spacing, 16px);
         }
         .kles-layout-grid {
             display: grid;

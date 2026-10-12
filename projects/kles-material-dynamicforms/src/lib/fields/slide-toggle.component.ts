@@ -22,7 +22,7 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
         }
 
         :host(:not(:last-child)) {
-            padding-bottom: var(--kles-slide-toggle-spacing, 8px);
+            padding-bottom: var(--kles-slide-toggle-spacing, 16px);
         }
 
         .kles-slide-toggle {
