@@ -264,7 +264,7 @@ export class KlesCurrencyValueAccessorDirective implements ControlValueAccessor,
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatError, MatErrorMessageDirective, KlesCurrencyValueAccessorDirective, KlesFocusTargetDirective],
     template: `
-        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [appearance]="appearance()" class="form-element field-bottom">
+        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="subscriptSizing()" [appearance]="appearance()" class="form-element field-bottom">
             @if (label()) {
                 <mat-label>
                     {{ label() }}

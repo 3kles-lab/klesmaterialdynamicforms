@@ -22,7 +22,7 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 @Component({
     selector: 'kles-form-input',
     template: `
-        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'" class="form-element" [appearance]="appearance()" class="field-bottom">
+        <mat-form-field [formGroup]="group" [color]="color()" [subscriptSizing]="subscriptSizing()" class="form-element" [appearance]="appearance()" class="field-bottom">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }

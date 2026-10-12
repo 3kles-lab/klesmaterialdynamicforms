@@ -18,7 +18,7 @@ import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
     standalone: true,
     imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule, MatErrorMessageDirective, MaterialColorPickerTriggerComponent, KlesFocusTargetDirective],
     template: `
-        <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="field.subscriptSizing ?? 'fixed'">
+        <mat-form-field class="form-element" [formGroup]="group" [appearance]="appearance()" [subscriptSizing]="subscriptSizing()">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }

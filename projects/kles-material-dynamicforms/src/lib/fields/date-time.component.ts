@@ -13,7 +13,7 @@ import { KlesFocusTargetDirective } from "../directive/focus-target.directive";
 @Component({
     selector: 'kles-form-datetimepicker',
     template: `
-    <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
+    <mat-form-field [subscriptSizing]="subscriptSizing()" class="margin-top" [color]="color()" [formGroup]="group" [appearance]="appearance()">
         @if (label()) {
             <mat-label>{{ label() }}</mat-label>
         }

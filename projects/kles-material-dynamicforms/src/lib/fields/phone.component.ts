@@ -19,7 +19,7 @@ import { KlesDynamicFormIntl } from '../dynamic-form-intl';
     imports: [NgClass, ReactiveFormsModule, MatFormFieldModule, MatIconModule, MatProgressSpinnerModule, MatTooltipModule, KlesPhoneControlComponent, MatErrorMessageDirective],
     template: `
         <mat-form-field [formGroup]="group" [color]="color()" [appearance]="appearance()"
-            [subscriptSizing]="field.subscriptSizing ?? 'fixed'" class="form-element field-bottom">
+            [subscriptSizing]="subscriptSizing()" class="form-element field-bottom">
             @if (label()) { <mat-label>{{ label() }}</mat-label> }
             @if (icon()) { <mat-icon matPrefix>{{ icon() }}</mat-icon> }
             <kles-phone-control #phone [id]="field.id || phone.id" [ngClass]="ngClass()" [formControlName]="field.name" [options]="phoneOptions()"

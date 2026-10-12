@@ -7,6 +7,7 @@ import { FIELD, GROUP, SIBLING_FIELDS, GROUP_UI, FIELD_CONTEXT } from '../token'
 import { FormGroup } from '@angular/forms';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
 import { ThemePalette } from '@angular/material/core';
+import { SubscriptSizing } from '@angular/material/form-field';
 import { KlesFocusTargetDirective } from '../directive/focus-target.directive';
 
 @Directive()
@@ -51,6 +52,7 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
     public readonly buttonAppearance = computed(() => this.resolvedFieldUi().buttonAppearance ?? 'text');
     public readonly label = computed(() => this.resolvedFieldUi().label ?? this.field.label ?? '');
     public readonly hint = computed(() => this.resolvedFieldUi()?.hint ?? this.field.hint);
+    public readonly subscriptSizing = computed<SubscriptSizing>(() => this.field.subscriptSizing ?? (this.hint() ? 'dynamic' : 'fixed'));
     public readonly placeholder = computed(() => this.resolvedFieldUi()?.placeholder ?? this.field.placeholder);
     public readonly tooltip = computed(() => this.resolvedFieldUi()?.tooltip ?? this.field.tooltip);
     public readonly imageUrl = computed(() => this.resolvedFieldUi()?.imageUrl);

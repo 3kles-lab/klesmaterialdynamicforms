@@ -222,6 +222,7 @@ export interface IKlesFormField {
     clearableComponent?: Type<any>; /*Override default clear component*/
     subComponents?: Type<any>[];
     autofocus?: boolean;
+    /** Defaults to dynamic when a hint is present, otherwise fixed. */
     subscriptSizing?: SubscriptSizing;
     nonNullable?: boolean;
 

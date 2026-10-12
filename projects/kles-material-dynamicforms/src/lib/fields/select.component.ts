@@ -39,7 +39,7 @@ interface MatSelectInternals {
 @Component({
     selector: 'kles-form-select',
     template: `
-        <mat-form-field [subscriptSizing]="field.subscriptSizing ?? 'fixed'" [color]="color()" [formGroup]="group" [appearance]="appearance()">
+        <mat-form-field [subscriptSizing]="subscriptSizing()" [color]="color()" [formGroup]="group" [appearance]="appearance()">
             @if (label()) {
                 <mat-label>{{ label() }}</mat-label>
             }
