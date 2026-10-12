@@ -1,3 +1,10 @@
+## [22.5.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.5.1...v22.5.2) (2026-10-12)
+
+
+### Bug Fixes
+
+* hint on multiple lines ([2bcede2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/2bcede2cf43ff3692bda90c13a71040d69b53e42))
+
 ## [22.5.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.5.0...v22.5.1) (2026-10-12)
 
 
