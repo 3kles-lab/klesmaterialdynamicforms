@@ -1,3 +1,11 @@
+## [22.5.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.5.0...v22.5.1) (2026-10-12)
+
+
+### Bug Fixes
+
+* color field add label, icon and hint ([ba65774](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/ba657749e548dd8f425bc39eb522b9955feb9191))
+* kles-form-slide-toggle increase default padding ([ca0b771](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/ca0b77197a6ca762846d58ffdde101b1b9794337))
+
 # [22.5.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.4.0...v22.5.0) (2026-10-09)
 
 
