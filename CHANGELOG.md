@@ -1,3 +1,10 @@
+# [22.6.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.5.2...v22.6.0) (2026-10-13)
+
+
+### Features
+
+* add dynamic field resolve ([51cb05a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/51cb05a5b09e30d89461c0d02e6cc53420c06607))
+
 ## [22.5.2](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.5.1...v22.5.2) (2026-10-12)
 
 
