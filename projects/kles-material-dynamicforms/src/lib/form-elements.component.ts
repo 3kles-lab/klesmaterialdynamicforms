@@ -13,6 +13,7 @@ import {
     IKlesFormSpacer,
     IKlesLayoutConfig,
     KlesFormElement,
+    expandKlesDynamicFields,
     flattenKlesFields,
     isKlesStructuralElement,
 } from './interfaces/layout.interface';
@@ -27,7 +28,7 @@ const DEFAULT_GAP = '0';
     host: { style: 'display: contents' },
     imports: [CommonModule, KlesDynamicFieldDirective, MatIcon, MatExpansionModule],
     template: `
-        @for (element of elements; track element) {
+        @for (element of elements; track trackElement(element)) {
             @if (isVisible(element)) {
                 <div class="kles-layout-item" [ngClass]="layoutClasses(element)" [ngStyle]="layoutStyles(element)">
                     @if (isSection(element)) {
@@ -75,7 +76,7 @@ const DEFAULT_GAP = '0';
                     } @else if (isSpacer(element)) {
                         <div class="kles-form-spacer" [style.height]="spacerSize(element)" aria-hidden="true"></div>
                     } @else {
-                        <ng-container klesDynamicField [field]="field(element)" [group]="group" [ui]="ui" [siblingFields]="siblingFields" [context]="context" />
+                        <ng-container klesDynamicField [field]="field(element)" [group]="group" [control]="group.controls[field(element).name]" [ui]="ui" [fieldState]="ui.get([field(element).name])" [siblingFields]="siblingFields" [context]="context" />
                     }
                 </div>
             }
@@ -188,7 +189,7 @@ export class KlesFormElementsComponent {
 
     @Input({ required: true })
     set elements(value: KlesFormElement[]) {
-        this._elements = value;
+        this._elements = expandKlesDynamicFields(value);
         this.siblingFields = flattenKlesFields(value);
     }
     get elements(): KlesFormElement[] { return this._elements; }
@@ -209,6 +210,10 @@ export class KlesFormElementsComponent {
 
     isVisible(element: KlesFormElement): boolean {
         return isKlesStructuralElement(element) || element.visible !== false;
+    }
+
+    trackElement(element: KlesFormElement): KlesFormElement | string {
+        return isKlesStructuralElement(element) ? element : element.name;
     }
 
     isSection(element: KlesFormElement): boolean { return isKlesStructuralElement(element) && element.type === 'section'; }

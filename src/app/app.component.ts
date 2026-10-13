@@ -56,6 +56,7 @@ import { PeekABooDirective } from './directives/test.directive';
 import { SelectOptionComponent } from './select/select-option.component';
 import { SelectTriggerComponent } from './select/select-trigger.component';
 import { MaterialModule } from './modules/material.module';
+import { DynamicFieldsDemoComponent } from './dynamic-fields-demo.component';
 
 import { TranslatedKlesLabelIntl } from './app-intl';
 import { KlesMatDateAdapter, KlesMatDatepickerIntl } from '@3kles/kles-material-datepicker';
@@ -90,7 +91,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [KlesDynamicFormComponent, MaterialModule],
+    imports: [KlesDynamicFormComponent, MaterialModule, DynamicFieldsDemoComponent],
     encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit, AfterViewInit {

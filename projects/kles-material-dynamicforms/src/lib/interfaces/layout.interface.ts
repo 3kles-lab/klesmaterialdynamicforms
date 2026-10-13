@@ -1,4 +1,6 @@
 import type { IKlesFieldConfig } from './field.config.interface';
+import type { UntypedFormGroup } from '@angular/forms';
+import type { Observable } from 'rxjs';
 
 export interface IKlesElementLayoutBreakpoint {
     colSpan?: number;
@@ -29,7 +31,49 @@ interface IKlesStructuralElement {
     layout?: IKlesElementLayout;
 }
 
-export interface IKlesFormSection extends IKlesStructuralElement {
+/** Inputs captured for one resolution of a container's children. */
+export interface IKlesFormFieldsResolveEvent<TContext = unknown> {
+    /** Current external context, or null when none was provided. */
+    readonly context: TContext | null;
+    /** Root form group. Read values from the snapshot when performing asynchronous work. */
+    readonly group: UntypedFormGroup;
+    /** Container whose fields will be replaced by the result. */
+    readonly element: KlesFormFieldsContainer;
+    /** Root getRawValue() snapshot, including disabled controls. Treat nested values as read-only. */
+    readonly values: Readonly<Record<string, unknown>>;
+}
+
+/** Each returned or emitted array replaces the container's complete list of children. */
+export type KlesFormFieldsResolveResult =
+    | readonly KlesFormElement[]
+    | Promise<readonly KlesFormElement[]>
+    | Observable<readonly KlesFormElement[]>;
+
+export type IKlesFormFieldsResolver<TContext = unknown> = (event: IKlesFormFieldsResolveEvent<TContext>) => KlesFormFieldsResolveResult;
+
+/**
+ * Declarative child-field resolution shared by dynamic slots and visual containers.
+ * The dependency engine executes the resolver and exposes its result through
+ * KlesDynamicFormComponent.fieldResolutions. Resolved children are automatically
+ * synchronized with controls and rendered at the container's position.
+ */
+export interface IKlesFormFieldsResolution {
+    /**
+     * Root-relative control paths using dot notation, such as 'typeDossier' or 'address.country'.
+     * Resolve once after initialization, then when a dependency changes by Object.is comparison.
+     * Omitted or empty dependencies mean initial resolution only. Context is an input, not a trigger.
+     */
+    dependsOn?: readonly string[];
+    /**
+     * Replace children at this container's position; [] removes them.
+     * Keep the last successful children (initially fields) while loading or after an error.
+     * Ignore obsolete results and unsubscribe from replaced or removed Observable resolutions.
+     * The supplied configuration is not mutated; the form maintains an effective child tree.
+     */
+    resolveFields?: IKlesFormFieldsResolver;
+}
+
+export interface IKlesFormSection extends IKlesStructuralElement, IKlesFormFieldsResolution {
     type: 'section';
     title: string;
     description?: string;
@@ -41,15 +85,26 @@ export interface IKlesFormSection extends IKlesStructuralElement {
     icon?: string;
     /** Registered Material SVG icon displayed before the section title. */
     iconSvg?: string;
+    /** Static children, also used as initial children when resolveFields is configured. */
     fields: KlesFormElement[];
     layoutConfig?: IKlesLayoutConfig;
 }
 
 /** A visual layout group. Unlike an EnumType.group field, it creates no FormGroup. */
-export interface IKlesFormLayoutGroup extends IKlesStructuralElement {
+export interface IKlesFormLayoutGroup extends IKlesStructuralElement, IKlesFormFieldsResolution {
     type: 'layoutGroup';
+    /** Static children, also used as initial children when resolveFields is configured. */
     fields: KlesFormElement[];
     layoutConfig?: IKlesLayoutConfig;
+}
+
+/** A transparent insertion slot: no visual wrapper, grid or Angular FormGroup. */
+export interface IKlesFormDynamicFields extends IKlesFormFieldsResolution {
+    type: 'dynamicFields';
+    /** Initial children, retained while loading or after an error. */
+    fields: KlesFormElement[];
+    /** Apply layout to the returned children, which inherit their parent's layout. */
+    layout?: never;
 }
 
 export interface IKlesFormDivider extends IKlesStructuralElement {
@@ -61,13 +116,23 @@ export interface IKlesFormSpacer extends IKlesStructuralElement {
     size?: string | number;
 }
 
-export type KlesFormStructuralElement = IKlesFormSection | IKlesFormLayoutGroup | IKlesFormDivider | IKlesFormSpacer;
+export type KlesFormFieldsContainer = IKlesFormSection | IKlesFormLayoutGroup | IKlesFormDynamicFields;
+export type KlesFormStructuralElement = KlesFormFieldsContainer | IKlesFormDivider | IKlesFormSpacer;
 export type KlesFormElement = IKlesFieldConfig | KlesFormStructuralElement;
 
 export function isKlesStructuralElement(element: KlesFormElement): element is KlesFormStructuralElement {
-    return element.type === 'section' || element.type === 'layoutGroup' || element.type === 'divider' || element.type === 'spacer';
+    return isKlesFieldsContainer(element) || element.type === 'divider' || element.type === 'spacer';
+}
+
+export function isKlesFieldsContainer(element: KlesFormElement): element is KlesFormFieldsContainer {
+    return element.type === 'section' || element.type === 'layoutGroup' || element.type === 'dynamicFields';
+}
+
+/** Remove transparent slots at one visual level, preserving visual containers. */
+export function expandKlesDynamicFields(elements: readonly KlesFormElement[]): KlesFormElement[] {
+    return elements.flatMap((element) => element.type === 'dynamicFields' ? expandKlesDynamicFields(element.fields) : [element]);
 }
 
 export function flattenKlesFields(elements: readonly KlesFormElement[]): IKlesFieldConfig[] {
-    return elements.flatMap((element) => (isKlesStructuralElement(element) && (element.type === 'section' || element.type === 'layoutGroup') ? flattenKlesFields(element.fields) : isKlesStructuralElement(element) ? [] : [element]));
+    return elements.flatMap((element) => isKlesFieldsContainer(element) ? flattenKlesFields(element.fields) : isKlesStructuralElement(element) ? [] : [element]);
 }

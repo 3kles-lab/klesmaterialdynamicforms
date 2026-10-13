@@ -18,7 +18,11 @@ export abstract class KlesFieldAbstract<TContext = unknown> implements IKlesFiel
     public readonly ui = inject<GroupUiState>(GROUP_UI, { optional: true });
     public readonly context = inject(FIELD_CONTEXT, { optional: true }) as Signal<TContext | null> | null;
 
-    protected readonly fieldUi = computed(() => this.ui?.get(this.field.name)?.value());
+    protected readonly fieldUi = computed(() => {
+        // A field state can be replaced while the containing UI group stays mounted.
+        this.ui?.value();
+        return this.ui?.get([this.field.name])?.value();
+    });
 
     protected readonly resolvedFieldUi = computed<IKlesFieldUi>(() => {
         const fieldUi = this.fieldUi() ?? {};

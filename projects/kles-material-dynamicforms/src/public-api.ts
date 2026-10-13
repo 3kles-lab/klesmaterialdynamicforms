@@ -86,6 +86,7 @@ export * from './lib/validators/autocomplete.validator';
 
 /**FORM */
 export * from './lib/dynamic-form.component';
+export * from './lib/dependencies/field-dependency-engine';
 
 /**PIPES */
 export * from './lib/pipe/array.pipe';

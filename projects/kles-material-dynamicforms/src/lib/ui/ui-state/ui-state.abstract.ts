@@ -29,7 +29,7 @@ export abstract class AbstractUiState<TValue = any, TRawValue extends TValue = T
         return this._value.asReadonly();
     }
 
-    setParent(parent: AbstractUiState<any>, key: string | number): void {
+    setParent(parent: AbstractUiState<any> | null, key: string | number | null): void {
         this._parent = parent;
         this._parentKey = key;
     }

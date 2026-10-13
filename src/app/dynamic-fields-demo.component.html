@@ -1,0 +1,57 @@
+<section class="dynamic-fields-demo" aria-labelledby="dynamic-fields-title">
+    <h2 id="dynamic-fields-title">Champs conditionnels</h2>
+    <p>Choisissez un type de dossier : ses champs apparaissent automatiquement sous le select. « Aucun » les retire en conservant les autres saisies.</p>
+    <p class="demo-note">L’emplacement dynamicFields insère les champs sans conteneur visuel et conserve la disposition du formulaire.</p>
+    <p class="demo-note">Le choix « Erreur simulée » permet de vérifier que les derniers champs et leurs valeurs restent présents après un échec de chargement.</p>
+
+    <div class="dynamic-fields-content">
+        <div>
+            <app-kles-dynamic-form #dynamicForm [fields]="fields()" />
+            <p class="loading-message" role="status" aria-live="polite">
+                @switch (resolution()?.status) {
+                    @case ('loading') { Chargement des champs du dossier… }
+                    @case ('ready') { Le formulaire est à jour. }
+                    @case ('waiting') { En attente d’une dépendance. }
+                    @case ('error') { Le chargement des champs a échoué. }
+                    @default { Initialisation du moteur… }
+                }
+            </p>
+            @if (resolution()?.diagnostic; as diagnostic) {
+                <p class="resolution-error" role="alert">{{ diagnostic.message }}</p>
+            }
+        </div>
+        <aside class="form-preview" aria-label="État du formulaire">
+            <h3>État du formulaire</h3>
+            <dl>
+                <div><dt>Validation</dt><dd>{{ formStatus() === 'VALID' ? 'Valide' : formStatus() === 'DISABLED' ? 'Désactivé' : 'À compléter' }}</dd></div>
+                <div><dt>Chargements des options du select</dt><dd>{{ optionLoads() }}</dd></div>
+                <div><dt>Chargements des champs du dossier</dt><dd>{{ definitionLoads() }}</dd></div>
+            </dl>
+            <p>Le chargement des options doit rester à 1 lorsque vous ajoutez ou retirez des champs.</p>
+            <h4>Champs calculés par le moteur</h4>
+            @if (resolvedFields().length) {
+                <ul class="resolved-fields">
+                    @for (field of resolvedFields(); track field.name) {
+                        <li><strong>{{ field.label || field.name }}</strong><span>{{ field.name }} · {{ field.inputType || 'text' }}</span></li>
+                    }
+                </ul>
+            } @else {
+                <p>Aucun champ calculé.</p>
+            }
+            <h4>Contrôles actuellement présents</h4>
+            <p class="control-names">{{ controlNames().join(', ') }}</p>
+            <h4>Valeurs, y compris les champs désactivés</h4>
+            <pre>{{ values() | json }}</pre>
+        </aside>
+    </div>
+
+    <h3>Tester la synchronisation existante</h3>
+    <div class="demo-actions" aria-label="Actions de test">
+        <button matButton type="button" (click)="addExtraField()">Ajouter un complément manuel</button>
+        <button matButton type="button" (click)="removeExtraFields()">Retirer les compléments manuels</button>
+        <button matButton type="button" (click)="toggleRequired()">{{ referenceRequired() ? 'Rendre la référence facultative' : 'Rendre la référence obligatoire' }}</button>
+        <button matButton type="button" (click)="toggleDisabled()">{{ referenceDisabled() ? 'Réactiver la référence' : 'Désactiver la référence' }}</button>
+        <button matButton type="button" (click)="toggleAnswerType()">{{ checkboxAnswer() ? 'Passer la réponse en texte' : 'Passer la réponse en case à cocher' }}</button>
+    </div>
+    <p class="demo-note">Les compléments manuels sont indépendants du résultat du moteur. Ajouter ou retirer un complément conserve les autres saisies. Changer le type de la réponse réinitialise uniquement ce champ.</p>
+</section>

@@ -1,5 +1,5 @@
 import { ApplicationRef, Directive, Input, OnInit, ViewContainerRef, ViewRef, ComponentRef, OnChanges, SimpleChanges, OnDestroy, Type, Injector, StaticProvider, Provider, Signal } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { componentMapper } from '../decorators/component.decorator';
 import { KlesFormClearComponent } from '../fields/subfields/clear.component';
@@ -7,6 +7,7 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { isDestroyable } from '../utils/destroyable.guard';
 import { FIELD, FIELD_NAME, GROUP, SIBLING_FIELDS, GROUP_UI, FIELD_CONTEXT } from '../token';
 import { GroupUiState } from '../ui/ui-state/group-ui-state';
+import { AbstractUiState } from '../ui/ui-state/ui-state.abstract';
 
 @Directive({
     selector: '[klesDynamicField]',
@@ -16,6 +17,8 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
     @Input() field!: T;
     @Input() group!: UntypedFormGroup;
     @Input() ui!: GroupUiState;
+    @Input() control: AbstractControl | null | undefined;
+    @Input() fieldState: AbstractUiState | null | undefined;
     @Input() siblingFields!: T[];
 
     @Input() context: Signal<unknown | null> | null = null;
@@ -23,6 +26,7 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
     componentRef: ComponentRef<any> | undefined;
     subComponents: ComponentRef<any>[] = [];
     private subComponentViews = new Map<ComponentRef<any>, ViewRef>();
+    private readonly componentSiblingFields: T[] = [];
 
     constructor(
         protected container: ViewContainerRef,
@@ -44,6 +48,8 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
         const uiChanged = !!changes['ui'] && !changes['ui'].isFirstChange();
         const siblingFieldsChanged = !!changes['siblingFields'] && !changes['siblingFields'].isFirstChange();
         const contextChanged = !!changes['context'] && !changes['context'].isFirstChange();
+        const controlChanged = !!changes['control'] && !changes['control'].isFirstChange();
+        const fieldStateChanged = !!changes['fieldState'] && !changes['fieldState'].isFirstChange();
 
         if (groupChanged) {
             this.group = changes['group'].currentValue;
@@ -59,19 +65,21 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
 
         if (siblingFieldsChanged) {
             this.siblingFields = changes['siblingFields'].currentValue;
+            this.updateSiblingFields();
         }
 
         if (contextChanged) {
             this.context = changes['context'].currentValue;
         }
 
-        if (groupChanged || fieldChanged || uiChanged || siblingFieldsChanged || contextChanged) {
+        if (groupChanged || fieldChanged || uiChanged || contextChanged || controlChanged || fieldStateChanged) {
             this.buildComponent();
         }
     }
 
     buildComponent() {
         this.destroyComponents();
+        this.updateSiblingFields();
 
         const options: {
             providers: Array<Provider | StaticProvider>;
@@ -109,7 +117,7 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
                 },
                 {
                     provide: SIBLING_FIELDS,
-                    useValue: this.siblingFields,
+                    useValue: this.componentSiblingFields,
                 },
                 {
                     provide: GROUP_UI,
@@ -175,6 +183,10 @@ export class KlesDynamicFieldDirective<T extends IKlesFieldConfig = IKlesFieldCo
             return componentMapper.find((element) => element.type === this.field.type)?.component || this.field.component;
         }
         return undefined;
+    }
+
+    private updateSiblingFields(): void {
+        this.componentSiblingFields.splice(0, this.componentSiblingFields.length, ...(this.siblingFields ?? []));
     }
 
     private createSubComponent(

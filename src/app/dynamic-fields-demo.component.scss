@@ -1,0 +1,38 @@
+:host { display: block; }
+
+.dynamic-fields-demo {
+    padding: 20px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 12px;
+}
+
+h2 { margin-top: 0; }
+
+.dynamic-fields-content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 1fr);
+    gap: 24px;
+}
+
+.form-preview {
+    padding: 16px;
+    border-radius: 8px;
+    background: var(--mat-sys-surface-container);
+}
+
+.form-preview h3 { margin-top: 0; }
+
+dl > div { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
+dd { margin: 0; font-weight: 600; }
+pre, .control-names { white-space: pre-wrap; overflow-wrap: anywhere; }
+.demo-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.demo-note, .loading-message { color: var(--mat-sys-on-surface-variant); }
+.loading-message { min-height: 24px; }
+.resolution-error { color: var(--mat-sys-error); }
+.resolved-fields { padding-left: 20px; }
+.resolved-fields li { margin-bottom: 12px; }
+.resolved-fields span { display: block; font-size: 0.875rem; color: var(--mat-sys-on-surface-variant); }
+
+@media (max-width: 700px) {
+    .dynamic-fields-content { grid-template-columns: minmax(0, 1fr); }
+}

@@ -1,4 +1,4 @@
-import { OnInit, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ViewChild, isDevMode } from '@angular/core';
+import { OnInit, OnDestroy, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ViewChild, computed, signal, isDevMode } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -14,10 +14,24 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { KlesFormErrorStateMatcher } from './matcher/form-error.matcher';
 import { AbstractUiState } from './ui/ui-state/ui-state.abstract';
 import { GroupUiState } from './ui/ui-state/group-ui-state';
+import { ControlUiState } from './ui/ui-state/control-ui-state';
+import { KlesFormControl } from './controls/default.control';
 import { KlesFormElementsComponent } from './form-elements.component';
-import { IKlesLayoutConfig, KlesFormElement, flattenKlesFields, isKlesStructuralElement } from './interfaces/layout.interface';
+import { IKlesLayoutConfig, KlesFormElement, expandKlesDynamicFields, flattenKlesFields, isKlesFieldsContainer, isKlesStructuralElement } from './interfaces/layout.interface';
+import { IKlesFieldResolutionState, IKlesFieldsResolvedEvent, KlesFormDependencyEngine, KlesResolvableFormElement } from './dependencies/field-dependency-engine';
 
 const DEFAULT_GRID_GAP = '0';
+
+interface SynchronizedField {
+    config: IKlesFieldConfig;
+    control: AbstractControl | null;
+    component: unknown;
+    factory: unknown;
+    uiFactory: unknown;
+    validators: ValidatorFn[];
+    asyncValidators: AsyncValidatorFn[];
+    uiDefaults: Record<string, unknown>;
+}
 
 @Component({
     exportAs: 'klesDynamicForm',
@@ -26,11 +40,11 @@ const DEFAULT_GRID_GAP = '0';
     template: `
         <form class="{{ orientationClass }}" [class.dynamic-form-nowrap]="orientationClass === 'dynamic-form-row' && wrap === false" [ngClass]="formClass" [ngStyle]="gridStyles" [formGroup]="form" (submit)="onSubmit($event)">
             @if (usesAdvancedLayout) {
-                <kles-form-elements [elements]="fields" [group]="form" [ui]="ui" [context]="context" [layoutConfig]="layout" />
+                <kles-form-elements [elements]="renderedRootElements" [group]="form" [ui]="ui" [context]="context" [layoutConfig]="layout" />
             } @else {
                 @for (field of legacyFields; track field.name) {
                     @if (field.visible !== false) {
-                        <ng-container klesDynamicField [field]="field" [group]="form" [ui]="ui" [siblingFields]="legacyFields" [context]="context"> </ng-container>
+                        <ng-container klesDynamicField [field]="field" [group]="form" [control]="form.controls[field.name]" [ui]="ui" [fieldState]="ui.get([field.name])" [siblingFields]="legacyFields" [context]="context"> </ng-container>
                     }
                 }
             }
@@ -51,7 +65,7 @@ const DEFAULT_GRID_GAP = '0';
     providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }],
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, KlesFormElementsComponent, FormsModule, ReactiveFormsModule, MatError],
 })
-export class KlesDynamicFormComponent implements OnInit, OnChanges {
+export class KlesDynamicFormComponent implements OnInit, OnChanges, OnDestroy {
     @ViewChild(KlesFormElementsComponent) private formElements?: KlesFormElementsComponent;
     @Input() context: Signal<unknown | null> | null = null;
     @Input() fields: KlesFormElement[] = [];
@@ -69,9 +83,22 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
 
     form!: UntypedFormGroup;
     ui!: GroupUiState;
+    /** Effective tree used by the renderer; the supplied configuration is never mutated. */
+    renderedFields: KlesFormElement[] = [];
+    /** Elements at the root visual level, with transparent slots expanded. */
+    renderedRootElements: KlesFormElement[] = [];
     private flattenedSource: KlesFormElement[] | null = null;
     private flattenedFields: IKlesFieldConfig[] = [];
     private readonly layoutWarnings = new Set<string>();
+    private synchronizedFields = new Map<string, SynchronizedField>();
+    private readonly dependencyEngine = signal<KlesFormDependencyEngine | null>(null);
+    private readonly emptyResolutions: ReadonlyMap<KlesResolvableFormElement, IKlesFieldResolutionState> = new Map();
+    private resolvedChildren = new Map<KlesResolvableFormElement, readonly KlesFormElement[]>();
+    private readonly pendingResults = new Map<KlesResolvableFormElement, readonly KlesFormElement[]>();
+    private readonly renderedContainers = new WeakMap<KlesResolvableFormElement, KlesResolvableFormElement>();
+    private synchronizing = false;
+    /** Results and diagnostics for automatically synchronized container children. */
+    readonly fieldResolutions = computed(() => this.dependencyEngine()?.states() ?? this.emptyResolutions);
     get orientationClass(): 'dynamic-form-column' | 'dynamic-form-row' | 'dynamic-form-grid' | 'dynamic-form-inline-grid' {
         if (this.hasRootElementLayout && this.direction !== 'inline-grid') return 'dynamic-form-grid';
         return `dynamic-form-${this.direction}`;
@@ -92,15 +119,15 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     }
 
     get legacyFields(): IKlesFieldConfig[] {
-        if (this.flattenedSource !== this.fields) {
-            this.flattenedSource = this.fields;
-            this.flattenedFields = flattenKlesFields(this.fields);
+        if (this.flattenedSource !== this.renderedFields) {
+            this.flattenedSource = this.renderedFields;
+            this.flattenedFields = flattenKlesFields(this.renderedFields);
         }
         return this.flattenedFields;
     }
 
     get usesAdvancedLayout(): boolean {
-        return this.direction === 'grid' || this.direction === 'inline-grid' || this.hasRootElementLayout || this.fields.some(isKlesStructuralElement);
+        return this.direction === 'grid' || this.direction === 'inline-grid' || this.hasRootElementLayout || this.renderedRootElements.some(isKlesStructuralElement);
     }
 
     get gridStyles(): Record<string, string | number> | null {
@@ -112,7 +139,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     }
 
     private get hasRootElementLayout(): boolean {
-        return this.fields.some((element) => element.layout != null);
+        return this.renderedRootElements.some((element) => element.layout != null);
     }
 
     constructor(
@@ -121,18 +148,26 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     ) {}
 
     ngOnInit() {
-        this.form = this.createForm();
-        this.ui = this.createUi();
+        this.form = this.fb.group({});
+        this.ui = new GroupUiState();
+        this.form.setValidators(this.validators.map((v) => v.validator));
+        this.form.setAsyncValidators(this.asyncValidators.map((v) => v.validator));
+        const engine = new KlesFormDependencyEngine(this.form, () => this.context?.() ?? null, {
+            getChildren: (element) => this.childrenOf(element),
+            applyResult: (event) => this.applyResolvedFields(event),
+        });
+        this.dependencyEngine.set(engine);
+        this.synchronizeFields();
         this._onLoaded.emit();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.fields && !changes.fields.firstChange && this.form) {
-            this.updateForm();
-            this.ui = this.createUi();
-            this._onLoaded.emit();
-        }
+    ngOnDestroy(): void {
+        this.dependencyEngine()?.destroy();
+        this.pendingResults.clear();
+        this.resolvedChildren.clear();
+    }
 
+    ngOnChanges(changes: SimpleChanges): void {
         if (changes.validators && !changes.validators.firstChange && this.form) {
             this.form.setValidators(this.validators.map((v) => v.validator));
         }
@@ -141,6 +176,12 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             this.form.setAsyncValidators(this.asyncValidators.map((v) => v.validator));
         }
 
+        if (changes.fields && !changes.fields.firstChange && this.form) {
+            this.synchronizeFields(true, !!(changes.validators || changes.asyncValidators));
+            this._onLoaded.emit();
+        } else if (this.form && (changes.validators || changes.asyncValidators)) {
+            this.form.updateValueAndValidity();
+        }
     }
 
     onSubmit(event: Event) {
@@ -153,32 +194,202 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
-    private updateForm() {
-        const fields = this.legacyFields;
-        Object.keys(this.form.controls)
-            .filter((key) => {
-                return !fields.map((field) => field.name).includes(key);
-            })
-            .forEach((key) => {
-                this.form.removeControl(key);
-            });
+    private applyResolvedFields({ element, fields }: IKlesFieldsResolvedEvent): void {
+        const candidate = new Map(this.resolvedChildren);
+        for (const [container, children] of this.pendingResults) candidate.set(container, children);
+        candidate.set(element, fields);
+        // Validate the complete effective tree before removing any current controls.
+        this.validateFields(candidate);
+        if (this.synchronizing) {
+            this.pendingResults.set(element, fields);
+            return;
+        }
+        this.resolvedChildren = candidate;
+        this.synchronizeFields(true);
+        this.ref.markForCheck();
+        this._onLoaded.emit();
+    }
 
-        fields
-            .forEach((field) => {
-                if (field.type === EnumType.lineBreak) {
-                    return;
+    private synchronizeFields(emitEvent = false, validatorsChanged = false): void {
+        this.synchronizing = true;
+        let controlsChanged = validatorsChanged;
+        try {
+            do {
+                for (const [element, fields] of this.pendingResults) this.resolvedChildren.set(element, fields);
+                this.pendingResults.clear();
+                const active = this.validateFields(this.resolvedChildren);
+                for (const element of this.resolvedChildren.keys()) {
+                    if (!active.has(element)) this.resolvedChildren.delete(element);
                 }
+                this.renderedFields = this.renderElements(this.fields);
+                this.renderedRootElements = expandKlesDynamicFields(this.renderedFields);
+                const changed = this.updateForm();
+                controlsChanged ||= changed;
+                if (changed || validatorsChanged || !this.legacyFields.length) this.form.updateValueAndValidity({ emitEvent: false });
+                validatorsChanged = false;
+                // May produce synchronous results or register newly generated containers.
+                // Queue these results and finish the current synchronization first.
+                this.dependencyEngine()?.update(this.fields);
+            } while (this.pendingResults.size);
+            if (controlsChanged) this.form.updateValueAndValidity({ emitEvent });
+        } finally {
+            this.synchronizing = false;
+        }
+    }
 
-                if (this.form.controls[field.name]) {
-                    const control = this.updateControl(field, this.form.controls[field.name]);
-                    this.form.setControl(field.name, control, { emitEvent: false });
-                } else {
-                    const control = this.createControl(field);
-                    if (control) {
-                        this.form.addControl(field.name, control);
+    private childrenOf(
+        element: KlesResolvableFormElement,
+        overrides = this.resolvedChildren,
+    ): readonly KlesFormElement[] {
+        return element.resolveFields ? overrides.get(element) ?? element.fields : element.fields;
+    }
+
+    private validateFields(overrides: Map<KlesResolvableFormElement, readonly KlesFormElement[]>): Set<KlesResolvableFormElement> {
+        const names = new Set<string>();
+        const active = new Set<KlesResolvableFormElement>();
+        const visit = (elements: readonly KlesFormElement[], ancestors: Set<KlesFormElement>) => {
+            for (const element of elements) {
+                if (ancestors.has(element)) throw new Error('[KlesDynamicForm] Recursive visual container.');
+                if (isKlesStructuralElement(element)) {
+                    if (isKlesFieldsContainer(element)) {
+                        if (element.resolveFields) active.add(element);
+                        visit(this.childrenOf(element, overrides), new Set(ancestors).add(element));
                     }
+                } else {
+                    if (names.has(element.name)) throw new Error(`[KlesDynamicForm] Duplicate field name '${element.name}' in the root form.`);
+                    names.add(element.name);
                 }
+            }
+        };
+        visit(this.fields, new Set());
+        return active;
+    }
+
+    private renderElements(elements: readonly KlesFormElement[]): KlesFormElement[] {
+        return elements.map((element) => {
+            if (!isKlesFieldsContainer(element)) return element;
+            let rendered = this.renderedContainers.get(element);
+            if (!rendered) {
+                rendered = { ...element };
+                this.renderedContainers.set(element, rendered);
+            }
+            // Stable wrapper identities retain panels and unaffected child views.
+            for (const key of Object.keys(rendered)) {
+                if (!Object.prototype.hasOwnProperty.call(element, key)) delete (rendered as unknown as Record<string, unknown>)[key];
+            }
+            Object.assign(rendered, element, { fields: this.renderElements(this.childrenOf(element)) });
+            return rendered;
+        });
+    }
+
+    private updateForm(): boolean {
+        const fields = this.legacyFields;
+        const names = new Set(fields.map((field) => field.name));
+
+        let controlsChanged = false;
+        for (const name of Object.keys(this.form.controls)) {
+            if (!names.has(name)) {
+                const removed = this.form.controls[name];
+                this.form.removeControl(name, { emitEvent: false });
+                removed.setParent(null);
+                controlsChanged = true;
+            }
+        }
+        for (const name of Object.keys(this.ui.states)) {
+            if (!names.has(name)) this.ui.removeUiState(name);
+        }
+
+        const next = new Map<string, SynchronizedField>();
+        for (const field of fields) {
+            const previous = this.synchronizedFields.get(field.name);
+            const mapping = this.findMapping(field);
+            const component = mapping?.component ?? field.component;
+            const factory = mapping?.factory ?? klesFieldControlFactory;
+            const uiFactory = mapping?.ui ?? klesFieldUiFactory;
+            let control: AbstractControl | null = this.form.controls[field.name] ?? null;
+            const compatible = !!previous
+                && previous.control === control
+                && previous.component === component
+                && previous.factory === factory
+                && (previous.config.updateOn ?? 'change') === (field.updateOn ?? 'change')
+                && !!previous.config.nonNullable === !!field.nonNullable;
+            const validators = (field.validations ?? []).map((v) => v.validator);
+            const asyncValidators = (field.asyncValidations ?? []).map((v) => v.validator);
+
+            if (!compatible) {
+                const replaced = control;
+                control = this.createControl(field);
+                if (control) {
+                    if (this.form.controls[field.name]) {
+                        this.form.setControl(field.name, control, { emitEvent: false });
+                    } else {
+                        // The new view registers its own binding. Avoid revalidating
+                        // every mounted control through FormGroup's collection hook.
+                        this.form.registerControl(field.name, control);
+                    }
+                } else if (this.form.controls[field.name]) {
+                    this.form.removeControl(field.name, { emitEvent: false });
+                }
+                if (replaced && replaced !== control) replaced.setParent(null);
+                controlsChanged = true;
+            } else if (control) {
+                const validationsChanged = !this.sameReferences(previous.validators, validators)
+                    || !this.sameReferences(previous.asyncValidators, asyncValidators);
+                const disabledChanged = !!previous.config.disabled !== !!field.disabled;
+                if (validationsChanged) {
+                    const binding = new KlesFormControl(field, this.ref);
+                    control.setValidators(binding.bindValidations(field.validations ?? []));
+                    control.setAsyncValidators(binding.bindAsyncValidations(field.asyncValidations ?? []));
+                }
+                if (disabledChanged) {
+                    if (field.disabled) control.disable({ onlySelf: true, emitEvent: false });
+                    else control.enable({ onlySelf: true, emitEvent: false });
+                } else if (validationsChanged) {
+                    control.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+                }
+                // Retain the existing legacy behavior for data groups; recursive removal
+                // and array schema reconciliation belong to a later stage.
+                if (field.type === EnumType.group) this.updateControl(field, control);
+                controlsChanged ||= validationsChanged || disabledChanged || field.type === EnumType.group;
+            }
+
+            let uiDefaults = previous?.uiDefaults ?? {};
+            const state = this.ui.get([field.name]);
+            if (!compatible || !state || previous?.uiFactory !== uiFactory || !this.sameConfig(previous.config, field)) {
+                const candidate = this.createUiState(field);
+                uiDefaults = { ...(candidate.value() ?? {}) };
+                if (compatible && state instanceof ControlUiState && candidate instanceof ControlUiState && previous.uiFactory === uiFactory) {
+                    const patch: Record<string, unknown> = {};
+                    for (const key of new Set([...Object.keys(previous.uiDefaults), ...Object.keys(uiDefaults)])) {
+                        if (!Object.is(previous.uiDefaults[key], uiDefaults[key])) patch[key] = uiDefaults[key];
+                    }
+                    if (Object.keys(patch).length) state.patchValue(patch);
+                } else {
+                    this.ui.addUiState(field.name, candidate);
+                }
+            }
+            next.set(field.name, {
+                config: { ...field }, control, component, factory, uiFactory,
+                validators, asyncValidators, uiDefaults,
             });
+        }
+        this.synchronizedFields = next;
+        return controlsChanged;
+    }
+
+    private sameReferences<T>(previous: readonly T[], next: readonly T[]): boolean {
+        return previous.length === next.length && previous.every((value, index) => Object.is(value, next[index]));
+    }
+
+    private sameConfig(previous: IKlesFieldConfig, next: IKlesFieldConfig): boolean {
+        const keys = Object.keys(previous) as (keyof IKlesFieldConfig)[];
+        return keys.length === Object.keys(next).length && keys.every((key) => Object.is(previous[key], next[key]));
+    }
+
+    private findMapping(field: IKlesFieldConfig) {
+        return field.type
+            ? componentMapper.find((candidate) => candidate.type === field.type)
+            : componentMapper.find((candidate) => candidate.component === field.component);
     }
 
     private updateControl(field: IKlesFieldConfig, control: AbstractControl): AbstractControl {
@@ -205,35 +416,16 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
     }
 
     private createControl(field: IKlesFieldConfig): AbstractControl | null {
-        const mapping = field.type
-            ? componentMapper.find((candidate) => candidate.type === field.type)
-            : componentMapper.find((candidate) => candidate.component === field.component);
+        if (field.type === EnumType.lineBreak) return null;
+        const mapping = this.findMapping(field);
 
         return mapping ? mapping.factory(field, this.ref) : klesFieldControlFactory(field, this.ref);
     }
 
     private createUiState(field: IKlesFieldConfig): AbstractUiState {
-        const mapping = field.type
-            ? componentMapper.find((candidate) => candidate.type === field.type)
-            : componentMapper.find((candidate) => candidate.component === field.component);
+        const mapping = this.findMapping(field);
 
         return mapping?.ui(field) ?? klesFieldUiFactory(field);
-    }
-
-    private createForm() {
-        const group = this.fb.group({});
-
-        this.legacyFields.forEach((field) => {
-            const control = this.createControl(field);
-            if (control) {
-                group.addControl(field.name, control);
-            }
-        });
-
-        group.setValidators(this.validators.map((v) => v.validator));
-        group.setAsyncValidators(this.asyncValidators.map((v) => v.validator));
-
-        return group;
     }
 
     private validateAllFormFields(formGroup: UntypedFormGroup) {
@@ -241,19 +433,6 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges {
             const control = formGroup.get(field);
             control?.markAsTouched({ onlySelf: true });
         });
-    }
-
-    private createUi() {
-        const uiGroup = new GroupUiState();
-
-        this.legacyFields.forEach((field) => {
-            const uiState = this.createUiState(field);
-            if (uiState) {
-                uiGroup.addUiState(field.name, uiState);
-            }
-        });
-
-        return uiGroup;
     }
 
     private normalizeColumns(value: number | undefined): number {

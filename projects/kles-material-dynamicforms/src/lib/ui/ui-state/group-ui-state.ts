@@ -68,6 +68,7 @@ export class GroupUiState<TUiState extends { [K in keyof TUiState]: AbstractUiSt
     }
 
     public addUiState(name: string, uiState: AbstractUiState<any>): void {
+        this._find(name)?.setParent(null, null);
         (this.states as any)[name] = uiState;
 
         uiState.setParent(this, name);
@@ -79,6 +80,18 @@ export class GroupUiState<TUiState extends { [K in keyof TUiState]: AbstractUiSt
             [name]: uiState.value(),
         });
 
+        this.notifyParent();
+    }
+
+    public removeUiState(name: string): void {
+        const state = this._find(name);
+        if (!state) return;
+
+        state.setParent(null, null);
+        delete (this.states as any)[name];
+        const next = { ...(this._value() ?? {}) };
+        delete next[name];
+        this._value.set(next);
         this.notifyParent();
     }
 
