@@ -81,6 +81,10 @@ import { GroupUiState } from '../ui/ui-state/group-ui-state';
                 min-width: 0;
             }
 
+            :host(:not(:last-child)) {
+                padding-bottom: var(--kles-list-field-spacing, 16px);
+            }
+
             .list-field {
                 display: flex;
                 flex-direction: column;

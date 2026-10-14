@@ -93,6 +93,9 @@ const DEFAULT_GAP = '0';
         .kles-layout-item:has(> kles-form-slide-toggle):not(:last-child) {
             padding-bottom: var(--kles-slide-toggle-spacing, 16px);
         }
+        .kles-layout-item:has(> kles-form-listfield):not(:last-child) {
+            padding-bottom: var(--kles-list-field-spacing, 16px);
+        }
         .kles-layout-grid {
             display: grid;
             grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr));
