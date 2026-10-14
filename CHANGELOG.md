@@ -1,3 +1,10 @@
+## [22.6.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.6.0...v22.6.1) (2026-10-14)
+
+
+### Bug Fixes
+
+* list field bottom padding ([6652889](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/6652889164a28bf53c0c076b809fc9c9a8181d87))
+
 # [22.6.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.5.2...v22.6.0) (2026-10-13)
 
 
