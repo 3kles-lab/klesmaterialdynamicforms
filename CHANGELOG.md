@@ -1,3 +1,15 @@
+# [22.7.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.6.1...v22.7.0) (2026-10-27)
+
+
+### Bug Fixes
+
+* button icon position ([fa4182a](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/fa4182a69a26ea9faa69906bcebfc96ac57e6647))
+
+
+### Features
+
+* add submitting state ([c9ccf3c](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/c9ccf3cef9689d65192bba0dbee0ff96e5197ff5))
+
 ## [22.6.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.6.0...v22.6.1) (2026-10-14)
 
 
