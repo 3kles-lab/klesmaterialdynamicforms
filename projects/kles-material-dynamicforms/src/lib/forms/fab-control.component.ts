@@ -16,15 +16,15 @@ import { MatButtonModule } from '@angular/material/button';
             (click)="click($event)" [matTooltip]="tooltip()">
                 {{ effectiveLabel() }}
 
+                <!-- Each conditional has one icon root so Material can project it outside the label. -->
                 @if (effectiveLoading()) {
                     <mat-icon aria-hidden="true"><mat-spinner [diameter]="18" /></mat-icon>
-                } @else {
-                    @if (effectiveIcon(); as icon) {
-                        <mat-icon>{{ icon }}</mat-icon>
-                    }
-                    @if (effectiveIconSvg(); as iconSvg) {
-                        <mat-icon [svgIcon]="iconSvg"></mat-icon>
-                    }
+                }
+                @if (!effectiveLoading() && effectiveIcon(); as icon) {
+                    <mat-icon>{{ icon }}</mat-icon>
+                }
+                @if (!effectiveLoading() && effectiveIconSvg(); as iconSvg) {
+                    <mat-icon [svgIcon]="iconSvg"></mat-icon>
                 }
             </button>
     `,
