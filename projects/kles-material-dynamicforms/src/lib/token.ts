@@ -10,3 +10,6 @@ export const GROUP_UI = new InjectionToken<GroupUiState>('GROUP_UI');
 export const FIELD = new InjectionToken<IKlesFieldConfig>('FIELD');
 
 export const FIELD_CONTEXT = new InjectionToken<Signal<unknown | null>>('FIELD_CONTEXT');
+
+/** Submission state of the nearest dynamic form, shared with nested field controls. */
+export const FORM_SUBMITTING = new InjectionToken<Signal<boolean>>('FORM_SUBMITTING');

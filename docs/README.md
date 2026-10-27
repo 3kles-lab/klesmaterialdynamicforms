@@ -53,3 +53,17 @@ this.formValidators = [];
 ```
 
 `wrap` vaut `true` par défaut. En direction `row`, utilisez `[wrap]="false"` pour empêcher le retour à la ligne des champs.
+
+L'entrée `[submitting]` (booléen, `false` par défaut) représente une soumission
+en cours. Le parent la passe à `true` avant l'enregistrement et la réinitialise
+dans `finally` ou `finalize`, y compris en cas d'erreur. Pendant ce temps, les
+boutons standard, icône, FAB et mini-FAB de type `submit` sont désactivés et
+affichent un spinner, même dans les groupes et les sections. Les autres boutons
+restent disponibles et les nouvelles soumissions sont ignorées. Les valeurs et
+les états des contrôles Angular sont conservés.
+
+```html
+<app-kles-dynamic-form [fields]="fields" [submitting]="saving()" (submit)="save($event)"></app-kles-dynamic-form>
+```
+
+Consultez l'[exemple complet de gestion de la soumission](../projects/kles-material-dynamicforms/README.md#submission-state).

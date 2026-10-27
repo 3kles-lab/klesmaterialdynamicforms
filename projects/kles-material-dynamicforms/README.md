@@ -10,6 +10,55 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 
 ## Models
 
+### Submission state
+
+Bind `[submitting]` to a boolean owned by the parent for the duration of the save.
+It defaults to `false`. Standard, icon, FAB and mini-FAB buttons whose effective
+type is `submit` display a spinner and are disabled while submitting, including
+buttons inside visual sections and data-bearing groups. Other button types stay
+available. Additional submit events, including keyboard submissions, are ignored.
+The form and its buttons expose `aria-busy` while submitting.
+
+```html
+<app-kles-dynamic-form
+  [fields]="fields"
+  [submitting]="saving()"
+  (submit)="save($event)"
+/>
+```
+
+```typescript
+readonly saving = signal(false);
+
+readonly fields: IKlesFieldConfig[] = [
+  // Other fields...
+  { name: 'save', component: KlesFormButtonComponent, buttonType: 'submit', label: 'Save' },
+];
+
+async save(value: unknown): Promise<void> {
+  if (this.saving()) return;
+  this.saving.set(true);
+  try {
+    await this.service.save(value);
+  } catch (error) {
+    this.showSaveError(error);
+  } finally {
+    this.saving.set(false);
+  }
+}
+```
+
+With an Observable, reset the flag with `finalize`. The parent must reset it on
+both success and failure; emitting `submit` does not automatically change it.
+Submission does not disable Angular controls or modify form values, validation,
+dirty/touched flags, or existing disabled states. `form.pending` continues to
+represent asynchronous validation, independently of submission.
+
+These four button controls also accept `[loading]` for use outside a dynamic form:
+`<kles-button [loading]="saving()" label="Save" />`.
+Custom field controls can inject the optional `FORM_SUBMITTING` signal to consume
+the nearest form's submission state.
+
 ### Advanced CSS Grid layout
 
 Add `layout` to an individual root field to enable CSS Grid automatically.

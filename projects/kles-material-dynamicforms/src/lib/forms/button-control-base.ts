@@ -1,6 +1,7 @@
-import { Component, computed, EventEmitter, HostListener, input, OnInit, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, HostListener, inject, input, OnInit, Output, signal } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
 import { MatButtonAppearance } from '@angular/material/button';
+import { FORM_SUBMITTING } from '../token';
 
 export interface IButton {
     event?: string;
@@ -30,6 +31,8 @@ export abstract class KlesButtonBase<TButton extends IButton = IButton> implemen
     readonly icon = input('');
     readonly iconSvg = input('');
     readonly disabled = input(false);
+    /** Can also be used on standalone buttons outside a dynamic form. */
+    readonly loading = input(false);
     readonly type = input<string | undefined>('button');
     readonly classButton = input('');
     readonly value = input<TButton>({} as TButton);
@@ -38,14 +41,16 @@ export abstract class KlesButtonBase<TButton extends IButton = IButton> implemen
 
     protected readonly uiButtonState = signal<IUIButton | undefined>(undefined);
     private readonly formDisabledState = signal<boolean | undefined>(undefined);
+    private readonly formSubmitting = inject(FORM_SUBMITTING, { optional: true });
     private readonly writtenValueState = signal<TButton | undefined>(undefined, { equal: () => false });
 
     readonly effectiveLabel = computed(() => this.uiButtonState()?.label ?? this.label());
     readonly effectiveColor = computed(() => this.uiButtonState()?.color ?? this.color());
     readonly effectiveIcon = computed(() => this.uiButtonState()?.icon ?? this.icon());
     readonly effectiveIconSvg = computed(() => this.uiButtonState()?.iconSvg ?? this.iconSvg());
-    readonly effectiveDisabled = computed(() => this.formDisabledState() ?? this.uiButtonState()?.disabled ?? this.disabled());
     readonly effectiveType = computed(() => this.uiButtonState()?.type ?? (this.uiButtonState() ? 'submit' : this.type() || 'button'));
+    readonly effectiveLoading = computed(() => this.loading() || (this.effectiveType() === 'submit' && this.formSubmitting?.() === true));
+    readonly effectiveDisabled = computed(() => this.effectiveLoading() || (this.formDisabledState() ?? this.uiButtonState()?.disabled ?? this.disabled()));
     readonly effectiveClassButton = computed(() => this.uiButtonState()?.class ?? this.classButton());
     readonly effectiveButtonAppearance = computed(() => this.uiButtonState()?.buttonAppearance ?? this.buttonAppearance());
     readonly effectiveValue = computed(() => this.writtenValueState() ?? this.value());

@@ -12,6 +12,7 @@ import { KlesIconButtonComponent } from '../forms/icon-button-control.component'
                 [attr.id]="field.id"
                 [classButton]="ngClass()"
                 [name]="field.name"
+                [label]="label()"
                 [color]="color()"
                 [icon]="icon()"
                 [iconSvg]="iconSvg()"

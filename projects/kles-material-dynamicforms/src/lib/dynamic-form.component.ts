@@ -1,4 +1,4 @@
-import { OnInit, OnDestroy, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ViewChild, computed, signal, isDevMode } from '@angular/core';
+import { OnInit, OnDestroy, Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef, Signal, ViewChild, computed, signal, isDevMode, inject, input } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, ValidatorFn, AsyncValidatorFn, AbstractControl, FormArray, FormGroup, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { componentMapper } from './decorators/component.decorator';
 import { EnumType } from './enums/type.enum';
@@ -19,6 +19,7 @@ import { KlesFormControl } from './controls/default.control';
 import { KlesFormElementsComponent } from './form-elements.component';
 import { IKlesLayoutConfig, KlesFormElement, expandKlesDynamicFields, flattenKlesFields, isKlesFieldsContainer, isKlesStructuralElement } from './interfaces/layout.interface';
 import { IKlesFieldResolutionState, IKlesFieldsResolvedEvent, KlesFormDependencyEngine, KlesResolvableFormElement } from './dependencies/field-dependency-engine';
+import { FORM_SUBMITTING } from './token';
 
 const DEFAULT_GRID_GAP = '0';
 
@@ -38,7 +39,7 @@ interface SynchronizedField {
     selector: 'app-kles-dynamic-form',
     standalone: true,
     template: `
-        <form class="{{ orientationClass }}" [class.dynamic-form-nowrap]="orientationClass === 'dynamic-form-row' && wrap === false" [ngClass]="formClass" [ngStyle]="gridStyles" [formGroup]="form" (submit)="onSubmit($event)">
+        <form class="{{ orientationClass }}" [class.dynamic-form-nowrap]="orientationClass === 'dynamic-form-row' && wrap === false" [ngClass]="formClass" [ngStyle]="gridStyles" [formGroup]="form" [attr.aria-busy]="submitting() ? 'true' : null" (submit)="onSubmit($event)">
             @if (usesAdvancedLayout) {
                 <kles-form-elements [elements]="renderedRootElements" [group]="form" [ui]="ui" [context]="context" [layoutConfig]="layout" />
             } @else {
@@ -62,10 +63,15 @@ interface SynchronizedField {
         '.dynamic-form-grid { display: grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 0); }',
         '.dynamic-form-inline-grid { display: inline-grid; grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr)); gap: var(--kles-grid-gap, 0); }',
     ],
-    providers: [{ provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher }],
+    providers: [
+        { provide: ErrorStateMatcher, useClass: KlesFormErrorStateMatcher },
+        { provide: FORM_SUBMITTING, useFactory: () => inject(KlesDynamicFormComponent).submitting },
+    ],
     imports: [CommonModule, MatErrorFormDirective, KlesDynamicFieldDirective, KlesFormElementsComponent, FormsModule, ReactiveFormsModule, MatError],
 })
 export class KlesDynamicFormComponent implements OnInit, OnChanges, OnDestroy {
+    /** Controlled by the parent for the entire save operation, including error handling. */
+    readonly submitting = input(false);
     @ViewChild(KlesFormElementsComponent) private formElements?: KlesFormElementsComponent;
     @Input() context: Signal<unknown | null> | null = null;
     @Input() fields: KlesFormElement[] = [];
@@ -187,6 +193,7 @@ export class KlesDynamicFormComponent implements OnInit, OnChanges, OnDestroy {
     onSubmit(event: Event) {
         event.preventDefault();
         event.stopPropagation();
+        if (this.submitting()) return;
         if (this.form.valid) {
             this.submit.emit(this.form.getRawValue());
         } else {
