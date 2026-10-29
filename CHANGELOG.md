@@ -1,3 +1,10 @@
+## [22.7.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.7.0...v22.7.1) (2026-10-29)
+
+
+### Bug Fixes
+
+* validator messages refresh ([3bf60cb](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/3bf60cb07a0db4b911b097a4548f0b2e0f9af134))
+
 # [22.7.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.6.1...v22.7.0) (2026-10-27)
 
 
