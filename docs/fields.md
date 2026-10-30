@@ -1,4 +1,5 @@
 # Fields
+- [`KlesFormActionMenuComponent`](#klesformactionmenucomponent): Action menu with recursive submenus
 - [`KlesFieldAbstract`](#klesfieldabstract): Abstract class to build field component
 - [`KlesFormButtonComponent`](#klesformbuttoncomponent): Button in form
 - [`KlesFormButtonCheckerComponent`](#klesFormbuttoncheckercomponent): Button checker to manage checking and error in form
@@ -16,6 +17,40 @@
 - [`KlesFormSelectComponent`](#klesformselectcomponent): Select in form
 - [`KlesFormTextComponent`](#klesformtextcomponent): Display text in form
 - [`KlesFormTextareaComponent`](#klesformtextareacomponent): TextArea in form
+
+#### KlesFormActionMenuComponent
+
+Use `options` on a menu item to define a submenu at any depth:
+
+```typescript
+import { KlesActionMenuFieldConfig, KlesFormActionMenuComponent } from '@3kles/kles-material-dynamicforms';
+
+const actions: KlesActionMenuFieldConfig = {
+    name: 'actions',
+    component: KlesFormActionMenuComponent,
+    label: 'Actions',
+    options: [
+        { id: 'edit', label: 'Modifier', icon: 'edit' },
+        {
+            id: 'export', label: 'Exporter', icon: 'download',
+            options: [
+                { id: 'csv', label: 'CSV' },
+                { id: 'xlsx', label: 'Excel' },
+            ],
+        },
+    ],
+    onAction: ({ actionId, value, context, group }) => {
+        // actionId is the selected leaf ID; value is the original leaf configuration.
+    },
+};
+```
+
+Parents open their submenu without calling `onAction`. Selecting a leaf closes the menu chain.
+`visible`, `disabled`, icons, warning colors and `dividerBefore` apply at every level.
+Conditions receive `(context, field, group)` and update when the context or form state changes.
+A submenu with no visible children is disabled. The root `options` source still accepts an array,
+an observable, or a function returning an observable; nested `options` are arrays.
+Material provides mouse and keyboard navigation, including arrow keys and Escape.
 
 #### KlesFormPhoneComponent
 
