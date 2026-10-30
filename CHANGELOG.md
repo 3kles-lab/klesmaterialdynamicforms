@@ -1,3 +1,10 @@
+# [22.8.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.7.1...v22.8.0) (2026-10-30)
+
+
+### Features
+
+* add submenu for action button ([87ddd19](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/87ddd19e8f14d029fd3872cf66e5d8c6c47ea553))
+
 ## [22.7.1](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.7.0...v22.7.1) (2026-10-29)
 
 
