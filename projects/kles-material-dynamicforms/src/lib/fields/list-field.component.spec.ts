@@ -6,6 +6,60 @@ import { IKlesFieldConfig } from '../interfaces/field.config.interface';
 import { KlesFormInputComponent } from './input.component';
 import { KlesFormListFieldComponent } from './list-field.component';
 
+describe('KlesFormListFieldComponent visibility', () => {
+    it('preserves hidden controls and values in existing and added rows and when visibility changes', async () => {
+        TestBed.configureTestingModule({
+            imports: [KlesDynamicFormComponent, NoopAnimationsModule],
+        });
+        const fixture = TestBed.createComponent(KlesDynamicFormComponent);
+        fixture.componentRef.setInput('fields', [{
+            name: 'items',
+            component: KlesFormListFieldComponent,
+            value: [{ hidden: 'saved value' }],
+            collections: [
+                { name: 'hidden', hostClass: 'hidden-field', component: KlesFormInputComponent, visible: false, value: 'default value' },
+                { name: 'visible', component: KlesFormInputComponent, visible: true },
+                { name: 'implicit', component: KlesFormInputComponent },
+            ],
+        } satisfies IKlesFieldConfig]);
+        fixture.detectChanges();
+        const list = fixture.debugElement.query(By.directive(KlesFormListFieldComponent)).componentInstance as KlesFormListFieldComponent;
+        const hiddenControl = list.formArray.at(0).get('hidden')!;
+
+        expect(fixture.nativeElement.querySelectorAll('.list-field__field').length).toBe(2);
+        expect(fixture.nativeElement.querySelector('.hidden-field')).toBeNull();
+        expect(hiddenControl.enabled).toBeTrue();
+        expect(list.formArray.value[0].hidden).toBe('saved value');
+
+        list.addField();
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelectorAll('.list-field__field').length).toBe(4);
+        expect(fixture.nativeElement.querySelector('.hidden-field')).toBeNull();
+        expect(list.formArray.at(1).get('hidden')!.enabled).toBeTrue();
+        expect(list.formArray.value[1].hidden).toBe('default value');
+
+        list.collections.update((rows) => rows.map((row, index) => index === 0
+            ? row.map((field) => field.name === 'hidden' ? { ...field, visible: true } : field)
+            : row));
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const input = fixture.nativeElement.querySelector('.hidden-field input') as HTMLInputElement;
+        expect(input.value).toBe('saved value');
+        hiddenControl.setValue('updated value');
+
+        list.collections.update((rows) => rows.map((row, index) => index === 0
+            ? row.map((field) => field.name === 'hidden' ? { ...field, visible: false } : field)
+            : row));
+        fixture.detectChanges();
+        expect(fixture.nativeElement.querySelectorAll('.list-field__field').length).toBe(4);
+        expect(fixture.nativeElement.querySelector('.hidden-field')).toBeNull();
+        expect(list.formArray.at(0).get('hidden')).toBe(hiddenControl);
+        expect(hiddenControl.enabled).toBeTrue();
+        expect(list.formArray.value[0].hidden).toBe('updated value');
+    });
+});
+
 describe('KlesFormListFieldComponent appearance', () => {
     it('preserves collection appearance for existing and added rows', () => {
         const field: IKlesFieldConfig = {

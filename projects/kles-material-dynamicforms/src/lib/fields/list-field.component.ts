@@ -49,9 +49,11 @@ import { GroupUiState } from '../ui/ui-state/group-ui-state';
                             [class.list-field__fields--nowrap]="fieldsDirection === 'row' && field.wrap === false"
                         >
                             @for (subfield of collections()[idx]; track subfield.name) {
-                                <div class="list-field__field" [style.grid-column]="getGridColumn(subfield)" [style.grid-row]="getGridRow(subfield)">
-                                    <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections()[idx]" [ui]="getRowUi(idx)" [context]="context" />
-                                </div>
+                                @if (subfield.visible !== false) {
+                                    <div class="list-field__field" [style.grid-column]="getGridColumn(subfield)" [style.grid-row]="getGridRow(subfield)">
+                                        <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections()[idx]" [ui]="getRowUi(idx)" [context]="context" />
+                                    </div>
+                                }
                             }
                         </div>
 
