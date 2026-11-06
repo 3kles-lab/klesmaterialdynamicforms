@@ -1,0 +1,106 @@
+<div [formGroup]="group" class="form-element list-field" tabindex="-1" [attr.aria-label]="label() || texts.empty"
+    [class.list-field--outlined]="options.presentation === 'outlined'"
+    [class.list-field--plain]="(options.presentation ?? 'plain') === 'plain'"
+    [class.list-field--compact]="options.density === 'compact'"
+    [class.list-field--responsive]="options.responsive !== false"
+    [style.--kles-list-field-item-padding]="options.itemPadding">
+    <div class="list-field__header">
+        @if (label()) {
+            <span class="list-field__label">{{ label() }}</span>
+        }
+        <button type="button" matButton class="list-field__add" [disabled]="!canAdd" (click)="addField()">
+            <mat-icon>add</mat-icon>
+            {{ texts.add }}
+        </button>
+    </div>
+
+    <div class="list-field__content" [formArrayName]="field.name" cdkAccordion [multi]="true" cdkDropList
+        [cdkDropListData]="formArray.controls" [cdkDropListDisabled]="!options.reorderable || disabled" (cdkDropListDropped)="drop($event)">
+        @for (subGroup of formArray.controls; track subGroup; let idx = $index) {
+            @let title = getRowTitle(subGroup, idx);
+            <div #rowElement cdkAccordionItem #item="cdkAccordionItem" class="list-field__row"
+                [class.list-field__row--header]="hasHeader" [expanded]="isExpanded(subGroup)" (expandedChange)="setExpanded(subGroup, $event)"
+                cdkDrag [cdkDragData]="subGroup" [cdkDragDisabled]="!options.reorderable || disabled" cdkDragLockAxis="y" cdkDragPreviewContainer="parent">
+                <ng-template #summary>
+                    <span class="list-field__summary">
+                        @if (options.showTitle !== false) {
+                            <span class="list-field__title">{{ title }}</span>
+                        }
+                        @if (subGroup.invalid) {
+                            <span class="list-field__invalid" role="img" [attr.aria-label]="texts.invalid" [attr.title]="texts.invalid">
+                                <mat-icon aria-hidden="true">error_outline</mat-icon>
+                            </span>
+                        }
+                    </span>
+                </ng-template>
+                <ng-template #actions>
+                    <div class="list-field__actions">
+                        @if (options.reorderable) {
+                            <button type="button" matIconButton cdkDragHandle class="list-field__drag" [disabled]="disabled || formArray.length < 2"
+                                [attr.aria-label]="texts.drag(title)" aria-keyshortcuts="ArrowUp ArrowDown" (keydown)="moveWithKeyboard($event, idx)">
+                                <mat-icon>drag_indicator</mat-icon>
+                            </button>
+                            <button type="button" matIconButton class="list-field__move-up" [disabled]="!canMove(idx, idx - 1)"
+                                [attr.aria-label]="texts.moveUp(title)" (click)="moveField(idx, idx - 1)">
+                                <mat-icon>arrow_upward</mat-icon>
+                            </button>
+                            <button type="button" matIconButton class="list-field__move-down" [disabled]="!canMove(idx, idx + 1)"
+                                [attr.aria-label]="texts.moveDown(title)" (click)="moveField(idx, idx + 1)">
+                                <mat-icon>arrow_downward</mat-icon>
+                            </button>
+                        }
+                        <button type="button" matIconButton class="list-field__delete" [disabled]="!canDelete(idx)"
+                            [attr.aria-label]="texts.delete(title)" (click)="deleteField(idx)">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </div>
+                </ng-template>
+                @if (hasHeader) {
+                    <div class="list-field__item-header">
+                        @if (collapsible) {
+                            <button type="button" matButton class="list-field__toggle" [id]="item.id + '-toggle'"
+                                [attr.aria-label]="options.showTitle === false ? title : null"
+                                [attr.aria-expanded]="item.expanded" [attr.aria-controls]="item.id + '-body'" (click)="item.toggle()">
+                                <mat-icon class="list-field__chevron" [class.list-field__chevron--expanded]="item.expanded">chevron_right</mat-icon>
+                                <ng-container [ngTemplateOutlet]="summary" />
+                            </button>
+                        } @else {
+                            <div class="list-field__heading"><ng-container [ngTemplateOutlet]="summary" /></div>
+                        }
+                        <ng-container [ngTemplateOutlet]="actions" />
+                    </div>
+                }
+                <div class="list-field__fields" [id]="item.id + '-body'" [hidden]="collapsible && !item.expanded"
+                    [attr.role]="collapsible ? 'region' : null" [attr.aria-labelledby]="collapsible ? item.id + '-toggle' : null"
+                    [class.list-field__fields--column]="fieldsDirection === 'column'"
+                    [class.list-field__fields--row]="fieldsDirection === 'row'"
+                    [class.list-field__fields--grid]="fieldsDirection === 'grid'"
+                    [class.list-field__fields--inline-grid]="fieldsDirection === 'inline-grid'"
+                    [class.list-field__fields--nowrap]="fieldsDirection === 'row' && field.wrap === false">
+                    @for (subfield of collections()[idx]; track subfield.name) {
+                        @if (subfield.visible !== false) {
+                            <div class="list-field__field" [attr.data-field-name]="subfield.name" [style.grid-column]="getGridColumn(subfield)" [style.grid-row]="getGridRow(subfield)">
+                                <ng-container klesDynamicField [field]="subfield" [group]="subGroup" [siblingFields]="collections()[idx]" [ui]="getRowUi(idx)" [context]="context" />
+                            </div>
+                        }
+                    }
+                </div>
+                @if (!hasHeader) {
+                    <ng-container [ngTemplateOutlet]="actions" />
+                }
+            </div>
+        }
+        @if (formArray.length === 0) {
+            <div class="list-field__empty" role="status">{{ texts.empty }}</div>
+        }
+    </div>
+    <div class="list-field__errors">
+        <mat-error matErrorForm [form]="formArray" [validations]="field.validations" [asyncValidations]="field.asyncValidations" />
+        @if (formArray.enabled && formArray.errors?.['listMinItems']; as error) {
+            <mat-error>{{ texts.minItems(error.required) }}</mat-error>
+        }
+        @if (formArray.enabled && formArray.errors?.['listMaxItems']; as error) {
+            <mat-error>{{ texts.maxItems(error.required) }}</mat-error>
+        }
+    </div>
+</div>

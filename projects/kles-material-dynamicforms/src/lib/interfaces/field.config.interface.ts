@@ -56,6 +56,54 @@ export interface IKlesImageUploadOptions {
     maxFileSizeMessage?: string;
 }
 
+export interface IKlesListFieldTitleContext {
+    group: UntypedFormGroup;
+    value: Record<string, unknown>;
+    index: number;
+    field: IKlesFieldConfig;
+    context: unknown | null;
+}
+
+export interface IKlesListFieldLabels {
+    add: string;
+    empty: string;
+    invalid: string;
+    item: (index: number, title?: string) => string;
+    delete: (title: string) => string;
+    moveUp: (title: string) => string;
+    moveDown: (title: string) => string;
+    drag: (title: string) => string;
+    added: (title: string) => string;
+    removed: (title: string) => string;
+    moved: (title: string, position: number, total: number) => string;
+    minItems: (count: number) => string;
+    maxItems: (count: number) => string;
+}
+
+export interface IKlesListFieldOptions {
+    /** Defaults to plain. Separators and outlined cards are opt-in. */
+    presentation?: 'plain' | 'separator' | 'outlined';
+    itemPadding?: string;
+    density?: 'comfortable' | 'compact';
+    /** Explicit false hides the header and keeps fields expanded. Omitted: infer from title/collapse/reorder options. */
+    showHeader?: boolean;
+    /** Defaults to true. False hides only the visible title, keeping header commands and accessible names. */
+    showTitle?: boolean;
+    /** Row-relative control path (the subfield's name, not its display label). Defaults to label; never infers a title from an ID. */
+    titleField?: string;
+    /** A static title is numbered by Intl.listFieldItem. A function returns the complete title. Takes precedence over titleField. */
+    title?: string | ((event: IKlesListFieldTitleContext) => string | null | undefined);
+    collapsible?: boolean;
+    /** Initial state for existing rows. Defaults to true. Added rows always open. */
+    expanded?: boolean;
+    reorderable?: boolean;
+    minItems?: number;
+    maxItems?: number;
+    /** Defaults to true. Stack at a component width of 480px or less, including explicit grid layouts. Set false to opt out. */
+    responsive?: boolean;
+    labels?: Partial<IKlesListFieldLabels>;
+}
+
 export type KlesStatusTone = 'neutral' | 'info' | 'success' | 'warning' | 'error';
 
 export type KlesStatusAppearance = 'chip' | 'badge' | 'text';
@@ -181,6 +229,7 @@ export interface IKlesFormField {
     search?: boolean | IKlesSelectSearchOptions;
     property?: string; // Property for field
     collections?: IKlesFieldConfig[]; // Collections for subfield
+    listFieldOptions?: IKlesListFieldOptions;
     value?: any; // Value field
     asyncValue?: Observable<any>; // Value field
     multiple?: boolean; // Multiple selection field

@@ -10,6 +10,103 @@ Check out the [changelog](./CHANGELOG.md) to check all the latest changes.
 
 ## Models
 
+### List fields
+
+`KlesFormListFieldComponent` accepts optional `listFieldOptions`. Lists use plain
+rows without borders by default, with expanded fields and deletion beside the fields.
+Headers, collapsing, reordering, separators, cards, and compact spacing are opt-in.
+Responsive stacking is enabled by default; set `responsive: false` to disable it.
+
+```typescript
+{
+  name: 'processes',
+  component: KlesFormListFieldComponent,
+  label: 'Processes',
+  collections: [
+    { name: 'label', component: KlesFormInputComponent, label: 'Name' },
+    { name: 'description', component: KlesFormInputComponent, label: 'Description' },
+  ],
+  listFieldOptions: {
+    presentation: 'plain',     // Default; alternatives: 'separator' | 'outlined'
+    itemPadding: '12px',
+    showHeader: true,          // Moves deletion into the header; fields use full width
+    title: 'Process',          // Process 1, Process 2...; no title input is required
+    // Alternatively: titleField: 'label' reads a control's value
+    // Alternatively: title: ({ value, index, group, field, context }) => ...
+    collapsible: true,
+    expanded: true,            // Initial state; newly added rows always open
+    reorderable: true,
+    minItems: 1,
+    maxItems: 10,
+    responsive: true,          // Default: stack fields when this component is <= 480px wide
+    density: 'comfortable',    // Or 'compact'
+    labels: { add: 'Add a process', empty: 'No processes' },
+  },
+}
+```
+
+When `showHeader` is omitted, `titleField`, `title`, `collapsible`, or `reorderable`
+automatically enable the header. Explicit `showHeader: false` always hides it,
+keeps fields expanded, and places the commands beside the fields. Reordering
+remains available; collapsing requires a visible header.
+Use `showTitle: false` to hide only the visible title while keeping the header,
+collapse toggle, error indicator, and commands. The resolved title is still used
+for contextual accessible names and Intl announcements. This does not affect the
+list's own `label` or the labels of its input fields.
+
+For a configured string such as `title: 'Process'`, titles are formatted by
+`KlesDynamicFormIntl.listFieldItem(index, title)` as “Process 1”, “Process 2”, etc.
+Override this Intl function to customize the numbering or translation:
+
+```typescript
+override listFieldItem = (index: number, title = 'Élément') =>
+  `${title} ${index + 1}`;
+```
+
+Rows are numbered by their current position, including after deletion or reordering.
+No form control named `label` is needed for a configured title.
+A `title` string or function takes precedence over the title field. A function
+returns the complete text and is not automatically numbered. Blank or non-string results
+use `KlesDynamicFormIntl.listFieldItem(index)` (zero-based, e.g. “Item 1”).
+Titles never fall back to an ID, another arbitrary field, or object serialization.
+The default title source is only the `label` control.
+`titleField` refers to a subfield's `name`, not its display `label`. For example,
+`{ name: 'processName', label: 'Process name', ... }` requires
+`titleField: 'processName'`. Setting `titleField: 'label'` requires an actual
+subfield named `label`; otherwise the translated fallback is displayed.
+
+The header exposes validation errors even while collapsed. Collapsing preserves
+mounted fields, controls, values, disabled states, validators, and dirty/touched
+flags. Dragging uses CDK drag/drop; move buttons and up/down arrow keys on the
+handle provide keyboard alternatives. Reordering preserves row identity, field
+configuration, expansion, and UI state. Screen readers receive status announcements.
+Adding focuses the first visible editable field; deleting focuses a remaining
+command or the add button.
+
+Minimum/maximum limits count all rows, including disabled rows. They guard both
+commands and public methods, and validate preloaded counts (including an empty
+array). They never silently add or remove initial data. Limits are nonnegative
+integers; a maximum below the minimum is normalized to the minimum. Disabled lists
+reject add/delete/reorder. Reordering must be explicitly enabled.
+
+Command text, accessible names, fallbacks, validation messages, and announcements
+use `KlesDynamicFormIntl`. Override its `listField*` properties or supply per-list
+`labels`; contextual labels such as `delete`, `moveUp`, and `moved` are functions.
+The example application's French provider includes these translations.
+
+Spacing can be themed with `--kles-list-field-item-gap`,
+`--kles-list-field-item-padding`, `--kles-list-field-field-gap`,
+`--kles-list-field-grid-gap`, `--kles-list-field-header-gap`,
+`--kles-list-field-action-gap`, and `--kles-list-field-radius`.
+Borders and error indicators use Material's `--mat-sys-outline-variant` and
+`--mat-sys-error`, inheriting light/dark theme colors.
+Responsive stacking uses a CSS container query, including for explicit grid/nowrap
+layouts; no window breakpoint or resize listener is required.
+
+The implementation uses CDK accordion state with Material buttons so row commands
+are siblings of the toggle. Unlike nesting commands inside a Material expansion
+header, this preserves separate keyboard targets and accessible names.
+
 ### Submission state
 
 Bind `[submitting]` to a boolean owned by the parent for the duration of the save.
