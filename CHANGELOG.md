@@ -1,3 +1,15 @@
+# [22.9.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.8.0...v22.9.0) (2026-11-06)
+
+
+### Bug Fixes
+
+* visible property not working on list field ([fb22744](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/fb227448a6ee9d762fa82df90f894ad84b5a44df))
+
+
+### Features
+
+* add optioons to listfield component ([cbe7df4](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/cbe7df462580bf2d4344e1547a15d0e46bd98771))
+
 # [22.8.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.7.1...v22.8.0) (2026-10-30)
 
 
