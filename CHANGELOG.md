@@ -1,3 +1,10 @@
+# [22.10.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.9.0...v22.10.0) (2026-11-09)
+
+
+### Features
+
+* add section presentation mode && fix section title ([e18474b](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/e18474befe1980a1040cb363edd345bd9b2988c4))
+
 # [22.9.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.8.0...v22.9.0) (2026-11-06)
 
 
