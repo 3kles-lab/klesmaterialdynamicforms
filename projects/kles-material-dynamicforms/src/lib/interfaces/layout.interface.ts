@@ -77,6 +77,10 @@ export interface IKlesFormSection extends IKlesStructuralElement, IKlesFormField
     type: 'section';
     title: string;
     description?: string;
+    /** Outer decoration only; does not change child fields' Material appearance.
+     * Omitted: separator for collapsible sections, plain otherwise.
+     */
+    presentation?: 'plain' | 'separator' | 'outlined';
     /** Render as a Material expansion panel. Defaults to false. */
     collapsible?: boolean;
     /** Expansion panel state. Defaults to true; only applies when collapsible is true. */

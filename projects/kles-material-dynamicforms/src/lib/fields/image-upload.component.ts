@@ -67,6 +67,7 @@ const DEFAULT_ACCEPT = 'image/jpeg,image/png,image/webp';
             display: flex;
             align-items: center;
             gap: 20px;
+            margin-bottom: 5px;
         }
 
         .kles-image-upload__preview {

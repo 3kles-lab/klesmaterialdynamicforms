@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatExpansionPanel } from '@angular/material/expansion';
+import { MatFormField } from '@angular/material/form-field';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { KlesDynamicFormComponent } from './dynamic-form.component';
 import { KlesFormInputComponent } from './fields/input.component';
@@ -12,7 +13,7 @@ import { KlesFormLineBreakComponent } from './fields/line-break.component';
 import { defer, of, Subject } from 'rxjs';
 import { EnumType } from './enums/type.enum';
 import { IKlesFieldConfig } from './interfaces/field.config.interface';
-import { IKlesFormDynamicFields, IKlesFormLayoutGroup, KlesFormElement } from './interfaces/layout.interface';
+import { IKlesFormDynamicFields, IKlesFormLayoutGroup, IKlesFormSection, KlesFormElement } from './interfaces/layout.interface';
 
 describe('KlesDynamicFormComponent', () => {
     const input = (name: string, colSpan?: number): IKlesFieldConfig => ({
@@ -730,6 +731,125 @@ describe('KlesDynamicFormComponent', () => {
         expect(fixture.nativeElement.querySelectorAll('.kles-form-section').length).toBe(2);
         expect(Object.keys(fixture.componentInstance.form.controls)).toEqual(['one', 'two']);
         expect(fixture.nativeElement.querySelector('mat-expansion-panel')).toBeNull();
+    });
+
+    it('renders section decorations for both panel types and preserves the existing defaults', async () => {
+        const cases = [false, true].flatMap(collapsible =>
+            ([undefined, 'plain', 'separator', 'outlined'] as const).map(presentation => ({ collapsible, presentation })));
+        const fixture = createGrid(cases.map(({ collapsible, presentation }, index) => ({
+            type: 'section', title: `Section ${index}`, icon: 'person', collapsible, presentation,
+            fields: [{ ...input(`field${index}`), appearance: index % 2 === 0 ? 'outline' : 'fill' }],
+        })));
+        const sections = fixture.nativeElement.querySelectorAll('.kles-form-section') as NodeListOf<HTMLElement>;
+        const formFields = fixture.debugElement.queryAll(By.directive(MatFormField));
+        const referenceTitle = getComputedStyle(sections[4].querySelector('h3')!);
+
+        cases.forEach(({ collapsible, presentation }, index) => {
+            const expected = presentation ?? (collapsible ? 'separator' : 'plain');
+            const styles = getComputedStyle(sections[index]);
+            expect(styles.borderTopWidth).withContext(`${collapsible}/${presentation}: top border`).toBe(expected === 'outlined' ? '1px' : '0px');
+            expect(styles.borderBottomWidth).withContext(`${collapsible}/${presentation}: bottom border`).toBe(expected === 'plain' ? '0px' : '1px');
+            expect(styles.paddingTop).withContext(`${collapsible}/${presentation}: title inset`).toBe(collapsible ? '0px' : '4px');
+            expect(styles.paddingBottom).toBe(!collapsible && expected === 'outlined' ? '4px' : '0px');
+            if (expected === 'outlined') {
+                expect(styles.borderLeftWidth).toBe('1px');
+                expect(styles.borderRightWidth).toBe('1px');
+                expect(styles.borderRadius).toBe('8px');
+                expect(styles.paddingLeft).toBe('0px');
+                expect(styles.paddingRight).toBe('0px');
+                expect(styles.boxSizing).toBe('border-box');
+            }
+            expect((formFields[index].componentInstance as MatFormField).appearance).toBe(index % 2 === 0 ? 'outline' : 'fill');
+            expect(getComputedStyle(sections[index].querySelector('.kles-layout-grid')!).display).toBe('grid');
+            const titleStyles = getComputedStyle(sections[index].querySelector('h3')!);
+            expect(titleStyles.fontSize).withContext(`${collapsible}/${presentation}: title size`).toBe(referenceTitle.fontSize);
+            expect(titleStyles.lineHeight).toBe(referenceTitle.lineHeight);
+            const iconStyles = getComputedStyle(sections[index].querySelector('.kles-form-section-title mat-icon')!);
+            expect(iconStyles.width).withContext(`${collapsible}/${presentation}: title icon width`).toBe('20px');
+            expect(iconStyles.height).toBe('20px');
+            expect(iconStyles.fontSize).toBe('20px');
+        });
+
+        fixture.componentInstance.collapseAllSections();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        // A closed outlined section should only gain the height of its two borders.
+        const plainHeight = sections[5].getBoundingClientRect().height;
+        expect(sections[7].getBoundingClientRect().height).toBeCloseTo(plainHeight + 2, 0);
+    });
+
+    it('spaces outlined transitions while keeping consecutive separator sections flush', async () => {
+        const fixture = createGrid([
+            { type: 'section', title: 'Closed collapsible', collapsible: true, expanded: false, fields: [] },
+            { type: 'section', title: 'Default collapsible', collapsible: true, fields: [] },
+            { type: 'section', title: 'One', presentation: 'outlined', fields: [] },
+            { type: 'section', title: 'Two', presentation: 'outlined', collapsible: true, fields: [] },
+            { type: 'section', title: 'Explicit separator', presentation: 'separator', fields: [] },
+            { type: 'section', title: 'Three', presentation: 'outlined', collapsible: true, expanded: false, fields: [] },
+        ]);
+        const sections = fixture.nativeElement.querySelectorAll('.kles-form-section') as NodeListOf<HTMLElement>;
+        const expectSpacing = (spacing: number) => {
+            for (let index = 1; index < sections.length; index++) {
+                const expected = index === 1 ? 0 : spacing;
+                expect(sections[index].getBoundingClientRect().top - sections[index - 1].getBoundingClientRect().bottom)
+                    .withContext(`Spacing before section ${index}`).toBeCloseTo(expected, 0);
+            }
+            expect(getComputedStyle(sections[sections.length - 1].parentElement!).paddingBottom).toBe('0px');
+        };
+        expectSpacing(8);
+        fixture.componentInstance.collapseAllSections();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expectSpacing(8);
+        fixture.componentInstance.expandAllSections();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expectSpacing(8);
+        fixture.nativeElement.style.setProperty('--kles-section-spacing', '4px');
+        expectSpacing(4);
+    });
+
+    it('keeps nested section decoration, controls and collapse state independent of outer presentation', () => {
+        const section: IKlesFormSection = {
+            type: 'section', title: 'Outer', presentation: 'outlined', collapsible: true,
+            fields: [{
+                type: 'section', title: 'Inner', presentation: 'plain', collapsible: true,
+                fields: [{ ...input('nested'), appearance: 'outline' }],
+            }],
+        };
+        const fixture = createGrid([section]);
+        const panels = fixture.debugElement.queryAll(By.directive(MatExpansionPanel));
+        const outer = panels[0].componentInstance as MatExpansionPanel;
+        const inner = panels[1].componentInstance as MatExpansionPanel;
+        const control = fixture.componentInstance.form.get('nested')!;
+        const inputElement = fixture.nativeElement.querySelector('input');
+        control.setValidators(Validators.required);
+        control.setValue('Saved value');
+        control.markAsDirty();
+        control.markAsTouched();
+
+        outer.close();
+        fixture.detectChanges();
+        section.presentation = 'plain';
+        fixture.componentRef.setInput('fields', [section]);
+        fixture.detectChanges();
+        expect(outer.expanded).toBeFalse();
+        expect(inner.expanded).toBeTrue();
+        expect(fixture.componentInstance.form.get('nested')).toBe(control);
+        expect(fixture.nativeElement.querySelector('input')).toBe(inputElement);
+        expect(control.value).toBe('Saved value');
+        expect(control.dirty).toBeTrue();
+        expect(control.touched).toBeTrue();
+        expect(getComputedStyle(panels[0].nativeElement).borderBottomWidth).toBe('0px');
+        expect(getComputedStyle(panels[1].nativeElement).borderBottomWidth).toBe('0px');
+        expect((fixture.debugElement.query(By.directive(MatFormField)).componentInstance as MatFormField).appearance).toBe('outline');
+
+        fixture.componentInstance.expandAllSections();
+        fixture.detectChanges();
+        expect(outer.expanded).toBeTrue();
+        expect(inner.expanded).toBeTrue();
+        control.setValue('');
+        expect(fixture.componentInstance.form.invalid).toBeTrue();
     });
 
     it('toggles sections independently while preserving mounted fields and validation', () => {

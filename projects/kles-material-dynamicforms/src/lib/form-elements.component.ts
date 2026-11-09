@@ -51,7 +51,7 @@ const DEFAULT_GAP = '0';
                             </div>
                         </ng-template>
                         @if (section(element).collapsible) {
-                            <mat-expansion-panel class="kles-form-section kles-form-section-collapsible" [expanded]="section(element).expanded ?? true">
+                            <mat-expansion-panel class="kles-form-section kles-form-section-collapsible" [ngClass]="sectionPresentationClass(section(element))" [expanded]="section(element).expanded ?? true">
                                 <mat-expansion-panel-header>
                                     <div class="kles-form-section-header kles-form-section-panel-header">
                                         <ng-container [ngTemplateOutlet]="sectionHeader" />
@@ -60,7 +60,7 @@ const DEFAULT_GAP = '0';
                                 <ng-container [ngTemplateOutlet]="sectionBody" />
                             </mat-expansion-panel>
                         } @else {
-                            <section class="kles-form-section">
+                            <section class="kles-form-section" [ngClass]="sectionPresentationClass(section(element))">
                                 <header class="kles-form-section-header">
                                     <ng-container [ngTemplateOutlet]="sectionHeader" />
                                 </header>
@@ -96,17 +96,34 @@ const DEFAULT_GAP = '0';
         .kles-layout-item:has(> kles-form-listfield):not(:last-child) {
             padding-bottom: var(--kles-list-field-spacing, 16px);
         }
+        .kles-layout-item:has(> .kles-form-section-outlined):not(:last-child),
+        .kles-layout-item:has(> .kles-form-section-separator):has(+ .kles-layout-item > .kles-form-section-outlined) {
+            padding-bottom: var(--kles-section-spacing, 8px);
+        }
         .kles-layout-grid {
             display: grid;
             grid-template-columns: repeat(var(--kles-grid-columns, 12), minmax(0, 1fr));
             gap: var(--kles-grid-gap, 0);
         }
         .kles-form-section-header { margin-bottom: 14px; }
+        .kles-form-section:not(.kles-form-section-collapsible) {
+            padding-block-start: 4px;
+        }
         .kles-form-section-collapsible {
             --mat-expansion-container-elevation-shadow: none;
             --mat-expansion-container-background-color: transparent;
             --mat-expansion-container-shape: 0;
+        }
+        .kles-form-section-separator {
             border-bottom: 1px solid var(--mat-sys-outline-variant, rgba(127, 127, 127, .25));
+        }
+        .kles-form-section-outlined {
+            border: 1px solid var(--mat-sys-outline-variant, rgba(127, 127, 127, .25));
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .kles-form-section-outlined:not(.kles-form-section-collapsible) {
+            padding-block-end: 4px;
         }
         .kles-form-section-panel-header { min-width: 0; margin: 0; padding: 10px 0; }
         /* Reserve space for Material's indicator SVG, which has negative 8px inline margins. */
@@ -115,27 +132,20 @@ const DEFAULT_GAP = '0';
         :host ::ng-deep .kles-form-section-collapsible > .mat-expansion-panel-content-wrapper > .mat-expansion-panel-content > .mat-expansion-panel-body {
             padding-inline: 0;
         }
-        .kles-form-section-collapsible .kles-form-section-title h3 { font-size: 1rem; line-height: 1.5rem; }
-        .kles-form-section-collapsible .kles-form-section-title mat-icon {
-            width: 20px;
-            height: 20px;
-            font-size: 20px;
-            color: var(--mat-sys-primary, currentColor);
-        }
         .kles-form-section-collapsible .kles-form-section-header p {
             font-size: .875rem;
             color: var(--mat-sys-on-surface-variant, currentColor);
         }
         .kles-form-section-title { display: flex; align-items: center; gap: 8px; }
         .kles-form-section-title mat-icon {
-            width: 24px;
-            height: 24px;
-            font-size: 24px;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
             color: var(--mat-sys-primary, currentColor);
         }
         .kles-form-section-header h3 {
             margin: 0;
-            font-size: 1.25rem;
+            font-size: 1rem;
             line-height: 1.5rem;
             font-weight: 500;
         }
@@ -224,6 +234,9 @@ export class KlesFormElementsComponent {
     isDivider(element: KlesFormElement): boolean { return isKlesStructuralElement(element) && element.type === 'divider'; }
     isSpacer(element: KlesFormElement): boolean { return isKlesStructuralElement(element) && element.type === 'spacer'; }
     section(element: KlesFormElement): IKlesFormSection { return element as IKlesFormSection; }
+    sectionPresentationClass(section: IKlesFormSection): string {
+        return `kles-form-section-${section.presentation ?? (section.collapsible ? 'separator' : 'plain')}`;
+    }
     layoutGroup(element: KlesFormElement): IKlesFormLayoutGroup { return element as IKlesFormLayoutGroup; }
     field(element: KlesFormElement): IKlesFieldConfig { return element as IKlesFieldConfig; }
 
