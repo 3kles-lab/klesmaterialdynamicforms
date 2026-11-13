@@ -1,3 +1,15 @@
+# [22.11.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.10.0...v22.11.0) (2026-11-13)
+
+
+### Bug Fixes
+
+* lighten list field counter and reduce bottom spacing ([e4405e7](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/e4405e78336767ff247992c1d7d9bb8d2656cd7c))
+
+
+### Features
+
+* add item count beside list field labels ([abd1fcc](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/commit/abd1fcc3a7012e26bf4e4e8925c55ba8eeb244d6))
+
 # [22.10.0](http://gitlab.3kles.local/3kles/lib/angular/material/klesmaterialdynamicforms/compare/v22.9.0...v22.10.0) (2026-11-09)
 
 
