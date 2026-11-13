@@ -94,7 +94,7 @@ const DEFAULT_GAP = '0';
             padding-bottom: var(--kles-slide-toggle-spacing, 16px);
         }
         .kles-layout-item:has(> kles-form-listfield):not(:last-child) {
-            padding-bottom: var(--kles-list-field-spacing, 16px);
+            padding-bottom: var(--kles-list-field-spacing, 8px);
         }
         .kles-layout-item:has(> .kles-form-section-outlined):not(:last-child),
         .kles-layout-item:has(> .kles-form-section-separator):has(+ .kles-layout-item > .kles-form-section-outlined) {

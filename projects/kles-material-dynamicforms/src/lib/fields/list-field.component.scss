@@ -9,7 +9,7 @@
 }
 
 :host(:not(:last-child)) {
-    padding-bottom: var(--kles-list-field-spacing, 16px);
+    padding-bottom: var(--kles-list-field-spacing, 8px);
 }
 
 .list-field {
@@ -66,7 +66,7 @@
     background: var(--mat-sys-secondary-container, rgba(127, 127, 127, .15));
     color: var(--mat-sys-on-secondary-container, inherit);
     font-size: .75rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1rem;
     font-variant-numeric: tabular-nums;
 }
