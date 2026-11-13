@@ -335,7 +335,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             {
                 component: KlesFormListFieldComponent,
                 name: 'listField',
-                // label: 'test list',
+                label: 'Processus',
                 // direction: 'row',
                 collections: [
                     {

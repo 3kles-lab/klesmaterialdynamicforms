@@ -6,7 +6,10 @@
     [style.--kles-list-field-item-padding]="options.itemPadding">
     <div class="list-field__header">
         @if (label()) {
-            <span class="list-field__label">{{ label() }}</span>
+            <div class="list-field__label">
+                <span>{{ label() }}</span>
+                <span class="list-field__count">{{ formArray.length }}</span>
+            </div>
         }
         <button type="button" matButton class="list-field__add" [disabled]="!canAdd" (click)="addField()">
             <mat-icon>add</mat-icon>
